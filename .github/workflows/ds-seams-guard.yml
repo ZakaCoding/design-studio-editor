@@ -1,0 +1,56 @@
+name: "DS: seams guard"
+
+# Fails when the tree differs from the upstream tag in DS_BASE_TAG outside
+# frontend/src/app/main/ui/studio/**, the other DS-owned paths and the files
+# listed in STUDIO-SEAMS.md. Runs on pull requests into ds/** and is called
+# by ds-frontend-image.yml before every image build (push to ds/**, *-ds.* tags).
+
+on:
+  pull_request:
+    branches:
+      - 'ds/**'
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ds-seams-guard-${{ github.event.pull_request.number || github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  seams:
+    name: Seams vs base tag
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Fetch the base tag from upstream
+        id: base
+        run: |
+          set -euo pipefail
+          BASE_TAG=$(tr -d ' \t\r\n' < DS_BASE_TAG)
+          if ! [[ "$BASE_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error file=DS_BASE_TAG::DS_BASE_TAG must hold one upstream tag like 2.18.7, got '${BASE_TAG}'"
+            exit 1
+          fi
+          # Always take the tag from penpot/penpot itself, so a moved or
+          # missing tag in this fork can not widen what the guard allows.
+          git fetch --no-tags --depth=1 https://github.com/penpot/penpot.git \
+            "+refs/tags/${BASE_TAG}:refs/tags/${BASE_TAG}"
+          BASE_SHA=$(git rev-parse "refs/tags/${BASE_TAG}^{commit}")
+          echo "tag=${BASE_TAG}" >> "$GITHUB_OUTPUT"
+          echo "sha=${BASE_SHA}" >> "$GITHUB_OUTPUT"
+          echo "Base ${BASE_TAG} = ${BASE_SHA}; head $(git rev-parse HEAD)"
+
+      - name: Check changed files against STUDIO-SEAMS.md
+        env:
+          BASE_SHA: ${{ steps.base.outputs.sha }}
+        run: python3 -I .github/ds/seams-guard.py --base "$BASE_SHA" --head HEAD --seams STUDIO-SEAMS.md

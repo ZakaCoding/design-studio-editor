@@ -1,0 +1,44 @@
+# Design Studio: the frontend image on top of the official one.
+#
+# Upstream's docker/images/Dockerfile.frontend starts FROM dhi.io (Docker
+# Hardened Images), which refuses anonymous pulls. The official
+# penpotapp/frontend image at our base tag is that Dockerfile's own output, so
+# we start from it (pinned by digest in the workflow) and redo only the steps
+# that depend on our sources: the bundle, config.js, the nginx templates, the
+# CSP hash file and the ownership fix. nginx, its modules, the entrypoint and
+# the penpot user stay exactly as in the official release.
+#
+# Build context: docker/images (same as upstream), with the bundle copied to
+# docker/images/bundle-frontend/.
+
+ARG OFFICIAL_IMAGE
+FROM ${OFFICIAL_IMAGE}
+
+USER root
+
+RUN rm -rf /var/www/app /etc/nginx/csp-script-hashes.txt
+
+ARG BUNDLE_PATH="./bundle-frontend/"
+COPY $BUNDLE_PATH /var/www/app/
+COPY ./files/config.js /var/www/app/js/config.js
+COPY ./files/nginx.conf.template /tmp/nginx.conf.template
+COPY ./files/nginx-resolvers.conf.template /tmp/resolvers.conf.template
+COPY ./files/nginx-admin-console-locations.conf.template /tmp/nginx-admin-console-locations.conf.template
+COPY ./files/nginx-mcp-locations.conf.template /tmp/nginx-mcp-locations.conf.template
+COPY ./files/nginx-security-headers.conf.template /tmp/nginx-security-headers.conf.template
+COPY ./files/nginx-mime.types /etc/nginx/mime.types
+COPY ./files/nginx-external-locations.conf /etc/nginx/overrides/location.d/external-locations.conf
+COPY ./files/nginx-entrypoint.sh /entrypoint.sh
+
+# Upstream only warns when the hash file is missing. Here a missing file would
+# leave no hashes at all and nginx would block index.html's inline scripts, so
+# stop the build instead.
+RUN test -f /var/www/app/csp-script-hashes.txt \
+    && mv /var/www/app/csp-script-hashes.txt /etc/nginx/csp-script-hashes.txt
+
+RUN chown -R 1001:0 /etc/nginx /var/www; \
+    chmod -R g+w /etc/nginx /var/www
+
+USER penpot:penpot
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
