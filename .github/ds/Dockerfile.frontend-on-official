@@ -11,7 +11,7 @@
 # Build context: docker/images (same as upstream), with the bundle copied to
 # docker/images/bundle-frontend/.
 
-ARG OFFICIAL_IMAGE
+ARG OFFICIAL_IMAGE=penpotapp/frontend:2.18.7@sha256:65109ceb13f28fc0d040c404d5e006689c491b899a4229d084a84b73edc266c7
 FROM ${OFFICIAL_IMAGE}
 
 USER root
@@ -30,11 +30,15 @@ COPY ./files/nginx-mime.types /etc/nginx/mime.types
 COPY ./files/nginx-external-locations.conf /etc/nginx/overrides/location.d/external-locations.conf
 COPY ./files/nginx-entrypoint.sh /entrypoint.sh
 
-# Upstream only warns when the hash file is missing. Here a missing file would
-# leave no hashes at all and nginx would block index.html's inline scripts, so
-# stop the build instead.
-RUN test -f /var/www/app/csp-script-hashes.txt \
-    && mv /var/www/app/csp-script-hashes.txt /etc/nginx/csp-script-hashes.txt
+# Same as upstream: move the hash file when the bundle has one. The 2.18.7
+# bundle and the official 2.18.7 image have none, and nginx-entrypoint.sh
+# handles that. The official copy (if any) was removed above, so the result
+# always matches our bundle.
+RUN if [ -f /var/www/app/csp-script-hashes.txt ]; then \
+        mv /var/www/app/csp-script-hashes.txt /etc/nginx/csp-script-hashes.txt; \
+    else \
+        echo "WARNING: the frontend bundle does not provide csp-script-hashes.txt" >&2; \
+    fi
 
 RUN chown -R 1001:0 /etc/nginx /var/www; \
     chmod -R g+w /etc/nginx /var/www
