@@ -89,7 +89,11 @@ def normalize_index(html, version):
     if version:
         html = re.sub(re.escape(version) + r"-\d{9,11}", "@VERSION_TAG@", html)
         html = html.replace(version, "@VERSION@")
-    return html
+    # The build date is written as an RFC 2822 string ("Mon, 09 Nov 2026
+    # 09:30:48 +0000"), and the template's blank lines move with it, so fold
+    # the value and collapse whitespace before comparing.
+    html = re.sub(r'(penpotBuildDate\s*=\s*")[^"]*(")', r"\1@BUILD_DATE@\2", html)
+    return re.sub(r"\s+", " ", html).strip()
 
 
 def snapshot(image):
