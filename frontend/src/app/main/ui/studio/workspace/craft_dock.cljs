@@ -20,9 +20,8 @@
   `width-class` (:wide | :medium | :narrow, see
   `app.main.ui.studio.workspace.state`).
 
-  Contract: call `state/set-craft-open!` when the dock opens or closes. The
-  shell mirrors it on <body> as `data-ds-craft=\"open\"`, and below 1280 px
-  lays the aside over the canvas instead of beside it."
+  The shell does not need to be told that Craft is open: it reads
+  `<html data-ds-craft-open>`, which F3-B's dock sets."
   (:require
    [rumext.v2 :as mf]))
 

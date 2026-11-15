@@ -35,10 +35,8 @@ $edge: ws.$edge;
 #{$scope} {
   --color-background-primary: #{ds.token("bg-panel")};
 
-  // gray.150: the step between border.default and border.strong. Penpot
-  // uses this variable for wells and pressed states; `bg.canvas` is the
-  // semantic token with that value.
-  --color-background-secondary: #{ds.token("bg-canvas")};
+  // Penpot uses "secondary" for wells, tab tracks and hovered rows.
+  --color-background-secondary: #{ds.token("bg-subtle")};
   --color-background-tertiary: #{ds.token("bg-subtle")};
   --color-background-quaternary: #{ds.token("border-default")};
   --color-background-default: #{ds.token("bg-panel")};
@@ -65,13 +63,30 @@ $edge: ws.$edge;
   --color-overlay-default: #{ds.token("overlay-scrim")};
   --color-shadow-dark: color-mix(in srgb, #{ds.token("text-primary")} 14%, transparent);
   --overlay-color: #{ds.token("overlay-scrim")};
+
+  // Selected rows (layers, pages, assets): `bg.selected` instead of a gray.
+  --layer-row-background-color-selected: #{ds.token("bg-selected")};
+  --layer-row-background-color-drag: #{ds.token("bg-selected")};
+  --sidebar-element-background-color-selected: #{ds.token("bg-selected")};
 }
 
 // --- 2. Floating panels
 
 #{$scope} {
+  // The gaps around the panels show the canvas colour, so the panels read
+  // as floating over the canvas.
   #{ws.on("main_ui_workspace__workspace")} {
     grid-template: "left-sidebar viewport craft right-sidebar" 1fr / auto 1fr auto auto;
+    background-color: ds.token("bg-canvas");
+  }
+
+  // Rulers and the frame around the canvas (upstream draws them in SVG with
+  // these variables): canvas coloured, so they do not read as a panel.
+  // `text.secondary` on `bg.canvas` is 4.2:1, so the numbers use `text.body`.
+  g[class~="viewport-frame"] {
+    --panel-background-color: #{ds.token("bg-canvas")};
+    --panel-border-color: #{ds.token("border-strong")};
+    --layer-row-foreground-color: #{ds.token("text-body")};
   }
 
   #{ws.on("main_ui_workspace_sidebar__left-sidebar", "main_ui_workspace_sidebar__right-sidebar")} {
@@ -151,6 +166,14 @@ $edge: ws.$edge;
     height: -below(108);
   }
 
+  // Tabs (Layers / Assets / Tokens, Design / Prototype / Inspect): the
+  // selected tab is a raised chip on the `bg.subtle` track.
+  #{ws.on("main_ui_ds_layout_tab_switcher__selected")} {
+    --tabs-item-bg-color: #{ds.token("bg-panel")};
+
+    box-shadow: ds.token("elevation-control");
+  }
+
   // Toolbar: an island over the canvas, as upstream places it.
   #{ws.on("main_ui_workspace_top_toolbar__toolbar")} {
     --menu-border-color: #{ds.token("border-default")};
@@ -170,6 +193,12 @@ $edge: ws.$edge;
   // Colour and text palette: upstream pads it by the sidebar widths from the
   // window edges; the panels now start one edge in and end one edge before
   // the canvas area.
+  #{ws.on("main_ui_workspace_palette__palettes")} {
+    border-width: 1px;
+    border-radius: ds.token("radius-card");
+    box-shadow: ds.token("elevation-panel");
+  }
+
   #{ws.on("main_ui_workspace_palette__palette-wrapper")} {
     inset-inline-start: calc(2 * #{$edge});
     inline-size: calc(100vw - 4 * #{$edge});

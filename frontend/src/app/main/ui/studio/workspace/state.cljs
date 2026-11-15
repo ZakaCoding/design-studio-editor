@@ -18,10 +18,12 @@
   rule only sets the flag when the window crosses a breakpoint; in between,
   the person's own choice stands.
 
-  `craft-open*` is written by the Craft dock (F3-B) through `set-craft-open!`
-  and read by the shell, which mirrors it on <body> as `data-ds-craft`."
+  While the Craft dock (F3-B) is open, Layers also collapses at the rail
+  widths, so the canvas keeps its room. The dock says that it is open on
+  `<html data-ds-craft-open>` (F3-B's \"Craft dock v1\" contract); this
+  namespace only reads that attribute, so neither package requires the
+  other."
   (:require
-   [okulary.core :as l]
    [rumext.v2 :as mf]))
 
 (def ^:const wide-min-width 1600)
@@ -60,16 +62,16 @@
     :else
     nil))
 
-;; --- Craft dock state (owned by F3-B, mirrored by the shell)
+(defn craft-action
+  "What opening the Craft dock does to the Layers panel: `:collapse` at the
+  rail widths while Layers is open, else nil. Closing Craft changes nothing."
+  [{:keys [width-class craft-open? collapsed?]}]
+  (when (and craft-open?
+             (not= width-class :wide)
+             (not collapsed?))
+    :collapse))
 
-(defonce craft-open* (l/atom false))
-
-(defn set-craft-open!
-  "Called by the Craft dock when it opens or closes."
-  [open?]
-  (reset! craft-open* (boolean open?)))
-
-;; --- Hook
+;; --- Hooks
 
 (defn- window-width
   []
@@ -86,3 +88,26 @@
         (fn []
           (.removeEventListener js/window "resize" on-resize))))
     (deref class*)))
+
+(def ^:private craft-open-attr "data-ds-craft-open")
+
+(defn- craft-open-now?
+  []
+  (.hasAttribute (.-documentElement js/document) craft-open-attr))
+
+(defn use-craft-open
+  "True while the Craft dock is open (`<html data-ds-craft-open>`, set by
+  F3-B's dock). Always false while no dock is mounted."
+  []
+  (let [open* (mf/use-state craft-open-now?)]
+    (mf/with-effect []
+      (let [on-change #(reset! open* (craft-open-now?))
+            observer  (js/MutationObserver. on-change)]
+        (.observe observer
+                  (.-documentElement js/document)
+                  #js {:attributes true
+                       :attributeFilter #js [craft-open-attr]})
+        (on-change)
+        (fn []
+          (.disconnect observer))))
+    (deref open*)))

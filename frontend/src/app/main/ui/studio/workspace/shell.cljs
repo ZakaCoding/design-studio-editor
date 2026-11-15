@@ -12,8 +12,8 @@
 
   1. Marks <body> while the workspace is mounted: class `ds-chrome` (the
      scope of every rule in `chrome.scss`), the light theme, and
-     `data-ds-width` (wide | medium | narrow) and `data-ds-craft` (open),
-     for CSS and for Studio's own scripts.
+     `data-ds-width` (wide | medium | narrow), for CSS and for Studio's own
+     scripts.
   2. Applies the width rules (see `app.main.ui.studio.workspace.state`).
   3. Renders the mount points of the other F3 packages: `craft-dock` and
      `viewport-overlay` (listed in STUDIO-SEAMS.md).
@@ -57,7 +57,6 @@
                                      (theme/get-system-theme))]
     (.remove classes "ds-chrome")
     (.removeAttribute body "data-ds-width")
-    (.removeAttribute body "data-ds-craft")
     (when (= theme "dark")
       (.remove classes "light")
       (.add classes "default"))))
@@ -96,7 +95,7 @@
 (mf/defc shell*
   [{:keys [layout file file-id page-id]}]
   (let [width-class (state/use-width-class)
-        craft-open? (mf/deref state/craft-open*)
+        craft-open? (state/use-craft-open)
 
         collapsed?  (contains? layout :collapse-left-sidebar)
         hide-ui?    (contains? layout :hide-ui)
@@ -124,11 +123,6 @@
     (mf/with-effect [width-class]
       (.setAttribute (body-node) "data-ds-width" (name width-class)))
 
-    (mf/with-effect [craft-open?]
-      (if ^boolean craft-open?
-        (.setAttribute (body-node) "data-ds-craft" "open")
-        (.removeAttribute (body-node) "data-ds-craft")))
-
     ;; A panel the person reopened is theirs again.
     (mf/with-effect [collapsed?]
       (when-not ^boolean collapsed?
@@ -153,6 +147,15 @@
               (st/emit! (dw/remove-layout-flag :collapse-left-sidebar)))
 
             nil))))
+
+    ;; Craft opened at the rail widths: Layers makes room.
+    (mf/with-effect [craft-open? width-class ready?]
+      (when (and ^boolean ready?
+                 (= :collapse (state/craft-action {:width-class width-class
+                                                   :craft-open? craft-open?
+                                                   :collapsed? collapsed?})))
+        (mf/set-ref-val! auto-ref true)
+        (st/emit! (dw/toggle-layout-flag :collapse-left-sidebar :force? true))))
 
     [:*
      ;; Mount point `viewport-overlay`: covers the canvas area, ignores

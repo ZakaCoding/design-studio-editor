@@ -44,8 +44,10 @@
   (t/is (nil? (state/layers-action {:from :medium :to :medium :collapsed? false :auto? true})))
   (t/is (nil? (state/layers-action {:from :wide :to :wide :collapsed? true :auto? true}))))
 
-(t/deftest craft-open-flag
-  (state/set-craft-open! true)
-  (t/is (true? (deref state/craft-open*)))
-  (state/set-craft-open! nil)
-  (t/is (false? (deref state/craft-open*))))
+(t/deftest craft-makes-room-at-the-rail-widths
+  (t/is (= :collapse (state/craft-action {:width-class :medium :craft-open? true :collapsed? false})))
+  (t/is (= :collapse (state/craft-action {:width-class :narrow :craft-open? true :collapsed? false})))
+  ;; 1600 px and wider shows every panel.
+  (t/is (nil? (state/craft-action {:width-class :wide :craft-open? true :collapsed? false})))
+  (t/is (nil? (state/craft-action {:width-class :medium :craft-open? true :collapsed? true})))
+  (t/is (nil? (state/craft-action {:width-class :medium :craft-open? false :collapsed? false}))))
