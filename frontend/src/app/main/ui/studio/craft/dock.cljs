@@ -41,12 +41,17 @@
       nil)))
 
 (defn- side-width
-  "Width of the design panel, or 0 when it is hidden."
+  "Room the design panel takes at the window's right edge, in px: from its
+  left edge to the window's. 0 when it is hidden. Measured from its left
+  edge, so it also holds for a panel that floats off the window's edge."
   []
-  (let [panel (.querySelector js/document right-selector)
-        width (some-> panel (.getBoundingClientRect) (.-width))]
-    (if (and (number? width) (< width (/ (.-innerWidth js/window) 2)))
-      width
+  (let [view  (.-innerWidth js/window)
+        panel (.querySelector js/document right-selector)
+        rect  (some-> panel (.getBoundingClientRect))]
+    (if (and (some? rect)
+             (pos? (.-width rect))
+             (< (.-width rect) (/ view 2)))
+      (max 0 (- view (.-left rect)))
       0)))
 
 (defn- focus-toggle!
@@ -76,10 +81,16 @@
        (tr "ds.craft.dock.open"))]))
 
 (mf/defc craft-dock*
-  "Props: `toggle` \"floating\" (default: the dock shows its own control
-  while it is collapsed) | \"none\" (the layout mounts `craft-toggle*`)."
-  [{:keys [toggle]}]
+  "Props:
+  - `placement` \"floating\" (default: the dock places itself, fixed
+    beside the design panel) | \"column\" (the workspace shell lays it out:
+    it fills the height of the `craft-dock` mount point and sets only its
+    own width);
+  - `toggle` \"floating\" (default: the dock shows its own control while it
+    is collapsed) | \"none\" (the layout mounts `craft-toggle*`)."
+  [{:keys [placement toggle]}]
   (let [open?     (mf/deref state/open?)
+        column?   (= placement "column")
         page      (mf/deref refs/workspace-page)
         layout    (mf/deref refs/workspace-layout)
         page-name (:name page)
@@ -207,14 +218,17 @@
 
     ;; What other layouts and the touch buttons read: whether Craft is
     ;; open, how it sits, and how far the canvas' top-right buttons move.
-    (mf/with-effect [open? mode shown inset view side]
+    (mf/with-effect [open? mode shown inset view side column?]
       (let [root (.-documentElement js/document)]
         (if (and open? (not= mode :sheet))
           (let [canvas-right (- view side)
-                dock-left    (- view inset shown)]
+                dock-left    (- view inset shown)
+                ;; As a column beside the canvas the dock covers none of it.
+                shift        (if (and column? (= mode :dock))
+                               0
+                               (rules/touch-shift canvas-right dock-left))]
             (.setAttribute root "data-ds-craft-open" (name mode))
-            (.setProperty (.-style root) "--ds-craft-shift"
-                          (str (rules/touch-shift canvas-right dock-left) "px")))
+            (.setProperty (.-style root) "--ds-craft-shift" (str shift "px")))
           (do
             (.removeAttribute root "data-ds-craft-open")
             (.removeProperty (.-style root) "--ds-craft-shift")))
@@ -225,7 +239,9 @@
     [:*
      [:aside {:id dock-id
               :class (stl/css-case :dock true
-                                   :dock-overlay (= mode :overlay)
+                                   :dock-floating (not column?)
+                                   :dock-column column?
+                                   :dock-overlay (and (not column?) (= mode :overlay))
                                    :dock-sheet (= mode :sheet)
                                    :dock-sizing (deref sizing*))
               :style {"--ds-craft-dock-w" (str shown "px")

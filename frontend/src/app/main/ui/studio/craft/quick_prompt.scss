@@ -27,6 +27,13 @@
   box-shadow: ds.token("elevation-popover");
 }
 
+// In the workspace shell's `viewport-overlay` mount point, which ignores
+// the pointer itself.
+.prompt-overlay {
+  position: absolute;
+  pointer-events: auto;
+}
+
 .context {
   display: flex;
   align-items: center;

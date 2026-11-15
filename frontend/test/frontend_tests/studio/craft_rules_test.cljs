@@ -8,8 +8,30 @@
   "The Craft dock's width rules (F1 · 05, F1 · 06) and the quick prompt's
   shortcut and placement."
   (:require
+   [app.main.ui.studio.craft :as craft]
    [app.main.ui.studio.craft.rules :as rules]
+   [app.main.ui.studio.craft.state :as state]
+   [app.main.ui.studio.workspace.craft-dock :as mount.dock]
+   [app.main.ui.studio.workspace.quick-prompt :as mount.prompt]
    [cljs.test :as t :include-macros true]))
+
+(t/deftest components-exist
+  (t/testing "the app-level entry, and what the workspace shell's mount points render"
+    (t/is (some? craft/craft*))
+    (t/is (some? craft/craft-toggle*))
+    (t/is (some? mount.dock/craft-dock*))
+    (t/is (some? mount.prompt/quick-prompt*))))
+
+(t/deftest dock-state
+  (t/testing "closed until asked; a prompt opens it; closing forgets a prompt nobody took"
+    (state/close!)
+    (t/is (false? @state/open?))
+    (t/is (false? (state/send-prompt! "   ")) "nothing to send")
+    (t/is (false? @state/open?))
+    (state/toggle!)
+    (t/is (true? @state/open?))
+    (state/toggle!)
+    (t/is (false? @state/open?))))
 
 (t/deftest dock-mode-by-window-width
   (t/is (= :dock (rules/mode 1920)))

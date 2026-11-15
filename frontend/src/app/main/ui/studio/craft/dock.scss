@@ -14,10 +14,6 @@
   @include ds.root;
   @include ds.surface-panel;
 
-  position: fixed;
-  z-index: ds.token("z-panel");
-  inset-block: ds.token("space-panel-edge");
-  inset-inline-end: var(--ds-craft-dock-right, #{ds.token("space-panel-edge")});
   inline-size: var(--ds-craft-dock-w, 440px);
   max-inline-size: calc(100vw - 2 * #{ds.token("space-panel-edge")});
   display: flex;
@@ -31,6 +27,22 @@
   }
 }
 
+// On its own (no workspace shell): fixed beside the design panel.
+.dock-floating {
+  position: fixed;
+  z-index: ds.token("z-panel");
+  inset-block: ds.token("space-panel-edge");
+  inset-inline-end: var(--ds-craft-dock-right, #{ds.token("space-panel-edge")});
+}
+
+// In the workspace shell's `craft-dock` mount point: the shell gives the
+// place and the height, the dock its width.
+.dock-column {
+  position: relative;
+  flex: none;
+  block-size: 100%;
+}
+
 // Under 1280 px the dock lies over the design panel; the shadow says so.
 .dock-overlay {
   box-shadow: ds.token("elevation-popover");
@@ -38,6 +50,8 @@
 
 // Phone: a bottom sheet over the canvas, full width.
 .dock-sheet {
+  position: fixed;
+  z-index: ds.token("z-panel");
   inset-block: auto 0;
   inset-inline: 0;
   inline-size: 100%;

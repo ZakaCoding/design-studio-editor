@@ -55,9 +55,26 @@
                :width  (* zoom (:width rect))
                :height (* zoom (:height rect))}})))
 
+(def ^:private overlay-id "ds-viewport-overlay")
+
+(defn- frame
+  "The box the prompt is placed in, in client px: the workspace shell's
+  `viewport-overlay` mount point (the canvas area) when the prompt is
+  mounted there, else the window."
+  [overlay?]
+  (let [rect (when overlay?
+               (some-> (.getElementById js/document overlay-id) (.getBoundingClientRect)))]
+    (if (some? rect)
+      {:x (.-left rect) :y (.-top rect) :width (.-width rect) :height (.-height rect)}
+      {:x 0 :y 0 :width (.-innerWidth js/window) :height (.-innerHeight js/window)})))
+
 (mf/defc quick-prompt*
-  []
-  (let [box*      (mf/use-state nil)
+  "Props: `placement` \"floating\" (default: fixed, in window px) |
+  \"overlay\" (inside the workspace shell's `viewport-overlay` mount point:
+  absolute, in px from the top left corner of the canvas area)."
+  [{:keys [placement]}]
+  (let [overlay?  (= placement "overlay")
+        box*      (mf/use-state nil)
         text*     (mf/use-state "")
         box       (deref box*)
         text      (deref text*)
@@ -107,7 +124,7 @@
            (.stopPropagation event)))]
 
     ;; Ctrl/Cmd+Enter anywhere in the workspace, except while writing text.
-    (mf/with-effect []
+    (mf/with-effect [overlay?]
       (let [on-key
             (fn [event]
               (when (and (rules/quick-key? {:key     (.-key event)
@@ -121,8 +138,11 @@
                 (.preventDefault event)
                 (.stopPropagation event)
                 (if-let [selected (selection)]
-                  (let [view {:width (.-innerWidth js/window) :height (.-innerHeight js/window)}]
-                    (reset! box* (merge (rules/anchor (:rect selected) view)
+                  (let [view (frame overlay?)
+                        rect (-> (:rect selected)
+                                 (update :x - (:x view))
+                                 (update :y - (:y view)))]
+                    (reset! box* (merge (rules/anchor rect view)
                                         (select-keys selected [:count :name]))))
                   ;; Nothing selected: the other door, the dock itself.
                   (state/open!))))]
@@ -147,7 +167,8 @@
             (.removeEventListener js/window "resize" close)))))
 
     (when (some? box)
-      [:form {:class (stl/css :prompt)
+      [:form {:class (stl/css-case :prompt true
+                                   :prompt-overlay overlay?)
               :ref form-ref
               :style {:left (str (:left box) "px")
                       :top (str (:top box) "px")}
