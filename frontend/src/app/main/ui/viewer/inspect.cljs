@@ -16,8 +16,8 @@
    [app.main.ui.inspect.left-sidebar :refer [left-sidebar]]
    [app.main.ui.inspect.render :refer [render-frame-svg]]
    [app.main.ui.inspect.right-sidebar :refer [right-sidebar*]]
-   [app.util.i18n :refer [tr]]
    [app.util.dom :as dom]
+   [app.util.i18n :refer [tr]]
    [app.util.keyboard :as kbd]
    [goog.events :as events]
    [rumext.v2 :as mf])
