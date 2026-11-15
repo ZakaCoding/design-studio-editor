@@ -33,9 +33,11 @@ segment, `**` matches any depth.
 - `DS_BASE_TAG`
 - `README-DS.md`
 - `STUDIO-SEAMS.md`
+- `STUDIO-DS.md`
 - `.github/workflows/ds-*.yml`
 - `.github/ds/**`
 - `frontend/src/app/main/ui/studio/**`
+- `frontend/resources/styles/studio/**`
 <!-- ds-owned:end -->
 
 ## Seams
@@ -47,4 +49,5 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
+| `frontend/src/app/main/ui/debug/playground.cljs` | Mounts the DS showcase (`app.main.ui.studio.ds.showcase/showcase*`) on the existing debug route `#/debug/playground`, so the release build compiles every DS base component. One require and one element. | - | F3/F4 foundation |
 <!-- seams:end -->

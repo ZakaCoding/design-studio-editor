@@ -1,0 +1,75 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: ds.token("z-tooltip");
+  width: max-content;
+  max-width: 240px;
+  padding: 6px ds.token("space-8");
+  background: ds.token("bg-inverse");
+  border-radius: ds.token("radius-sm");
+  box-shadow: ds.token("elevation-popover");
+  color: ds.token("text-on-accent");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+  -webkit-font-smoothing: antialiased;
+  visibility: hidden;
+  opacity: 0;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      opacity ds.token("motion-fast") ds.token("ease-out"),
+      visibility 0s linear ds.token("motion-fast");
+  }
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition-delay: 0.35s, 0.35s;
+  }
+}
+
+.placement-top {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.placement-bottom {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.placement-left {
+  top: 50%;
+  right: calc(100% + 6px);
+  transform: translateY(-50%);
+}
+
+.placement-right {
+  top: 50%;
+  left: calc(100% + 6px);
+  transform: translateY(-50%);
+}
+
+.shortcut {
+  margin-left: 6px;
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  opacity: 0.72;
+}

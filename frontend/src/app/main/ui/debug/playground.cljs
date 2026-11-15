@@ -1,6 +1,7 @@
 (ns app.main.ui.debug.playground
   #_(:require-macros [app.main.style :as stl])
   (:require
+   [app.main.ui.studio.ds.showcase :refer [showcase*]]
    [app.util.clipboard :as clipboard]
    [beicon.v2.core :as rx]
    [rumext.v2 :as mf]))
@@ -44,6 +45,10 @@
 (mf/defc playground*
   {::mf/private true}
   []
-  [:> playground-clipboard*])
+  [:*
+   [:> playground-clipboard*]
+   ;; Design Studio seam (STUDIO-SEAMS.md): the DS showcase lives on this
+   ;; debug route, so the release build compiles every DS component.
+   [:> showcase*]])
 
 

@@ -1,0 +1,103 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.region {
+  position: fixed;
+  z-index: ds.token("z-toast");
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.region-bottom-center {
+  bottom: ds.token("space-24");
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.region-bottom-right {
+  right: ds.token("space-24");
+  bottom: ds.token("space-24");
+}
+
+.region-top-right {
+  top: ds.token("space-24");
+  right: ds.token("space-24");
+}
+
+.toast {
+  @include ds.root;
+
+  display: flex;
+  align-items: flex-start;
+  gap: ds.token("space-12");
+  padding: ds.token("space-12") ds.token("space-12") ds.token("space-12") ds.token("space-16");
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  box-shadow: ds.token("elevation-popover");
+  pointer-events: auto;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ds-toast-in ds.token("motion-base") ds.token("ease-out");
+  }
+}
+
+@keyframes ds-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.tone-success {
+  background: ds.token("status-success-bg");
+  border-color: ds.token("status-success-border");
+}
+
+.tone-warning {
+  background: ds.token("status-warning-bg");
+  border-color: color-mix(in srgb, ds.token("status-warning") 30%, transparent);
+}
+
+.tone-danger {
+  background: ds.token("status-danger-bg");
+  border-color: color-mix(in srgb, ds.token("status-danger-text") 24%, transparent);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 2px 0;
+  font-size: ds.token("size-13");
+  line-height: 1.45;
+  color: ds.token("text-body");
+}
+
+.title {
+  margin: 0 0 2px;
+  font-size: ds.token("size-13");
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-primary");
+}
+
+.tone-success .title {
+  color: ds.token("status-success-text");
+}
+
+.tone-warning .title {
+  color: ds.token("status-warning-text");
+}
+
+.tone-danger .title {
+  color: ds.token("status-danger-text");
+}
+
+.action {
+  flex: none;
+  display: flex;
+  align-items: center;
+}

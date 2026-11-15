@@ -1,0 +1,79 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.showcase {
+  @include ds.root;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: auto;
+  padding: ds.token("space-32");
+  background: ds.token("bg-canvas");
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-24");
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.heading {
+  @include ds.type("display");
+
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.lead {
+  margin: 0;
+  font-size: ds.token("size-14");
+  color: ds.token("text-secondary");
+}
+
+.section-title {
+  @include ds.type("label");
+
+  margin: 0 0 ds.token("space-12");
+  color: ds.token("text-secondary");
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ds.token("space-12");
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: ds.token("space-16");
+  align-items: start;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: ds.token("space-8");
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  color: ds.token("text-body");
+}
+
+.swatch-chip {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-sm");
+}
