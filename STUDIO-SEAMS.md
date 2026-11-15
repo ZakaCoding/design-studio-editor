@@ -99,6 +99,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/test/frontend_tests/main_errors_test.cljs` | WP3 review fix: the save-failed toast has no reload link (keep the tab open), so the two upstream assertions on the reload link now assert its absence | - | F2 |
 | `frontend/src/app/main/ui/workspace.cljs` | F3-A: mounts `studio.workspace.shell/shell*` once in `workspace*` (chrome theme scope on <body>, width rules, the `craft-dock` and `viewport-overlay` mount points, canvas focus islands). One require, one element | - | F3-A |
 | `frontend/src/app/main/ui/workspace/sidebar.cljs` | F3-A: the collapsed left sidebar renders `studio.workspace.rail/layers-rail*` (the Layers rail) instead of `collapsed-button*`, which stays in place and unused. One require, one element | - | F3-A |
+| `frontend/src/app/main/ui/workspace/sidebar/sitemap.cljs` | F3-B: the current page's item carries `data-ds-page-name="<name>"` (one attribute), the stable hook Studio's `ds-craft.js` reads instead of the CSS-module class names | - | F3-B |
 <!-- seams:end -->
 
 ## Mount points (F3)

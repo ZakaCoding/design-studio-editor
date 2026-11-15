@@ -10808,3 +10808,39 @@ msgstr "Back to your files"
 
 msgid "ds.workspace.focus.show-panels"
 msgstr "Show panels"
+# Design Studio (F3-B)
+msgid "ds.craft.dock.label"
+msgstr "Craft, your creative companion"
+
+msgid "ds.craft.dock.open"
+msgstr "Craft"
+
+msgid "ds.craft.dock.busy"
+msgstr "Craft is working"
+
+msgid "ds.craft.dock.resize"
+msgstr "Craft panel width. Drag, or use the arrow keys"
+
+msgid "ds.craft.dock.width"
+msgstr "%s px wide"
+
+msgid "ds.craft.dock.waiting"
+msgstr "Opening Craft…"
+
+msgid "ds.craft.dock.unavailable"
+msgstr "Craft isn’t answering right now. Reload the page to try again."
+
+msgid "ds.craft.quick.label"
+msgstr "Ask Craft about the selection"
+
+msgid "ds.craft.quick.layers"
+msgstr "%s layers selected"
+
+msgid "ds.craft.quick.placeholder"
+msgstr "Tell Craft what to change…"
+
+msgid "ds.craft.quick.hint"
+msgstr "Enter to send · Esc to close"
+
+msgid "ds.craft.quick.send"
+msgstr "Send"

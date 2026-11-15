@@ -1,0 +1,98 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Quick prompt at the selection (F1 · 06). Its box (360 px wide, at most
+// 132 px tall) is the one `craft.rules/prompt-size` places.
+
+@use "studio/ds" as ds;
+
+.prompt {
+  @include ds.root;
+
+  position: fixed;
+  z-index: ds.token("z-popover");
+  inline-size: 360px;
+  max-inline-size: calc(100vw - 2 * #{ds.token("space-12")});
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+  margin: 0;
+  padding: ds.token("space-12");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  background: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
+}
+
+// In the workspace shell's `viewport-overlay` mount point, which ignores
+// the pointer itself.
+.prompt-overlay {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.context {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-inline-size: 0;
+  margin: 0;
+  color: ds.token("text-secondary");
+}
+
+.context-text {
+  @include ds.truncate;
+}
+
+.mark {
+  flex: none;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("craft-default");
+}
+
+.input {
+  @include ds.type("control");
+
+  inline-size: 100%;
+  block-size: 44px;
+  margin: 0;
+  padding: ds.token("space-4") ds.token("space-8");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-control");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  line-height: 1.4;
+  resize: none;
+
+  &::placeholder {
+    color: ds.token("text-placeholder");
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    @include ds.focus-ring(0);
+
+    border-color: ds.token("accent-default");
+  }
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-8");
+}
+
+.hint {
+  @include ds.truncate;
+
+  color: ds.token("text-secondary");
+}

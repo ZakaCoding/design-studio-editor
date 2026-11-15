@@ -2,29 +2,25 @@
 ;; License, v. 2.0. If a copy of the MPL was not distributed with this
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/.
 ;;
-;; Copyright (c) ZakaCoding Studio
+;; Copyright (c) ZakaCoding
 
 (ns app.main.ui.studio.workspace.craft-dock
-  "Mount point `craft-dock` (F1 · 05). Owned by F3-B: replace the body of
-  `craft-dock*`; the shell (`app.main.ui.studio.workspace.shell`, F3-A)
-  already mounts it.
+  "Mount point `craft-dock` (F1 · 05), filled by F3-B. The workspace shell
+  (`app.main.ui.studio.workspace.shell`, F3-A) mounts `craft-dock*` inside
+  `<aside id=\"ds-craft-dock\" data-ds-mount=\"craft-dock\">`, a grid column
+  between the canvas and the right sidebar, and lays that aside out. The
+  dock fills its height and sets its own width (440 px, remembered between
+  360 and 560 px).
 
-  Where it renders: inside `<aside id=\"ds-craft-dock\"
-  data-ds-mount=\"craft-dock\">`, a grid column of the workspace between the
-  canvas and the right sidebar. While this component renders nothing the
-  column has no width. The aside is laid out by the shell (floating panel
-  edge, full height); the dock sets its own inline size (440 px, remembered
-  360 to 560 px) and surface (`ws.island` from `studio/workspace`).
+  This file has the same path as the stub on the shell's branch: when the
+  two branches meet, keep this one.
 
-  Props: `file-id`, `page-id`, `layout` (workspace layout flags) and
-  `width-class` (:wide | :medium | :narrow, see
-  `app.main.ui.studio.workspace.state`).
-
-  The shell does not need to be told that Craft is open: it reads
-  `<html data-ds-craft-open>`, which F3-B's dock sets."
+  Props (unused here): `file-id`, `page-id`, `layout`, `width-class`."
   (:require
+   [app.main.ui.studio.craft :as craft]
    [rumext.v2 :as mf]))
 
 (mf/defc craft-dock*
   [_props]
-  nil)
+  (when (craft/use-access)
+    [:> craft/craft-dock* {:placement "column"}]))

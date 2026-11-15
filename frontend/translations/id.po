@@ -7517,3 +7517,39 @@ msgstr "Kembali ke daftar file"
 
 msgid "ds.workspace.focus.show-panels"
 msgstr "Tampilkan panel"
+# Design Studio (F3-B)
+msgid "ds.craft.dock.label"
+msgstr "Craft, rekan kreatifmu"
+
+msgid "ds.craft.dock.open"
+msgstr "Craft"
+
+msgid "ds.craft.dock.busy"
+msgstr "Craft sedang bekerja"
+
+msgid "ds.craft.dock.resize"
+msgstr "Lebar panel Craft. Seret, atau pakai tombol panah"
+
+msgid "ds.craft.dock.width"
+msgstr "Lebar %s px"
+
+msgid "ds.craft.dock.waiting"
+msgstr "Membuka Craft…"
+
+msgid "ds.craft.dock.unavailable"
+msgstr "Craft belum merespons. Muat ulang halaman untuk mencoba lagi."
+
+msgid "ds.craft.quick.label"
+msgstr "Tanya Craft tentang seleksi"
+
+msgid "ds.craft.quick.layers"
+msgstr "%s layer dipilih"
+
+msgid "ds.craft.quick.placeholder"
+msgstr "Beri tahu Craft apa yang ingin diubah…"
+
+msgid "ds.craft.quick.hint"
+msgstr "Enter untuk kirim · Esc untuk tutup"
+
+msgid "ds.craft.quick.send"
+msgstr "Kirim"
