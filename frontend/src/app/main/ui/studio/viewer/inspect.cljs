@@ -335,7 +335,7 @@
          (mf/deps shape frame css)
          (fn [] (handoff {:shape shape :frame frame :css css})))]
     [:div {:class (stl/css :panel)
-             :data-testid "ds-viewer-inspect"}
+           :data-testid "ds-viewer-inspect"}
      [:header {:class (stl/css :head)}
       [:h2 {:class (stl/css :name)} (:name shape)]
       [:p {:class (stl/css :sub)}
