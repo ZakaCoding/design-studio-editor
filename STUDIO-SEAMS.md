@@ -47,7 +47,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
-| `frontend/resources/templates/index.mustache` | WP1 (L1): tab title, description, og/twitter tags, drop @penpotapp, SVG favicon link | - | WP1 |
+| `frontend/resources/templates/index.mustache` | WP1 (L1): tab title, description, og/twitter tags, drop @penpotapp, SVG favicon link, Studio shell loader script tag before </body> | - | WP1 |
 | `frontend/resources/images/icons/penpot-logo.svg` | WP1 (S1): official Design Studio tile + dual-tone wordmark; symbol name unchanged | - | WP1 |
 | `frontend/resources/images/icons/penpot-logo-icon.svg` | WP1 (S1): official Design Studio tile; symbol name unchanged | - | WP1 |
 | `frontend/resources/images/icons/penpot-logo-icon-loader.svg` | WP1 (S1): official Design Studio tile; symbol name unchanged | - | WP1 |
