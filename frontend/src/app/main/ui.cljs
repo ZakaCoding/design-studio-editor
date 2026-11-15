@@ -30,6 +30,7 @@
    [app.main.ui.onboarding.team-choice :refer [onboarding-team-modal*]]
    [app.main.ui.releases :refer [release-notes-modal]]
    [app.main.ui.static :as static]
+   [app.main.ui.studio.widgets :as ds-widgets]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
    [app.util.modules :as mod]
@@ -372,6 +373,10 @@
 
     [:& (mf/provider ctx/current-route) {:value route}
      [:& (mf/provider ctx/current-profile) {:value profile}
+      ;; Design Studio: refusal card, first steps, MCP tip and guide.
+      [:> ds-widgets/global-widgets* {:route route
+                                      :profile profile
+                                      :has-exception (some? edata)}]
       (if edata
         [:> static/exception-page* {:data edata :route route}]
         [:> error-boundary* {:fallback static/exception-page*}

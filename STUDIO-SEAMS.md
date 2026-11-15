@@ -59,14 +59,14 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/dashboard/subscription.cljs` | WP1 (S3): nitrate-sidebar*, nitrate-current-plan*, cta-power-up*, dashboard-cta* render nil; originals kept private | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.cljs` | WP1 (S2, S3): default org shown as Design Studio, create-organization button and menu item removed | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.scss` | WP1 (S2): org badge shows the tile without the round frame | - | WP1 |
-| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end; WP4: `ds.*` strings in the "Design Studio (WP4)" block | - | F2, WP4 |
-| `frontend/translations/id.po` | WP2: same for Indonesian; WP4: `ds.*` strings in the "Design Studio (WP4)" block | - | F2, WP4 |
+| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end | - | F2, WP4, WP6 |
+| `frontend/translations/id.po` | WP2: same for Indonesian; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end | - | F2, WP4, WP6 |
 | `frontend/src/app/main/ui/settings/password.cljs` | WP4: backup-password title and note (S5) | - | WP4 |
 | `frontend/src/app/main/ui/settings/profile.cljs` | WP4: open sign-up shows an email note instead of change-email (S6) | - | WP4 |
 | `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" and "Plans" sidebar labels (S5, S7) | - | WP4 |
 | `frontend/src/app/main/ui/settings/subscription.cljs` | WP4: Settings > Plans renders the Design Studio plan summary (S7) | - | WP4 |
 | `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8) | - | WP4 |
-| `frontend/test/frontend_tests/runner.cljs` | WP4: registers `frontend-tests.studio.shell-state-test`; WP3: registers `frontend-tests.plugins.persistence-guard-test` (two lines) | - | WP4, WP3 |
+| `frontend/test/frontend_tests/runner.cljs` | WP4: registers `frontend-tests.studio.shell-state-test`; WP3: registers `frontend-tests.plugins.persistence-guard-test` (two lines); Registers the `frontend-tests.studio.*` test namespaces | - | WP4, WP3, WP6 |
 | `frontend/src/app/main/ui/workspace/viewport.cljs` | WP7: requires `ui/studio/touch.js` and starts the touch layer once from `viewport*` | - | F2 |
 | `frontend/src/app/plugins/persistence_guard.cljs` | WP3 (R1, R2): new file, `app.plugins.persistence-guard`. The whole guard: refuses MCP writes while saving is `:error`, `:retrying`, failing or stalled, and confirms the save of an MCP task. Lives beside `register.cljs` instead of `ui/studio/**` because it is plugin API logic that is proposed upstream | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
 | `frontend/src/app/plugins/register.cljs` | WP3 (R1): `check-permission` calls `pguard/note-write!` first (one require, one call). This is the write boundary of the ClojureScript plugin API | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
@@ -79,4 +79,8 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/test/frontend_tests/plugins/persistence_guard_test.cljs` | WP3: new file, unit tests (port of `frontend-reliability/persistence-guard.test.mjs` plus one case per persistence state) | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
 | `frontend/test/frontend_tests/data/workspace_mcp_test.cljs` | WP3 (R2): adds `test-persistence-ops`, the wiring of the MCP save confirmation to the persistence API | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
 | `docs/upstream-pr-persistence-guard.md` | WP3: new file, the pull request description for penpot/penpot. Not part of the image | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
+| `frontend/src/app/main/ui.cljs` | Mounts `studio.widgets/global-widgets*` once in `app` (refusal card, first steps after sign-up, MCP tip and guide) | - | WP6 |
+| `frontend/src/app/main/errors.cljs` | `handle-error :restriction` announces Design Studio guard refusal codes instead of reporting them as unhandled | - | WP6 |
+| `frontend/src/app/main/repo.cljs` | `handle-response` reads the guard's JSON refusal (413/429/503/507, written by the proxy, not the backend) and raises it as `:restriction` with our code; without it these answers become generic `:validation`/`:rate-limit`/`:service-unavailable` errors and never reach the `:restriction` handler | - | WP6 |
+| `frontend/src/app/main/ui/settings/integrations.cljs` | `data-testid` on the MCP switch, the copy button and the key windows, so the MCP guide points at them without CSS-module class names | - | WP6 |
 <!-- seams:end -->

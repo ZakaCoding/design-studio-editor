@@ -7223,3 +7223,164 @@ msgstr "Paket"
 
 msgid "ds.plans.see-plans"
 msgstr "Lihat paket"
+# Design Studio (WP6)
+
+msgid "ds.mcp-tip.title"
+msgstr "Sudah coba MCP?"
+
+msgid "ds.mcp-tip.body"
+msgstr "Hubungkan asisten AI-mu (Claude, Codex) ke berkas ini lewat AI access. Ia membaca desainmu dan, jika kamu izinkan, ikut mengedit bersamamu."
+
+msgid "ds.mcp-tip.title-enabled"
+msgstr "MCP sudah aktif. Tinggal satu langkah"
+
+msgid "ds.mcp-tip.body-enabled"
+msgstr "Salin link editor privatmu lalu tempel di AI access untuk menghubungkan asistenmu."
+
+msgid "ds.mcp-tip.cta"
+msgstr "Tunjukkan caranya"
+
+msgid "ds.mcp-tip.close"
+msgstr "Tutup"
+
+msgid "ds.mcp-tip.later"
+msgstr "Ingatkan besok"
+
+msgid "ds.mcp-tip.label"
+msgstr "Tips Design Studio"
+
+msgid "ds.mcp-tip.scene-ai"
+msgstr "Buatkan hero section"
+
+msgid "ds.mcp-tip.scene-canvas"
+msgstr "Kanvasmu"
+
+msgid "ds.mcp-tour.step"
+msgstr "Langkah %s dari 5"
+
+msgid "ds.mcp-tour.skip"
+msgstr "Akhiri panduan"
+
+msgid "ds.mcp-tour.here"
+msgstr "Klik di sini"
+
+msgid "ds.mcp-tour.step-1"
+msgstr "Buka Menu utama. MCP membuat asisten AI-mu bisa bekerja di desain ini lewat AI access Design Studio."
+
+msgid "ds.mcp-tour.step-2"
+msgstr "Pilih Server MCP."
+
+msgid "ds.mcp-tour.step-3"
+msgstr "Pilih Kelola untuk membuka pengaturan MCP."
+
+msgid "ds.mcp-tour.step-4"
+msgstr "Aktifkan MCP. Jika muncul jendela untuk membuat key, buat di sana."
+
+msgid "ds.mcp-tour.step-4-modal"
+msgstr "Klik tombol ini. Setelah key siap, tutup jendelanya."
+
+msgid "ds.mcp-tour.step-5"
+msgstr "Salin link editor privatmu. Jangan pernah menempelkannya di chat."
+
+msgid "ds.mcp-tour.done-title"
+msgstr "Link tersalin. Tempel di AI access"
+
+msgid "ds.mcp-tour.done-text"
+msgstr "Buka AI access, tempel link di langkah 1, lalu tambahkan Design Studio ke asistenmu. Kembali ke desainmu: Menu utama → Server MCP → Connect."
+
+msgid "ds.mcp-tour.open-ai-access"
+msgstr "Buka AI access"
+
+msgid "ds.mcp-tour.read-guide"
+msgstr "Baca panduan setup"
+
+msgid "ds.mcp-tour.finish"
+msgstr "Selesai"
+
+msgid "ds.refusal.storage-limit-reached.title"
+msgstr "Penyimpanan gratis Anda penuh"
+
+msgid "ds.refusal.storage-limit-reached.text"
+msgstr "Anda tetap bisa menyunting yang sudah ada. File, gambar, font, impor, dan salinan baru belum bisa ditambahkan sampai Anda menghapus file atau pindah ke paket berbayar. File yang dihapus perlu beberapa hari sebelum tidak lagi dihitung."
+
+msgid "ds.refusal.storage-limit-reached.link"
+
+msgid "ds.refusal.too-many-uploads.title"
+msgstr "Terlalu banyak unggahan"
+
+msgid "ds.refusal.too-many-uploads.text"
+msgstr "Tunggu beberapa menit, lalu coba lagi."
+
+msgid "ds.refusal.storage-unavailable.title"
+msgstr "Unggahan dihentikan sementara"
+
+msgid "ds.refusal.storage-unavailable.text"
+msgstr "Ruang di server kami sedang menipis. Anda tetap bisa menyunting yang sudah ada, dan coba tambahkan lagi nanti."
+
+msgid "ds.refusal.invite-limit-reached.title"
+msgstr "Undangan hari ini sudah habis"
+
+msgid "ds.refusal.invite-limit-reached.text"
+msgstr "Selama Design Studio baru dibuka, undangan dibatasi setiap hari. Coba lagi besok, atau bagikan link lihat untuk sementara."
+
+msgid "ds.refusal.too-many-recovery-requests.title"
+msgstr "Terlalu banyak permintaan reset"
+
+msgid "ds.refusal.too-many-recovery-requests.text"
+msgstr "Tunggu sebentar sebelum meminta link lagi. Link yang sudah terkirim mungkin ada di folder spam."
+
+msgid "ds.refusal.guard-unavailable.title"
+msgstr "Belum bisa dicek sekarang"
+
+msgid "ds.refusal.guard-unavailable.text"
+msgstr "Coba lagi sebentar lagi."
+
+msgid "ds.refusal.close"
+msgstr "Tutup"
+
+msgid "ds.first-steps.password.title"
+msgstr "Buat password"
+
+msgid "ds.first-steps.password.lead"
+msgstr "Email Anda sudah terkonfirmasi. Buat password untuk masuk berikutnya."
+
+msgid "ds.first-steps.password.label"
+msgstr "Password baru"
+
+msgid "ds.first-steps.password.rules"
+msgstr "Minimal 8 karakter, dengan huruf besar, huruf kecil, angka, dan simbol."
+
+msgid "ds.first-steps.password.save"
+msgstr "Simpan password"
+
+msgid "ds.first-steps.password.later"
+msgstr "Nanti saja"
+
+msgid "ds.first-steps.password.weak"
+msgstr "Password belum memenuhi syarat di atas."
+
+msgid "ds.first-steps.password.failed"
+msgstr "Belum bisa disimpan. Coba lagi sebentar lagi."
+
+msgid "ds.first-steps.password.exists"
+msgstr "Akun ini sudah punya password, jadi yang baru tidak disimpan. Kalau lupa, pakai \"Lupa password\" saat masuk."
+
+msgid "ds.first-steps.password.ok"
+msgstr "Mengerti"
+
+msgid "ds.first-steps.welcome.title"
+msgstr "Akun Anda siap"
+
+msgid "ds.first-steps.welcome.lead"
+msgstr "Mulai dari kanvas kosong. Asisten AI Anda bisa diajak kapan saja."
+
+msgid "ds.first-steps.welcome.craft"
+msgstr "Craft, partner desain AI kami, ada di paket berbayar."
+
+msgid "ds.first-steps.welcome.plans"
+
+msgid "ds.first-steps.welcome.ai"
+msgstr "Hubungkan asisten AI"
+
+msgid "ds.first-steps.welcome.create"
+msgstr "Buat desain pertama"
