@@ -11,8 +11,15 @@
 # Build context: docker/images (same as upstream), with the bundle copied to
 # docker/images/bundle-frontend/.
 
+# The result is flattened into one layer (F2 WP0): built on top of the official
+# image, the old web root stayed in a lower layer and the image was 1.1 GB
+# instead of 590 MB. The final stage copies the finished filesystem into
+# scratch and restates the official image's config (user, env, port,
+# entrypoint, command), read from penpotapp/frontend:2.18.7 on 2026-11-15.
+# Re-check that config on every rebase.
+
 ARG OFFICIAL_IMAGE=penpotapp/frontend:2.18.7@sha256:65109ceb13f28fc0d040c404d5e006689c491b899a4229d084a84b73edc266c7
-FROM ${OFFICIAL_IMAGE}
+FROM ${OFFICIAL_IMAGE} AS assembled
 
 USER root
 
@@ -43,6 +50,17 @@ RUN if [ -f /var/www/app/csp-script-hashes.txt ]; then \
 RUN chown -R 1001:0 /etc/nginx /var/www; \
     chmod -R g+w /etc/nginx /var/www
 
+FROM scratch
+COPY --from=assembled / /
+ENV DEBIAN_FRONTEND=noninteractive \
+    NGINX_VERSION=1.31.8 \
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    PKG_RELEASE=0
+LABEL maintainer="Design Studio <hello@zakacoding.dev>" \
+      org.opencontainers.image.licenses="MPL-2.0" \
+      org.opencontainers.image.source="https://github.com/ZakaCoding/design-studio-editor"
+EXPOSE 8080
+WORKDIR /
 USER penpot:penpot
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
