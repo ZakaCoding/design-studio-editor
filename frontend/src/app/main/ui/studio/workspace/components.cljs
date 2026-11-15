@@ -59,7 +59,8 @@
     (when craft?
       [:> guard* {}
        [:li {:class (stl/css :craft-separator) :aria-hidden true}]
-       [:> craft-item* {}]])))
+       [:> craft-item* {}]
+       [:li {:class (stl/css :craft-separator) :aria-hidden true}]])))
 
 ;; ---- Shortcut panel ------------------------------------------------------
 

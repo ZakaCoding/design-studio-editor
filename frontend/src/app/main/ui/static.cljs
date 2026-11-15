@@ -25,7 +25,7 @@
    [app.main.ui.dashboard.sidebar :refer [sidebar*]]
    [app.main.ui.ds.buttons.button :refer [button*]]
    [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
-   [app.main.ui.ds.foundations.assets.icon :refer [icon*] :as i]
+   [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*]]
    [app.main.ui.ds.product.loader :refer [loader*]]
    [app.main.ui.studio.auth :as sa]

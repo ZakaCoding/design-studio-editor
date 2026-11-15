@@ -199,29 +199,39 @@
   color: ds.token("text-body");
 }
 
-// Rows: checkbox, name, format chip, scale chip (no thumbnail, no pixel size).
-#{-on("main_ui_exports_assets__selection-row")} {
+// Rows: checkbox, name, format chip, scale chip (no thumbnail, no pixel size,
+// no select-all line). Scoped by the dialog so they win over the nested
+// upstream rules.
+$-dialog: -on("main_ui_exports_assets__modal-container");
+
+#{$-dialog} #{-on("main_ui_exports_assets__selection-header")} {
+  display: none;
+}
+
+#{$-dialog} #{-on("main_ui_exports_assets__selection-row")} {
   min-block-size: 44px;
   background: transparent;
   border-radius: 0;
 }
 
-#{-on("main_ui_exports_assets__selection-row")} #{-on("main_ui_exports_assets__selection-btn")} {
+#{$-dialog} #{-on("main_ui_exports_assets__selection-row")} #{-on("main_ui_exports_assets__selection-btn")} {
   grid-template-columns: min-content 1fr auto auto;
   gap: ds.token("space-8");
 }
 
-#{-on("main_ui_exports_assets__image-wrapper")} {
+#{$-dialog} #{-on("main_ui_exports_assets__image-wrapper")} {
   display: none;
 }
 
-#{-on("main_ui_exports_assets__selection-name")} {
+#{$-dialog} #{-on("main_ui_exports_assets__selection-row")} #{-on("main_ui_exports_assets__selection-name")} {
   @include ds.type("body");
 
-  color: ds.token("text-body");
+  color: ds.token("text-primary");
 }
 
-#{-on("main_ui_exports_assets__selection-scale", "main_ui_exports_assets__selection-extension")} {
+#{$-dialog}
+  #{-on("main_ui_exports_assets__selection-row")}
+  #{-on("main_ui_exports_assets__selection-scale", "main_ui_exports_assets__selection-extension")} {
   @include ds.type("value");
 
   min-inline-size: 0;
@@ -231,10 +241,17 @@
   border-radius: ds.token("radius-control");
 }
 
-#{-on("main_ui_exports_assets__selection-title")} {
-  @include ds.type("body");
+// Format before scale, as on the board.
+#{$-dialog}
+  #{-on("main_ui_exports_assets__selection-row")}
+  #{-on("main_ui_exports_assets__selection-scale")} {
+  order: 2;
+}
 
-  color: ds.token("text-secondary");
+#{$-dialog} #{-on("main_ui_exports_assets__modal-title")} {
+  font-size: 1.125rem;
+  font-weight: ds.token("weight-semibold");
+  text-transform: none;
 }
 
 // "Export" is the one black action of the dialog, "Cancel" plain text.
@@ -338,13 +355,22 @@
 
 // ---- Colour picker: the Color / Token switch fills the top row -----------
 
-#{-on("main_ui_workspace_colorpicker__top-actions-right")} {
-  flex: 1;
-  align-items: center;
+#{-on("main_ui_workspace_colorpicker__top-actions")} {
+  align-items: flex-start;
+  block-size: auto;
+  gap: ds.token("space-8");
+  margin-block-end: ds.token("space-8");
 }
 
-#{-on("main_ui_workspace_colorpicker__top-actions")} {
+#{-on("main_ui_workspace_colorpicker__top-actions-right")} {
+  flex: 1;
+  flex-wrap: wrap;
   align-items: center;
-  block-size: 40px;
   gap: ds.token("space-8");
+}
+
+// The Color / Token switch (ours) takes the whole first row.
+#{-on("main_ui_workspace_colorpicker__top-actions-right")} > [role="tablist"] {
+  flex: 1 1 100%;
+  order: -1;
 }
