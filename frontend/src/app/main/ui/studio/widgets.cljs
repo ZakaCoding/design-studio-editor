@@ -35,6 +35,16 @@
          (or (str/starts-with? section "dashboard-")
              (str/starts-with? section "settings-")))))
 
+(defn members-only-hash?
+  "The same test on the address itself (`location.hash`). For a signed-out
+  visitor on a dashboard address with a team, the route may never resolve
+  (the app stops at the authentication error), so the route name alone
+  missed that case."
+  [hash]
+  (let [hash (str hash)]
+    (or (str/starts-with? hash "#/dashboard")
+        (str/starts-with? hash "#/settings"))))
+
 (mf/defc silent*
   "Fallback of the widgets' own error boundary: a fault in a widget is
   reported like any other and never takes the editor down with it."
@@ -54,8 +64,10 @@
     ;; an error page, never the sign-in page. Send the visitor there. Only a
     ;; clear "signed out" from the backend counts: a fault leaves the page
     ;; alone.
-    (mf/with-effect [section authenticated?]
-      (when (and (not authenticated?) (members-only? section))
+    (mf/with-effect [section authenticated? has-exception]
+      (when (and (not authenticated?)
+                 (or (members-only? section)
+                     (members-only-hash? (.-hash js/location))))
         (let [sub (->> (rp/cmd! :get-profile)
                        (rx/subs! (fn [profile]
                                    (when-not (da/is-authenticated? profile)

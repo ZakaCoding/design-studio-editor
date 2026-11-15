@@ -26,10 +26,14 @@
 ;; --- Helpers
 
 (defn registration-open?
-  "Open sign-up (ADR 0017). An absent flag means closed, so the copy never
-  promises what the backend refuses."
+  "Open sign-up (ADR 0017), by the overlay's rule (penpot-login
+  ds-login.js.tpl `open()`): closed without `penpotFlags` (config.js missing),
+  closed with `disable-registration`, open otherwise. Penpot's defaults
+  include `:registration`, so the flag set alone would say open when
+  config.js is missing."
   []
-  (contains? cf/flags :registration))
+  (and (some? (unchecked-get js/globalThis "penpotFlags"))
+       (contains? cf/flags :registration)))
 
 (defn signup-href
   "Our own sign-up form. Penpot's register form is refused by the backend
