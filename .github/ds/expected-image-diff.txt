@@ -1,0 +1,5 @@
+# Web-root files the fork image has and the official image does not.
+# One glob per line, relative to /var/www/app. Add a line with its WP.
+
+# WP5: fonts of the Design Studio auth screens (OFL, licences next to them)
+fonts/studio/*
