@@ -104,7 +104,7 @@
   align-content: start;
   justify-items: start;
   min-height: 132px;
-  padding: ds.token("space-20");
+  padding: ds.token("space-20") ds.token("space-20") 10px;
   border-radius: 18px;
   background: ds.token("bg-subtle");
   text-align: start;
@@ -200,7 +200,9 @@
   justify-content: center;
   gap: ds.token("space-12");
   min-height: 268px;
-  padding: ds.token("space-32") ds.token("space-24");
+  // The board sets the group a little above and right of the centre
+  // (art from 348 px of 1112, title 62 px under the top edge).
+  padding: ds.token("space-32") ds.token("space-24") 62px;
   border: 1.5px dashed ds.token("border-strong");
   border-radius: 20px;
 }
@@ -246,10 +248,18 @@
 .empty-body {
   display: grid;
   justify-items: start;
-  max-width: 360px;
+  width: 360px;
+  max-width: 100%;
+}
+
+@media (width >= 1100px) {
+  .empty-art {
+    margin-inline-start: 108px;
+  }
 }
 
 .empty-title {
+  padding: 0;
   margin: 0;
   color: ds.token("text-primary");
   font-family: ds.token("font-text");
