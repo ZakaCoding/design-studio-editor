@@ -10405,3 +10405,167 @@ msgstr "Try again"
 
 msgid "dashboard.invite-profile-disabled"
 msgstr "You don't have permission to invite people to this team"
+
+# Design Studio (WP6)
+
+msgid "ds.mcp-tip.title"
+msgstr "Have you tried MCP?"
+
+msgid "ds.mcp-tip.body"
+msgstr "Connect your AI assistant (Claude, Codex) to this file through AI access. It reads your design and, when you allow it, edits with you."
+
+msgid "ds.mcp-tip.title-enabled"
+msgstr "MCP is on. One step left"
+
+msgid "ds.mcp-tip.body-enabled"
+msgstr "Copy your private editor link and paste it in AI access to connect your assistant."
+
+msgid "ds.mcp-tip.cta"
+msgstr "Show me how"
+
+msgid "ds.mcp-tip.close"
+msgstr "Close"
+
+msgid "ds.mcp-tip.later"
+msgstr "Remind me tomorrow"
+
+msgid "ds.mcp-tip.label"
+msgstr "Design Studio tip"
+
+msgid "ds.mcp-tip.scene-ai"
+msgstr "Make a hero section"
+
+msgid "ds.mcp-tip.scene-canvas"
+msgstr "Your canvas"
+
+msgid "ds.mcp-tour.step"
+msgstr "Step %s of 5"
+
+msgid "ds.mcp-tour.skip"
+msgstr "End the guide"
+
+msgid "ds.mcp-tour.here"
+msgstr "Click here"
+
+msgid "ds.mcp-tour.step-1"
+msgstr "Open the Main menu. MCP lets your AI assistant work on this design through Design Studio AI access."
+
+msgid "ds.mcp-tour.step-2"
+msgstr "Choose MCP server."
+
+msgid "ds.mcp-tour.step-3"
+msgstr "Choose Manage to open the MCP settings."
+
+msgid "ds.mcp-tour.step-4"
+msgstr "Turn MCP on. If a window asks for a key, create it there."
+
+msgid "ds.mcp-tour.step-4-modal"
+msgstr "Click this button. When your key is ready, close the window."
+
+msgid "ds.mcp-tour.step-5"
+msgstr "Copy your private editor link. Never paste it into a chat."
+
+msgid "ds.mcp-tour.done-title"
+msgstr "Link copied. Paste it in AI access"
+
+msgid "ds.mcp-tour.done-text"
+msgstr "Open AI access, paste the link in step 1, then add Design Studio to your assistant. Back in your design: Main menu → MCP server → Connect."
+
+msgid "ds.mcp-tour.open-ai-access"
+msgstr "Open AI access"
+
+msgid "ds.mcp-tour.read-guide"
+msgstr "Read the setup guide"
+
+msgid "ds.mcp-tour.finish"
+msgstr "Done"
+
+msgid "ds.refusal.storage-limit-reached.title"
+msgstr "Your free storage is full"
+
+msgid "ds.refusal.storage-limit-reached.text"
+msgstr "You can keep editing what you have. New files, images, fonts, imports and copies stay off until you delete files or move to a paid plan. Deleted files can take a few days to stop counting."
+
+msgid "ds.refusal.storage-limit-reached.link"
+msgstr "See the plans"
+
+msgid "ds.refusal.too-many-uploads.title"
+msgstr "Too many uploads"
+
+msgid "ds.refusal.too-many-uploads.text"
+msgstr "Wait a few minutes, then try again."
+
+msgid "ds.refusal.storage-unavailable.title"
+msgstr "Uploads are paused for now"
+
+msgid "ds.refusal.storage-unavailable.text"
+msgstr "Our server is short of space. You can keep editing what you have, and try adding this again later."
+
+msgid "ds.refusal.invite-limit-reached.title"
+msgstr "No more invitations today"
+
+msgid "ds.refusal.invite-limit-reached.text"
+msgstr "While Design Studio is opening, invitations are limited each day. Try again tomorrow, or share a view link for now."
+
+msgid "ds.refusal.too-many-recovery-requests.title"
+msgstr "Too many reset requests"
+
+msgid "ds.refusal.too-many-recovery-requests.text"
+msgstr "Wait a while before asking for another link. The one already sent may be in your spam folder."
+
+msgid "ds.refusal.guard-unavailable.title"
+msgstr "We can’t check this right now"
+
+msgid "ds.refusal.guard-unavailable.text"
+msgstr "Try again in a moment."
+
+msgid "ds.refusal.close"
+msgstr "Close"
+
+msgid "ds.first-steps.password.title"
+msgstr "Choose a password"
+
+msgid "ds.first-steps.password.lead"
+msgstr "Your email is confirmed. Choose a password for next time."
+
+msgid "ds.first-steps.password.label"
+msgstr "New password"
+
+msgid "ds.first-steps.password.rules"
+msgstr "At least 8 characters, with an uppercase letter, a lowercase letter, a number and a symbol."
+
+msgid "ds.first-steps.password.save"
+msgstr "Save password"
+
+msgid "ds.first-steps.password.later"
+msgstr "Not now"
+
+msgid "ds.first-steps.password.weak"
+msgstr "That password doesn’t meet the rules above."
+
+msgid "ds.first-steps.password.failed"
+msgstr "We couldn’t save it. Try again shortly."
+
+msgid "ds.first-steps.password.exists"
+msgstr "This account already has a password, so the new one wasn’t saved. If you’ve forgotten it, use “Forgot password” when you sign in."
+
+msgid "ds.first-steps.password.ok"
+msgstr "Got it"
+
+msgid "ds.first-steps.welcome.title"
+msgstr "Your account is ready"
+
+msgid "ds.first-steps.welcome.lead"
+msgstr "Start from a blank canvas. You can bring in your AI assistant whenever you like."
+
+msgid "ds.first-steps.welcome.craft"
+msgstr "Craft, our AI design partner, comes with a paid plan."
+
+msgid "ds.first-steps.welcome.plans"
+msgstr "See plans"
+
+msgid "ds.first-steps.welcome.ai"
+msgstr "Connect your AI assistant"
+
+msgid "ds.first-steps.welcome.create"
+msgstr "Create your first design"

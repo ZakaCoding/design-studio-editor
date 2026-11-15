@@ -65,6 +65,7 @@
    [:div {:class (stl/css :input-copy-button-wrapper)}
     [:> icon-button* {:variant "secondary"
                       :class (stl/css :input-copy-button)
+                      :data-testid "ds-input-copy"
                       :aria-label (tr "integrations.copy-to-clipboard")
                       :on-click on-copy-to-clipboard
                       :icon i/clipboard}]]])
@@ -235,7 +236,8 @@
            (st/emit! (ntf/success (tr "integrations.notification.success.created")))))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
+     [:div {:class (stl/css :modal-container)
+            :data-testid "ds-integrations-modal"}
       [:div {:class (stl/css :modal-close-button)}
        [:> icon-button* {:variant "ghost"
                          :aria-label (tr "labels.close")
@@ -275,7 +277,8 @@
            (reset! created? true)))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
+     [:div {:class (stl/css :modal-container)
+            :data-testid "ds-integrations-modal"}
       [:div {:class (stl/css :modal-close-button)}
        [:> icon-button* {:variant "ghost"
                          :aria-label (tr "labels.close")
@@ -317,7 +320,8 @@
            (reset! created? true)))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
+     [:div {:class (stl/css :modal-container)
+            :data-testid "ds-integrations-modal"}
       [:div {:class (stl/css :modal-close-button)}
        [:> icon-button* {:variant "ghost"
                          :aria-label (tr "labels.close")
@@ -512,7 +516,8 @@
                       :class (stl/css :color-primary)}
             (tr "integrations.mcp-server.status.expired.1")]]])
 
-       [:div {:class (stl/css :mcp-server-switch)}
+       [:div {:class (stl/css :mcp-server-switch)
+              :data-testid "ds-mcp-switch"}
         [:> switch* {:label (if show-enabled?
                               (tr "integrations.mcp-server.status.enabled")
                               (tr "integrations.mcp-server.status.disabled"))

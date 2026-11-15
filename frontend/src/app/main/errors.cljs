@@ -19,6 +19,7 @@
    [app.main.repo :as rp]
    [app.main.router :as rt]
    [app.main.store :as st]
+   [app.main.ui.studio.refusal :as ds-refusal]
    [app.main.worker]
    [app.util.dom :as dom]
    [app.util.globals :as g]
@@ -930,6 +931,12 @@
                                           :text (tr "errors.deprecated.contact.text")
                                           :after (tr "errors.deprecated.contact.after")
                                           :on-click #(st/emit! (rt/nav :settings-feedback))}}))
+
+    ;; Design Studio: a guard refusal (storage, uploads, invitations, reset
+    ;; mail). The card says what it means; it is not an application defect.
+    (ds-refusal/code? code)
+    (ds-refusal/announce! code)
+
     :else
     (when-let [cause (::instance error)]
       (ex/print-throwable cause :prefix "Restriction Error")

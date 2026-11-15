@@ -1,0 +1,143 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Choosing a password after the email-first sign-up, and the welcome card.
+// Colours are the Design Studio `ds/light` tokens.
+
+.veil {
+  --ds-ink: #182421;
+  --ds-muted: #4d5b57;
+  --ds-line: #c9d3cf;
+  --ds-accent: #24634e;
+  --ds-mint: #9cc9b7;
+  --ds-danger: #b42318;
+  --ds-font: Inter, "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgb(24 36 33 / 45%);
+  font-family: var(--ds-font);
+}
+
+.card {
+  box-sizing: border-box;
+  inline-size: min(420px, 100%);
+  padding: 28px;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--ds-ink);
+  font-family: var(--ds-font);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 25%);
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ds-ink);
+  }
+
+  p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ds-muted);
+  }
+
+  label {
+    display: block;
+    margin-block-end: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ds-ink);
+  }
+
+  input {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-block-size: 46px;
+    padding: 0 14px;
+    border: 1px solid var(--ds-line);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ds-ink);
+    font: inherit;
+  }
+
+  .rules {
+    margin: 8px 0 12px;
+    font-size: 13px;
+  }
+
+  .status {
+    color: var(--ds-danger);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .craft {
+    font-size: 13px;
+
+    a {
+      color: var(--ds-accent);
+      font-weight: 600;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.actions-wrap {
+  flex-wrap: wrap;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-block-size: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.secondary {
+  border: 1px solid var(--ds-line);
+  background: #fff;
+  color: var(--ds-ink);
+}
+
+.primary {
+  border: 0;
+  background: var(--ds-ink);
+  color: #fff;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.card input:focus-visible,
+.card a:focus-visible,
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 3px solid var(--ds-mint);
+  outline-offset: 2px;
+}

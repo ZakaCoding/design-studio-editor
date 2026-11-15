@@ -1,0 +1,75 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// What a guard refusal means. Colours are the Design Studio `ds/light` tokens.
+
+.card {
+  --ds-ink: #182421;
+  --ds-muted: #4d5b57;
+  --ds-accent: #24634e;
+  --ds-mint: #9cc9b7;
+  --ds-font: Inter, "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  position: fixed;
+  z-index: 2000;
+  inset-block-end: 16px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  inline-size: min(440px, calc(100vw - 32px));
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #fff;
+  color: var(--ds-ink);
+  font-family: var(--ds-font);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 35%);
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ds-ink);
+  }
+
+  p {
+    margin: 0 0 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ds-muted);
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+
+  a {
+    color: var(--ds-accent);
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.close {
+  min-block-size: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ds-accent);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.close:focus-visible,
+.actions a:focus-visible {
+  outline: 3px solid var(--ds-mint);
+  outline-offset: 2px;
+}

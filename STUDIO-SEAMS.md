@@ -36,6 +36,7 @@ segment, `**` matches any depth.
 - `.github/workflows/ds-*.yml`
 - `.github/ds/**`
 - `frontend/src/app/main/ui/studio/**`
+- `frontend/test/frontend_tests/studio/**`
 <!-- ds-owned:end -->
 
 ## Seams
@@ -47,4 +48,11 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
+| `frontend/src/app/main/ui.cljs` | Mounts `studio.widgets/global-widgets*` once in `app` (refusal card, first steps after sign-up, MCP tip and guide) | - | WP6 |
+| `frontend/src/app/main/errors.cljs` | `handle-error :restriction` announces Design Studio guard refusal codes instead of reporting them as unhandled | - | WP6 |
+| `frontend/src/app/main/repo.cljs` | `handle-response` reads the guard's JSON refusal (413/429/503/507, written by the proxy, not the backend) and raises it as `:restriction` with our code; without it these answers become generic `:validation`/`:rate-limit`/`:service-unavailable` errors and never reach the `:restriction` handler | - | WP6 |
+| `frontend/src/app/main/ui/settings/integrations.cljs` | `data-testid` on the MCP switch, the copy button and the key windows, so the MCP guide points at them without CSS-module class names | - | WP6 |
+| `frontend/translations/en.po` | `ds.*` strings, in a `# Design Studio (<WP>)` block at the end | - | WP6 |
+| `frontend/translations/id.po` | `ds.*` strings, in a `# Design Studio (<WP>)` block at the end | - | WP6 |
+| `frontend/test/frontend_tests/runner.cljs` | Registers the `frontend-tests.studio.*` test namespaces | - | WP6 |
 <!-- seams:end -->
