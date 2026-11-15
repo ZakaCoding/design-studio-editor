@@ -97,4 +97,30 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `mcp/packages/plugin/package.json` | WP3: `test` script runs `--experimental-transform-types` (the handler imports `Task`, which uses parameter properties) and the `task-handlers` tests | - | WP3 |
 | `mcp/packages/plugin/tsconfig.json` | WP3: excludes `src/**/*.test.ts` from `tsc` like `src/*.test.ts` | - | WP3 |
 | `frontend/test/frontend_tests/main_errors_test.cljs` | WP3 review fix: the save-failed toast has no reload link (keep the tab open), so the two upstream assertions on the reload link now assert its absence | - | F2 |
+| `frontend/src/app/main/ui/workspace.cljs` | F3-A: mounts `studio.workspace.shell/shell*` once in `workspace*` (chrome theme scope on <body>, width rules, the `craft-dock` and `viewport-overlay` mount points, canvas focus islands). One require, one element | - | F3-A |
+| `frontend/src/app/main/ui/workspace/sidebar.cljs` | F3-A: the collapsed left sidebar renders `studio.workspace.rail/layers-rail*` (the Layers rail) instead of `collapsed-button*`, which stays in place and unused. One require, one element | - | F3-A |
 <!-- seams:end -->
+
+## Mount points (F3)
+
+Named places where one package renders into a surface another package owns.
+They are not seams: every file below is DS-owned. The owner of the surface
+lays the mount point out; the owner of the content fills it and never edits
+the surface.
+
+| Mount point | Element | Filled by | Rendered from | Contract |
+| --- | --- | --- | --- | --- |
+| `craft-dock` | `<aside id="ds-craft-dock" data-ds-mount="craft-dock">` | F3-B: `app.main.ui.studio.workspace.craft-dock/craft-dock*` (`studio/workspace/craft_dock.cljs`, a stub until F3-B lands) | `studio.workspace.shell/shell*` (F3-A) | Grid column `craft` of the workspace, between the canvas and the right sidebar, one panel edge from the top and bottom of the window. No width while the component renders nothing. The dock sets its own inline size (440 px) and surface (`ws.island`). Below 1280 px the aside lies over the canvas, right aligned. Not rendered in canvas focus (hide-ui). For a dock that takes room from the canvas; a dock that floats over the canvas with `position: fixed` (F3-B's first version) does not need it |
+| `viewport-overlay` | `<div id="ds-viewport-overlay" data-ds-mount="viewport-overlay">` | F3-B: `app.main.ui.studio.workspace.quick-prompt/quick-prompt*` (`studio/workspace/quick_prompt.cljs`, a stub until F3-B lands) | `studio.workspace.shell/shell*` (F3-A) | Covers the canvas area (grid cell `viewport`, rulers included), above the viewport and below menus and dialogs. The layer has `pointer-events: none`; content sets `pointer-events: auto` on its own root and positions itself in CSS px from the top left corner of the canvas area |
+| chrome scope | `<body class="ds-chrome light" data-ds-width="wide\|medium\|narrow">` | F3-B, F3-C and Studio's scripts read it | `studio.workspace.shell/shell*` (F3-A) | Set while the workspace is mounted. `body.ds-chrome` is the scope for workspace-only styles (SCSS: `ws.$scope` in `studio/workspace`); Penpot's `--color-*` variables point at `ds/light` tokens inside it, so a component that reads them is already recolored. `data-ds-width` follows the width rules (1600 px and wider, 1280 to 1599 px, below) |
+| Craft open | `<html data-ds-craft-open>` | F3-B's dock sets it (its "Craft dock v1" contract) | read by `studio.workspace.state/use-craft-open` (F3-A) | While it is present at the rail widths (below 1600 px), the shell collapses Layers to the rail. The shell only observes the attribute; neither package requires the other |
+| panel hooks | `[data-testid="right-sidebar"]`, `[data-testid="left-sidebar"]`, `[data-testid="left-sidebar-rail"]`, `#left-sidebar-aside`, `#right-sidebar-aside` | upstream and `studio.workspace.rail` | - | Stable hooks for measuring the panels. Each panel floats one `space.panel-edge` (12 px) from the window edge, so the free canvas starts `panel width + 2 × edge` from the window edge |
+
+Both components get the props `file-id`, `page-id`, `layout` (workspace
+layout flags) and `width-class` (`:wide`, `:medium`, `:narrow`).
+
+Shared SCSS for anything that floats in the workspace:
+`@use "studio/workspace" as ws;` gives `ws.island` (the floating panel
+surface), `ws.$edge` (gap to the window and the canvas), `ws.$rail-size`,
+`ws.$craft-size` and `ws.on("<module>__<class>")` (matches an upstream
+element by its CSS-module class without editing its stylesheet).

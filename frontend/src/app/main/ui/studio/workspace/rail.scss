@@ -1,0 +1,58 @@
+// The Layers rail. See rail.cljs.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+.rail {
+  @include ds.root;
+  @include ws.island;
+
+  // Upstream's main menu places its dropdown at
+  // `--left-sidebar-width - 44px` and its submenus at
+  // `--left-sidebar-width + 150px`: this puts them right of the rail.
+  --left-sidebar-width: #{ws.$rail-size + 52px};
+
+  grid-area: left-sidebar;
+  position: relative;
+  z-index: ds.token("z-panel");
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ds.token("space-4");
+  inline-size: ws.$rail-size;
+  margin: ws.$edge;
+  padding-block: ds.token("space-8");
+  block-size: calc(100vh - 2 * #{ws.$edge});
+}
+
+.rail-logo {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: ds.token("radius-control");
+}
+
+.rail-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+.rail-separator {
+  flex: none;
+  inline-size: 24px;
+  block-size: 1px;
+  margin-block: ds.token("space-4");
+  background-color: ds.token("border-default");
+}
+
+.rail-spacer {
+  flex: 1;
+}

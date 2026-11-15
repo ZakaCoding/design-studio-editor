@@ -1,0 +1,206 @@
+// Design Studio workspace chrome (F3-A; boards F1 · 01 and F1 · 02).
+//
+// Layout and theme only. The upstream stylesheets and components stay
+// untouched: every rule here is scoped to `body.ds-chrome`, the class that
+// `app.main.ui.studio.workspace.shell` sets on <body> while the workspace is
+// mounted, and matches upstream elements by their exact CSS-module class
+// token (`ws.on`). The scope makes each rule more specific than the upstream
+// rule it replaces, whatever the order of the bundled stylesheets.
+//
+// 1. Theme: Penpot's `--color-*` variables point at the `ds/light` tokens.
+//    They are set on <body>, the element that also holds Penpot's derived
+//    variables (`--panel-background-color`, `--menu-*`, …), so those follow.
+//    Outside the workspace nothing changes.
+// 2. Floating panels: the sidebars become islands with a `space.panel-edge`
+//    gap to the window and to the canvas area. The canvas area stays the
+//    grid cell between them, so rulers, scrollbars, zoom to fit and the
+//    touch layer see the same viewport as before.
+// 3. Width rules: see `state.cljs`; here only the Craft dock column.
+
+@use "sass:math";
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(#{ws.$scope})";
+$edge: ws.$edge;
+
+// Block size that upstream writes as `100vh - <chrome above the list>`.
+// A floating panel is two edges shorter than the window.
+@function -below($px) {
+  @return calc(100vh - #{math.div($px, 16) * 1rem} - 2 * #{$edge});
+}
+
+// --- 1. Theme
+
+#{$scope} {
+  --color-background-primary: #{ds.token("bg-panel")};
+
+  // Penpot uses "secondary" for wells, tab tracks and hovered rows.
+  --color-background-secondary: #{ds.token("bg-subtle")};
+  --color-background-tertiary: #{ds.token("bg-subtle")};
+  --color-background-quaternary: #{ds.token("border-default")};
+  --color-background-default: #{ds.token("bg-panel")};
+  --color-background-disabled: #{ds.token("bg-subtle")};
+  --color-foreground-primary: #{ds.token("text-primary")};
+  --color-foreground-secondary: #{ds.token("text-secondary")};
+  --color-foreground-disabled: #{ds.token("text-disabled")};
+  --color-icon-default: #{ds.token("text-secondary")};
+  --color-accent-primary: #{ds.token("accent-default")};
+  --color-accent-primary-muted: #{ds.token("accent-subtle")};
+  --color-accent-tertiary: #{ds.token("accent-hover")};
+  --color-accent-tertiary-muted: #{ds.token("accent-subtle")};
+  --color-accent-select: #{ds.token("accent-subtle")};
+  --color-accent-overlay: color-mix(in srgb, #{ds.token("accent-default")} 60%, transparent);
+  --color-accent-background-select: color-mix(in srgb, #{ds.token("accent-default")} 70%, transparent);
+  --color-accent-success: #{ds.token("status-success")};
+  --color-background-success: #{ds.token("status-success-bg")};
+  --color-accent-warning: #{ds.token("status-warning")};
+  --color-background-warning: #{ds.token("status-warning-bg")};
+  --color-foreground-error: #{ds.token("status-danger-text")};
+  --color-background-error: #{ds.token("status-danger-bg")};
+  --color-background-info: #{ds.token("accent-subtle")};
+  --color-canvas: #{ds.token("bg-canvas")};
+  --color-overlay-default: #{ds.token("overlay-scrim")};
+  --color-shadow-dark: color-mix(in srgb, #{ds.token("text-primary")} 14%, transparent);
+  --overlay-color: #{ds.token("overlay-scrim")};
+
+  // Selected rows (layers, pages, assets): `bg.selected` instead of a gray.
+  --layer-row-background-color-selected: #{ds.token("bg-selected")};
+  --layer-row-background-color-drag: #{ds.token("bg-selected")};
+  --sidebar-element-background-color-selected: #{ds.token("bg-selected")};
+}
+
+// --- 2. Floating panels
+
+#{$scope} {
+  // The gaps around the panels show the canvas colour, so the panels read
+  // as floating over the canvas.
+  #{ws.on("main_ui_workspace__workspace")} {
+    grid-template: "left-sidebar viewport craft right-sidebar" 1fr / auto 1fr auto auto;
+    background-color: ds.token("bg-canvas");
+  }
+
+  // Rulers and the frame around the canvas (upstream draws them in SVG with
+  // these variables): canvas coloured, so they do not read as a panel.
+  // `text.secondary` on `bg.canvas` is 4.2:1, so the numbers use `text.body`.
+  g[class~="viewport-frame"] {
+    --panel-background-color: #{ds.token("bg-canvas")};
+    --panel-border-color: #{ds.token("border-strong")};
+    --layer-row-foreground-color: #{ds.token("text-body")};
+  }
+
+  #{ws.on("main_ui_workspace_sidebar__left-sidebar", "main_ui_workspace_sidebar__right-sidebar")} {
+    @include ws.island;
+
+    box-sizing: border-box;
+    margin: $edge;
+    block-size: calc(100vh - 2 * #{$edge});
+    max-block-size: calc(100vh - 2 * #{$edge});
+  }
+
+  // The panels cannot clip (menus and dropdowns leave them), so the parts that
+  // paint a background get the corner radius instead.
+  #{ws.on("main_ui_workspace_sidebar__left-sidebar-header", "main_ui_workspace_right_header__workspace-header-right")} {
+    border-start-start-radius: ds.token("radius-panel");
+    border-start-end-radius: ds.token("radius-panel");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar__left-sidebar-content", "main_ui_workspace_sidebar__right-sidebar-content")} {
+    border-end-start-radius: ds.token("radius-panel");
+    border-end-end-radius: ds.token("radius-panel");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar__right-sidebar-content")} {
+    block-size: -below(52);
+  }
+
+  #{ws.on("main_ui_workspace_sidebar__versions-tab")} {
+    block-size: -below(88);
+  }
+
+  #{ws.on("main_ui_workspace_tokens_sidebar__sidebar-wrapper")} {
+    height: -below(92);
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_assets__assets-bar")} {
+    height: -below(92);
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_shortcuts__shortcuts")} {
+    block-size: -below(60);
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_history__history-entries")} {
+    height: -below(100);
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_options__content-class")} {
+    height: -below(96);
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_options__element-options")} {
+    --sidebar-element-options-height: #{-below(88)};
+  }
+
+  #{ws.on("main_ui_inspect_attributes__element-options")} {
+    max-height: -below(128);
+  }
+
+  #{ws.on("main_ui_inspect_attributes__workspace-element-options")} {
+    max-height: -below(180);
+  }
+
+  #{ws.on("main_ui_inspect_styles__styles-tab")} {
+    block-size: -below(140);
+  }
+
+  #{ws.on("main_ui_inspect_styles__styles-tab-workspace")} {
+    block-size: -below(180);
+  }
+
+  #{ws.on("main_ui_inspect_code__element-options")} {
+    height: -below(160);
+  }
+
+  #{ws.on("main_ui_inspect_code__viewer-code-block")} {
+    height: -below(108);
+  }
+
+  // Tabs (Layers / Assets / Tokens, Design / Prototype / Inspect): the
+  // selected tab is a raised chip on the `bg.subtle` track.
+  #{ws.on("main_ui_ds_layout_tab_switcher__selected")} {
+    --tabs-item-bg-color: #{ds.token("bg-panel")};
+
+    box-shadow: ds.token("elevation-control");
+  }
+
+  // Toolbar: an island over the canvas, as upstream places it.
+  #{ws.on("main_ui_workspace_top_toolbar__toolbar")} {
+    --menu-border-color: #{ds.token("border-default")};
+
+    border-width: 1px;
+    border-radius: ds.token("radius-card");
+    box-shadow: ds.token("elevation-panel");
+
+    // Upstream's tucked-away state: a tab that hangs from the top edge.
+    &#{ws.on("main_ui_workspace_top_toolbar__hidden")} {
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      box-shadow: ds.token("elevation-control");
+    }
+  }
+
+  // Colour and text palette: upstream pads it by the sidebar widths from the
+  // window edges; the panels now start one edge in and end one edge before
+  // the canvas area.
+  #{ws.on("main_ui_workspace_palette__palettes")} {
+    border-width: 1px;
+    border-radius: ds.token("radius-card");
+    box-shadow: ds.token("elevation-panel");
+  }
+
+  #{ws.on("main_ui_workspace_palette__palette-wrapper")} {
+    inset-inline-start: calc(2 * #{$edge});
+    inline-size: calc(100vw - 4 * #{$edge});
+  }
+}
