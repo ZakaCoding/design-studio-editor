@@ -47,4 +47,5 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
+| `frontend/src/app/main/ui/workspace/viewport.cljs` | WP7: requires `ui/studio/touch.js` and starts the touch layer once from `viewport*` | - | F2 |
 <!-- seams:end -->
