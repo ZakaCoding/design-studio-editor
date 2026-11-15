@@ -89,7 +89,7 @@
         hex  (:fill-color fill)]
     (when (string? hex)
       {:hex (.toUpperCase hex)
-       :token (or (get-in shape [:applied-tokens :fill]))})))
+       :token (get-in shape [:applied-tokens :fill])})))
 
 (defn stroke-text
   [shape]
