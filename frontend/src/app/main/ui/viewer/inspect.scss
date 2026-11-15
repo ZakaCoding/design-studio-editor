@@ -28,12 +28,26 @@
   overflow: auto;
 }
 
+// F1 · 11: the panel floats over the canvas, 12 px from the edges.
+.inspect-svg-wrapper {
+  padding-inline-end: calc(320px + deprecated.$s-24);
+}
+
 .sidebar-container {
-  position: relative;
-  align-self: flex-start;
-  width: var(--right-sidebar-width);
+  position: absolute;
+  inset-block: deprecated.$s-76 deprecated.$s-12;
+  inset-inline-end: deprecated.$s-12;
+  width: 320px;
+  overflow: hidden;
   background-color: ds.token("bg-panel");
-  border-inline-start: 1px solid ds.token("border-default");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-panel");
+  box-shadow: ds.token("elevation-panel");
+  z-index: deprecated.$z-index-2;
+
+  > aside {
+    block-size: 100%;
+  }
 }
 
 .not-expand {

@@ -13,7 +13,6 @@
    [app.main.data.viewer :as dv]
    [app.main.store :as st]
    [app.main.ui.hooks.resize :refer [use-resize-hook]]
-   [app.main.ui.inspect.left-sidebar :refer [left-sidebar]]
    [app.main.ui.inspect.render :refer [render-frame-svg]]
    [app.main.ui.inspect.right-sidebar :refer [right-sidebar*]]
    [app.util.dom :as dom]
@@ -92,13 +91,9 @@
        (st/emit! (dv/select-shape (:id frame)))))
 
     [:*
-     [:& left-sidebar {:frame frame
-                       :local local
-                       :page page}]
      [:div#inspect-svg-wrapper {:class (stl/css :inspect-svg-wrapper)
                                 :data-value (pr-str (:id frame))
                                 :on-click handle-select-frame}
-      [:& viewer-pagination {:index index :num-frames (count (:frames page)) :left-bar true :right-bar true}]
       [:div#inspect-svg-container {:class (stl/css :inspect-svg-container)
                                    :ref inspect-svg-container-ref}
        [:& render-frame-svg {:frame frame :page page :local local :size size}]]]

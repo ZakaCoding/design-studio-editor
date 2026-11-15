@@ -1,0 +1,305 @@
+// Design Studio (F1 · 11): the Inspect panel of the viewer. New file.
+
+@use "studio/ds" as ds;
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 0;
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-family: var(--ds-font-text);
+  user-select: text;
+}
+
+.head {
+  flex: none;
+  padding: ds.token("space-20") ds.token("space-20") ds.token("space-16");
+  border-block-end: 1px solid ds.token("border-default");
+}
+
+.name {
+  @include ds.type("panel-title");
+
+  margin: 0;
+  font-size: 15px;
+  color: ds.token("text-primary");
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  @include ds.type("body");
+
+  margin: ds.token("space-4") 0 0;
+  color: ds.token("text-secondary");
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scroll {
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+.section {
+  padding: ds.token("space-16") ds.token("space-20");
+  border-block-end: 1px solid ds.token("border-default");
+
+  &:last-child {
+    border-block-end: 0;
+  }
+}
+
+.label {
+  @include ds.type("label");
+
+  margin: 0 0 ds.token("space-12");
+  color: ds.token("text-secondary");
+  text-transform: uppercase;
+}
+
+// Size and position
+.geometry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: ds.token("space-8");
+  margin: 0;
+}
+
+.geometry-cell {
+  display: flex;
+  align-items: baseline;
+  gap: ds.token("space-8");
+}
+
+.geometry-key {
+  @include ds.type("label");
+
+  color: ds.token("text-secondary");
+}
+
+.geometry-value {
+  margin: 0;
+  font: 500 13px/1.2 var(--ds-font-text);
+  color: ds.token("text-primary");
+}
+
+// Style
+.style {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+}
+
+.fill {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+}
+
+.swatch {
+  flex: none;
+  inline-size: 14px;
+  block-size: 14px;
+  border-radius: 4px;
+}
+
+.fill-name {
+  @include ds.type("control");
+
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fill-hex {
+  @include ds.type("label");
+
+  color: ds.token("text-secondary");
+  text-transform: none;
+}
+
+.mono {
+  margin: 0;
+  font: 500 12px/1.4 var(--ds-font-mono);
+  color: ds.token("text-primary");
+}
+
+.muted {
+  @include ds.type("body");
+
+  margin: 0;
+  color: ds.token("text-secondary");
+}
+
+// Code
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: ds.token("space-12");
+
+  .label {
+    margin: 0;
+  }
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  background: ds.token("bg-subtle");
+  border-radius: ds.token("radius-sm");
+}
+
+.segment {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.type("label");
+
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: ds.token("text-secondary");
+  text-transform: uppercase;
+}
+
+.segment-on {
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  box-shadow: ds.token("elevation-control");
+}
+
+.code-box {
+  position: relative;
+  background: ds.token("bg-inverse");
+  border-radius: ds.token("radius-md");
+}
+
+.code-pre {
+  margin: 0;
+  max-block-size: 150px;
+  padding: ds.token("space-12") ds.token("space-16");
+  overflow: auto;
+  color: #e9e9ef;
+  font: 400 11px/1.55 var(--ds-font-mono);
+  white-space: pre;
+}
+
+.code-copy {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  display: grid;
+  place-items: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: 6px;
+  color: #bdbdc8;
+  background: #15151a;
+  z-index: 1;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+// Export
+.export {
+  display: flex;
+  gap: ds.token("space-8");
+}
+
+.export-select {
+  @include ds.type("control");
+  @include ds.focusable;
+
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 40px;
+  padding-inline: ds.token("space-12");
+  border: 0;
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-family: var(--ds-font-mono);
+}
+
+.export-button {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.type("control");
+
+  flex: none;
+  block-size: 40px;
+  padding-inline: ds.token("space-20");
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  font-weight: 600;
+}
+
+// Handoff
+.handoff {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+  padding: ds.token("space-16");
+  background: ds.token("accent-subtle");
+  border-radius: ds.token("radius-card");
+}
+
+.handoff-title {
+  @include ds.type("control");
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  margin: 0;
+  color: ds.token("accent-text-strong");
+  font-weight: 600;
+}
+
+.handoff-text {
+  @include ds.type("body");
+
+  margin: 0;
+  color: ds.token("accent-text-strong");
+}
+
+.handoff-button {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.type("control");
+
+  block-size: 40px;
+  margin-block-start: ds.token("space-4");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+  font-weight: 600;
+  text-align: center;
+}
+
+// All properties (the upstream panels)
+.more {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.type("label");
+
+  color: ds.token("text-secondary");
+  text-transform: uppercase;
+}
+
+.more-body {
+  margin-block-start: ds.token("space-12");
+  margin-inline: calc(-1 * #{ds.token("space-20")});
+}

@@ -95,11 +95,44 @@
 }
 
 .integrations {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  margin: $sz-88 auto $sz-120 auto;
+  display: flex;
+  flex-direction: column;
+  margin: 56px 0 $sz-120 64px;
   gap: $sz-32;
-  inline-size: $sz-500;
+  inline-size: calc(100% - 128px);
+  max-inline-size: 760px;
+}
+
+// Design Studio (F1 · 10): page heading and the folded Penpot keys.
+.ds-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-s);
+}
+
+.ds-title {
+  margin: 0;
+  color: var(--ds-text-primary);
+  font: 700 32px/1.15 var(--ds-font-display);
+  letter-spacing: -0.03em;
+}
+
+.ds-subtitle {
+  margin: 0;
+  color: var(--ds-text-secondary);
+  font: 400 14px/1.5 var(--ds-font-text);
+}
+
+.ds-advanced {
+  padding-block-start: var(--sp-l);
+  border-block-start: $b-1 solid var(--ds-border-default);
+}
+
+.ds-advanced-summary {
+  margin-block-end: $sz-24;
+  color: var(--ds-text-secondary);
+  font: 500 13px/1.4 var(--ds-font-text);
+  cursor: pointer;
 }
 
 .access-tokens-section {

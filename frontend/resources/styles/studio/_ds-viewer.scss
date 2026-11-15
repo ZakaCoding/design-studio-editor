@@ -19,6 +19,9 @@
   --color-accent-primary: #{tokens.token("accent-default")};
   --color-accent-tertiary: #{tokens.token("accent-text-strong")};
 
+  // Read by the upstream Inspect style boxes ("All properties").
+  --low-emphasis-background: #{tokens.token("bg-panel")};
+
   // Derived variables are resolved once on the theme root, so the ones the
   // viewer chrome and the Inspect panel use are set again here.
   --panel-background-color: #{tokens.token("bg-panel")};

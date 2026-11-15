@@ -78,6 +78,7 @@
    [frontend-tests.studio.refusal-test]
    [frontend-tests.studio.shell-state-test]
    [frontend-tests.studio.token-suggestions-test]
+   [frontend-tests.studio.viewer-inspect-test]
    [frontend-tests.studio.widgets-test]
    [frontend-tests.studio.workspace-state-test]
    [frontend-tests.svg-fills-test]
@@ -196,6 +197,7 @@
    'frontend-tests.studio.refusal-test
    'frontend-tests.studio.shell-state-test
    'frontend-tests.studio.token-suggestions-test
+   'frontend-tests.studio.viewer-inspect-test
    'frontend-tests.studio.widgets-test
    'frontend-tests.studio.workspace-state-test
    'frontend-tests.svg-fills-test
