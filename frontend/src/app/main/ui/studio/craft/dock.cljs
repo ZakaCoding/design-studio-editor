@@ -15,7 +15,8 @@
    [app.main.refs :as refs]
    [app.main.ui.studio.craft.rules :as rules]
    [app.main.ui.studio.craft.state :as state]
-   [app.main.ui.studio.ds.button :refer [button*]]
+   [app.main.ui.studio.shell-state :as ss]
+   [app.main.ui.studio.workspace.glyphs :refer [glyph*]]
    [app.util.i18n :refer [tr]]
    [rumext.v2 :as mf]))
 
@@ -60,26 +61,51 @@
   (some-> (.querySelector js/document state/toggle-selector)
           (.focus #js {:preventScroll true})))
 
+(defn- take-open-request!
+  "The Craft prompt hand-off of the dashboard (\"Mulai dari satu kalimat\"):
+  before it opens the new file it sets `sessionStorage['ds-craft:open']`.
+  True, once, when that was asked; the flag is cleared. The prompt itself
+  (`ds-craft:prompt`) is Studio's panel to read."
+  []
+  (try
+    (let [storage (.-sessionStorage js/window)]
+      (if (some? (.getItem storage "ds-craft:open"))
+        (do
+          (.removeItem storage "ds-craft:open")
+          true)
+        false))
+    (catch :default _
+      ;; Storage blocked: nothing was asked.
+      false)))
+
 (mf/defc craft-toggle*
-  "The control that opens and collapses the Craft dock. The dock shows one
-  of its own at the bottom of the canvas; a layout that has a place for
-  it (the F3 top bar) mounts this one and passes `toggle \"none\"` to
-  `craft-dock*`. Props: `class` (placement only)."
-  [{:keys [class]}]
+  "The control that opens and collapses the Craft dock: the Craft pill of
+  board F1 · 02, with the credits that are left when Studio says them.
+  The dock shows one of its own at the bottom of the canvas while it is
+  collapsed; canvas focus mounts another. Props: `class` (placement only),
+  `credits` (number, optional), `on-click` (default: toggle the dock)."
+  [{:keys [class credits on-click]}]
   (let [open? (mf/deref state/open?)
         busy? (mf/deref state/busy?)]
-    [:> button* {:variant "secondary"
-                 :class class
-                 :aria-expanded open?
-                 :aria-controls dock-id
-                 :data-ds-craft-toggle "1"
-                 :data-testid "ds-craft-toggle"
-                 :on-click state/toggle!}
-     [:span {:class (stl/css-case :mark true :mark-busy busy?)
-             :aria-hidden true}]
-     (if busy?
-       (tr "ds.craft.dock.busy")
-       (tr "ds.craft.dock.open"))]))
+    [:button {:class [class (stl/css-case :pill true
+                                          :pill-busy busy?)]
+              :type "button"
+              :aria-expanded open?
+              :aria-controls dock-id
+              :data-ds-craft-toggle "1"
+              :data-testid "ds-craft-toggle"
+              :on-click (or on-click state/toggle!)}
+     [:> glyph* {:id "craft"
+                 :size 18
+                 :class (stl/css :pill-mark)}]
+     [:span {:class (stl/css :pill-label)}
+      (if busy?
+        (tr "ds.craft.dock.busy")
+        (tr "ds.craft.dock.open"))]
+     (when (number? credits)
+       [:span {:class (stl/css :pill-credits)
+               :data-testid "ds-craft-credits"}
+        credits])]))
 
 (mf/defc craft-dock*
   "Props:
@@ -95,6 +121,7 @@
         page      (mf/deref refs/workspace-page)
         layout    (mf/deref refs/workspace-layout)
         page-name (:name page)
+        credits   (get-in (ss/use-state) [:member :credits :left])
 
         view*     (mf/use-state #(.-innerWidth js/window))
         side*     (mf/use-state 0)
@@ -201,6 +228,9 @@
         (.addEventListener mount "ds-craft:open" on-open)
         (.addEventListener mount "ds-craft:busy" on-busy)
         (announce)
+        ;; The dashboard's Craft prompt asked for the dock to be open.
+        (when (take-open-request!)
+          (state/open!))
         (fn []
           (.removeEventListener mount "ds-craft:attached" on-attached)
           (.removeEventListener mount "ds-craft:collapse" on-collapse)
@@ -282,4 +312,4 @@
      (when (and (not open?) (not= toggle "none"))
        [:div {:class (stl/css :floating)
               :style {"--ds-craft-dock-right" (str (+ (rules/inset :dock side) 4) "px")}}
-        [:> craft-toggle*]])]))
+        [:> craft-toggle* {:credits credits}]])]))

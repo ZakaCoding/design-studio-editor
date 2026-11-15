@@ -5176,7 +5176,7 @@ msgstr "Tinggi"
 
 #: src/app/main/ui/workspace/sidebar/options.cljs:207
 msgid "workspace.options.inspect"
-msgstr "Inspeksi"
+msgstr "Inspect"
 
 #: src/app/main/ui/workspace/sidebar/options/menus/interactions.cljs:438
 msgid "workspace.options.interaction-action"
@@ -6429,7 +6429,7 @@ msgstr "Riwayat"
 
 #: src/app/main/ui/workspace/sidebar/layers.cljs:838, src/app/main/ui/workspace/sidebar.cljs:154, src/app/main/ui/workspace/sidebar.cljs:157, src/app/main/ui/workspace/sidebar.cljs:164
 msgid "workspace.sidebar.layers"
-msgstr "Lapisan"
+msgstr "Layer"
 
 #: src/app/main/ui/workspace/sidebar/layers.cljs:636, src/app/main/ui/workspace/sidebar/layers.cljs:697
 msgid "workspace.sidebar.layers.components"
@@ -7528,7 +7528,7 @@ msgid "ds.craft.quick.placeholder"
 msgstr "Beri tahu Craft apa yang ingin diubah…"
 
 msgid "ds.craft.quick.hint"
-msgstr "Enter untuk kirim · Esc untuk tutup"
+msgstr "Enter kirim · Esc batal"
 
 msgid "ds.craft.quick.send"
 msgstr "Kirim"
@@ -7901,3 +7901,25 @@ msgstr "+ File baru"
 
 msgid "ds.shell.settings.title"
 msgstr "Pengaturan"
+
+# Design Studio (G3)
+msgid "ds.workspace.tab.tokens"
+msgstr "Token"
+
+msgid "ds.workspace.toolbar.shapes"
+msgstr "Persegi, garis, dan panah"
+
+msgid "ds.workspace.toolbar.paths"
+msgstr "Pena dan kurva"
+
+msgid "ds.workspace.mcp.setup"
+msgstr "Atur akses AI"
+
+msgid "ds.workspace.share"
+msgstr "Bagikan"
+
+msgid "ds.workspace.focus.hint"
+msgstr "Tekan %s untuk panel"
+
+msgid "ds.craft.quick.chip"
+msgstr "Ubah dengan Craft"

@@ -16,6 +16,10 @@
 //    grid cell between them, so rulers, scrollbars, zoom to fit and the
 //    touch layer see the same viewport as before.
 // 3. Width rules: see `state.cljs`; here only the Craft dock column.
+// 4. Type and labels of the panels as on F1 · 01: the DS text face, tabs in
+//    title case, section labels as the small mono caps of the boards.
+// 5. What the boards do not have: upstream's toolbar (ours floats at the
+//    bottom centre, see `toolbar.cljs`) and the closed palette launcher.
 
 @use "sass:math";
 @use "studio/ds" as ds;
@@ -29,6 +33,12 @@ $edge: ws.$edge;
 @function -below($px) {
   @return calc(100vh - #{math.div($px, 16) * 1rem} - 2 * #{$edge});
 }
+
+// The Design Studio headers are taller than upstream's (59 px instead of
+// 52 px on the left, 57 px instead of 48 px on the right), so every list
+// that upstream sizes from the window is that much shorter.
+$left-extra: 7;
+$right-extra: 9;
 
 // --- 1. Theme
 
@@ -81,11 +91,12 @@ $edge: ws.$edge;
   }
 
   // Rulers and the frame around the canvas (upstream draws them in SVG with
-  // these variables): canvas coloured, so they do not read as a panel.
+  // these variables): canvas coloured, frame line included, so the canvas
+  // has no box around it, as on the boards.
   // `text.secondary` on `bg.canvas` is 4.2:1, so the numbers use `text.body`.
   g[class~="viewport-frame"] {
     --panel-background-color: #{ds.token("bg-canvas")};
-    --panel-border-color: #{ds.token("border-strong")};
+    --panel-border-color: #{ds.token("bg-canvas")};
     --layer-row-foreground-color: #{ds.token("text-body")};
   }
 
@@ -111,59 +122,59 @@ $edge: ws.$edge;
   }
 
   #{ws.on("main_ui_workspace_sidebar__right-sidebar-content")} {
-    block-size: -below(52);
+    block-size: -below(52 + $right-extra);
   }
 
   #{ws.on("main_ui_workspace_sidebar__versions-tab")} {
-    block-size: -below(88);
+    block-size: -below(88 + $right-extra);
   }
 
   #{ws.on("main_ui_workspace_tokens_sidebar__sidebar-wrapper")} {
-    height: -below(92);
+    height: -below(92 + $left-extra);
   }
 
   #{ws.on("main_ui_workspace_sidebar_assets__assets-bar")} {
-    height: -below(92);
+    height: -below(92 + $left-extra);
   }
 
   #{ws.on("main_ui_workspace_sidebar_shortcuts__shortcuts")} {
-    block-size: -below(60);
+    block-size: -below(60 + $left-extra);
   }
 
   #{ws.on("main_ui_workspace_sidebar_history__history-entries")} {
-    height: -below(100);
+    height: -below(100 + $right-extra);
   }
 
   #{ws.on("main_ui_workspace_sidebar_options__content-class")} {
-    height: -below(96);
+    height: -below(96 + $right-extra);
   }
 
   #{ws.on("main_ui_workspace_sidebar_options__element-options")} {
-    --sidebar-element-options-height: #{-below(88)};
+    --sidebar-element-options-height: #{-below(88 + $right-extra)};
   }
 
   #{ws.on("main_ui_inspect_attributes__element-options")} {
-    max-height: -below(128);
+    max-height: -below(128 + $right-extra);
   }
 
   #{ws.on("main_ui_inspect_attributes__workspace-element-options")} {
-    max-height: -below(180);
+    max-height: -below(180 + $right-extra);
   }
 
   #{ws.on("main_ui_inspect_styles__styles-tab")} {
-    block-size: -below(140);
+    block-size: -below(140 + $right-extra);
   }
 
   #{ws.on("main_ui_inspect_styles__styles-tab-workspace")} {
-    block-size: -below(180);
+    block-size: -below(180 + $right-extra);
   }
 
   #{ws.on("main_ui_inspect_code__element-options")} {
-    height: -below(160);
+    height: -below(160 + $right-extra);
   }
 
   #{ws.on("main_ui_inspect_code__viewer-code-block")} {
-    height: -below(108);
+    height: -below(108 + $right-extra);
   }
 
   // Tabs (Layers / Assets / Tokens, Design / Prototype / Inspect): the
@@ -174,20 +185,10 @@ $edge: ws.$edge;
     box-shadow: ds.token("elevation-control");
   }
 
-  // Toolbar: an island over the canvas, as upstream places it.
+  // Upstream's toolbar: replaced by the floating toolbar at the bottom
+  // centre (`toolbar.cljs`), which the shell renders.
   #{ws.on("main_ui_workspace_top_toolbar__toolbar")} {
-    --menu-border-color: #{ds.token("border-default")};
-
-    border-width: 1px;
-    border-radius: ds.token("radius-card");
-    box-shadow: ds.token("elevation-panel");
-
-    // Upstream's tucked-away state: a tab that hangs from the top edge.
-    &#{ws.on("main_ui_workspace_top_toolbar__hidden")} {
-      border-start-start-radius: 0;
-      border-start-end-radius: 0;
-      box-shadow: ds.token("elevation-control");
-    }
+    display: none;
   }
 
   // Colour and text palette: upstream pads it by the sidebar widths from the
@@ -203,4 +204,85 @@ $edge: ws.$edge;
     inset-inline-start: calc(2 * #{$edge});
     inline-size: calc(100vw - 4 * #{$edge});
   }
+
+  // The closed palette is a two-button launcher at the bottom left of the
+  // canvas. The boards have none: the palettes open from the main menu
+  // (View) and their shortcuts, and the open palette keeps its buttons.
+  #{ws.on("main_ui_workspace_palette__palettes")}:not(#{ws.on("main_ui_workspace_palette__wide")}) {
+    display: none;
+  }
+}
+
+// --- 4. Type and labels
+
+$panels: "#left-sidebar-aside, #right-sidebar-aside";
+
+#{$scope} :is(#{$panels}) {
+  // The DS text face in both panels, on every element because upstream
+  // sets its face per component. Code keeps a mono face.
+  * {
+    font-family: ds.token("font-text");
+  }
+
+  pre,
+  pre *,
+  code,
+  code * {
+    font-family: ds.token("font-mono");
+  }
+
+  // Tabs: title case ("Layer", "Aset", "Token"), not upstream's caps.
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-text")} {
+    font-size: ds.token("size-12");
+    font-weight: ds.token("weight-medium");
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  // One `bg.subtle` track with the selected tab as a raised chip in it.
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-list")} {
+    gap: 0;
+    padding: 2px;
+    border-radius: ds.token("radius-md");
+    background-color: ds.token("bg-subtle");
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab")} {
+    block-size: 28px;
+
+    &:not(#{ws.on("main_ui_ds_layout_tab_switcher__selected")}) {
+      --tabs-item-bg-color: transparent;
+    }
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__selected")} {
+    --tabs-item-fg-color: #{ds.token("text-primary")};
+    --tabs-item-fg-color-hover: #{ds.token("text-primary")};
+
+    #{ws.on("main_ui_ds_layout_tab_switcher__tab-text")} {
+      font-weight: ds.token("weight-semibold");
+    }
+  }
+
+  // Section labels ("HALAMAN", "LAYER", "POSISI & UKURAN"): type style
+  // `label`, mono caps.
+  #{ws.on("main_ui_components_title_bar__title", "main_ui_components_title_bar__title-only")} {
+    &,
+    & * {
+      @include ds.type("label");
+
+      color: ds.token("text-secondary");
+    }
+  }
+}
+
+// Values of the design panel (X, Y, W, H, colours) are mono on the boards.
+#{$scope} #right-sidebar-aside input {
+  font-family: ds.token("font-mono");
+}
+
+// The collapse button of upstream's tab row: the Design Studio header has
+// its own (the panel icon of F1 · 01).
+#{$scope} #{ws.on("main_ui_workspace_sidebar__collapse-button")} {
+  display: none;
 }

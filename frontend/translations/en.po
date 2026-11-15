@@ -10819,7 +10819,7 @@ msgid "ds.craft.quick.placeholder"
 msgstr "Tell Craft what to change…"
 
 msgid "ds.craft.quick.hint"
-msgstr "Enter to send · Esc to close"
+msgstr "Enter to send · Esc to cancel"
 
 msgid "ds.craft.quick.send"
 msgstr "Send"
@@ -11192,3 +11192,25 @@ msgstr "+ New file"
 
 msgid "ds.shell.settings.title"
 msgstr "Settings"
+
+# Design Studio (G3)
+msgid "ds.workspace.tab.tokens"
+msgstr "Tokens"
+
+msgid "ds.workspace.toolbar.shapes"
+msgstr "Rectangle, line and arrow"
+
+msgid "ds.workspace.toolbar.paths"
+msgstr "Pen and curve"
+
+msgid "ds.workspace.mcp.setup"
+msgstr "Set up AI access"
+
+msgid "ds.workspace.share"
+msgstr "Share"
+
+msgid "ds.workspace.focus.hint"
+msgstr "Press %s for panels"
+
+msgid "ds.craft.quick.chip"
+msgstr "Change with Craft"
