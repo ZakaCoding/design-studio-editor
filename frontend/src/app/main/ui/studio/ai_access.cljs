@@ -86,9 +86,12 @@
       (when-not (js/isNaN (.getTime date)) date))))
 
 (defn- short-date
+  "\"9 Nov\". Through Intl.DateTimeFormat: inside the editor
+  Date.prototype.toLocaleDateString is replaced by toDateString upstream,
+  which printed \"Mon Nov 09 2026\"."
   [value]
-  (some-> (parse-date value)
-          (.toLocaleDateString (locale-tag) #js {:day "numeric" :month "short"})))
+  (when-let [date (parse-date value)]
+    (.format (js/Intl.DateTimeFormat. (locale-tag) #js {:day "numeric" :month "short"}) date)))
 
 (defn- ago
   [value]
