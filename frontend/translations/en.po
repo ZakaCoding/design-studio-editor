@@ -10798,3 +10798,124 @@ msgstr "Request a new link"
 
 msgid "ds.used-link.login"
 msgstr "Sign in with password"
+
+# Design Studio (F4-A)
+msgid "ds.connect.label"
+msgstr "AI access"
+
+msgid "ds.connect.badge"
+msgstr "AI access"
+
+msgid "ds.connect.title"
+msgstr "Connect your AI assistant"
+
+msgid "ds.connect.lead"
+msgstr "Claude, ChatGPT or Codex can read your designs and, when you allow it, edit with you. It takes two steps."
+
+msgid "ds.connect.step-done"
+msgstr "done"
+
+msgid "ds.connect.step-1.title"
+msgstr "Turn on AI access"
+
+msgid "ds.connect.step-1.text"
+msgstr "One click. We set up the link between the editor and AI access for this account. There is nothing to copy."
+
+msgid "ds.connect.step-1.cta"
+msgstr "Turn on"
+
+msgid "ds.connect.step-1.done"
+msgstr "AI access is on for this account."
+
+msgid "ds.connect.step-2.title"
+msgstr "Add Design Studio to your assistant"
+
+msgid "ds.connect.step-2.text"
+msgstr "Add this address as a connector in your assistant, then sign in when it asks."
+
+msgid "ds.connect.step-2.after"
+msgstr "Then open a design. Your assistant works on the file that is open."
+
+msgid "ds.connect.copy"
+msgstr "Copy address"
+
+msgid "ds.connect.copied"
+msgstr "Copied"
+
+msgid "ds.connect.guide"
+msgstr "Read the setup guide"
+
+msgid "ds.connect.later"
+msgstr "Not now"
+
+msgid "ds.connect.done"
+msgstr "Done"
+
+msgid "ds.connect.error.session"
+msgstr "Your editor session changed. Reload this page, then try again."
+
+msgid "ds.connect.error.no-access"
+msgstr "This account doesn’t have AI access yet."
+
+msgid "ds.connect.error.busy"
+msgstr "Design Studio is busy with another request for this account. Try again in a moment."
+
+msgid "ds.connect.error.failed"
+msgstr "We couldn’t turn on AI access. Try again in a moment."
+
+msgid "ds.connect.bar.connected"
+msgstr "AI access is on"
+
+msgid "ds.connect.bar.connected-note"
+msgstr "Your assistant works on the design you have open."
+
+msgid "ds.connect.bar.copy"
+msgstr "Copy assistant address"
+
+msgid "ds.connect.bar.manage"
+msgstr "Manage"
+
+msgid "ds.connect.bar.later"
+msgstr "Connect your AI assistant"
+
+msgid "ds.connect.bar.later-note"
+msgstr "Two steps, whenever you’re ready."
+
+msgid "ds.connect.bar.open"
+msgstr "Set up"
+
+msgid "ds.home.greeting"
+msgstr "Welcome"
+
+msgid "ds.home.greeting-name"
+msgstr "Welcome, %s"
+
+msgid "ds.home.empty.lead"
+msgstr "You have no designs yet. Start with a blank canvas or bring in a file."
+
+msgid "ds.home.empty.create"
+msgstr "Create your first design"
+
+msgid "ds.home.empty.create-text"
+msgstr "Opens a blank canvas in the editor."
+
+msgid "ds.home.empty.import"
+msgstr "Import a file"
+
+msgid "ds.home.empty.import-text"
+msgstr "Bring in a .penpot or .zip file."
+
+msgid "ds.home.empty.deleted"
+msgstr "Deleted files"
+
+msgid "ds.home.plan.label"
+msgstr "Plans"
+
+msgid "ds.home.plan.badge"
+msgstr "Craft"
+
+msgid "ds.home.plan.text"
+msgstr "The editor and AI access are free. Craft, our AI design partner, comes with a paid plan."
+
+msgid "ds.home.plan.cta"
+msgstr "See plans"

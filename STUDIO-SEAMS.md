@@ -97,4 +97,6 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `mcp/packages/plugin/package.json` | WP3: `test` script runs `--experimental-transform-types` (the handler imports `Task`, which uses parameter properties) and the `task-handlers` tests | - | WP3 |
 | `mcp/packages/plugin/tsconfig.json` | WP3: excludes `src/**/*.test.ts` from `tsc` like `src/*.test.ts` | - | WP3 |
 | `frontend/test/frontend_tests/main_errors_test.cljs` | WP3 review fix: the save-failed toast has no reload link (keep the tab open), so the two upstream assertions on the reload link now assert its absence | - | F2 |
+| `frontend/src/app/main/ui/dashboard.cljs` | F4-A (F1 · 12): the require of `projects-section*` is replaced by `studio.dashboard.home/home*` under the same name. `home*` renders `projects-section*` with the same props, or the first-design page when the team has no project and no file. Require lines only, the body is untouched | - | F4-A |
+| `frontend/src/app/main/ui/dashboard/projects.cljs` | F4-A (F1 · 03): mounts `studio.dashboard.connect-card/home-card*` (the two-step "Connect AI" card and its status bar) as the first row of the projects scroll area. One require, one element | - | F4-A |
 <!-- seams:end -->

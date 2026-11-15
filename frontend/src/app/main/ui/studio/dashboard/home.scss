@@ -1,0 +1,112 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Empty home of an account with no design yet (F1 · 12).
+
+@use "studio/ds" as ds;
+
+.home {
+  @include ds.root;
+  @include ds.type("body-lg");
+
+  // Penpot's dashboard content is a two-row grid (header, list) that does
+  // not scroll; this page takes both rows and scrolls itself.
+  grid-row: 1 / span 2;
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: ds.token("space-24");
+  min-height: 0;
+  padding: ds.token("space-32") ds.token("space-32") ds.token("space-32") ds.token("space-16");
+  overflow-y: auto;
+
+  // Its own light sheet: the dashboard around it still has the Penpot theme.
+  border-start-start-radius: ds.token("radius-panel");
+  background: ds.token("bg-panel");
+  color: ds.token("text-body");
+
+  > * {
+    width: 100%;
+    max-width: 720px;
+  }
+}
+
+.greeting {
+  display: grid;
+  gap: ds.token("space-8");
+}
+
+.greeting-title {
+  @include ds.type("display");
+
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.greeting-lead {
+  margin: 0;
+  color: ds.token("text-body");
+}
+
+.starts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: ds.token("space-16");
+}
+
+.start {
+  display: grid;
+  justify-items: start;
+  gap: ds.token("space-8");
+}
+
+.start-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-block-end: ds.token("space-8");
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+}
+
+.start-primary .start-icon {
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+}
+
+.start-title {
+  @include ds.type("control-lg");
+
+  color: ds.token("text-primary");
+}
+
+.start-text {
+  color: ds.token("text-secondary");
+}
+
+.plan {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ds.token("space-12");
+  padding: ds.token("space-16");
+  border-radius: ds.token("radius-card");
+  background: ds.token("bg-subtle");
+}
+
+.plan-text {
+  flex: 1 1 280px;
+  margin: 0;
+  color: ds.token("text-body");
+}
+
+// A text button, not a full-width row.
+.home > .deleted {
+  width: auto;
+  justify-self: start;
+}
