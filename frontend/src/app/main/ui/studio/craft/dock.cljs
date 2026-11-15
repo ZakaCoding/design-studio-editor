@@ -15,6 +15,7 @@
    [app.main.refs :as refs]
    [app.main.ui.studio.craft.rules :as rules]
    [app.main.ui.studio.craft.state :as state]
+   [app.main.ui.studio.dashboard.handoff :as handoff]
    [app.main.ui.studio.ds.button :refer [button*]]
    [app.util.i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -200,6 +201,10 @@
         (.addEventListener mount "ds-craft:collapse" on-collapse)
         (.addEventListener mount "ds-craft:open" on-open)
         (.addEventListener mount "ds-craft:busy" on-busy)
+        ;; The dashboard's \"Mulai dari satu kalimat\" opens a new file with
+        ;; Craft open (the hand-off contract, `dashboard.handoff`).
+        (when (handoff/take-open-request!)
+          (state/open!))
         (announce)
         (fn []
           (.removeEventListener mount "ds-craft:attached" on-attached)

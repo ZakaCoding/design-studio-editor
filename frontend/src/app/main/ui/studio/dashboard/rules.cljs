@@ -39,18 +39,55 @@
   "What the dashboard shows.
 
   - `:hidden`    Studio can't say yet, MCP is off here, or no AI access
-  - `:card`      the two-step card, step 1 open
-  - `:pairing`   the two-step card, step 1 done, step 2 open
-  - `:connected` the slim status bar
-  - `:later`     the slim reminder, after \"Not now\""
-  [{:keys [enabled status activated dismissed]}]
+  - `:card`      the two-step card, step 1 open (0 of 2)
+  - `:pairing`   the two-step card, step 1 done, step 2 open (1 of 2)
+  - `:connected` the slim status bar (F1 · 03c)
+
+  `status` is Studio's answer: `:ai-access`, `:connected` (the editor link
+  is stored: step 1), `:assistant` (the AI app that connected last, or
+  nil) and `:assistant-known` (false for a Studio that does not say which
+  app is connected: then a stored link counts as connected, as before).
+  `activated` is true once step 1 finished in this visit, `adding` while
+  the member connects one more app from the status bar."
+  [{:keys [enabled status activated adding]}]
   (cond
-    (not enabled)                 :hidden
-    (not (:ai-access status))     :hidden
-    activated                     :pairing
-    (:connected status)           :connected
-    dismissed                     :later
-    :else                         :card))
+    (not enabled)                        :hidden
+    (not (:ai-access status))            :hidden
+    (not (:connected status))            :card
+    adding                               :pairing
+    (some? (:assistant status))          :connected
+    (:assistant-known status)            :pairing
+    activated                            :pairing
+    :else                                :connected))
+
+(defn steps-done
+  "How many of the two steps are done in `mode` (\"1 dari 2 selesai\")."
+  [mode]
+  (cond
+    (= mode :pairing)   1
+    (= mode :connected) 2
+    :else               0))
+
+(defn display-uri
+  "The assistant address as the card shows it: without the scheme. The
+  copy button still copies the whole address."
+  [uri]
+  (str/replace (str uri) #"^[a-z]+://" ""))
+
+(def assistants
+  "The AI apps step 2 offers, in the order of F1 · 03."
+  [:claude :codex :other])
+
+(defn assistant-choice
+  "The app to preselect in step 2 for the name of the app that is already
+  connected (or nil)."
+  [assistant-name]
+  (let [n (str/lower (str assistant-name))]
+    (cond
+      (str/includes? n "codex")  :codex
+      (str/includes? n "claude") :claude
+      (str/blank? n)             :claude
+      :else                      :other)))
 
 (defn failure
   "Why step 1 did not finish, from Studio's answer."
@@ -89,3 +126,95 @@
   (let [fullname (some-> (:fullname profile) str/trim)]
     (when-not (str/blank? fullname)
       (first (str/split fullname #"\s+")))))
+
+;; --- Craft hero (F1 · 03 "Mulai dari satu kalimat")
+
+(def prompt-max
+  "Longest prompt handed to Craft, as its own box allows."
+  2000)
+
+(defn clean-prompt
+  "The prompt as it is handed over: one line breaks kept, trimmed, cut to
+  `prompt-max`; nil when empty."
+  [text]
+  (let [text (str/trim (str text))]
+    (when-not (str/blank? text)
+      (subs text 0 (min (count text) prompt-max)))))
+
+(defn hero-prompt
+  "The prompt Craft's box is filled with. `text` is what the member typed,
+  `chip` the label of the chip they pressed (or nil): a chip alone is the
+  start of a sentence, a chip with text names the kind of design first."
+  [text chip]
+  (let [text (clean-prompt text)
+        chip (clean-prompt chip)]
+    (cond
+      (and (some? chip) (some? text)) (clean-prompt (str chip ": " text))
+      (some? chip)                    chip
+      :else                           text)))
+
+(defn file-name
+  "A name for the file a prompt starts: its first words, at most 40
+  characters, cut at a word. nil when there is nothing to name it by, so
+  Penpot gives its own \"New File\" name."
+  [prompt]
+  (when-let [text (clean-prompt prompt)]
+    (let [line  (-> (first (str/split text #"\n"))
+                    (str/replace #"\s+" " ")
+                    (str/trim))
+          short (if (<= (count line) 40)
+                  line
+                  (let [cut (subs line 0 41)
+                        at  (.lastIndexOf cut " ")]
+                    (if (>= at 12)
+                      (subs cut 0 at)
+                      (subs line 0 40))))
+          short (-> short
+                    (str/replace #"[\s.,;:!?…\"“”'‘’()-]+$" "")
+                    (str/trim))]
+      (when-not (str/blank? short)
+        (str (str/upper (subs short 0 1)) (subs short 1))))))
+
+(defn handoff
+  "What the dashboard leaves for the workspace (the \"Craft prompt
+  hand-off\" contract): the prompt, the new file and when. nil without a
+  prompt: then only the request to open Craft is left."
+  [prompt file-id now]
+  (when-let [text (clean-prompt prompt)]
+    {:prompt text
+     :fileId (str file-id)
+     :at     now}))
+
+;; --- Start cards (F1 · 12)
+
+(defn price-label
+  "The Monthly price as the Craft card says it (\"US$5.49\", \"Rp99.000\"),
+  from the `plans` of the shell state; nil while there is no price."
+  [plans]
+  (let [monthly (:monthly plans)
+        usd     (:priceUsdCents monthly)
+        idr     (:priceIdr monthly)]
+    (cond
+      (and (= "USD" (:currency plans)) (number? usd) (pos? usd))
+      (str "US$" (.toFixed (/ usd 100) 2))
+
+      (and (= "IDR" (:currency plans)) (number? idr) (pos? idr))
+      (str "Rp" (str/replace (str (js/Math.round idr)) #"\B(?=(\d{3})+(?!\d))" "."))
+
+      :else
+      nil)))
+
+;; --- Templates row (F1 · 03c "Template Design Studio")
+
+(def template-tones
+  "The six tile colours of the row, in the board's order."
+  ["pink" "sky" "mint" "yellow" "lilac" "peach"])
+
+(defn template-tiles
+  "At most six templates with the colour of their tile."
+  [templates]
+  (->> (take 6 templates)
+       (map-indexed (fn [index template]
+                      {:template template
+                       :tone (nth template-tones (mod index (count template-tones)))}))
+       (vec)))

@@ -134,3 +134,12 @@ Shared SCSS for anything that floats in the workspace:
 surface), `ws.$edge` (gap to the window and the canvas), `ws.$rail-size`,
 `ws.$craft-size` and `ws.on("<module>__<class>")` (matches an upstream
 element by its CSS-module class without editing its stylesheet).
+
+## Mount points (dashboard home, G2)
+
+| Mount point | Element | Filled by | Rendered from | Contract |
+| --- | --- | --- | --- | --- |
+| home content | `<div data-testid="ds-home">` (`ds-empty-home` for an account with nothing yet) | G2: `app.main.ui.studio.dashboard.home/home*` | the dashboard shell's page (G1), in the body of the home page | Props `team`, `projects`, `profile` (as `projects-section*` takes them) and `recent`, the element of the shell's "File terbaru" section, which `home*` places between the Craft hero and the Connect AI card. Inside `body.ds-dash` the home adds no padding, background or scrolling. The sections are exported one by one too (`craft-hero*`, `start-cards*`, `empty-files*`, `connect-card*`, `templates-row*`) |
+| Craft prompt hand-off | `sessionStorage['ds-craft:prompt']` = `{prompt, fileId, at}`, `sessionStorage['ds-craft:open']` = `"1"` | G2: `studio.dashboard.handoff/leave!` (dashboard) | read by `studio.craft.dock` (`handoff/take-open-request!` opens the dock and removes the flag) and by Studio's `ds-craft.js` (fills Craft's box, does not send, removes the entry) | Same tab, five minutes, the file named in the entry. Any page may call `leave!` before it opens a file |
+| shell state | `GET /studio/api/editor-shell/state` → `member {plan, credits {left,total}, storage {usedBytes,totalBytes}}`, `assistant {name, access}` | Studio | `studio.shell-state/use-state` (plan card, G1), `studio.dashboard.connect/fetch-status` (Connect AI card, G2) | Null or absent fields are not shown |
+

@@ -10835,50 +10835,89 @@ msgstr "exact"
 msgid "ds.connect.label"
 msgstr "AI access"
 
-msgid "ds.connect.badge"
-msgstr "AI access"
-
 msgid "ds.connect.title"
-msgstr "Connect your AI assistant"
+msgstr "Connect your AI to Design Studio"
 
 msgid "ds.connect.lead"
-msgstr "Claude, ChatGPT or Codex can read your designs and, when you allow it, edit with you. It takes two steps."
+msgstr "Two steps from this page. No need to open Settings, Integrations or /studio."
+
+msgid "ds.connect.progress"
+msgstr "%s of 2 done"
 
 msgid "ds.connect.step-done"
 msgstr "done"
 
 msgid "ds.connect.step-1.title"
-msgstr "Turn on AI access"
+msgstr "Turn on AI for your designs"
 
 msgid "ds.connect.step-1.text"
-msgstr "One click. We set up the link between the editor and AI access for this account. There is nothing to copy."
-
-msgid "ds.connect.step-1.cta"
-msgstr "Turn on"
+msgstr "One click: MCP turns on, the key is stored encrypted, the editor connects by itself."
 
 msgid "ds.connect.step-1.done"
-msgstr "AI access is on for this account."
+msgstr "One click. Design Studio turns on MCP for your account, stores its key encrypted, and connects the editor by itself each time a file opens."
+
+msgid "ds.connect.step-1.cta"
+msgstr "Turn on AI"
+
+msgid "ds.connect.step-1.switch"
+msgstr "AI for your designs"
+
+msgid "ds.connect.step-1.active"
+msgstr "On · the editor connects automatically"
 
 msgid "ds.connect.step-2.title"
-msgstr "Add Design Studio to your assistant"
+msgstr "Connect your AI app"
 
-msgid "ds.connect.step-2.text"
-msgstr "Add this address as a connector in your assistant, then sign in when it asks."
+msgid "ds.connect.step-2.locked"
+msgstr "Step 2 opens after step 1."
 
-msgid "ds.connect.step-2.after"
-msgstr "Then open a design. Your assistant works on the file that is open."
+msgid "ds.connect.apps"
+msgstr "Your AI app"
+
+msgid "ds.connect.app.claude"
+msgstr "Claude"
+
+msgid "ds.connect.app.claude-note"
+msgstr "app & web"
+
+msgid "ds.connect.app.codex"
+msgstr "Codex"
+
+msgid "ds.connect.app.codex-note"
+msgstr "on your computer"
+
+msgid "ds.connect.app.other"
+msgstr "Other"
+
+msgid "ds.connect.app.other-note"
+msgstr "other MCP client"
+
+msgid "ds.connect.hint.claude"
+msgstr "In Claude: Customize → Connectors → Add custom connector, paste the link, then Allow."
+
+msgid "ds.connect.hint.codex"
+msgstr "In a terminal: codex mcp add design-studio --url, then this link. Sign in when it asks."
+
+msgid "ds.connect.hint.other"
+msgstr "In your MCP client: add a remote server with this link, then sign in when it asks."
+
+msgid "ds.connect.waiting.claude"
+msgstr "Waiting for Claude… turns green by itself once connected"
+
+msgid "ds.connect.waiting.codex"
+msgstr "Waiting for Codex… turns green by itself once connected"
+
+msgid "ds.connect.waiting.other"
+msgstr "Waiting for your AI app… turns green by itself once connected"
 
 msgid "ds.connect.copy"
-msgstr "Copy address"
+msgstr "Copy"
 
 msgid "ds.connect.copied"
 msgstr "Copied"
 
 msgid "ds.connect.guide"
-msgstr "Read the setup guide"
-
-msgid "ds.connect.later"
-msgstr "Not now"
+msgstr "Guide"
 
 msgid "ds.connect.done"
 msgstr "Done"
@@ -10895,62 +10934,122 @@ msgstr "Design Studio is busy with another request for this account. Try again i
 msgid "ds.connect.error.failed"
 msgstr "We couldn’t turn on AI access. Try again in a moment."
 
+msgid "ds.connect.bar.app-connected"
+msgstr "%s connected"
+
 msgid "ds.connect.bar.connected"
 msgstr "AI access is on"
 
-msgid "ds.connect.bar.connected-note"
-msgstr "Your assistant works on the design you have open."
+msgid "ds.connect.bar.read"
+msgstr "View only · the editor connects automatically"
 
-msgid "ds.connect.bar.copy"
-msgstr "Copy assistant address"
+msgid "ds.connect.bar.write"
+msgstr "Can edit · the editor connects automatically"
+
+msgid "ds.connect.bar.auto"
+msgstr "The editor connects automatically"
 
 msgid "ds.connect.bar.manage"
 msgstr "Manage"
 
-msgid "ds.connect.bar.later"
-msgstr "Connect your AI assistant"
+msgid "ds.connect.bar.add"
+msgstr "Another AI app"
 
-msgid "ds.connect.bar.later-note"
-msgstr "Two steps, whenever you’re ready."
+msgid "ds.hero.tag"
+msgstr "New · Craft on Home"
 
-msgid "ds.connect.bar.open"
-msgstr "Set up"
+msgid "ds.hero.title"
+msgstr "Start from one sentence"
 
-msgid "ds.home.greeting"
-msgstr "Welcome"
+msgid "ds.hero.placeholder"
+msgstr "Describe the design you need, for example “a landing page for a coffee shop, warm mood”…"
 
-msgid "ds.home.greeting-name"
-msgstr "Welcome, %s"
+msgid "ds.hero.label"
+msgstr "Describe your design for Craft"
 
-msgid "ds.home.empty.lead"
-msgstr "You have no designs yet. Start with a blank canvas or bring in a file."
+msgid "ds.hero.submit"
+msgstr "Start with Craft"
 
-msgid "ds.home.empty.create"
-msgstr "Create your first design"
+msgid "ds.hero.chips"
+msgstr "Start from a kind of design"
 
-msgid "ds.home.empty.create-text"
-msgstr "Opens a blank canvas in the editor."
+msgid "ds.hero.chip.landing"
+msgstr "Landing page"
 
-msgid "ds.home.empty.import"
+msgid "ds.hero.chip.poster"
+msgstr "Event poster"
+
+msgid "ds.hero.chip.app"
+msgstr "App screen"
+
+msgid "ds.hero.chip.card"
+msgstr "Business card"
+
+msgid "ds.hero.chip.brand"
+msgstr "Brand kit"
+
+msgid "ds.home.start.title-first"
+msgstr "Start your first design"
+
+msgid "ds.home.start.title"
+msgstr "Start a design"
+
+msgid "ds.home.start.blank"
+msgstr "Blank file"
+
+msgid "ds.home.start.blank-text"
+msgstr "Start from a white canvas."
+
+msgid "ds.home.start.template"
+msgstr "From a template"
+
+msgid "ds.home.start.template-text"
+msgstr "Landing pages, posters, business cards and more."
+
+msgid "ds.home.start.import"
 msgstr "Import a file"
 
-msgid "ds.home.empty.import-text"
-msgstr "Bring in a .penpot or .zip file."
+msgid "ds.home.start.import-text"
+msgstr "Open a .penpot file you already have."
 
-msgid "ds.home.empty.deleted"
-msgstr "Deleted files"
-
-msgid "ds.home.plan.label"
-msgstr "Plans"
-
-msgid "ds.home.plan.badge"
+msgid "ds.home.start.craft"
 msgstr "Craft"
 
-msgid "ds.home.plan.text"
-msgstr "The editor and AI access are free. Craft, our AI design partner, comes with a paid plan."
+msgid "ds.home.start.craft-text"
+msgstr "One sentence becomes a design on the canvas. Included in Monthly."
 
-msgid "ds.home.plan.cta"
+msgid "ds.home.start.craft-text-price"
+msgstr "One sentence becomes a design on the canvas. Included in Monthly, %s."
+
+msgid "ds.home.start.craft-text-member"
+msgstr "One sentence becomes a design on the canvas."
+
+msgid "ds.home.start.craft-plans"
 msgstr "See plans"
+
+msgid "ds.home.start.craft-open"
+msgstr "Start with Craft"
+
+msgid "ds.home.files.title"
+msgstr "Your files"
+
+msgid "ds.home.files.empty"
+msgstr "No files yet"
+
+msgid "ds.home.files.empty-text"
+msgstr "Files you create, import or make through your AI will appear here."
+
+msgid "ds.home.files.create"
+msgstr "Create a blank file"
+
+msgid "ds.home.templates.title"
+msgstr "Design Studio templates"
+
+msgid "ds.home.templates.add"
+msgstr "Add %s to your drafts"
+
+msgid "ds.home.see-all"
+msgstr "See all →"
 # Design Studio (F4-B)
 msgid "ds.ai-access.title"
 msgstr "AI access"
