@@ -13,8 +13,9 @@
     it before it opens the new file. Studio's Craft panel (`ds-craft.js`)
     reads it in the workspace of that file within five minutes, fills its
     box, does not send, and removes it.
-  - `ds-craft:open` = \"1\": the native Craft dock opens when it is set,
-    and removes it (`take-open-request!`, called by the dock)."
+  - `ds-craft:open` = \"1\": the native Craft dock
+    (`app.main.ui.studio.craft.dock`, G3) opens when it is set, and
+    removes it."
   (:require
    [app.main.ui.studio.dashboard.rules :as rules]))
 
@@ -42,16 +43,3 @@
       ;; Storage blocked: the file still opens, with Craft closed.
       nil))
   nil)
-
-(defn take-open-request!
-  "True when the dashboard asked for Craft to be open; the request is
-  used up."
-  []
-  (try
-    (if-let [storage (session)]
-      (let [asked? (some? (.getItem storage open-key))]
-        (when asked?
-          (.removeItem storage open-key))
-        asked?)
-      false)
-    (catch :default _ false)))
