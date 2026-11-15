@@ -78,8 +78,8 @@
                      (.catch (constantly nil))
                      (.then (fn [data]
                               (rules/failure (.-status response)
-                                       (when (object? data)
-                                         (unchecked-get data "reason")))))))))
+                                             (when (object? data)
+                                               (unchecked-get data "reason")))))))))
       (.catch (constantly :failed))))
 
 ;; --- Editor

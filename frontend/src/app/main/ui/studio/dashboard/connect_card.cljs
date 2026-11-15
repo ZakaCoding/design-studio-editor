@@ -145,9 +145,9 @@
                      (rules/assistant-uri (.-origin js/location)))
 
         mode       (rules/card-mode {:enabled (contains? cf/flags :mcp)
-                                       :status (deref status*)
-                                       :activated (deref activated*)
-                                       :dismissed (deref dismissed*)})
+                                     :status (deref status*)
+                                     :activated (deref activated*)
+                                     :dismissed (deref dismissed*)})
 
         on-activate
         (mf/use-fn
