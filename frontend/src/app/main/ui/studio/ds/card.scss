@@ -1,0 +1,52 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.card {
+  @include ds.root;
+  @include ds.surface-card;
+
+  display: block;
+  padding: ds.token("space-16");
+}
+
+.variant-subtle {
+  background: ds.token("bg-subtle");
+  border-color: transparent;
+}
+
+.variant-raised {
+  box-shadow: ds.token("elevation-control");
+}
+
+.padding-none {
+  padding: 0;
+}
+
+.padding-lg {
+  padding: ds.token("space-24");
+}
+
+.interactive {
+  @include ds.focusable;
+  @include ds.motion((border-color, box-shadow, background-color));
+
+  width: 100%;
+  margin: 0;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: ds.token("border-strong");
+    box-shadow: ds.token("elevation-control");
+    color: ds.token("text-body");
+    text-decoration: none;
+  }
+}
+
+.is-selected,
+.is-selected:hover {
+  border-color: ds.token("accent-default");
+  background: ds.token("bg-selected");
+}

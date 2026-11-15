@@ -33,11 +33,13 @@ segment, `**` matches any depth.
 - `DS_BASE_TAG`
 - `README-DS.md`
 - `STUDIO-SEAMS.md`
+- `STUDIO-DS.md`
 - `.github/workflows/ds-*.yml`
 - `.github/ds/**`
 - `frontend/src/app/main/ui/studio/**`
 - `frontend/test/frontend_tests/studio/**`
 - `frontend/resources/fonts/studio/**`
+- `frontend/resources/styles/studio/**`
 <!-- ds-owned:end -->
 
 ## Seams
@@ -90,4 +92,5 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/auth/recovery.cljs` | WP5 (L5, L6): markup only, plus a callback so a refused reset link shows "this link can't be used again"; schema and event unchanged | - | WP5 |
 | `frontend/src/app/main/ui/auth/verify_token.cljs` | WP5 (L6): a used or expired sign-up link renders `studio.auth/used-link-page*` with open sign-up | - | WP5 |
 | `frontend/src/app/main/ui/static.cljs` | WP5 (L4): signed-out login modal uses `studio.auth/modal*`; register link goes to /start/signup | - | WP5 |
+| `frontend/src/app/main/ui/debug/playground.cljs` | Mounts the DS showcase (`app.main.ui.studio.ds.showcase/showcase*`) on the existing debug route `#/debug/playground`, so the release build compiles every DS base component. One require and one element. | - | F3/F4 foundation |
 <!-- seams:end -->

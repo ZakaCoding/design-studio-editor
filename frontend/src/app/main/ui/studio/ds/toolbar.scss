@@ -1,0 +1,50 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.toolbar {
+  @include ds.root;
+  @include ds.surface-panel;
+
+  display: inline-flex;
+  align-items: center;
+  gap: ds.token("space-4");
+  padding: ds.token("space-4");
+}
+
+.toolbar-vertical {
+  flex-direction: column;
+}
+
+// A toolbar that lives inside a panel header has no surface of its own.
+.toolbar-plain {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.toolbar-vertical .group {
+  flex-direction: column;
+}
+
+.separator {
+  flex: none;
+  align-self: stretch;
+  width: 1px;
+  margin: ds.token("space-4") 2px;
+  background: ds.token("border-default");
+}
+
+.toolbar-vertical .separator {
+  width: auto;
+  height: 1px;
+  margin: 2px ds.token("space-4");
+}

@@ -1,0 +1,52 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+// Official lockup: ink tile with the pen glyph, and the dual-tone wordmark
+// ("Design" ink semibold, "Studio" muted regular). Do not restyle.
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: ds.token("font-wordmark");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1;
+  letter-spacing: -0.023em;
+  color: ds.token("brand-wordmark-ink");
+  text-decoration: none;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+}
+
+.logo-link {
+  border-radius: ds.token("radius-sm");
+  @include ds.focusable(4px);
+
+  &:hover {
+    text-decoration: none;
+    color: ds.token("brand-wordmark-ink");
+  }
+}
+
+// The wordmark is 0.6 of the mark, as on /start (24 px beside a 40 px mark).
+.size-sm {
+  font-size: 14px;
+}
+
+.size-md {
+  font-size: 19px;
+}
+
+.size-lg {
+  font-size: 24px;
+}
+
+.mark {
+  flex: none;
+  display: block;
+}
+
+.wordmark-muted {
+  font-weight: ds.token("weight-regular");
+  color: ds.token("brand-wordmark-muted");
+}

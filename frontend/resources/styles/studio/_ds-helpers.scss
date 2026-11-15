@@ -1,0 +1,180 @@
+// SCSS helpers shared by every Design Studio component (`app.main.ui.studio.*`).
+// Use through the index: `@use "studio/ds" as ds;`
+
+@use "sass:list";
+@use "sass:map";
+@use "./ds-tokens" as tokens;
+
+// Type styles of F1 · 07 ("Tipografi").
+$type-styles: (
+  "display": (
+    "font-display",
+    "size-32",
+    "weight-bold",
+    1.15,
+    -0.03em,
+  ),
+  "title": (
+    "font-display",
+    "size-18",
+    "weight-semibold",
+    1.25,
+    -0.02em,
+  ),
+  "panel-title": (
+    "font-text",
+    "size-13",
+    "weight-semibold",
+    1.35,
+    0,
+  ),
+  "body": (
+    "font-text",
+    "size-12",
+    "weight-regular",
+    1.5,
+    0,
+  ),
+  "body-lg": (
+    "font-text",
+    "size-14",
+    "weight-regular",
+    1.5,
+    0,
+  ),
+  "control": (
+    "font-text",
+    "size-13",
+    "weight-medium",
+    1.2,
+    0,
+  ),
+  "control-lg": (
+    "font-text",
+    "size-14",
+    "weight-semibold",
+    1.2,
+    0,
+  ),
+  "label": (
+    "font-mono",
+    "size-10",
+    "weight-medium",
+    1.4,
+    0.06em,
+  ),
+  "value": (
+    "font-mono",
+    "size-12",
+    "weight-medium",
+    1.4,
+    0,
+  ),
+);
+
+@mixin type($style) {
+  @if not map.has-key($type-styles, $style) {
+    @error "Unknown Design Studio type style `#{$style}`";
+  }
+  $spec: map.get($type-styles, $style);
+
+  font-family: tokens.token(list.nth($spec, 1));
+  font-size: tokens.token(list.nth($spec, 2));
+  font-weight: tokens.token(list.nth($spec, 3));
+  line-height: list.nth($spec, 4);
+  letter-spacing: list.nth($spec, 5);
+  @if $style == "label" {
+    text-transform: uppercase;
+  }
+}
+
+// Every DS component root starts here: it cuts the component off from the
+// Penpot theme it is mounted in (font, color, box model).
+@mixin root {
+  box-sizing: border-box;
+  color: tokens.token("text-body");
+  -webkit-font-smoothing: antialiased;
+  @include type("body");
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+// Visible keyboard focus. 2 px accent ring, 3:1 against every DS surface.
+@mixin focus-ring($offset: tokens.token("focus-ring-offset")) {
+  outline: tokens.token("focus-ring-width") solid tokens.token("focus-ring-color");
+  outline-offset: $offset;
+}
+
+@mixin focusable($offset: tokens.token("focus-ring-offset")) {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring($offset);
+  }
+}
+
+// Strip the user-agent and Penpot base styles from a <button> or <a>.
+@mixin control-reset {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+// Transitions only for people who have not asked for reduced motion.
+@mixin motion($properties, $duration: tokens.token("motion-fast")) {
+  @media (prefers-reduced-motion: no-preference) {
+    transition-property: $properties;
+    transition-duration: $duration;
+    transition-timing-function: tokens.token("ease-out");
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Floating island: the F3 workspace panels and popovers.
+@mixin surface-panel {
+  background: tokens.token("bg-panel");
+  border: 1px solid tokens.token("border-default");
+  border-radius: tokens.token("radius-panel");
+  box-shadow: tokens.token("elevation-panel");
+}
+
+@mixin surface-card {
+  background: tokens.token("bg-panel");
+  border: 1px solid tokens.token("border-default");
+  border-radius: tokens.token("radius-card");
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

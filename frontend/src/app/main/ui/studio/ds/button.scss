@@ -1,0 +1,167 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.button {
+  @include ds.control-reset;
+  @include ds.type("control");
+  @include ds.focusable;
+  @include ds.motion((background-color, border-color, color, box-shadow));
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-8");
+  min-width: 0;
+  height: ds.token("control-height-md");
+  padding: 0 ds.token("space-16");
+  border: 1px solid transparent;
+  border-radius: ds.token("radius-button");
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    background: ds.token("bg-subtle");
+    border-color: ds.token("border-default");
+    color: ds.token("text-disabled");
+    box-shadow: none;
+  }
+}
+
+.label {
+  @include ds.truncate;
+}
+
+.size-sm {
+  height: ds.token("control-height-sm");
+  padding: 0 ds.token("space-12");
+  font-size: ds.token("size-12");
+}
+
+.size-lg {
+  @include ds.type("control-lg");
+
+  height: ds.token("control-height-lg");
+  padding: 0 ds.token("space-24");
+}
+
+.full-width {
+  display: flex;
+  width: 100%;
+}
+
+.variant-primary:not(:disabled, [aria-disabled="true"]) {
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+
+  &:hover {
+    background: ds.token("accent-hover");
+    color: ds.token("text-on-accent");
+  }
+
+  &:active {
+    background: ds.token("accent-pressed");
+  }
+}
+
+.variant-secondary:not(:disabled, [aria-disabled="true"]) {
+  background: ds.token("bg-panel");
+  border-color: ds.token("border-strong");
+  color: ds.token("text-primary");
+
+  &:hover {
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+
+  &:active {
+    background: ds.token("border-default");
+  }
+}
+
+.variant-ghost:not(:disabled, [aria-disabled="true"]) {
+  color: ds.token("text-primary");
+
+  &:hover {
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+
+  &:active {
+    background: ds.token("border-default");
+  }
+}
+
+.variant-ghost:disabled,
+.variant-ghost[aria-disabled="true"] {
+  background: none;
+  border-color: transparent;
+}
+
+.variant-danger:not(:disabled, [aria-disabled="true"]) {
+  background: ds.token("danger-solid");
+  color: ds.token("text-on-accent");
+
+  &:hover {
+    background: ds.token("danger-solid-hover");
+    color: ds.token("text-on-accent");
+  }
+}
+
+// Square, icon-only.
+.icon-only {
+  width: ds.token("control-height-md");
+  padding: 0;
+  border-radius: ds.token("radius-control");
+
+  &.size-sm {
+    width: ds.token("control-height-sm");
+  }
+
+  &.size-lg {
+    width: ds.token("control-height-lg");
+    border-radius: ds.token("radius-md");
+  }
+}
+
+.is-active:not(:disabled, [aria-disabled="true"]) {
+  background: ds.token("bg-selected");
+  color: ds.token("accent-text-strong");
+
+  &:hover {
+    background: ds.token("bg-selected");
+    color: ds.token("accent-text-strong");
+  }
+}
+
+.is-loading {
+  cursor: progress;
+}
+
+.spinner {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ds-button-spin 0.7s linear infinite;
+
+  @include ds.reduced-motion {
+    animation-duration: 2.4s;
+  }
+}
+
+@keyframes ds-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
