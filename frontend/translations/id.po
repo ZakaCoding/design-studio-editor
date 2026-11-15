@@ -7070,3 +7070,52 @@ msgstr "Versi tersimpan otomatis akan disimpan selama %s hari."
 #, unused
 msgid "workspace.viewport.click-to-close-path"
 msgstr "Klik untuk menutup jalur"
+
+# Design Studio (WP4)
+msgid "ds.settings.password-side"
+msgstr "Kata sandi cadangan"
+
+msgid "ds.settings.password-title"
+msgstr "Kata sandi cadangan editor"
+
+msgid "ds.settings.password-note-backup"
+msgstr "Biasanya kamu masuk dengan ZakaCoding ID. Kata sandi ini hanya cadangan untuk masuk ke editor dengan email saat ZakaCoding ID tidak tersedia. Mengubahnya tidak mengubah passkey atau ZakaCoding ID-mu."
+
+msgid "ds.settings.password-note-open"
+msgstr "Ini kata sandi untuk masuk ke Design Studio. Lupa? Pakai “Lupa kata sandi?” di halaman masuk."
+
+msgid "ds.settings.email-note"
+msgstr "Untuk mengganti email, tulis ke "
+
+msgid "ds.plans.title"
+msgstr "Paket Design Studio"
+
+msgid "ds.plans.menu"
+msgstr "Paket Design Studio"
+
+msgid "ds.plans.lead"
+msgstr "Design Studio gratis untuk mulai. Craft, partner desain AI kami, ada di paket Bulanan."
+
+msgid "ds.plans.free.title"
+msgstr "Gratis"
+
+msgid "ds.plans.free.desc"
+msgstr "Editor dan MCP, tanpa batas bulanan."
+
+msgid "ds.plans.monthly.title"
+msgstr "Bulanan"
+
+msgid "ds.plans.monthly.price"
+msgstr "US$5,49 / bulan"
+
+msgid "ds.plans.monthly.desc"
+msgstr "Craft dan 1.000 kredit di setiap siklus tagihan."
+
+msgid "ds.plans.lifetime.title"
+msgstr "Seumur hidup"
+
+msgid "ds.plans.lifetime.desc"
+msgstr "Segera dibuka."
+
+msgid "ds.plans.see-plans"
+msgstr "Lihat paket"

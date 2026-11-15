@@ -16,6 +16,7 @@
    [app.main.store :as st]
    [app.main.ui.dashboard.sidebar :refer [profile-section*]]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.shell-state :as ds-state]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
    [rumext.v2 :as mf]))
@@ -70,6 +71,7 @@
         integrations?  (= section :settings-integrations)
         notifications? (= section :settings-notifications)
         shortcuts?     (= section :settings-shortcuts)
+        shell          (ds-state/use-state)
         team-id        (or (dtm/get-last-team-id)
                            (:default-team-id profile))
 
@@ -98,7 +100,9 @@
        [:li {:class (stl/css-case :current password?
                                   :settings-item true)
              :on-click go-settings-password}
-        [:span {:class (stl/css :element-title)} (tr "labels.password")]]
+        [:span {:class (stl/css :element-title)} (if (and shell (ds-state/backup? shell))
+                                                  (tr "ds.settings.password-side")
+                                                  (tr "labels.password"))]]
 
        [:li {:class (stl/css-case :current notifications?
                                   :settings-item true)

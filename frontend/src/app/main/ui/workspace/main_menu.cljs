@@ -35,11 +35,11 @@
    [app.main.ui.components.dropdown-menu :refer [dropdown-menu*
                                                  dropdown-menu-item*]]
    [app.main.ui.context :as ctx]
-   [app.main.ui.dashboard.subscription :refer [get-subscription-type
-                                               main-menu-power-up*]]
+   [app.main.ui.dashboard.subscription :refer [get-subscription-type]]
    [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
    [app.main.ui.ds.foundations.assets.icon :as i :refer [icon*]]
    [app.main.ui.hooks.resize :as r]
+   [app.main.ui.studio.plans :refer [plans-menu-item*]]
    [app.plugins.register :as preg]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
@@ -1126,7 +1126,9 @@
       (when (or (and (contains? cf/flags :subscriptions)
                      (not= "enterprise" subscription-type))
                 (contains? cf/flags :admin-console))
-        [:> main-menu-power-up* {:close-sub-menu close-sub-menu}])]
+        [:> plans-menu-item* {:class (stl/css :menu-item)
+                              :name-class (stl/css :item-name)
+                              :on-pointer-enter close-sub-menu}])]
 
      (case selected-sub-menu
        :file

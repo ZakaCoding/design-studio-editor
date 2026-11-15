@@ -36,6 +36,7 @@ segment, `**` matches any depth.
 - `.github/workflows/ds-*.yml`
 - `.github/ds/**`
 - `frontend/src/app/main/ui/studio/**`
+- `frontend/test/frontend_tests/studio/**`
 <!-- ds-owned:end -->
 
 ## Seams
@@ -47,4 +48,12 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
+| `frontend/src/app/main/ui/settings/password.cljs` | WP4: backup-password title and note (S5) | - | WP4 |
+| `frontend/src/app/main/ui/settings/profile.cljs` | WP4: open sign-up shows an email note instead of change-email (S6) | - | WP4 |
+| `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" sidebar label (S5) | - | WP4 |
+| `frontend/src/app/main/ui/settings/subscription.cljs` | WP4: Settings > Plans renders the Design Studio plan summary (S7) | - | WP4 |
+| `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8) | - | WP4 |
+| `frontend/translations/en.po` | WP4: `ds.*` strings in the "Design Studio (WP4)" block | - | WP4 |
+| `frontend/translations/id.po` | WP4: `ds.*` strings in the "Design Studio (WP4)" block | - | WP4 |
+| `frontend/test/frontend_tests/runner.cljs` | WP4: registers `frontend-tests.studio.shell-state-test` | - | WP4 |
 <!-- seams:end -->
