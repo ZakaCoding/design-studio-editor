@@ -91,7 +91,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/auth/recovery_request.cljs` | WP5 (L5): markup only. Own title, 15-minute note with open sign-up, DS "mail sent" card | - | WP5 |
 | `frontend/src/app/main/ui/auth/recovery.cljs` | WP5 (L5, L6): markup only, plus a callback so a refused reset link shows "this link can't be used again"; schema and event unchanged | - | WP5 |
 | `frontend/src/app/main/ui/auth/verify_token.cljs` | WP5 (L6): a used or expired sign-up link renders `studio.auth/used-link-page*` with open sign-up | - | WP5 |
-| `frontend/src/app/main/ui/static.cljs` | WP5 (L4): signed-out login modal uses `studio.auth/modal*`; register link goes to /start/signup | - | WP5 |
+| `frontend/src/app/main/ui/static.cljs` | WP5 (L4): signed-out login modal uses `studio.auth/modal*`; register link goes to /start/signup; G4: `error-container*` renders `studio.error-page/error-shell*` (light Design Studio page, official Logo, Back to Home, Penpot credit) and the 404/500/502/503 pages use DS copy and `studio.ds.button`; the login modal is untouched | - | WP5 |
 | `frontend/src/app/main/ui/debug/playground.cljs` | Mounts the DS showcase (`app.main.ui.studio.ds.showcase/showcase*`) on the existing debug route `#/debug/playground`, so the release build compiles every DS base component. One require and one element. | - | F3/F4 foundation |
 | `mcp/packages/plugin/src/task-handlers/ExecuteCodeTaskHandler.test.ts` | WP3: new file, node:test cases for the save confirmation around `execute_code` | - | WP3 |
 | `mcp/packages/plugin/package.json` | WP3: `test` script runs `--experimental-transform-types` (the handler imports `Task`, which uses parameter properties) and the `task-handlers` tests | - | WP3 |
@@ -100,7 +100,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/workspace.cljs` | F3-A: mounts `studio.workspace.shell/shell*` once in `workspace*` (chrome theme scope on <body>, width rules, the `craft-dock` and `viewport-overlay` mount points, canvas focus islands). One require, one element | - | F3-A |
 | `frontend/src/app/main/ui/workspace/sidebar.cljs` | F3-A: the collapsed left sidebar renders `studio.workspace.rail/layers-rail*` (the Layers rail) instead of `collapsed-button*`, which stays in place and unused. One require, one element | - | F3-A |
 | `frontend/src/app/main/ui/workspace/sidebar/sitemap.cljs` | F3-B: the current page's item carries `data-ds-page-name="<name>"` (one attribute), the stable hook Studio's `ds-craft.js` reads instead of the CSS-module class names | - | F3-B |
-| `frontend/src/app/main/ui/workspace/colorpicker.cljs` | F3-C (F1 · 13): one require and one element, the token suggestions row (`app.main.ui.studio.workspace.token-suggestions-ui`) under the colour inputs | - | F3-C |
+| `frontend/src/app/main/ui/workspace/colorpicker.cljs` | F3-C (F1 · 13): one require and one element, the token suggestions row (`app.main.ui.studio.workspace.token-suggestions-ui`) under the colour inputs; G4 (F1 · 13): the icon radio pair is replaced by `studio.workspace.components/picker-tabs*` (Color / Token), inside `guard*` | - | F3-C |
 | `frontend/src/app/main/ui/dashboard.cljs` | F4-A (F1 · 12): the require of `projects-section*` is replaced by `studio.dashboard.home/home*` under the same name. `home*` renders `projects-section*` with the same props, or the first-design page when the team has no project and no file. Require lines only, the body is untouched | - | F4-A |
 | `frontend/src/app/main/ui/dashboard/projects.cljs` | F4-A (F1 · 03): mounts `studio.dashboard.connect-card/home-card*` (the two-step "Connect AI" card and its status bar) as the first row of the projects scroll area. One require, one element | - | F4-A |
 | `frontend/src/app/main/ui/viewer.scss` | F4-B (F1 · 11): `.viewer-layout` and `.inspect-layout` include `ds.viewer-scope`, which maps the theme variables the viewer reads to `ds/light` tokens in that subtree only | - | F4-B |
@@ -109,6 +109,9 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/viewer/login.cljs` | F4-B (F1 · 11): share-link sign-in uses the Design Studio dialog and lockup (`studio/auth` modal*), sign-up link goes to /start/signup; Penpot register sections removed | - | F4-B |
 | `frontend/src/app/main/ui/viewer/login.scss` | F4-B (F1 · 11): keeps only the scrim, the dialog is `studio/auth` | - | F4-B |
 | `frontend/src/app/main/ui/dashboard/projects.scss` | F4-B (F1 · 14): Projects view restyled with DS tokens (project rows, show-more, team hero) | - | F4-B |
+| `frontend/src/app/main/ui/workspace/context_menu.cljs` | G4 (F1 · 13): one require and one element, `studio.workspace.components/context-menu-craft*` ("Change with Craft", Ctrl Enter) before the hide/lock group; shown only when Studio says the member has Craft | - | G4 |
+| `frontend/src/app/main/ui/workspace/sidebar/shortcuts.cljs` | G4 (F1 · 13): one require and one element (`craft-shortcuts*`, the Craft section) and the search placeholder key | - | G4 |
+| `frontend/src/app/main/ui/exports/assets.cljs` | G4 (F1 · 13): dialog title "Export N layers" and the scale shown as "2x" | - | G4 |
 <!-- seams:end -->
 
 ## Mount points (F3)

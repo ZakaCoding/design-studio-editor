@@ -71,3 +71,55 @@
 
   color: ds.token("status-success-text");
 }
+
+// Exact match (F1 · 13): "Same as brand.cta [Use]" and a note.
+.match {
+  @include ds.root;
+
+  display: grid;
+  gap: ds.token("space-4");
+  margin-block: ds.token("space-8");
+  padding: ds.token("space-12");
+  background: ds.token("bg-selected");
+  border-radius: ds.token("radius-card");
+}
+
+.match-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-8");
+}
+
+.match-title {
+  @include ds.type("control");
+
+  overflow: hidden;
+  color: ds.token("accent-text-strong");
+  font-weight: ds.token("weight-semibold");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-use {
+  @include ds.control-reset;
+  @include ds.type("control");
+  @include ds.focusable;
+
+  flex: none;
+  padding: 3px ds.token("space-12");
+  color: ds.token("text-on-accent");
+  background: ds.token("accent-default");
+  border-radius: ds.token("radius-button");
+
+  &:hover {
+    background: ds.token("accent-hover");
+  }
+}
+
+.match-note {
+  @include ds.type("body");
+
+  margin: 0;
+  color: ds.token("text-secondary");
+}

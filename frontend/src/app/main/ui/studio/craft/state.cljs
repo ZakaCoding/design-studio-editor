@@ -62,6 +62,12 @@
         (when-not (.dispatchEvent mount event)
           (reset! pending nil))))))
 
+(defn request-quick-prompt!
+  "Ask the quick prompt to open under the selection, as Ctrl/Cmd+Enter
+  does (used by the right-click menu)."
+  []
+  (.dispatchEvent js/window (js/CustomEvent. "ds-craft:quick-open")))
+
 (defn send-prompt!
   "Open the dock and send `text` to Craft. Returns true when there was
   something to send."

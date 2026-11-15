@@ -10970,3 +10970,82 @@ msgstr "AI access is not available for this account right now. Open Design Studi
 msgid "ds.ai-access.manage"
 msgstr "Manage AI access"
 
+
+# Design Studio (G4)
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.menu.craft-change"
+msgstr "Change with Craft"
+
+#: src/app/main/ui/workspace/sidebar/shortcuts.cljs
+msgid "ds.shortcuts.search"
+msgstr "Search shortcuts or keys…"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.shortcuts.craft"
+msgstr "Craft"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.shortcuts.craft-quick"
+msgstr "Quick prompt on selection"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.colorpicker.tab-color"
+msgstr "Color"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.colorpicker.tab-token"
+msgstr "Token"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.same-as"
+msgstr "Same as %s"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.use"
+msgstr "Use"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.follows-token"
+msgstr "Changes when the brand changes."
+
+#: src/app/main/ui/exports/assets.cljs
+msgid "ds.export.title"
+msgid_plural "ds.export.title"
+msgstr[0] "Export 1 layer"
+msgstr[1] "Export %s layers"
+
+#: src/app/main/ui/studio/error_page.cljs
+msgid "ds.error.home"
+msgstr "Back to Home"
+
+#: src/app/main/ui/studio/error_page.cljs
+msgid "ds.error.built-on"
+msgstr "Built on Penpot by Kaleidos"
+
+#: src/app/main/ui/studio/error_page.cljs
+msgid "ds.error.license"
+msgstr "MPL 2.0"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.404.title"
+msgstr "We can't find that page"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.404.text"
+msgstr "The link may be wrong, or the page was moved or removed."
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.500.title"
+msgstr "Something went wrong"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.500.text"
+msgstr "We could not finish that. Try again, or go back home."
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.unavailable.title"
+msgstr "Design Studio is not reachable right now"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.unavailable.text"
+msgstr "This is usually brief. Try again in a moment."

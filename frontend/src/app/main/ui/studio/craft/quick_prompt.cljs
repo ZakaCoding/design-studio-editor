@@ -124,8 +124,21 @@
            (.stopPropagation event)))]
 
     ;; Ctrl/Cmd+Enter anywhere in the workspace, except while writing text.
+    ;; The right-click menu asks for the same thing with `ds-craft:quick-open`.
     (mf/with-effect [overlay?]
-      (let [on-key
+      (let [open
+            (fn []
+              (if-let [selected (selection)]
+                (let [view (frame overlay?)
+                      rect (-> (:rect selected)
+                               (update :x - (:x view))
+                               (update :y - (:y view)))]
+                  (reset! box* (merge (rules/anchor rect view)
+                                      (select-keys selected [:count :name]))))
+                ;; Nothing selected: the other door, the dock itself.
+                (state/open!)))
+
+            on-key
             (fn [event]
               (when (and (rules/quick-key? {:key     (.-key event)
                                             :ctrl?   (.-ctrlKey event)
@@ -137,18 +150,17 @@
                          (not (read-only?)))
                 (.preventDefault event)
                 (.stopPropagation event)
-                (if-let [selected (selection)]
-                  (let [view (frame overlay?)
-                        rect (-> (:rect selected)
-                                 (update :x - (:x view))
-                                 (update :y - (:y view)))]
-                    (reset! box* (merge (rules/anchor rect view)
-                                        (select-keys selected [:count :name]))))
-                  ;; Nothing selected: the other door, the dock itself.
-                  (state/open!))))]
+                (open)))
+
+            on-request
+            (fn []
+              (when-not (read-only?)
+                (open)))]
         (.addEventListener js/document "keydown" on-key true)
+        (.addEventListener js/window "ds-craft:quick-open" on-request)
         (fn []
-          (.removeEventListener js/document "keydown" on-key true))))
+          (.removeEventListener js/document "keydown" on-key true)
+          (.removeEventListener js/window "ds-craft:quick-open" on-request))))
 
     ;; While it is open: focus the box; a press outside or a resized
     ;; window closes it.

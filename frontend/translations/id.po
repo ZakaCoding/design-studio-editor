@@ -7679,3 +7679,81 @@ msgstr "Akses AI belum tersedia untuk akun ini saat ini. Buka Design Studio untu
 msgid "ds.ai-access.manage"
 msgstr "Kelola akses AI"
 
+
+# Design Studio (G4)
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.menu.craft-change"
+msgstr "Ubah dengan Craft"
+
+#: src/app/main/ui/workspace/sidebar/shortcuts.cljs
+msgid "ds.shortcuts.search"
+msgstr "Cari shortcut atau tombol…"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.shortcuts.craft"
+msgstr "Craft"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.shortcuts.craft-quick"
+msgstr "Prompt kecil di seleksi"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.colorpicker.tab-color"
+msgstr "Warna"
+
+#: src/app/main/ui/studio/workspace/components.cljs
+msgid "ds.colorpicker.tab-token"
+msgstr "Token"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.same-as"
+msgstr "Sama dengan %s"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.use"
+msgstr "Pakai"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.follows-token"
+msgstr "Ikut berubah saat brand berubah."
+
+#: src/app/main/ui/exports/assets.cljs
+msgid "ds.export.title"
+msgid_plural "ds.export.title"
+msgstr[0] "Ekspor %s layer"
+
+#: src/app/main/ui/studio/error_page.cljs
+msgid "ds.error.home"
+msgstr "Kembali ke Beranda"
+
+#: src/app/main/ui/studio/error_page.cljs
+msgid "ds.error.built-on"
+msgstr "Built on Penpot by Kaleidos"
+
+#: src/app/main/ui/studio/error_page.cljs
+msgid "ds.error.license"
+msgstr "MPL 2.0"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.404.title"
+msgstr "Halaman ini tidak ditemukan"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.404.text"
+msgstr "Tautannya mungkin salah, atau halamannya sudah dipindah atau dihapus."
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.500.title"
+msgstr "Ada yang tidak beres"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.500.text"
+msgstr "Kami belum bisa menyelesaikannya. Coba lagi, atau kembali ke Beranda."
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.unavailable.title"
+msgstr "Design Studio sedang tidak terjangkau"
+
+#: src/app/main/ui/static.cljs
+msgid "ds.error.unavailable.text"
+msgstr "Biasanya sebentar saja. Coba lagi sebentar lagi."

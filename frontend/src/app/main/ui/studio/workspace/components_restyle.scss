@@ -96,12 +96,37 @@
   border-color: transparent;
 }
 
+// Shortcuts read as plain mono text ("Ctrl Shift H"), not as key caps.
 #{-on("main_ui_workspace_context_menu__shortcut-key", "main_ui_workspace_main_menu__shortcut-key")} {
   @include ds.type("value");
 
+  padding: 0;
   color: ds.token("text-secondary");
-  background-color: ds.token("bg-subtle");
-  border-radius: ds.token("radius-xs");
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+#{-on("main_ui_workspace_context_menu__shortcut")} {
+  gap: ds.token("space-4");
+}
+
+#{-on("main_ui_workspace_context_menu__menu")} {
+  inline-size: 264px;
+  padding: 6px;
+}
+
+#{-on("main_ui_workspace_context_menu__menu-item")} {
+  block-size: 30px;
+  padding-inline: ds.token("space-8");
+  color: ds.token("text-primary");
+}
+
+// Hairline between groups instead of an empty 12 px row.
+#{-on("main_ui_workspace_context_menu__separator")} {
+  block-size: 1px;
+  margin: ds.token("space-4") ds.token("space-8");
+  background: ds.token("border-default");
 }
 
 // ---- Colour picker -------------------------------------------------------
@@ -150,9 +175,11 @@
 #{-on("main_ui_exports_assets__modal-container", "main_ui_exports_files__modal-container")} {
   @include -popover;
 
+  inline-size: 392px;
+  max-inline-size: calc(100vw - 32px);
   border-radius: ds.token("radius-panel");
   box-shadow: ds.token("elevation-panel");
-  padding: ds.token("space-24");
+  padding: ds.token("space-20") ds.token("space-20") ds.token("space-16");
 }
 
 #{-on("main_ui_exports_assets__modal-title", "main_ui_exports_files__modal-title")} {
@@ -172,16 +199,62 @@
   color: ds.token("text-body");
 }
 
+// Rows: checkbox, name, format chip, scale chip (no thumbnail, no pixel size).
+#{-on("main_ui_exports_assets__selection-row")} {
+  min-block-size: 44px;
+  background: transparent;
+  border-radius: 0;
+}
+
+#{-on("main_ui_exports_assets__selection-row")} #{-on("main_ui_exports_assets__selection-btn")} {
+  grid-template-columns: min-content 1fr auto auto;
+  gap: ds.token("space-8");
+}
+
+#{-on("main_ui_exports_assets__image-wrapper")} {
+  display: none;
+}
+
+#{-on("main_ui_exports_assets__selection-name")} {
+  @include ds.type("body");
+
+  color: ds.token("text-body");
+}
+
+#{-on("main_ui_exports_assets__selection-scale", "main_ui_exports_assets__selection-extension")} {
+  @include ds.type("value");
+
+  min-inline-size: 0;
+  padding: 6px ds.token("space-12");
+  color: ds.token("text-body");
+  background: ds.token("bg-subtle");
+  border-radius: ds.token("radius-control");
+}
+
+#{-on("main_ui_exports_assets__selection-title")} {
+  @include ds.type("body");
+
+  color: ds.token("text-secondary");
+}
+
+// "Export" is the one black action of the dialog, "Cancel" plain text.
 #{-on("main_ui_exports_assets__accept-btn", "main_ui_exports_files__accept-btn")} {
   @include ds.type("control");
 
+  min-inline-size: 96px;
+  min-block-size: 40px;
   color: ds.token("text-on-accent");
-  background: ds.token("accent-default");
+  background: ds.token("bg-inverse");
   border: 0;
   border-radius: ds.token("radius-button");
 
   &:hover:not(:disabled) {
-    background: ds.token("accent-hover");
+    background: color-mix(in srgb, ds.token("bg-inverse") 86%, #fff);
+  }
+
+  &:disabled {
+    color: ds.token("text-disabled");
+    background: ds.token("bg-subtle");
   }
 
   &[class~="danger"] {
@@ -193,12 +266,14 @@
 #{-on("main_ui_exports_assets__cancel-button", "main_ui_exports_files__cancel-button")} {
   @include ds.type("control");
 
-  color: ds.token("text-primary");
-  background: ds.token("bg-panel");
-  border: 1px solid ds.token("border-strong");
+  min-block-size: 40px;
+  color: ds.token("text-secondary");
+  background: transparent;
+  border: 0;
   border-radius: ds.token("radius-button");
 
   &:hover:not(:disabled) {
+    color: ds.token("text-primary");
     background: ds.token("bg-subtle");
   }
 }
@@ -222,4 +297,54 @@
 
 #{-on("main_ui_workspace_sidebar_shortcuts__not-found")} {
   color: ds.token("text-secondary");
+}
+
+// ---- Shortcut panel (F1 · 13): plain rows, key caps, label-style sections --
+
+#{-on("main_ui_workspace_sidebar_shortcuts__search-field")} {
+  margin: ds.token("space-12") ds.token("space-12") ds.token("space-4");
+}
+
+#{-on("main_ui_shortcuts__shortcuts-name")} {
+  min-block-size: 30px;
+  padding: 0 ds.token("space-4");
+  margin: 0;
+  background: transparent;
+}
+
+#{-on("main_ui_shortcuts__command-name")} {
+  @include ds.type("body");
+
+  color: ds.token("text-body");
+}
+
+#{-on("main_ui_shortcuts__key")} {
+  @include ds.type("value");
+
+  min-inline-size: 22px;
+  padding: 3px ds.token("space-8");
+  color: ds.token("text-primary");
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-xs");
+  text-transform: none;
+}
+
+#{-on("main_ui_shortcuts__section-title")} {
+  @include ds.type("label");
+
+  color: ds.token("text-secondary");
+}
+
+// ---- Colour picker: the Color / Token switch fills the top row -----------
+
+#{-on("main_ui_workspace_colorpicker__top-actions-right")} {
+  flex: 1;
+  align-items: center;
+}
+
+#{-on("main_ui_workspace_colorpicker__top-actions")} {
+  align-items: center;
+  block-size: 40px;
+  gap: ds.token("space-8");
 }
