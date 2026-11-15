@@ -7,15 +7,69 @@
 
 // Type styles of F1 · 07 ("Tipografi").
 $type-styles: (
-  "display": ("font-display", "size-32", "weight-bold", 1.15, -0.03em),
-  "title": ("font-display", "size-18", "weight-semibold", 1.25, -0.02em),
-  "panel-title": ("font-text", "size-13", "weight-semibold", 1.35, 0),
-  "body": ("font-text", "size-12", "weight-regular", 1.5, 0),
-  "body-lg": ("font-text", "size-14", "weight-regular", 1.5, 0),
-  "control": ("font-text", "size-13", "weight-medium", 1.2, 0),
-  "control-lg": ("font-text", "size-14", "weight-semibold", 1.2, 0),
-  "label": ("font-mono", "size-10", "weight-medium", 1.4, 0.06em),
-  "value": ("font-mono", "size-12", "weight-medium", 1.4, 0),
+  "display": (
+    "font-display",
+    "size-32",
+    "weight-bold",
+    1.15,
+    -0.03em,
+  ),
+  "title": (
+    "font-display",
+    "size-18",
+    "weight-semibold",
+    1.25,
+    -0.02em,
+  ),
+  "panel-title": (
+    "font-text",
+    "size-13",
+    "weight-semibold",
+    1.35,
+    0,
+  ),
+  "body": (
+    "font-text",
+    "size-12",
+    "weight-regular",
+    1.5,
+    0,
+  ),
+  "body-lg": (
+    "font-text",
+    "size-14",
+    "weight-regular",
+    1.5,
+    0,
+  ),
+  "control": (
+    "font-text",
+    "size-13",
+    "weight-medium",
+    1.2,
+    0,
+  ),
+  "control-lg": (
+    "font-text",
+    "size-14",
+    "weight-semibold",
+    1.2,
+    0,
+  ),
+  "label": (
+    "font-mono",
+    "size-10",
+    "weight-medium",
+    1.4,
+    0.06em,
+  ),
+  "value": (
+    "font-mono",
+    "size-12",
+    "weight-medium",
+    1.4,
+    0,
+  ),
 );
 
 @mixin type($style) {
