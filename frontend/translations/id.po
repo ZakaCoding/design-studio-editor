@@ -7499,3 +7499,6 @@ msgstr "Minta link baru"
 
 msgid "ds.used-link.login"
 msgstr "Masuk dengan password"
+# Design Studio (WP3)
+msgid "errors.save-failed"
+msgstr "Penyimpanan otomatis belum dapat dikonfirmasi. Biarkan tab ini terbuka: sebagian perubahan mungkin hanya ada di sini. Hentikan pengeditan dan hubungi dukungan sebelum memuat ulang. Pengeditan MCP dijeda."

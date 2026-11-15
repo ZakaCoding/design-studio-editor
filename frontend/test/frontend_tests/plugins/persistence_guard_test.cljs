@@ -6,6 +6,7 @@
 
 (ns frontend-tests.plugins.persistence-guard-test
   (:require
+   [app.plugins.api :as api]
    [app.plugins.persistence-guard :as pguard]
    [app.plugins.register :as r]
    [cljs.test :as t :include-macros true]))
@@ -376,3 +377,24 @@
       (with-redefs [pguard/instance healthy]
         (t/is (true? (r/check-permission r/mcp-plugin-id "content:write")))
         (t/is (= 1 @(:epoch healthy)))))))
+
+(t/deftest plugin-context-hook-feeds-the-app-guard
+  (let [^js context (api/create-context r/mcp-plugin-id)
+        desc        (js/Object.getOwnPropertyDescriptor context "$checkPersistence")
+        guard-for   (fn [status]
+                      (pguard/create {:state-fn (fn [] {:current-file-id "one"
+                                                        :persistence {:status status}})
+                                      :now-fn   (constantly now)}))]
+    (t/is (some? desc) "the context exposes $checkPersistence")
+    (t/is (false? (.-enumerable desc)) "and keeps it out of the plugin-visible keys")
+    (t/is (fn? (.-$checkPersistence context)))
+    (with-redefs [pguard/instance (guard-for :retrying)]
+      (t/is (= pguard/blocked
+               (thrown-message #((.-$checkPersistence context) "content:write")))
+            "a write permission reported by the runtime is refused while saving is unhealthy"))
+    (let [healthy (guard-for :saved)]
+      (with-redefs [pguard/instance healthy]
+        ((.-$checkPersistence context) pguard/runtime-ready-permission)
+        ((.-$checkPersistence context) "content:write")
+        (t/is (true? @(:runtime-ready healthy)))
+        (t/is (= 1 @(:epoch healthy)) "and counted as a write when saving is healthy")))))

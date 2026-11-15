@@ -31,9 +31,20 @@
 
 (log/set-level! :info)
 
+;; nginx caches `.js` for 7 days, so a browser can hold an older, unguarded
+;; `plugin.js` that reports success before the save. The query string keeps
+;; the persistence-guard generation (`ds-persistence`, bump it when the plugin
+;; contract changes) and the build's version tag (`v`, always fresh from
+;; index.html), so every new build fetches the guarded plugin. The runtime
+;; resolves it with `new URL(code, host)`, which keeps the query.
+(def ^:private plugin-code
+  (str "plugin.js?ds-persistence=v1"
+       (when-let [tag (not-empty (str cf/version-tag))]
+         (str "&v=" (js/encodeURIComponent tag)))))
+
 (def ^:private
   default-manifest
-  {:code "plugin.js"
+  {:code plugin-code
    :name "Penpot MCP Plugin"
    :version 2
    :plugin-id preg/mcp-plugin-id
