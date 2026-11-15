@@ -35,10 +35,13 @@ $edge: ws.$edge;
 }
 
 // The Design Studio headers are taller than upstream's (59 px instead of
-// 52 px on the left, 57 px instead of 48 px on the right), so every list
-// that upstream sizes from the window is that much shorter.
-$left-extra: 7;
-$right-extra: 9;
+// 52 px on the left, 57 px instead of 48 px on the right) and the tabs
+// start 9 px lower, so every list that upstream sizes from the window is
+// that much shorter.
+$left-header: 59px;
+$tabs-offset: 9px;
+$left-extra: 7 + 9;
+$right-extra: 9 + 9;
 
 // --- 1. Theme
 
@@ -107,6 +110,11 @@ $right-extra: 9;
     margin: $edge;
     block-size: calc(100vh - 2 * #{$edge});
     max-block-size: calc(100vh - 2 * #{$edge});
+  }
+
+  // Upstream gives the left header a fixed 52 px row.
+  #{ws.on("main_ui_workspace_sidebar__left-sidebar")} {
+    grid-template-rows: $left-header 1fr;
   }
 
   // The panels cannot clip (menus and dropdowns leave them), so the parts that
@@ -237,6 +245,17 @@ $panels: "#left-sidebar-aside, #right-sidebar-aside";
     font-weight: ds.token("weight-medium");
     letter-spacing: 0;
     text-transform: none;
+  }
+
+  // The tabs start 11 px under the header's line.
+  > *
+    > #{ws.on("main_ui_ds_layout_tab_switcher__tabs")}
+    > #{ws.on("main_ui_ds_layout_tab_switcher__padding-wrapper")},
+  > *
+    > *
+    > #{ws.on("main_ui_ds_layout_tab_switcher__tabs")}
+    > #{ws.on("main_ui_ds_layout_tab_switcher__padding-wrapper")} {
+    margin-block-start: $tabs-offset;
   }
 
   // One `bg.subtle` track with the selected tab as a raised chip in it.

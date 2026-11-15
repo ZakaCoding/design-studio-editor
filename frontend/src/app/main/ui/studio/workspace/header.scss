@@ -15,6 +15,10 @@ $chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' view
 .left-header {
   @include ds.root;
 
+  // Upstream's main menu places itself from this width (44 px less): under
+  // the file name, where its chevron is.
+  --left-sidebar-width: 96px;
+
   display: flex;
   align-items: center;
   gap: ds.token("space-8");
