@@ -66,3 +66,39 @@
   z-index: deprecated.$z-index-10;
   cursor: ew-resize;
 }
+
+// The layer list stays a Penpot function: a floating card, off by default.
+.layers-toggle {
+  @include ds.type("control");
+
+  position: absolute;
+  inset-block-start: deprecated.$s-76;
+  inset-inline-start: deprecated.$s-12;
+  block-size: deprecated.$s-36;
+  padding-inline: deprecated.$s-16;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  box-shadow: ds.token("elevation-control");
+  cursor: pointer;
+  z-index: deprecated.$z-index-2;
+}
+
+.layers-toggle-on {
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+}
+
+.layers-panel {
+  position: absolute;
+  inset-block: calc(deprecated.$s-76 + deprecated.$s-48) deprecated.$s-12;
+  inset-inline-start: deprecated.$s-12;
+  inline-size: 240px;
+  overflow: auto;
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-panel");
+  box-shadow: ds.token("elevation-panel");
+  z-index: deprecated.$z-index-2;
+}

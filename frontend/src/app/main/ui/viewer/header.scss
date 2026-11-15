@@ -35,7 +35,7 @@
   padding-inline: deprecated.$s-16;
   background: ds.token("bg-panel");
   border: 1px solid ds.token("border-default");
-  border-radius: ds.token("radius-panel");
+  border-radius: ds.token("radius-lg");
   box-shadow: ds.token("elevation-panel");
 }
 
@@ -181,6 +181,8 @@
 // SECTION BUTTONS
 .mode-zone {
   @extend %island;
+
+  padding-inline: deprecated.$s-8;
   @include deprecated.flex-row;
 
   gap: deprecated.$s-4;
@@ -192,10 +194,10 @@
   @include ds.type("control");
 
   appearance: none;
-  block-size: deprecated.$s-40;
-  padding-inline: deprecated.$s-20;
+  block-size: deprecated.$s-32;
+  padding-inline: deprecated.$s-16;
   border: 0;
-  border-radius: ds.token("radius-button");
+  border-radius: ds.token("radius-md");
   background: transparent;
   color: ds.token("text-secondary");
   cursor: pointer;
@@ -236,8 +238,6 @@
 }
 
 .fullscreen-btn {
-  display: none; // the zoom menu has full screen (F1 · 11 shows only zoom and share)
-
   @extend %button-tertiary;
   @include deprecated.flex-center;
 

@@ -15,7 +15,7 @@
 
 .head {
   flex: none;
-  padding: ds.token("space-20") ds.token("space-20") ds.token("space-16");
+  padding: 18px ds.token("space-20") 16px;
   border-block-end: 1px solid ds.token("border-default");
 }
 
@@ -59,6 +59,8 @@
   @include ds.type("label");
 
   margin: 0 0 ds.token("space-12");
+  font-size: 10px;
+  font-weight: 500;
   color: ds.token("text-secondary");
   text-transform: uppercase;
 }
@@ -85,7 +87,7 @@
 
 .geometry-value {
   margin: 0;
-  font: 500 13px/1.2 var(--ds-font-text);
+  font: 500 12px/1.2 var(--ds-font-text);
   color: ds.token("text-primary");
 }
 
@@ -128,7 +130,7 @@
 
 .mono {
   margin: 0;
-  font: 500 12px/1.4 var(--ds-font-mono);
+  font: 500 12px/1.4 var(--ds-font-text);
   color: ds.token("text-primary");
 }
 
@@ -183,7 +185,7 @@
 
 .code-pre {
   margin: 0;
-  max-block-size: 150px;
+  max-block-size: 132px;
   padding: ds.token("space-12") ds.token("space-16");
   overflow: auto;
   color: #e9e9ef;
@@ -224,13 +226,13 @@
 
   flex: 1;
   min-inline-size: 0;
-  block-size: 40px;
+  block-size: 32px;
   padding-inline: ds.token("space-12");
   border: 0;
-  border-radius: ds.token("radius-md");
+  border-radius: ds.token("radius-sm");
   background: ds.token("bg-subtle");
   color: ds.token("text-primary");
-  font-family: var(--ds-font-mono);
+  font-size: 12px;
 }
 
 .export-button {
@@ -239,9 +241,10 @@
   @include ds.type("control");
 
   flex: none;
-  block-size: 40px;
+  block-size: 32px;
   padding-inline: ds.token("space-20");
-  border-radius: ds.token("radius-md");
+  border-radius: ds.token("radius-sm");
+  font-size: 12px;
   background: ds.token("bg-inverse");
   color: ds.token("text-on-accent");
   font-weight: 600;
@@ -252,7 +255,7 @@
   display: flex;
   flex-direction: column;
   gap: ds.token("space-8");
-  padding: ds.token("space-16");
+  padding: 14px;
   background: ds.token("accent-subtle");
   border-radius: ds.token("radius-card");
 }
@@ -280,7 +283,8 @@
   @include ds.focusable;
   @include ds.type("control");
 
-  block-size: 40px;
+  block-size: 36px;
+  font-size: 12px;
   margin-block-start: ds.token("space-4");
   border-radius: ds.token("radius-pill");
   background: ds.token("accent-default");

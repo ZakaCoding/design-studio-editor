@@ -7814,3 +7814,6 @@ msgstr "Salin paket handoff"
 
 msgid "ds.viewer.inspect.all-properties"
 msgstr "Semua properti"
+msgid "ds.viewer.inspect.layers"
+msgstr "Layer"
+

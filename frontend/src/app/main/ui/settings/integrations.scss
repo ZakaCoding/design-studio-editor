@@ -107,13 +107,13 @@
 .ds-head {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-s);
+  gap: 6px;
 }
 
 .ds-title {
   margin: 0;
   color: var(--ds-text-primary);
-  font: 700 32px/1.15 var(--ds-font-display);
+  font: 700 30px/1.2 var(--ds-font-display);
   letter-spacing: -0.03em;
 }
 

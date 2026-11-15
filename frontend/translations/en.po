@@ -11105,3 +11105,6 @@ msgstr "Copy handoff package"
 
 msgid "ds.viewer.inspect.all-properties"
 msgstr "All properties"
+msgid "ds.viewer.inspect.layers"
+msgstr "Layers"
+

@@ -48,8 +48,8 @@
 .section-title {
   @include ds.type("panel-title");
 
-  margin: 0 0 ds.token("space-16");
-  font-size: 16px;
+  margin: 0 0 14px;
+  font-size: 15px;
   color: ds.token("text-primary");
 }
 
@@ -59,10 +59,10 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: ds.token("space-16");
-  padding: ds.token("space-20") ds.token("space-24") ds.token("space-24");
+  padding: 22px ds.token("space-24");
   background: ds.token("status-success-bg");
   border: 1px solid ds.token("status-success-border");
-  border-radius: ds.token("radius-card");
+  border-radius: ds.token("radius-xl");
 }
 
 .switch-card-off {
@@ -80,12 +80,14 @@
   @include ds.type("panel-title");
 
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   color: ds.token("text-primary");
 }
 
 .switch-state {
-  @include ds.type("body-lg");
+  @include ds.type("body");
+
+  font-size: 13px;
 
   margin: 0;
 
@@ -118,8 +120,8 @@
 
   flex: none;
   position: relative;
-  inline-size: 52px;
-  block-size: 28px;
+  inline-size: 40px;
+  block-size: 24px;
   border-radius: ds.token("radius-pill");
   background: ds.token("border-strong");
   cursor: pointer;
@@ -136,10 +138,10 @@
 
 .switch-knob {
   position: absolute;
-  inset-block-start: 3px;
-  inset-inline-start: 3px;
-  inline-size: 22px;
-  block-size: 22px;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  inline-size: 20px;
+  block-size: 20px;
   border-radius: 50%;
   background: ds.token("bg-panel");
   box-shadow: ds.token("shadow-raised");
@@ -147,7 +149,7 @@
 }
 
 .switch-on .switch-knob {
-  inset-inline-start: 27px;
+  inset-inline-start: 18px;
 }
 
 // Apps
@@ -164,7 +166,8 @@
   display: flex;
   align-items: center;
   gap: ds.token("space-12");
-  padding: ds.token("space-16") ds.token("space-20") ds.token("space-16") ds.token("space-16");
+  padding: 0 ds.token("space-20");
+  min-block-size: 64px;
   background: ds.token("bg-panel");
   border: 1px solid ds.token("border-strong");
   border-radius: ds.token("radius-card");
@@ -221,9 +224,10 @@
   flex: none;
   min-inline-size: 140px;
   padding: ds.token("space-8") ds.token("space-12");
-  border-radius: ds.token("radius-sm");
+  border-radius: ds.token("radius-md");
   background: ds.token("bg-subtle");
   color: ds.token("text-primary");
+  font-size: 12px;
 }
 
 .revoke {
@@ -243,7 +247,7 @@
   display: flex;
   flex-direction: column;
   gap: ds.token("space-12");
-  margin-block-start: ds.token("space-16");
+  margin-block-start: ds.token("space-8");
 }
 
 .add-button {
@@ -305,9 +309,9 @@
   display: flex;
   align-items: flex-start;
   gap: ds.token("space-12");
-  padding: ds.token("space-20") ds.token("space-24") ds.token("space-24");
+  padding: 22px ds.token("space-24");
   background: ds.token("accent-subtle");
-  border-radius: ds.token("radius-card");
+  border-radius: ds.token("radius-xl");
   color: ds.token("accent-text-strong");
 }
 
@@ -359,8 +363,8 @@
   inline-size: min(100%, 540px);
   block-size: 6px;
   margin-block-start: ds.token("space-12");
-  border-radius: ds.token("radius-pill");
-  background: #dcdcf6;
+  border-radius: 3px;
+  background: #d9d9f5;
   overflow: hidden;
 }
 
@@ -376,7 +380,9 @@
   display: flex;
   align-items: flex-start;
   gap: ds.token("space-12");
-  padding: ds.token("space-16") ds.token("space-20");
+  align-items: center;
+  padding: 0 ds.token("space-20");
+  min-block-size: 64px;
   background: ds.token("bg-subtle");
   border-radius: ds.token("radius-card");
 }
