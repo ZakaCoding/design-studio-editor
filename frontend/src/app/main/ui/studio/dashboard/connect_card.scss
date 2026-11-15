@@ -130,6 +130,7 @@
 }
 
 .step-title {
+  padding: 0;
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
@@ -285,11 +286,15 @@
   gap: ds.token("space-12") ds.token("space-16");
 }
 
+// Three choices of 100 px, 8 px apart. The waiting line may reach into the
+// gap to the address, as on the board (320 px over 316).
 .apps {
   flex: none;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: start;
   gap: ds.token("space-12");
+  width: 316px;
   max-width: 100%;
 }
 
@@ -351,6 +356,8 @@
 .link {
   flex: 1 1 240px;
   display: grid;
+  // The address is one long word: the column must not grow with it.
+  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
   min-width: 0;
 }
@@ -440,6 +447,7 @@
   font-size: ds.token("size-11");
   font-weight: ds.token("weight-medium");
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .waiting-dot {
