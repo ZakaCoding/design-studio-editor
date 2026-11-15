@@ -101,9 +101,10 @@
         hide-ui?    (contains? layout :hide-ui)
         ready?      (some? page-id)
 
-        ;; Width class of the last run of the rule, and whether the rule
-        ;; itself collapsed Layers.
-        prev-ref    (mf/use-ref nil)
+        ;; Whether the width rules ask for the Layers rail, what they asked
+        ;; last time, and whether the rule itself collapsed Layers.
+        rail?       (state/rail? width-class craft-open?)
+        was-ref     (mf/use-ref false)
         auto-ref    (mf/use-ref false)
 
         mount-props
@@ -128,13 +129,13 @@
       (when-not ^boolean collapsed?
         (mf/set-ref-val! auto-ref false)))
 
-    (mf/with-effect [width-class ready?]
+    (mf/with-effect [rail? ready?]
       (when ^boolean ready?
-        (let [action (state/layers-action {:from (mf/ref-val prev-ref)
-                                           :to width-class
+        (let [action (state/layers-action {:was-rail? (mf/ref-val was-ref)
+                                           :rail? rail?
                                            :collapsed? collapsed?
                                            :auto? (mf/ref-val auto-ref)})]
-          (mf/set-ref-val! prev-ref width-class)
+          (mf/set-ref-val! was-ref rail?)
           (case action
             :collapse
             (do
@@ -147,15 +148,6 @@
               (st/emit! (dw/remove-layout-flag :collapse-left-sidebar)))
 
             nil))))
-
-    ;; Craft opened at the rail widths: Layers makes room.
-    (mf/with-effect [craft-open? width-class ready?]
-      (when (and ^boolean ready?
-                 (= :collapse (state/craft-action {:width-class width-class
-                                                   :craft-open? craft-open?
-                                                   :collapsed? collapsed?})))
-        (mf/set-ref-val! auto-ref true)
-        (st/emit! (dw/toggle-layout-flag :collapse-left-sidebar :force? true))))
 
     [:*
      ;; Mount point `viewport-overlay`: covers the canvas area, ignores
