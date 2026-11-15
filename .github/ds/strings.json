@@ -1,0 +1,138 @@
+{
+ "penpot": "2.18.7",
+ "note": "old = exact JSON literal in js/translation.<lang>.js of penpotapp/frontend:2.18.7 (null = key absent, injected at the top so the stock English fallback is not used).",
+ "strings": {
+  "en": {
+   "not-found.login.free": {
+    "old": "Penpot is the free and open-source design tool for collaboration between Design and Code",
+    "new": "Design Studio: a private design workspace on the open-source Penpot engine."
+   },
+   "not-found.login.start-using": {
+    "old": "And start using Penpot in seconds!",
+    "new": "Sign in with your ZakaCoding ID to continue."
+   },
+   "not-found.no-permission.go-dashboard": {
+    "old": "Go to Personal Projects",
+    "new": "Go to your Studio"
+   },
+   "subscription.labels": {
+    "old": "Subscription",
+    "new": "Design Studio Plans"
+   },
+   "workspace.header.menu.option.power-up": {
+    "old": "Power up your plan",
+    "new": "Design Studio Plans"
+   },
+   "subscription.workspace.header.menu.option.power-up": {
+    "old": "Power up your plan",
+    "new": "Design Studio Plans"
+   },
+   "subscription.settings.member-since": {
+    "old": "Penpot member since: %s",
+    "new": "Member since: %s"
+   },
+   "subscription.settings.other-plans": {
+    "old": "Other penpot plans",
+    "new": "Other plans"
+   },
+   "integrations.info.mcp-server": {
+    "old": "The Penpot MCP Server enables MCP clients to interact directly with Penpot design files.",
+    "new": "The Design Studio MCP server lets your AI assistant work directly with your design files."
+   },
+   "integrations.mcp-server.description": {
+    "old": "The Penpot MCP Server enables MCP clients to interact directly with Penpot design files.",
+    "new": "The Design Studio MCP server lets your AI assistant work directly with your design files."
+   },
+   "integrations.mcp-server.mcp-keys.info": {
+    "old": "This is the server url you'll need to configure your MCP client in order to connect it to the Penpot MCP server.",
+    "new": "This is the server URL your MCP client needs to connect to the Design Studio MCP server."
+   },
+   "integrations.mcp-server.mcp-keys.help": {
+    "old": "How to configure MCP clients",
+    "new": "How to connect your AI assistant"
+   },
+   "common.share-link.all-users": {
+    "old": "All Penpot users",
+    "new": "All Design Studio members"
+   },
+   "errors.save-still-retrying": {
+    "old": "Your changes are not saved yet because Penpot cannot reach the server. They are kept, and Penpot will keep trying to save them. Keep this tab open until they are saved.",
+    "new": "Your changes are not saved yet because Design Studio cannot reach the server. They are kept, and Design Studio will keep trying to save them. Keep this tab open until they are saved."
+   }
+  },
+  "id": {
+   "not-found.login.free": {
+    "old": "Penpkt adalah alat bebas dan bersumber terbuka untuk kolaborasi dengan Desain dan Kode",
+    "new": "Design Studio: ruang desain privat di atas mesin Penpot sumber terbuka."
+   },
+   "not-found.login.start-using": {
+    "old": "Dan mulai menggunakan Penpot dalam hitungan detik!",
+    "new": "Masuk dengan ZakaCoding ID untuk melanjutkan."
+   },
+   "dashboard.your-penpot": {
+    "old": "Penpot Anda",
+    "new": "Studio Anda"
+   },
+   "dashboard.default-team-name": {
+    "old": "Penpot Anda",
+    "new": "Proyek Pribadi"
+   },
+   "not-found.no-permission.go-dashboard": {
+    "old": "Pergi ke Penpot Anda",
+    "new": "Pergi ke Studio Anda"
+   },
+   "subscription.labels": {
+    "old": null,
+    "new": "Paket Design Studio"
+   },
+   "workspace.header.menu.option.power-up": {
+    "old": "Tingkatkan paket Anda",
+    "new": "Paket Design Studio"
+   },
+   "subscription.workspace.header.menu.option.power-up": {
+    "old": null,
+    "new": "Paket Design Studio"
+   },
+   "subscription.settings.member-since": {
+    "old": null,
+    "new": "Anggota sejak: %s"
+   },
+   "subscription.settings.other-plans": {
+    "old": null,
+    "new": "Paket lain"
+   },
+   "integrations.info.mcp-server": {
+    "old": null,
+    "new": "Server MCP Design Studio memungkinkan asisten AI-mu bekerja langsung dengan berkas desainmu."
+   },
+   "integrations.mcp-server.description": {
+    "old": null,
+    "new": "Server MCP Design Studio memungkinkan asisten AI-mu bekerja langsung dengan berkas desainmu."
+   },
+   "integrations.mcp-server.mcp-keys.info": {
+    "old": null,
+    "new": "Ini URL server yang dibutuhkan klien MCP-mu untuk terhubung ke server MCP Design Studio."
+   },
+   "integrations.mcp-server.mcp-keys.help": {
+    "old": null,
+    "new": "Cara menghubungkan asisten AI-mu"
+   },
+   "common.share-link.all-users": {
+    "old": "Semua pengguna Penpot",
+    "new": "Semua anggota Design Studio"
+   },
+   "errors.save-retrying": {
+    "old": null,
+    "new": "Koneksi terputus. Mencoba menyimpan perubahan Anda lagi."
+   },
+   "errors.save-still-retrying": {
+    "old": null,
+    "new": "Perubahan Anda belum tersimpan karena Design Studio tidak dapat menjangkau server. Perubahan tetap ada di tab ini, dan Design Studio akan terus mencoba menyimpannya. Biarkan tab ini terbuka sampai tersimpan."
+   },
+   "workspace.header.retrying": {
+    "old": null,
+    "new": "Mencoba menyimpan lagi"
+   }
+  }
+ }
+}
