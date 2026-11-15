@@ -5,7 +5,6 @@
 ;; Copyright (c) KALEIDOS INC Sucursal en España SL
 
 (ns app.main.ui.auth.recovery-request
-  (:require-macros [app.main.style :as stl])
   (:require
    [app.common.schema :as sm]
    [app.main.data.notifications :as ntf]

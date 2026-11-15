@@ -5,7 +5,6 @@
 ;; Copyright (c) KALEIDOS INC Sucursal en España SL
 
 (ns app.main.ui.auth
-  (:require-macros [app.main.style :as stl])
   (:require
    [app.common.data.macros :as dm]
    [app.main.data.auth :as da]
@@ -14,8 +13,6 @@
    [app.main.ui.auth.recovery :refer [recovery-page*]]
    [app.main.ui.auth.recovery-request :refer [recovery-request-page*]]
    [app.main.ui.auth.register :refer [register-page* register-success-page* register-validate-page* terms-service-privacy-policy*]]
-   [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*] :as raw-svg]
-   [app.main.ui.ds.foundations.typography.heading :refer [heading*]]
    [app.main.ui.studio.auth :as sa]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]

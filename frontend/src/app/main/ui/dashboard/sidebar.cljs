@@ -86,9 +86,6 @@
 (def ^:private exit-icon
   (deprecated-icon/icon-xref :exit (stl/css :exit-icon)))
 
-(def ^:private add-organization-icon
-  (deprecated-icon/icon-xref :add (stl/css :add-organization-icon)))
-
 (def ^:private arrow-up-right-icon
   (deprecated-icon/icon-xref :arrow-up-right (stl/css :arrow-up-right-icon)))
 
@@ -320,7 +317,7 @@
                              (uuid/parse))]
              (st/emit! (dcm/go-to-dashboard-recent :team-id team-id)))))
 
-        on-create-organization-click
+        _on-create-organization-click
         (mf/use-fn
          (mf/deps account-age-days profile subscription-type team-count)
          (fn []
@@ -795,7 +792,7 @@
         close-organizations-menu
         (mf/use-fn #(reset! show-organizations-menu* false))
 
-        on-create-organization-click
+        _on-create-organization-click
         (mf/use-fn
          (mf/deps account-age-days profile subscription-type team-count)
          (fn []
