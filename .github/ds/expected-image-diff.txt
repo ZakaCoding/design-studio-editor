@@ -1,0 +1,9 @@
+# Web-root paths (glob, relative to /var/www/app) that may differ from the
+# official image on purpose. One pattern per line; keep a reason comment.
+# Read by compare-frontend-images.py --allow. Everything else must match.
+
+# F2 WP1: brand head tags (title, description, og/twitter, favicon) and the
+# one Craft loader tag (/studio/shell/loader.js) in index.mustache.
+index.html
+# F2 WP1: the Design Studio favicon.
+images/favicon.svg
