@@ -12,10 +12,13 @@
    [app.common.uri :as u]
    [app.config :as cf]
    [app.main.broadcast :as mbc]
+   [app.main.data.persistence :as dps]
    [app.main.data.plugins :as dp]
    [app.main.data.profile :as du]
    [app.main.data.workspace :as-alias dw]
+   [app.main.errors :as errors]
    [app.main.store :as st]
+   [app.plugins.persistence-guard :as pguard]
    [app.plugins.register :as preg]
    [app.util.timers :as ts]
    [beicon.v2.core :as rx]
@@ -122,6 +125,43 @@
     (effect [_ _ _]
       (stop-reconnect-watcher!))))
 
+(def ^:private settle-timeout-ms
+  "How long an MCP task waits for its writes to be saved before it reports
+  an unconfirmed save. Shorter than the 120 s the MCP server waits for a
+  task, so the task still answers."
+  90000)
+
+(def ^:private persistence-ops
+  "The persistence operations `pguard/settle!` needs. They only use the
+  existing queue: one flush, one wait, one warning. Nothing is resent."
+  {:force-persist!
+   (fn []
+     (st/emit! ::dps/force-persist))
+
+   :wait-persisted!
+   (fn [on-saved on-failed]
+     (let [sub (->> (dps/wait-persisted-or-error settle-timeout-ms)
+                    (rx/subs! (fn [_] (on-saved))
+                              (fn [_] (on-failed))
+                              (fn [] (on-failed))))]
+       (fn [] (rx/dispose! sub))))
+
+   :warn!
+   (fn [cause]
+     (errors/flash-persistence cause))})
+
+(defn persistence-checkpoint
+  "Starts an MCP task. See `app.plugins.persistence-guard`."
+  []
+  (pguard/checkpoint))
+
+(defn settle-persistence
+  "Ends an MCP task: a promise that resolves once the writes made since
+  `checkpoint` are saved (or when there were none) and rejects when that
+  could not be confirmed."
+  [checkpoint]
+  (pguard/settle! checkpoint persistence-ops))
+
 (defn- init-mcp-plugin
   "Waits the plugin runtime and initializes the bundled MCP plugin."
   [{:keys [token]}]
@@ -136,7 +176,9 @@
                        (rx/filter (ptk/type? ::dw/finalize-workspace) stream)
                        (rx/filter (ptk/type? ::stop-mcp-plugin) stream))
 
-            extension #js {:getToken (constantly token)
+            extension #js {:persistenceCheckpoint persistence-checkpoint
+                           :settlePersistence settle-persistence
+                           :getToken (constantly token)
                            :getServerUrl #(str cf/mcp-ws-uri)
                            :setMcpStatus
                            (fn [status]
