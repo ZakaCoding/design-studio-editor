@@ -12,6 +12,8 @@
 //
 // Keyboard behaviour and markup are not touched.
 
+@use "sass:list";
+@use "sass:string";
 @use "studio/ds" as ds;
 
 // `[class~="a"][class~="a"]` for each name.
@@ -19,7 +21,7 @@
   $out: ();
 
   @each $n in $names {
-    $out: append($out, unquote('[class~="#{$n}"][class~="#{$n}"]'), comma);
+    $out: list.append($out, string.unquote('[class~="#{$n}"][class~="#{$n}"]'), comma);
   }
 
   @return $out;
