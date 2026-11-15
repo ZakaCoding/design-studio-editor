@@ -1,0 +1,32 @@
+// Design Studio (F4-B, F1 · 10). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-12");
+  max-inline-size: 640px;
+  margin-block-end: ds.token("space-24");
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-12");
+}
+
+.title {
+  @include ds.type("title");
+
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.text {
+  @include ds.type("body-lg");
+
+  margin: 0;
+  color: ds.token("text-body");
+}

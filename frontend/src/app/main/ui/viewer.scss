@@ -5,8 +5,11 @@
 // Copyright (c) KALEIDOS INC Sucursal en España SL
 
 @use "refactor/common-refactor.scss" as deprecated;
+@use "studio/ds" as ds;
 
 .viewer-layout {
+  @include ds.viewer-scope;
+
   height: 100vh;
   display: grid;
   grid-template-rows: deprecated.$s-48 auto;
@@ -38,6 +41,8 @@
 }
 
 .inspect-layout {
+  @include ds.viewer-scope;
+
   display: grid;
   grid-template-rows: deprecated.$s-48 auto;
   grid-template-columns: 1fr;

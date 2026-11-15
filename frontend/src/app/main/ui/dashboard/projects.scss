@@ -12,12 +12,13 @@
 @use "ds/z-index.scss" as *;
 @use "ds/mixins.scss" as *;
 @use "ds/_utils.scss" as *;
+@use "studio/ds" as ds;
 
 .dashboard-container {
   flex: 1 0 0;
   inline-size: 100%;
   margin-inline-end: var(--sp-l);
-  border-block-start: $b-1 solid var(--panel-border-color);
+  border-block-start: 1px solid ds.token("border-default");
   overflow-y: auto;
 }
 
@@ -42,7 +43,7 @@
 .dashboard-project-row {
   --actions-opacity: 0;
 
-  margin-block-end: var(--sp-xxl);
+  margin-block-end: ds.token("space-16");
   position: relative;
 
   &:hover,
@@ -71,7 +72,11 @@
   max-block-size: $sz-40;
   padding: var(--sp-s) var(--sp-s) var(--sp-s) var(--sp-l);
   margin-block-start: var(--sp-l);
-  border-radius: $br-4;
+  border-radius: ds.token("radius-control");
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+  }
 }
 
 .project-name-wrapper {
@@ -85,9 +90,9 @@
 
 .project-name {
   @include text-ellipsis;
-  @include t.use-typography("body-large");
+  @include ds.type("title");
 
-  color: var(--title-foreground-color-hover);
+  color: ds.token("text-primary");
   cursor: pointer;
   block-size: $sz-16;
   line-height: 0.8;
@@ -102,9 +107,9 @@
 
 .info,
 .recent-files-row-title-info {
-  @include t.use-typography("body-medium");
+  @include ds.type("body-lg");
 
-  color: var(--title-foreground-color);
+  color: ds.token("text-secondary");
 
   @media (width <= 760px) {
     display: none;
@@ -125,6 +130,7 @@
   inline-size: $sz-32;
   margin: 0 var(--sp-s);
   padding: var(--sp-s);
+  border-radius: ds.token("radius-control");
 }
 
 .add-icon,
@@ -144,9 +150,9 @@
 }
 
 .show-more {
-  --show-more-color: var(--button-secondary-foreground-color-rest);
+  --show-more-color: #{ds.token("text-secondary")};
 
-  @include t.use-typography("body-medium");
+  @include ds.type("control");
 
   border: none;
   background: none;
@@ -161,7 +167,7 @@
   color: var(--show-more-color);
 
   &:hover {
-    --show-more-color: var(--button-secondary-foreground-color-active);
+    --show-more-color: #{ds.token("accent-default")};
   }
 }
 
@@ -174,9 +180,9 @@
 
 // Team hero
 .team-hero {
-  background-color: var(--color-background-tertiary);
-  border-radius: $br-8;
-  border: none;
+  background-color: ds.token("bg-subtle");
+  border-radius: ds.token("radius-card");
+  border: 1px solid ds.token("border-default");
   display: flex;
   margin: var(--sp-l);
   padding: var(--sp-s);
@@ -202,8 +208,10 @@
 }
 
 .title {
-  color: var(--color-foreground-primary);
-  font-size: px2rem(24);
+  @include ds.type("title");
+
+  color: ds.token("text-primary");
+  font-size: ds.token("size-24");
 }
 
 .info {
@@ -211,12 +219,12 @@
   font-size: $sz-16;
 
   span {
-    color: var(--color-foreground-secondary);
+    color: ds.token("text-secondary");
     display: block;
   }
 
   a {
-    color: var(--color-accent-primary);
+    color: ds.token("accent-text-strong");
   }
 
   padding: var(--sp-s) 0;

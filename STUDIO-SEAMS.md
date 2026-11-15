@@ -85,7 +85,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui.cljs` | Mounts `studio.widgets/global-widgets*` once in `app` (refusal card, first steps after sign-up, MCP tip and guide) | - | WP6 |
 | `frontend/src/app/main/errors.cljs` | `handle-error :restriction` announces Design Studio guard refusal codes instead of reporting them as unhandled; WP3: the save-failed toast no longer offers "Reload page" (reloading can drop edits that exist only in the tab; the new text says to keep it open). Removes `reload-page-link` | - | WP6, WP3 |
 | `frontend/src/app/main/repo.cljs` | `handle-response` reads the guard's JSON refusal (413/429/503/507, written by the proxy, not the backend) and raises it as `:restriction` with our code; without it these answers become generic `:validation`/`:rate-limit`/`:service-unavailable` errors and never reach the `:restriction` handler | - | WP6 |
-| `frontend/src/app/main/ui/settings/integrations.cljs` | `data-testid` on the MCP switch, the copy button and the key windows, so the MCP guide points at them without CSS-module class names | - | WP6 |
+| `frontend/src/app/main/ui/settings/integrations.cljs` | `data-testid` on the MCP switch, the copy button and the key windows, so the MCP guide points at them without CSS-module class names; F4-B (F1 · 10): mounts the `ai-access-card*` above the MCP section | - | WP6, F4-B |
 | `frontend/src/app/main/ui/auth.cljs` | WP5 (L2, L3, L7): auth pages render inside `studio.auth/shell*` (F1 · 08) instead of Penpot's logo and illustration; register routes leave for /start/signup with open sign-up | - | WP5 |
 | `frontend/src/app/main/ui/auth/login.cljs` | WP5 (L2, L3): markup only. Form first, ZakaCoding ID (OIDC) button below, sign-up link to /start/signup; form state, events and redirects unchanged | - | WP5 |
 | `frontend/src/app/main/ui/auth/recovery_request.cljs` | WP5 (L5): markup only. Own title, 15-minute note with open sign-up, DS "mail sent" card | - | WP5 |
@@ -103,6 +103,12 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/workspace/colorpicker.cljs` | F3-C (F1 · 13): one require and one element, the token suggestions row (`app.main.ui.studio.workspace.token-suggestions-ui`) under the colour inputs | - | F3-C |
 | `frontend/src/app/main/ui/dashboard.cljs` | F4-A (F1 · 12): the require of `projects-section*` is replaced by `studio.dashboard.home/home*` under the same name. `home*` renders `projects-section*` with the same props, or the first-design page when the team has no project and no file. Require lines only, the body is untouched | - | F4-A |
 | `frontend/src/app/main/ui/dashboard/projects.cljs` | F4-A (F1 · 03): mounts `studio.dashboard.connect-card/home-card*` (the two-step "Connect AI" card and its status bar) as the first row of the projects scroll area. One require, one element | - | F4-A |
+| `frontend/src/app/main/ui/viewer.scss` | F4-B (F1 · 11): `.viewer-layout` and `.inspect-layout` include `ds.viewer-scope`, which maps the theme variables the viewer reads to `ds/light` tokens in that subtree only | - | F4-B |
+| `frontend/src/app/main/ui/viewer/header.scss` | F4-B (F1 · 11): viewer header and menus read DS tokens | - | F4-B |
+| `frontend/src/app/main/ui/viewer/inspect.scss` | F4-B (F1 · 11): Inspect sidebar container reads DS tokens | - | F4-B |
+| `frontend/src/app/main/ui/viewer/login.cljs` | F4-B (F1 · 11): share-link sign-in uses the Design Studio dialog and lockup (`studio/auth` modal*), sign-up link goes to /start/signup; Penpot register sections removed | - | F4-B |
+| `frontend/src/app/main/ui/viewer/login.scss` | F4-B (F1 · 11): keeps only the scrim, the dialog is `studio/auth` | - | F4-B |
+| `frontend/src/app/main/ui/dashboard/projects.scss` | F4-B (F1 · 14): Projects view restyled with DS tokens (project rows, show-more, team hero) | - | F4-B |
 <!-- seams:end -->
 
 ## Mount points (F3)

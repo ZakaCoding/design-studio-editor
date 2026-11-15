@@ -31,6 +31,7 @@
    [app.main.ui.ds.notifications.shared.notification-pill :refer [notification-pill*]]
    [app.main.ui.ds.tooltip :refer [tooltip*]]
    [app.main.ui.forms :as fc]
+   [app.main.ui.studio.ai-access :refer [ai-access-card*]]
    [app.util.clipboard :as clipboard]
    [app.util.dom :as dom]
    [app.util.forms :as fm]
@@ -652,6 +653,9 @@
                    :class (stl/css :color-primary)
                    :id "integrations-section-title"}
       (tr "integrations.title")]
+
+     (when ^boolean mcp-enabled?
+       [:> ai-access-card* {}])
 
      (when ^boolean mcp-enabled?
        [:> mcp-server-section* props])

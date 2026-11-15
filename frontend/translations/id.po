@@ -7681,3 +7681,30 @@ msgstr "Editor dan akses AI gratis. Craft, partner desain AI kami, ada di paket 
 
 msgid "ds.home.plan.cta"
 msgstr "Lihat paket"
+# Design Studio (F4-B)
+msgid "ds.ai-access.title"
+msgstr "Akses AI"
+
+msgid "ds.ai-access.connected"
+msgstr "Terhubung"
+
+msgid "ds.ai-access.not-connected"
+msgstr "Belum terhubung"
+
+msgid "ds.ai-access.unavailable"
+msgstr "Tidak tersedia"
+
+msgid "ds.ai-access.connected-text"
+msgstr "Asisten AI Anda terhubung ke editor ini. Anda bisa menjeda atau mengubah sambungan kapan saja."
+
+msgid "ds.ai-access.not-connected-text"
+msgstr "Hubungkan asisten AI Anda untuk mendesain di kanvas bersamanya. Hanya dua langkah, tanpa kunci yang perlu disalin."
+
+msgid "ds.ai-access.unavailable-text"
+msgstr "Akses AI belum tersedia untuk akun ini saat ini. Buka Design Studio untuk melihat alasannya."
+
+msgid "ds.ai-access.manage"
+msgstr "Kelola akses AI"
+
+msgid "ds.ai-access.connect"
+msgstr "Hubungkan AI"

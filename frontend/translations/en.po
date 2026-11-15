@@ -10972,3 +10972,30 @@ msgstr "The editor and AI access are free. Craft, our AI design partner, comes w
 
 msgid "ds.home.plan.cta"
 msgstr "See plans"
+# Design Studio (F4-B)
+msgid "ds.ai-access.title"
+msgstr "AI access"
+
+msgid "ds.ai-access.connected"
+msgstr "Connected"
+
+msgid "ds.ai-access.not-connected"
+msgstr "Not connected"
+
+msgid "ds.ai-access.unavailable"
+msgstr "Unavailable"
+
+msgid "ds.ai-access.connected-text"
+msgstr "Your AI assistant is connected to this editor. You can pause or change the connection at any time."
+
+msgid "ds.ai-access.not-connected-text"
+msgstr "Connect your AI assistant to design on the canvas with it. It takes two steps and no key to copy."
+
+msgid "ds.ai-access.unavailable-text"
+msgstr "AI access is not available for this account right now. Open Design Studio to see why."
+
+msgid "ds.ai-access.manage"
+msgstr "Manage AI access"
+
+msgid "ds.ai-access.connect"
+msgstr "Connect AI"

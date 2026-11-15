@@ -5,6 +5,7 @@
 // Copyright (c) KALEIDOS INC Sucursal en España SL
 
 @use "refactor/common-refactor.scss" as deprecated;
+@use "studio/ds" as ds;
 
 .viewer-header {
   position: absolute;
@@ -19,7 +20,8 @@
   width: 100vw;
   padding: deprecated.$s-8 deprecated.$s-12;
   transition: transform 400ms ease 300ms;
-  background-color: var(--panel-background-color);
+  background-color: ds.token("bg-panel");
+  border-block-end: 1px solid ds.token("border-default");
 }
 
 // FILE NAVIGATION
@@ -52,9 +54,9 @@
 }
 
 .project-name {
-  @include deprecated.uppercase-title-typography;
+  @include ds.type("label");
 
-  color: var(--title-foreground-color);
+  color: ds.token("text-secondary");
 }
 
 .sitemap-text {
@@ -202,6 +204,8 @@
 .share-btn {
   @extend %button-primary;
 
+  border-radius: ds.token("radius-button");
+  font-weight: var(--ds-weight-semibold);
   height: deprecated.$s-32;
   min-width: deprecated.$s-72;
   margin-left: deprecated.$s-4;
@@ -262,6 +266,8 @@
 .dropdown {
   @extend %menu-dropdown;
 
+  border-radius: ds.token("radius-card");
+  box-shadow: ds.token("elevation-popover");
   right: deprecated.$s-2;
   top: calc(deprecated.$s-2 + deprecated.$s-48);
   width: deprecated.$s-272;
