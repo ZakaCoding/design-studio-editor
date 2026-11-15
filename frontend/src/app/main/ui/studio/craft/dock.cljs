@@ -19,7 +19,8 @@
    [app.util.i18n :refer [tr]]
    [rumext.v2 :as mf]))
 
-(def ^:private dock-id "ds-craft-dock")
+;; Not `ds-craft-dock`: that is the id of the workspace shell's mount point.
+(def ^:private dock-id "ds-craft-dock-panel")
 (def ^:private right-selector "[data-testid=\"right-sidebar\"]")
 
 (defn- stored-width

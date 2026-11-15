@@ -50,17 +50,26 @@
 (mf/defc craft*
   "Props: `section` (the route's name)."
   [{:keys [section]}]
-  (let [craft? (use-access)
+  (let [craft?     (use-access)
+        workspace? (= section :workspace)
         ;; The page is there only after the workspace, and with it the
         ;; shell when this build has one, has been mounted.
-        ready? (some? (mf/deref refs/workspace-page))]
+        ready?     (some? (mf/deref refs/workspace-page))
+        ;; True once it is known that this component shows the dock itself.
+        ;; It stays so while the page changes, so the panel is not reloaded.
+        own*       (mf/use-state false)]
 
     ;; Says to Studio's ds-craft.js that this editor has a dock of its own,
     ;; before the dock is on screen, so it never adds its launcher.
     (mf/with-effect []
       (.setAttribute (.-documentElement js/document) "data-ds-craft-dock" "1"))
 
-    (when (and craft? ready? (= section :workspace) (not (shell?)))
+    (mf/with-effect [workspace? ready?]
+      (cond
+        (not workspace?) (reset! own* false)
+        ready?           (reset! own* (not (shell?)))))
+
+    (when (and craft? workspace? (deref own*))
       [:*
        [:> dock/craft-dock* {}]
        [:> quick-prompt* {}]])))
