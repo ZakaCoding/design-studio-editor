@@ -35,7 +35,10 @@ const STYLE = `
 /** Install the touch layer. Safe to call more than once. */
 export function start() {
   'use strict';
-  if (window.__dsTouch) return;
+  // Bracket access on purpose: Closure's advanced mode renames `window.__dsTouch`
+  // but not the string below, and then the second viewport mount (every page
+  // switch) threw "Cannot redefine property" and crashed the viewport.
+  if (window['__dsTouch']) return;
   const style = document.createElement('style');
   style.setAttribute('data-ds-touch', '');
   style.textContent = STYLE;

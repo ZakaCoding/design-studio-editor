@@ -54,6 +54,9 @@ jobs:
           pnpm run check-fmt:scss
           pnpm run lint:clj
 
+      - name: Studio JS tests (touch layer)
+        run: node --test frontend/src/app/main/ui/studio/touch.test.mjs
+
       - name: Unit tests (builds the render WASM, lints SCSS, runs the CLJS suite)
         working-directory: ./frontend
         run: ./scripts/test
