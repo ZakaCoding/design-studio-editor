@@ -42,4 +42,4 @@
                     :aria-hidden "true"}]
             [:span {:class (stl/css :name)} (:name token)]
             (when exact?
-              [:span {:class (stl/css :exact)} (tr "ds.colorpicker.exact-match")])])]])))
+              [:span {:class (stl/css :exact)} (tr "ds.colorpicker.exact-match")])]])]])))
