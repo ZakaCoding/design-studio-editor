@@ -200,6 +200,7 @@
   justify-content: center;
   gap: ds.token("space-12");
   min-height: 268px;
+
   // The board sets the group a little above and right of the centre
   // (art from 348 px of 1112, title 62 px under the top edge).
   padding: ds.token("space-32") ds.token("space-24") 62px;
