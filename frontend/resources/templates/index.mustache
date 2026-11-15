@@ -3,19 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Penpot | Full-stack design</title>
+    <title>Design Studio</title>
 
-    <meta name="description" content="Penpot is the open-source design platform for teams that build digital products at scale.">
+    <meta name="description" content="Design in your browser for free, with a free MCP server for Claude, Codex and other AI apps. No monthly cap. Or let Craft turn one prompt into a design.">
     <meta property="og:locale" content="en_US">
-    <meta property="og:title" content="Penpot | Full-stack design">
-    <meta property="og:description" content="Penpot is the open-source design platform for teams that build digital products at scale.">
-    <meta property="og:image" content="/images/penpot-link-preview.png">
-    <meta name="twitter:title" content="Penpot | Full-stack design">
+    <meta property="og:title" content="Design Studio: free design tool with MCP and AI">
+    <meta property="og:description" content="Design in your browser for free, with a free MCP server for Claude, Codex and other AI apps. No monthly cap. Or let Craft turn one prompt into a design.">
+    <meta property="og:image" content="https://design.zakacoding.dev/start/assets/og-image.png?v=20261109">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Design Studio: Design with Craft. Bring your own AI. A free design canvas with a free MCP server.">
+    <meta property="og:url" content="https://design.zakacoding.dev/start">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Design Studio by ZakaCoding">
+    <meta name="twitter:title" content="Design Studio: free design tool with MCP and AI">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="Penpot is the open-source design platform for teams that build digital products at scale.">
-    <meta name="twitter:image" content="/images/penpot-link-preview.png">
-    <meta name="twitter:site" content="@penpotapp">
-    <meta name="twitter:creator" content="@penpotapp">
+    <meta name="twitter:description" content="Design in your browser for free, with a free MCP server for Claude, Codex and other AI apps. No monthly cap. Or let Craft turn one prompt into a design.">
+    <meta name="twitter:image" content="https://design.zakacoding.dev/start/assets/og-image.png?v=20261109">
+    <meta name="twitter:image:alt" content="Design Studio: Design with Craft. Bring your own AI. A free design canvas with a free MCP server.">
     <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
     <link id="theme" href="css/main.css?version={{& version_tag}}" rel="stylesheet" type="text/css" />
     <link href="css/ui.css?version={{& version_tag}}" rel="stylesheet" type="text/css" />
@@ -23,7 +29,7 @@
     <link href="css/debug.css?version={{& version_tag}}" rel="stylesheet" type="text/css" />
     {{/isDebug}}
 
-    <link rel="icon" href="images/favicon.png?version={{& version_tag }}" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg?version={{& version_tag }}" />
 
     <script type="importmap">{{& manifest.importmap }}</script>
 
@@ -56,5 +62,6 @@
       init({defaultTranslations});
     </script>
     {{/manifest}}
+    <script defer src="/studio/shell/loader.js"></script>
   </body>
 </html>
