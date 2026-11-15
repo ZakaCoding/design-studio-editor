@@ -217,8 +217,7 @@
          [:> icons-preview*])
 
        :debug-playground
-       (when *assert*
-         [:> playground*])
+       [:> playground*]
 
        (:dashboard-search
         :dashboard-recent

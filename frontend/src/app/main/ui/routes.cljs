@@ -60,8 +60,7 @@
    (when *assert*
      ["/debug/icons-preview" :debug-icons-preview])
 
-   (when *assert*
-     ["/debug/playground" :debug-playground])
+   ["/debug/playground" :debug-playground]
 
    ;; Used for export
    ["/render-sprite/:file-id" :render-sprite]

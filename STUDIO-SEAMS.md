@@ -50,4 +50,6 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
 | `frontend/src/app/main/ui/debug/playground.cljs` | Mounts the DS showcase (`app.main.ui.studio.ds.showcase/showcase*`) on the existing debug route `#/debug/playground`, so the release build compiles every DS base component. One require and one element. | - | F3/F4 foundation |
+| `frontend/src/app/main/ui/routes.cljs` | THROWAWAY BRANCH ONLY: debug route reachable in a release build | - | never merged |
+| `frontend/src/app/main/ui.cljs` | THROWAWAY BRANCH ONLY: debug route reachable in a release build | - | never merged |
 <!-- seams:end -->
