@@ -100,9 +100,10 @@
        [:li {:class (stl/css-case :current password?
                                   :settings-item true)
              :on-click go-settings-password}
-        [:span {:class (stl/css :element-title)} (if (and shell (ds-state/backup? shell))
-                                                  (tr "ds.settings.password-side")
-                                                  (tr "labels.password"))]]
+        [:span {:class (stl/css :element-title)}
+         (if (and shell (ds-state/backup? shell))
+           (tr "ds.settings.password-side")
+           (tr "labels.password"))]]
 
        [:li {:class (stl/css-case :current notifications?
                                   :settings-item true)
