@@ -10675,6 +10675,7 @@ msgid "ds.first-steps.welcome.craft"
 msgstr "Craft, our AI design partner, comes with a paid plan."
 
 msgid "ds.first-steps.welcome.plans"
+msgstr "See plans"
 
 msgid "ds.first-steps.welcome.ai"
 msgstr "Connect your AI assistant"
@@ -10781,6 +10782,7 @@ msgid "ds.recovery.sent.hint"
 msgstr "Open the link in that email to choose a new password. It works once. Not in your inbox? Check the Spam or Promotions folder."
 
 msgid "ds.recovery.new.password"
+msgstr "New password"
 
 msgid "ds.recovery.new.confirm"
 msgstr "Confirm password"

@@ -7188,8 +7188,10 @@ msgid "ds.settings.email-note"
 msgstr "Untuk mengganti email, tulis ke "
 
 msgid "ds.plans.title"
+msgstr "Paket Design Studio"
 
 msgid "ds.plans.menu"
+msgstr "Paket Design Studio"
 
 msgid "ds.plans.lead"
 msgstr "Design Studio gratis untuk mulai. Craft, partner desain AI kami, ada di paket Bulanan."
@@ -7304,6 +7306,7 @@ msgid "ds.refusal.storage-limit-reached.text"
 msgstr "Anda tetap bisa menyunting yang sudah ada. File, gambar, font, impor, dan salinan baru belum bisa ditambahkan sampai Anda menghapus file atau pindah ke paket berbayar. File yang dihapus perlu beberapa hari sebelum tidak lagi dihitung."
 
 msgid "ds.refusal.storage-limit-reached.link"
+msgstr "Lihat paket"
 
 msgid "ds.refusal.too-many-uploads.title"
 msgstr "Terlalu banyak unggahan"
@@ -7378,6 +7381,7 @@ msgid "ds.first-steps.welcome.craft"
 msgstr "Craft, partner desain AI kami, ada di paket berbayar."
 
 msgid "ds.first-steps.welcome.plans"
+msgstr "Lihat paket"
 
 msgid "ds.first-steps.welcome.ai"
 msgstr "Hubungkan asisten AI"
@@ -7484,6 +7488,7 @@ msgid "ds.recovery.sent.hint"
 msgstr "Buka link di email itu untuk membuat password baru. Link hanya bisa dipakai sekali. Tidak ada di kotak masuk? Cek folder Spam atau Promosi."
 
 msgid "ds.recovery.new.password"
+msgstr "Password baru"
 
 msgid "ds.recovery.new.confirm"
 msgstr "Ulangi password"
