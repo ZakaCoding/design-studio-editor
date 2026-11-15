@@ -132,7 +132,7 @@
   []
   [:div {:class (stl/css :divider)
          :role "separator"}
-   [:span {:class (stl/css :divider-text)} (tr "ds.signin.or")]])
+   [:span {:class (stl/css :divider-text)} (tr "ds.auth.or")]])
 
 ;; A text input bound to the surrounding `fm/form`, like `fm/input`:
 ;; same form state, same validation, same ids (`#email`, `#password`).
@@ -260,7 +260,7 @@
       [:svg {:viewBox "0 0 24 24"}
        [:circle {:cx "12" :cy "12" :r "9"}]
        [:path {:d "m5.6 5.6 12.8 12.8"}]]]
-     [:h1 {:class (stl/css :title)} (tr "ds.used-link.title")]
+     [:h1 {:class (stl/css :title)} (tr "ds.auth.link-used.title")]
      [:p {:class (stl/css :body)} (tr "ds.used-link.description")]
      [:div {:class (stl/css :actions)}
       [:button {:class (stl/css :button :button-primary)
@@ -379,7 +379,7 @@
          (tr "ds.shell.legal.privacy")]
         "."]
        [:p {:class (stl/css :legal-text)}
-        (tr "ds.shell.attribution")]]]
+        (tr "ds.auth.attribution")]]]
 
      [:> stickers* {}]]))
 

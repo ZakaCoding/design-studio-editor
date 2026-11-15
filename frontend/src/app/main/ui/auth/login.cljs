@@ -259,7 +259,7 @@
        [:> sa/sso-button* {:on-click login-with-oidc
                            :label (if (sa/registration-open?)
                                     (tr "ds.signin.sso-existing")
-                                    (tr "ds.signin.sso"))}])]))
+                                    (tr "ds.auth.sso.continue"))}])]))
 
 (mf/defc login-dialog*
   [{:keys [params] :as props}]

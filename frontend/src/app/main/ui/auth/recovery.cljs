@@ -99,12 +99,12 @@
         on-used-link (mf/use-fn #(reset! used* true))]
     (if (deref used*)
       [:> sa/used-link* {}]
-      [:> sa/page* {:title (tr "ds.recovery.new.title")
-                    :subtitle (tr "ds.recovery.new.subtitle")}
+      [:> sa/page* {:title (tr "ds.auth.new-password.title")
+                    :subtitle (tr "ds.auth.new-password.subtitle")}
        [:> recovery-form* {:params params
                            :on-used-link on-used-link}]
        [:div
         [:a {:on-click #(st/emit! (rt/nav :auth-login))
              :class sa/link-class
              :data-testid "go-back-link"}
-         (tr "ds.recovery.back")]]])))
+         (tr "ds.auth.back-to-sign-in")]]])))

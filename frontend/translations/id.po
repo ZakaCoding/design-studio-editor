@@ -215,7 +215,7 @@ msgstr "Terbitkan"
 
 #: src/app/main/ui/viewer/share_link.cljs:305, src/app/main/ui/viewer/share_link.cljs:315
 msgid "common.share-link.all-users"
-msgstr "Semua pengguna Penpot"
+msgstr "Semua anggota Design Studio"
 
 #: src/app/main/ui/viewer/share_link.cljs:199
 msgid "common.share-link.confirm-deletion-link-description"
@@ -356,7 +356,7 @@ msgstr "Sematkan versi ini"
 
 #: src/app/main/ui/components/context_menu_a11y.cljs:300, src/app/main/ui/dashboard/sidebar.cljs:882
 msgid "dashboard.default-team-name"
-msgstr "Penpot Anda"
+msgstr "Proyek Pribadi"
 
 #: src/app/main/ui/dashboard/sidebar.cljs:588, src/app/main/ui/dashboard/team_form.cljs:153
 msgid "dashboard.delete-team"
@@ -1012,7 +1012,7 @@ msgstr "Nama Anda"
 
 #: src/app/main/ui/dashboard/file_menu.cljs:40, src/app/main/ui/dashboard/fonts.cljs:46, src/app/main/ui/dashboard/libraries.cljs:55, src/app/main/ui/dashboard/projects.cljs:352, src/app/main/ui/dashboard/search.cljs:47, src/app/main/ui/dashboard/sidebar.cljs:411, src/app/main/ui/dashboard/team.cljs:616, src/app/main/ui/dashboard/team.cljs:1191, src/app/main/ui/dashboard/team.cljs:1471, src/app/main/ui/dashboard/team.cljs:1577
 msgid "dashboard.your-penpot"
-msgstr "Penpot Anda"
+msgstr "Studio Anda"
 
 #: src/app/main/ui/alert.cljs:36
 msgid "ds.alert-ok"
@@ -2927,9 +2927,7 @@ msgstr "Kesalahan 404"
 
 #: src/app/main/ui/static.cljs:160
 msgid "not-found.login.free"
-msgstr ""
-"Penpkt adalah alat bebas dan bersumber terbuka untuk kolaborasi dengan "
-"Desain dan Kode"
+msgstr "Design Studio: ruang desain privat di atas mesin Penpot sumber terbuka."
 
 #: src/app/main/ui/auth/recovery_request.cljs:114
 msgid "not-found.login.sent-recovery"
@@ -2945,7 +2943,7 @@ msgstr "Daftar secara gratis"
 
 #: src/app/main/ui/static.cljs:175
 msgid "not-found.login.start-using"
-msgstr "Dan mulai menggunakan Penpot dalam hitungan detik!"
+msgstr "Masuk dengan ZakaCoding ID untuk melanjutkan."
 
 #: src/app/main/ui/static.cljs:75
 msgid "not-found.made-with-love"
@@ -2989,7 +2987,7 @@ msgstr "Anda tidak memiliki akses ke berkas ini."
 
 #: src/app/main/ui/static.cljs:62, src/app/main/ui/static.cljs:265, src/app/main/ui/static.cljs:271, src/app/main/ui/static.cljs:277, src/app/main/ui/static.cljs:283, src/app/main/ui/static.cljs:292, src/app/main/ui/static.cljs:301
 msgid "not-found.no-permission.go-dashboard"
-msgstr "Pergi ke Penpot Anda"
+msgstr "Pergi ke Studio Anda"
 
 #: src/app/main/ui/static.cljs:289, src/app/main/ui/static.cljs:298
 msgid "not-found.no-permission.if-approves"
@@ -4577,7 +4575,7 @@ msgstr "Bantuan & info"
 #: src/app/main/ui/workspace/main_menu.cljs:916
 #, unused
 msgid "workspace.header.menu.option.power-up"
-msgstr "Tingkatkan paket Anda"
+msgstr "Paket Design Studio"
 
 #: src/app/main/ui/workspace/main_menu.cljs:1061
 msgid "workspace.header.menu.option.preferences"
@@ -7071,6 +7069,109 @@ msgstr "Versi tersimpan otomatis akan disimpan selama %s hari."
 msgid "workspace.viewport.click-to-close-path"
 msgstr "Klik untuk menutup jalur"
 
+# Design Studio (WP2)
+
+msgid "subscription.labels"
+msgstr "Paket Design Studio"
+
+msgid "subscription.workspace.header.menu.option.power-up"
+msgstr "Paket Design Studio"
+
+msgid "subscription.settings.member-since"
+msgstr "Anggota sejak: %s"
+
+msgid "subscription.settings.other-plans"
+msgstr "Paket lain"
+
+msgid "integrations.info.mcp-server"
+msgstr "Server MCP Design Studio memungkinkan asisten AI-mu bekerja langsung dengan berkas desainmu."
+
+msgid "integrations.mcp-server.description"
+msgstr "Server MCP Design Studio memungkinkan asisten AI-mu bekerja langsung dengan berkas desainmu."
+
+msgid "integrations.mcp-server.mcp-keys.info"
+msgstr "Ini URL server yang dibutuhkan klien MCP-mu untuk terhubung ke server MCP Design Studio."
+
+msgid "integrations.mcp-server.mcp-keys.help"
+msgstr "Cara menghubungkan asisten AI-mu"
+
+msgid "errors.save-retrying"
+msgstr "Koneksi terputus. Mencoba menyimpan perubahan Anda lagi."
+
+msgid "errors.save-still-retrying"
+msgstr "Perubahan Anda belum tersimpan karena Design Studio tidak dapat menjangkau server. Perubahan tetap ada di tab ini, dan Design Studio akan terus mencoba menyimpannya. Biarkan tab ini terbuka sampai tersimpan."
+
+msgid "workspace.header.retrying"
+msgstr "Mencoba menyimpan lagi"
+
+# Design Studio (WP2) auth screens, consumed by WP5 (ds.auth.*)
+
+msgid "ds.auth.welcome.title"
+msgstr "Selamat datang kembali di Studio-mu."
+
+msgid "ds.auth.welcome.tagline"
+msgstr "Satu ZakaCoding ID untuk editor, Developer Console, dan agent-mu."
+
+msgid "ds.auth.sso.continue"
+msgstr "Lanjut dengan ZakaCoding ID"
+
+msgid "ds.auth.password.use-instead"
+msgstr "Pakai email dan kata sandi"
+
+msgid "ds.auth.or"
+msgstr "atau"
+
+msgid "ds.auth.register.open-hint"
+msgstr "Konfirmasi email dan ruang kerjamu siap. Editornya gratis; Craft ada di paket berbayar."
+
+msgid "ds.auth.attribution"
+msgstr "Dibangun di atas mesin Penpot sumber terbuka oleh Kaleidos. Design Studio independen dan tidak berafiliasi atau didukung oleh Penpot maupun Kaleidos."
+
+msgid "ds.auth.caption"
+msgstr "Semua yang dibutuhkan agent-mu, bertumpuk."
+
+msgid "ds.auth.reset.title"
+msgstr "Atur ulang password"
+
+msgid "ds.auth.reset.subtitle"
+msgstr "Masukkan email akunmu dan kami kirimkan petunjuknya."
+
+msgid "ds.auth.reset.wait-note"
+msgstr "Baru mendaftar atau mengganti password dalam 15 menit terakhir? Email reset baru bisa dikirim setelah 15 menit berlalu. Kalau belum masuk, coba lagi nanti, dan cek folder spam."
+
+msgid "ds.auth.reset.email"
+msgstr "Email"
+
+msgid "ds.auth.reset.submit"
+msgstr "Kirim petunjuk"
+
+msgid "ds.auth.back-to-sign-in"
+msgstr "Kembali ke Masuk"
+
+msgid "ds.auth.link-used.title"
+msgstr "Link ini tidak bisa dipakai lagi"
+
+msgid "ds.auth.link-used.description"
+msgstr "Link ini sudah dipakai atau sudah kedaluwarsa. Masuk dengan kata sandimu, atau pakai “Lupa kata sandi?” di halaman masuk."
+
+msgid "ds.auth.new-password.title"
+msgstr "Pilih password baru"
+
+msgid "ds.auth.new-password.subtitle"
+msgstr "Masukkan password baru dua kali untuk memastikannya."
+
+msgid "ds.auth.modal.title"
+msgstr "Masuk untuk melanjutkan"
+
+msgid "ds.auth.modal.tagline"
+msgstr "Kamu sudah keluar. Masuk dengan ZakaCoding ID untuk kembali ke halaman ini."
+
+msgid "ds.auth.open.title"
+msgstr "Masuk ke Design Studio."
+
+msgid "ds.auth.open.tagline"
+msgstr "Masuk dengan email dan kata sandi akunmu."
+
 # Design Studio (WP5)
 
 msgid "ds.shell.language"
@@ -7115,9 +7216,6 @@ msgstr "dan"
 msgid "ds.shell.legal.privacy"
 msgstr "Kebijakan Privasi"
 
-msgid "ds.shell.attribution"
-msgstr "Dibangun di atas mesin Penpot sumber terbuka oleh Kaleidos. Design Studio independen dan tidak berafiliasi atau didukung oleh Penpot maupun Kaleidos."
-
 msgid "ds.signin.title"
 msgstr "Masuk ke Design Studio"
 
@@ -7145,14 +7243,8 @@ msgstr "Sembunyikan password"
 msgid "ds.signin.submit"
 msgstr "Masuk"
 
-msgid "ds.signin.or"
-msgstr "atau"
-
 msgid "ds.signin.sso-existing"
 msgstr "Anggota lama: masuk dengan ZakaCoding ID"
-
-msgid "ds.signin.sso"
-msgstr "Lanjut dengan ZakaCoding ID"
 
 msgid "ds.signin.no-account"
 msgstr "Belum punya akun?"
@@ -7163,26 +7255,11 @@ msgstr "Daftar gratis"
 msgid "ds.signin.closed"
 msgstr "Akses lewat undangan. Pendaftaran tetap tertutup."
 
-msgid "ds.signin.modal.title"
-msgstr "Masuk untuk melanjutkan"
-
 msgid "ds.signin.modal.tagline"
 msgstr "Kamu sudah keluar. Masuk lagi untuk kembali ke halaman ini."
 
-msgid "ds.recovery.request.title"
-msgstr "Atur ulang password"
-
-msgid "ds.recovery.request.subtitle"
-msgstr "Masukkan email akunmu dan kami kirimkan link reset."
-
 msgid "ds.recovery.request.submit"
 msgstr "Kirim link reset"
-
-msgid "ds.recovery.request.wait-note"
-msgstr "Baru mendaftar atau mengganti password dalam 15 menit terakhir? Email reset baru bisa dikirim setelah 15 menit berlalu. Kalau belum masuk, coba lagi nanti, dan cek folder spam."
-
-msgid "ds.recovery.back"
-msgstr "Kembali ke Masuk"
 
 msgid "ds.recovery.sent.title"
 msgstr "Cek email kamu"
@@ -7193,12 +7270,6 @@ msgstr "Kami kirim link reset ke %s."
 msgid "ds.recovery.sent.hint"
 msgstr "Buka link di email itu untuk membuat password baru. Link hanya bisa dipakai sekali. Tidak ada di kotak masuk? Cek folder Spam atau Promosi."
 
-msgid "ds.recovery.new.title"
-msgstr "Pilih password baru"
-
-msgid "ds.recovery.new.subtitle"
-msgstr "Masukkan password baru dua kali untuk memastikannya."
-
 msgid "ds.recovery.new.password"
 msgstr "Password baru"
 
@@ -7207,9 +7278,6 @@ msgstr "Ulangi password"
 
 msgid "ds.recovery.new.submit"
 msgstr "Simpan password baru"
-
-msgid "ds.used-link.title"
-msgstr "Link ini tidak bisa dipakai lagi"
 
 msgid "ds.used-link.description"
 msgstr "Link ini sudah dipakai atau sudah kedaluwarsa. Link daftar dan reset hanya berlaku sekali, supaya email yang diteruskan tidak bisa dipakai orang lain."

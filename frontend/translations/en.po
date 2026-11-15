@@ -226,7 +226,7 @@ msgstr "Publish"
 
 #: src/app/main/ui/viewer/share_link.cljs:305, src/app/main/ui/viewer/share_link.cljs:315
 msgid "common.share-link.all-users"
-msgstr "All Penpot users"
+msgstr "All Design Studio members"
 
 #: src/app/main/ui/viewer/share_link.cljs:199
 msgid "common.share-link.confirm-deletion-link-description"
@@ -1815,8 +1815,7 @@ msgstr "Connection lost. Retrying to save your changes."
 
 #: src/app/main/errors.cljs
 msgid "errors.save-still-retrying"
-msgstr ""
-"Your changes are not saved yet because Penpot cannot reach the server. They are kept, and Penpot will keep trying to save them. Keep this tab open until they are saved."
+msgstr "Your changes are not saved yet because Design Studio cannot reach the server. They are kept, and Design Studio will keep trying to save them. Keep this tab open until they are saved."
 
 #: src/app/main/errors.cljs:337
 msgid "errors.svg-parser.invalid-svg"
@@ -2613,9 +2612,7 @@ msgstr "Add this configuration to your MCP client (e.g. ~/​​​​​​.mcp
 
 #: src/app/main/ui/settings/integrations.cljs:206
 msgid "integrations.info.mcp-server"
-msgstr ""
-"The Penpot MCP Server enables MCP clients to interact directly with Penpot "
-"design files."
+msgstr "The Design Studio MCP server lets your AI assistant work directly with your design files."
 
 #: src/app/main/ui/settings/integrations.cljs:113
 msgid "integrations.mcp-key.will-expire"
@@ -2627,9 +2624,7 @@ msgstr "The MCP key has no expiration date"
 
 #: src/app/main/ui/settings/integrations.cljs:511
 msgid "integrations.mcp-server.description"
-msgstr ""
-"The Penpot MCP Server enables MCP clients to interact directly with Penpot "
-"design files."
+msgstr "The Design Studio MCP server lets your AI assistant work directly with your design files."
 
 #: src/app/main/ui/settings/integrations.cljs:415
 #, unused
@@ -2638,13 +2633,11 @@ msgstr "Copy link"
 
 #: src/app/main/ui/settings/integrations.cljs:594
 msgid "integrations.mcp-server.mcp-keys.help"
-msgstr "How to configure MCP clients"
+msgstr "How to connect your AI assistant"
 
 #: src/app/main/ui/settings/integrations.cljs:581
 msgid "integrations.mcp-server.mcp-keys.info"
-msgstr ""
-"This is the server url you'll need to configure your MCP client in order to "
-"connect it to the Penpot MCP server."
+msgstr "This is the server URL your MCP client needs to connect to the Design Studio MCP server."
 
 #: src/app/main/ui/settings/integrations.cljs:561
 msgid "integrations.mcp-server.mcp-keys.regenerate"
@@ -4606,9 +4599,7 @@ msgstr "404 error"
 
 #: src/app/main/ui/static.cljs:160
 msgid "not-found.login.free"
-msgstr ""
-"Penpot is the free and open-source design tool for collaboration between "
-"Design and Code"
+msgstr "Design Studio: a private design workspace on the open-source Penpot engine."
 
 #: src/app/main/ui/auth/recovery_request.cljs:114
 msgid "not-found.login.sent-recovery"
@@ -4624,7 +4615,7 @@ msgstr "Sign up for free"
 
 #: src/app/main/ui/static.cljs:175
 msgid "not-found.login.start-using"
-msgstr "And start using Penpot in seconds!"
+msgstr "Sign in with your ZakaCoding ID to continue."
 
 #: src/app/main/ui/static.cljs:75
 msgid "not-found.made-with-love"
@@ -4670,7 +4661,7 @@ msgstr "You don't have access to this file."
 
 #: src/app/main/ui/static.cljs:62, src/app/main/ui/static.cljs:265, src/app/main/ui/static.cljs:271, src/app/main/ui/static.cljs:277, src/app/main/ui/static.cljs:283, src/app/main/ui/static.cljs:292, src/app/main/ui/static.cljs:301
 msgid "not-found.no-permission.go-dashboard"
-msgstr "Go to Personal Projects"
+msgstr "Go to your Studio"
 
 #: src/app/main/ui/static.cljs:289, src/app/main/ui/static.cljs:298
 msgid "not-found.no-permission.if-approves"
@@ -6127,7 +6118,7 @@ msgstr ""
 
 #: src/app/main/ui/settings/sidebar.cljs:114, src/app/main/ui/settings/subscription.cljs:505, src/app/main/ui/settings/subscription.cljs:565
 msgid "subscription.labels"
-msgstr "Subscription"
+msgstr "Design Studio Plans"
 
 #: src/app/main/ui/settings/subscription.cljs:97
 msgid "subscription.settings.activate-by-code"
@@ -6264,7 +6255,7 @@ msgstr ""
 
 #: src/app/main/ui/settings/subscription.cljs:662
 msgid "subscription.settings.member-since"
-msgstr "Penpot member since: %s"
+msgstr "Member since: %s"
 
 #: src/app/main/ui/settings/subscription.cljs:685, src/app/main/ui/settings/subscription.cljs:699, src/app/main/ui/settings/subscription.cljs:715, src/app/main/ui/settings/subscription.cljs:731
 msgid "subscription.settings.more-information"
@@ -6276,7 +6267,7 @@ msgstr "org member / month"
 
 #: src/app/main/ui/settings/subscription.cljs:665
 msgid "subscription.settings.other-plans"
-msgstr "Other penpot plans"
+msgstr "Other plans"
 
 #: src/app/main/ui/settings/subscription.cljs:669, src/app/main/ui/settings/subscription.cljs:692
 msgid "subscription.settings.price-user-month"
@@ -6378,7 +6369,7 @@ msgstr "25GB of storage"
 
 #: src/app/main/ui/dashboard/subscription.cljs:312, src/app/main/ui/workspace/main_menu.cljs:1137
 msgid "subscription.workspace.header.menu.option.power-up"
-msgstr "Power up your plan"
+msgstr "Design Studio Plans"
 
 #: src/app/main/ui/workspace/sidebar/versions.cljs:63
 #, markdown
@@ -7088,7 +7079,7 @@ msgstr "MCP server"
 #: src/app/main/ui/workspace/main_menu.cljs:916
 #, unused
 msgid "workspace.header.menu.option.power-up"
-msgstr "Power up your plan"
+msgstr "Design Studio Plans"
 
 #: src/app/main/ui/workspace/main_menu.cljs:1061
 msgid "workspace.header.menu.option.preferences"
@@ -10406,6 +10397,76 @@ msgstr "Try again"
 msgid "dashboard.invite-profile-disabled"
 msgstr "You don't have permission to invite people to this team"
 
+# Design Studio (WP2)
+
+# Design Studio (WP2) auth screens, consumed by WP5 (ds.auth.*)
+
+msgid "ds.auth.welcome.title"
+msgstr "Welcome back to your Studio."
+
+msgid "ds.auth.welcome.tagline"
+msgstr "One ZakaCoding ID for the editor, the Developer Console and your agents."
+
+msgid "ds.auth.sso.continue"
+msgstr "Continue with ZakaCoding ID"
+
+msgid "ds.auth.password.use-instead"
+msgstr "Use email and password instead"
+
+msgid "ds.auth.or"
+msgstr "or"
+
+msgid "ds.auth.register.open-hint"
+msgstr "Confirm your email and your workspace is ready. The editor is free; Craft comes with a paid plan."
+
+msgid "ds.auth.attribution"
+msgstr "Built on the open-source Penpot engine by Kaleidos. Design Studio is independent and is not affiliated with or endorsed by Penpot or Kaleidos."
+
+msgid "ds.auth.caption"
+msgstr "Everything your agent needs, stacked."
+
+msgid "ds.auth.reset.title"
+msgstr "Reset your password"
+
+msgid "ds.auth.reset.subtitle"
+msgstr "Enter the email of your account and we will send you instructions."
+
+msgid "ds.auth.reset.wait-note"
+msgstr "Signed up or changed your password in the last 15 minutes? The reset email can only go out once 15 minutes have passed. If none arrives, try again then, and check your spam folder."
+
+msgid "ds.auth.reset.email"
+msgstr "Email"
+
+msgid "ds.auth.reset.submit"
+msgstr "Send reset instructions"
+
+msgid "ds.auth.back-to-sign-in"
+msgstr "Back to sign in"
+
+msgid "ds.auth.link-used.title"
+msgstr "This link can’t be used again"
+
+msgid "ds.auth.link-used.description"
+msgstr "It was already used, or it has expired. Sign in with your password, or use “Forgot password?” on the sign-in page."
+
+msgid "ds.auth.new-password.title"
+msgstr "Choose a new password"
+
+msgid "ds.auth.new-password.subtitle"
+msgstr "Enter your new password twice to confirm it."
+
+msgid "ds.auth.modal.title"
+msgstr "Sign in to continue"
+
+msgid "ds.auth.modal.tagline"
+msgstr "You are signed out. Sign in with your ZakaCoding ID to return to this page."
+
+msgid "ds.auth.open.title"
+msgstr "Sign in to Design Studio."
+
+msgid "ds.auth.open.tagline"
+msgstr "Sign in with the email and password of your account."
+
 # Design Studio (WP5)
 
 msgid "ds.shell.language"
@@ -10450,9 +10511,6 @@ msgstr "and"
 msgid "ds.shell.legal.privacy"
 msgstr "Privacy Policy"
 
-msgid "ds.shell.attribution"
-msgstr "Built on the open-source Penpot engine by Kaleidos. Design Studio is independent and is not affiliated with or endorsed by Penpot or Kaleidos."
-
 msgid "ds.signin.title"
 msgstr "Sign in to Design Studio"
 
@@ -10480,14 +10538,8 @@ msgstr "Hide password"
 msgid "ds.signin.submit"
 msgstr "Sign in"
 
-msgid "ds.signin.or"
-msgstr "or"
-
 msgid "ds.signin.sso-existing"
 msgstr "Existing member? Sign in with ZakaCoding ID"
-
-msgid "ds.signin.sso"
-msgstr "Continue with ZakaCoding ID"
 
 msgid "ds.signin.no-account"
 msgstr "No account yet?"
@@ -10498,26 +10550,11 @@ msgstr "Sign up free"
 msgid "ds.signin.closed"
 msgstr "Access is by invitation. Registration stays closed."
 
-msgid "ds.signin.modal.title"
-msgstr "Sign in to continue"
-
 msgid "ds.signin.modal.tagline"
 msgstr "You are signed out. Sign in again to return to this page."
 
-msgid "ds.recovery.request.title"
-msgstr "Reset your password"
-
-msgid "ds.recovery.request.subtitle"
-msgstr "Enter the email of your account and we will send you a reset link."
-
 msgid "ds.recovery.request.submit"
 msgstr "Send reset link"
-
-msgid "ds.recovery.request.wait-note"
-msgstr "Signed up or changed your password in the last 15 minutes? The reset email can only go out once 15 minutes have passed. If none arrives, try again then, and check your spam folder."
-
-msgid "ds.recovery.back"
-msgstr "Back to sign in"
 
 msgid "ds.recovery.sent.title"
 msgstr "Check your email"
@@ -10528,12 +10565,6 @@ msgstr "We sent a reset link to %s."
 msgid "ds.recovery.sent.hint"
 msgstr "Open the link in that email to choose a new password. It works once. Not in your inbox? Check the Spam or Promotions folder."
 
-msgid "ds.recovery.new.title"
-msgstr "Choose a new password"
-
-msgid "ds.recovery.new.subtitle"
-msgstr "Enter your new password twice to confirm it."
-
 msgid "ds.recovery.new.password"
 msgstr "New password"
 
@@ -10542,9 +10573,6 @@ msgstr "Confirm password"
 
 msgid "ds.recovery.new.submit"
 msgstr "Change your password"
-
-msgid "ds.used-link.title"
-msgstr "This link can’t be used again"
 
 msgid "ds.used-link.description"
 msgstr "It was already used, or it has expired. Sign-up and reset links work only once, so a forwarded email can’t be used by someone else."

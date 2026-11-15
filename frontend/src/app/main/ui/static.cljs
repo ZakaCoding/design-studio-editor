@@ -162,7 +162,7 @@
       [:*
        (case @current-section
          :login
-         [:> sa/page* {:title (tr "ds.signin.modal.title")
+         [:> sa/page* {:title (tr "ds.auth.modal.title")
                        :subtitle (tr "ds.signin.modal.tagline")}
           [:> login-dialog* {:on-recovery-request set-section-recovery
                              :on-success-callback success-login

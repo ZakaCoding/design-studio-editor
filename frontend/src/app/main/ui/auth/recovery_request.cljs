@@ -95,18 +95,18 @@
     ;; profile changes Penpot sends no reset mail and answers as if it had
     ;; (ADR 0017), so with open sign-up the screen says so.
     [:> sa/scope* {}
-     [:> sa/page* {:title (tr "ds.recovery.request.title")
-                   :subtitle (tr "ds.recovery.request.subtitle")}
+     [:> sa/page* {:title (tr "ds.auth.reset.title")
+                   :subtitle (tr "ds.auth.reset.subtitle")}
       [:> recovery-form* {:params params :on-success-callback on-success-callback}]
       (when (sa/registration-open?)
         [:> sa/note* {:level "warning"
                       :data-testid "ds-reset-wait"}
-         (tr "ds.recovery.request.wait-note")])
+         (tr "ds.auth.reset.wait-note")])
       [:div
        [:> lk/link* {:action go-back
                      :class sa/link-class
                      :data-testid "go-back-link"}
-        (tr "ds.recovery.back")]]]]))
+        (tr "ds.auth.back-to-sign-in")]]]]))
 
 
 (mf/defc recovery-sent-page*
