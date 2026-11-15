@@ -689,21 +689,16 @@
          (t/is (= [["report" "text/plain" "blob:report"]] @downloads))
          (doseq [callback @idle-callbacks] (callback))
          (t/is (= ["blob:report"] @revoked))
-         ;; Autosave is stopped for the whole session, so the toast also
-         ;; offers the only action that restarts it without the user having
-         ;; to know they could leave the file and come back.
-         (let [reload (get-in state [:notification :links 1])]
-           (t/is (= "labels.reload-page:" (:label reload))
-                 "the `tr` stub renders a one-argument key with a trailing colon")
-           (t/is (fn? (:callback reload)) "the reload link has a callback")))))))
+         ;; Design Studio (F2 WP3): the toast says to keep the tab open,
+         ;; because a reload while the queue may still be saving loses the
+         ;; edits, so it carries no reload link.
+         (t/is (nil? (get-in state [:notification :links 1]))
+               "no reload link next to the report download"))))))
 
 ;; Scenario: a save fails terminally. The toast offers the report download
-;; and a reload. Proves: the recovery action reaches the user.
-;;
-;; The reload callback itself is not invoked here: `js/location` does not
-;; exist under the test runner, so the link is verified by its label and by
-;; being a callable, not by calling it.
-(t/deftest ^:async save-failure-toast-offers-a-reload-action
+;; only. Design Studio (F2 WP3) removed the reload link: the text tells the
+;; user to keep the tab open, since a reload can lose edits still saving.
+(t/deftest ^:async save-failure-toast-offers-the-report-without-a-reload
   (let [events (atom [])]
     (await
      (mock/with-mocks*
@@ -720,10 +715,10 @@
              links (get-in state [:notification :links])]
          ;; `tr` is not stubbed here, and the test runner does not load the
          ;; catalogue, so a key comes back verbatim without its arguments.
-         (t/is (= ["labels.download" "labels.reload-page"] (mapv :label links))
-               "the toast carries the report and a reload, download first")
+         (t/is (= ["labels.download"] (mapv :label links))
+               "the toast carries the report download and no reload")
          (t/is (every? #(fn? (:callback %)) links)
-               "both actions are callable")
+               "the action is callable")
          (t/is (nil? (get-in state [:notification :timeout]))
                "the toast stays until the user acts on it"))))))
 
