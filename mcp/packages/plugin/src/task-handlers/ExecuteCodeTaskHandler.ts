@@ -1,5 +1,5 @@
-import { Task, TaskHandler } from "../TaskHandler";
-import { ExecuteCodeTaskParams, ExecuteCodeTaskResultData } from "../../../common/src";
+import { Task, TaskHandler } from "../TaskHandler.ts";
+import type { ExecuteCodeTaskParams, ExecuteCodeTaskResultData } from "../../../common/src/index.ts";
 import { PenpotUtils } from "../PenpotUtils.ts";
 
 /**

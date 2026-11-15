@@ -148,6 +148,18 @@ still succeeds. With saving working, the same script returns success only after
    that writes. Regular plugins are left alone on purpose; the same hook could
    serve them later.
 
+### Known limits
+
+- Success can precede a commit that arrives later than one `setTimeout` tick.
+  The guard confirms the save of the writes it saw, then lets the task report;
+  a change that the app commits after that wait (for example a delayed
+  update from a callback the script started) is saved by the normal
+  autosave but is not covered by this task's confirmation.
+- The latch clears only on a full page reload. After a failed or stalled save
+  the guard keeps refusing MCP writes until the user reloads, even if
+  autosave later recovers; the toast asks to keep the tab open until the
+  unsaved changes are recovered.
+
 ### Checklist
 
 - [ ] Choose the correct target branch; use `develop` by default.

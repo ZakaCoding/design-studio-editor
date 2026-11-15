@@ -15,6 +15,7 @@
    [app.main.store :as st]
    [beicon.v2.core :as rx]
    [cljs.test :as t :include-macros true]
+   [cuerdas.core :as str]
    [potok.v2.core :as ptk]))
 
 (t/deftest test-update-mcp-status
@@ -176,3 +177,10 @@
           ((:warn! ops) cause))
         (t/is (= [[cause]] @calls))))))
 
+(t/deftest test-plugin-code-url-is-versioned
+  (let [code @#'mcp/plugin-code]
+    (t/is (str/starts-with? code "plugin.js?ds-persistence=v1")
+          "a browser holding an older plugin.js asks for a different URL")
+    (let [url (js/URL. code "https://example.test/plugins/mcp/")]
+      (t/is (= (str "/plugins/mcp/" code) (str (.-pathname url) (.-search url)))
+            "the runtime resolves it with new URL(code, host), which keeps the query"))))

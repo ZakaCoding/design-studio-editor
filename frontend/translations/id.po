@@ -7070,3 +7070,7 @@ msgstr "Versi tersimpan otomatis akan disimpan selama %s hari."
 #, unused
 msgid "workspace.viewport.click-to-close-path"
 msgstr "Klik untuk menutup jalur"
+
+# Design Studio (WP3)
+msgid "errors.save-failed"
+msgstr "Penyimpanan otomatis belum dapat dikonfirmasi. Biarkan tab ini terbuka: sebagian perubahan mungkin hanya ada di sini. Hentikan pengeditan dan hubungi dukungan sebelum memuat ulang. Pengeditan MCP dijeda."
