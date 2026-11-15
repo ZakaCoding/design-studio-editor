@@ -9,7 +9,6 @@
   (:require
    [app.common.logging :as log]
    [app.main.data.modal :as modal]
-   [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.auth.login :refer [login-dialog*]]
    [app.main.ui.auth.recovery-request :refer [recovery-request-page* recovery-sent-page*]]
