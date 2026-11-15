@@ -10466,3 +10466,57 @@ msgstr "Sign in to Design Studio."
 
 msgid "ds.auth.open.tagline"
 msgstr "Sign in with the email and password of your account."
+# Design Studio (WP4)
+msgid "ds.settings.password-side"
+msgstr "Backup password"
+
+msgid "ds.settings.password-title"
+msgstr "Backup editor password"
+
+msgid "ds.settings.password-note-backup"
+msgstr "You normally sign in with your ZakaCoding ID. This password is only a backup for signing in to the editor with email when ZakaCoding ID is unavailable. Changing it does not change your passkey or ZakaCoding ID."
+
+msgid "ds.settings.password-note-open"
+msgstr "This is the password you sign in to Design Studio with. Forgot it? Use “Forgot password?” on the sign-in page."
+
+msgid "ds.settings.email-note"
+msgstr "To change your email, write to "
+
+msgid "ds.plans.title"
+msgstr "Design Studio Plans"
+
+msgid "ds.plans.menu"
+msgstr "Design Studio Plans"
+
+msgid "ds.plans.lead"
+msgstr "Design Studio is free to start. Craft, our AI design partner, comes with the Monthly plan."
+
+msgid "ds.plans.free.title"
+msgstr "Free"
+
+msgid "ds.plans.free.desc"
+msgstr "The editor and MCP, with no monthly cap."
+
+msgid "ds.plans.monthly.title"
+msgstr "Monthly"
+
+msgid "ds.plans.per-month"
+msgstr "/ month"
+
+msgid "ds.plans.monthly.desc"
+msgstr "Craft and 1,000 credits every billing cycle."
+
+msgid "ds.plans.lifetime.title"
+msgstr "Lifetime"
+
+msgid "ds.plans.lifetime.desc"
+msgstr "One payment: 1,000 Craft credits once, then your own AI key."
+
+msgid "ds.plans.opening-soon"
+msgstr "Opening soon"
+
+msgid "ds.plans.side"
+msgstr "Plans"
+
+msgid "ds.plans.see-plans"
+msgstr "See plans"

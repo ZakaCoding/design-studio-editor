@@ -1,0 +1,25 @@
+@use "common/refactor/common-refactor" as *;
+
+.note {
+  max-width: $s-500;
+  margin: 0 0 $s-24;
+  padding: $s-12 $s-16;
+  border: $s-1 solid var(--color-background-quaternary);
+  border-radius: $s-8;
+  color: var(--color-foreground-secondary);
+  font-size: $fs-14;
+  line-height: 1.55;
+}
+
+.email-note {
+  margin: 0;
+  color: var(--color-foreground-secondary);
+  font-size: $fs-12;
+  line-height: 1.55;
+  text-align: end;
+
+  a {
+    color: var(--color-accent-primary);
+    text-decoration: underline;
+  }
+}

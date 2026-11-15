@@ -12,6 +12,8 @@
    [app.main.data.profile :as udu]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
+   [app.main.ui.studio.settings-notes :refer [password-note*]]
+   [app.main.ui.studio.shell-state :as ds-state]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -114,8 +116,14 @@
   (mf/with-effect []
     (dom/set-html-title (tr "title.settings.password")))
 
-  [:section {:class (stl/css :dashboard-settings)
-             :aria-labelledby "password-section-title"}
-   [:div {:class (stl/css :form-container)}
-    [:h2 {:id "password-section-title"} (tr "dashboard.password-change")]
-    [:> password-form*]]])
+  (let [shell   (ds-state/use-state)
+        backup? (and shell (ds-state/backup? shell))]
+    [:section {:class (stl/css :dashboard-settings)
+               :aria-labelledby "password-section-title"}
+     [:div {:class (stl/css :form-container)}
+      [:h2 {:id "password-section-title"}
+       (if backup?
+         (tr "ds.settings.password-title")
+         (tr "dashboard.password-change"))]
+      [:> password-note* {:state shell}]
+      [:> password-form*]]]))

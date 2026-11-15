@@ -36,6 +36,7 @@ segment, `**` matches any depth.
 - `.github/workflows/ds-*.yml`
 - `.github/ds/**`
 - `frontend/src/app/main/ui/studio/**`
+- `frontend/test/frontend_tests/studio/**`
 <!-- ds-owned:end -->
 
 ## Seams
@@ -58,6 +59,12 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/dashboard/subscription.cljs` | WP1 (S3): nitrate-sidebar*, nitrate-current-plan*, cta-power-up*, dashboard-cta* render nil; originals kept private | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.cljs` | WP1 (S2, S3): default org shown as Design Studio, create-organization button and menu item removed | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.scss` | WP1 (S2): org badge shows the tile without the round frame | - | WP1 |
-| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end | - | F2 |
-| `frontend/translations/id.po` | WP2: same for Indonesian | - | F2 |
+| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end; WP4: `ds.*` strings in the "Design Studio (WP4)" block | - | F2, WP4 |
+| `frontend/translations/id.po` | WP2: same for Indonesian; WP4: `ds.*` strings in the "Design Studio (WP4)" block | - | F2, WP4 |
+| `frontend/src/app/main/ui/settings/password.cljs` | WP4: backup-password title and note (S5) | - | WP4 |
+| `frontend/src/app/main/ui/settings/profile.cljs` | WP4: open sign-up shows an email note instead of change-email (S6) | - | WP4 |
+| `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" and "Plans" sidebar labels (S5, S7) | - | WP4 |
+| `frontend/src/app/main/ui/settings/subscription.cljs` | WP4: Settings > Plans renders the Design Studio plan summary (S7) | - | WP4 |
+| `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8) | - | WP4 |
+| `frontend/test/frontend_tests/runner.cljs` | WP4: registers `frontend-tests.studio.shell-state-test` | - | WP4 |
 <!-- seams:end -->

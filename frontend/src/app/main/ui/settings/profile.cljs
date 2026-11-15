@@ -17,6 +17,8 @@
    [app.main.ui.components.file-uploader :refer [file-uploader]]
    [app.main.ui.components.forms :as fm]
    [app.main.ui.ds.foundations.assets.icon :as i :refer [icon*]]
+   [app.main.ui.studio.settings-notes :refer [email-note*]]
+   [app.main.ui.studio.shell-state :as ds-state]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -44,6 +46,9 @@
         form    (fm/use-form :schema schema:profile-form
                              :initial profile)
 
+        shell   (ds-state/use-state)
+        open?   (ds-state/open? shell)
+
         on-show-change-email
         (mf/use-fn
          #(modal/show! :change-email {}))
@@ -62,7 +67,7 @@
         :label (tr "dashboard.your-name")}]]
 
      [:div {:class (stl/css :fields-row)
-            :on-click on-show-change-email}
+            :on-click (when-not open? on-show-change-email)}
       [:& fm/input
        {:type "email"
         :name :email
@@ -70,9 +75,11 @@
         :label (tr "dashboard.your-email")}]
 
       [:div {:class (stl/css :options)}
-       [:div.change-email
-        [:a {:on-click on-show-change-email}
-         (tr "dashboard.change-email")]]]]
+       (if open?
+         [:> email-note*]
+         [:div.change-email
+          [:a {:on-click on-show-change-email}
+           (tr "dashboard.change-email")]])]]
 
      [:> fm/submit-button*
       {:label (tr "dashboard.save-settings")
