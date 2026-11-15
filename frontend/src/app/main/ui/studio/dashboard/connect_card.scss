@@ -356,6 +356,7 @@
 .link {
   flex: 1 1 240px;
   display: grid;
+
   // The address is one long word: the column must not grow with it.
   grid-template-columns: minmax(0, 1fr);
   gap: 6px;
