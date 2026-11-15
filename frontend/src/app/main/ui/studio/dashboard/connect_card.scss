@@ -1,0 +1,248 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Dashboard "Connect AI": the two-step card (F1 · 03, 03b) and the status
+// bar it shrinks to (F1 · 03c).
+
+@use "studio/ds" as ds;
+
+.visually-hidden {
+  @include ds.visually-hidden;
+}
+
+// --- Card
+
+.card {
+  @include ds.root;
+  @include ds.surface-card;
+  @include ds.type("body-lg");
+
+  display: grid;
+  gap: ds.token("space-20");
+  max-width: 720px;
+  padding: ds.token("space-24");
+  box-shadow: ds.token("elevation-control");
+  color: ds.token("text-body");
+}
+
+.card-header {
+  display: grid;
+  justify-items: start;
+  gap: ds.token("space-8");
+}
+
+.card-title {
+  @include ds.type("title");
+
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.card-lead {
+  margin: 0;
+  color: ds.token("text-secondary");
+}
+
+.steps {
+  display: grid;
+  gap: ds.token("space-16");
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: ds.token("space-12");
+  padding: ds.token("space-16");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-panel");
+}
+
+.step-mark {
+  @include ds.type("control");
+
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+}
+
+.step-body {
+  display: grid;
+  justify-items: start;
+  gap: ds.token("space-12");
+  min-width: 0;
+}
+
+.step-title {
+  @include ds.type("control-lg");
+
+  margin: 0;
+
+  // Lines up with the 28 px step mark.
+  line-height: 28px;
+  color: ds.token("text-primary");
+}
+
+.step-text {
+  margin: 0;
+  color: ds.token("text-body");
+}
+
+.step-done {
+  border-color: ds.token("status-success-border");
+  background: ds.token("status-success-bg");
+
+  .step-mark {
+    background: ds.token("status-success");
+  }
+
+  .step-text {
+    color: ds.token("status-success-text");
+  }
+}
+
+// Step 2 before step 1: readable, but clearly not the current step.
+.step-waiting {
+  background: ds.token("bg-subtle");
+
+  .step-mark {
+    border: 1px solid ds.token("border-strong");
+    background: ds.token("bg-panel");
+    color: ds.token("text-secondary");
+  }
+
+  .step-title,
+  .step-text {
+    color: ds.token("text-secondary");
+  }
+}
+
+.problem {
+  margin: 0;
+  padding: ds.token("space-8") ds.token("space-12");
+  border-radius: ds.token("radius-control");
+  background: ds.token("status-danger-bg");
+  color: ds.token("status-danger-text");
+}
+
+.address {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ds.token("space-8");
+  width: 100%;
+  min-width: 0;
+}
+
+.address-value {
+  @include ds.type("value");
+  @include ds.truncate;
+
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: ds.token("space-8") ds.token("space-12");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-control");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  user-select: all;
+}
+
+.card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-12");
+}
+
+.guide {
+  @include ds.focusable;
+
+  border-radius: ds.token("radius-xs");
+  color: ds.token("accent-text-strong");
+  font-weight: ds.token("weight-medium");
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: ds.token("accent-default");
+  }
+}
+
+// --- Status bar
+
+.bar {
+  @include ds.root;
+  @include ds.surface-card;
+  @include ds.type("body-lg");
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ds.token("space-12");
+  max-width: 720px;
+  padding: ds.token("space-8") ds.token("space-16");
+  color: ds.token("text-body");
+}
+
+.bar-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("border-strong");
+}
+
+.bar-text {
+  display: flex;
+  flex: 1 1 240px;
+  flex-wrap: wrap;
+  gap: ds.token("space-4") ds.token("space-8");
+  min-width: 0;
+  margin: 0;
+
+  strong {
+    color: ds.token("text-primary");
+    font-weight: ds.token("weight-semibold");
+  }
+}
+
+.bar-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: ds.token("space-4");
+}
+
+.bar-connected {
+  border-color: ds.token("status-success-border");
+  background: ds.token("status-success-bg");
+
+  .bar-dot {
+    background: ds.token("status-success");
+  }
+
+  strong {
+    color: ds.token("status-success-text");
+  }
+}
+
+// First row of Penpot's projects list.
+.home-row {
+  padding: ds.token("space-16") ds.token("space-4") ds.token("space-8");
+
+  &:empty {
+    display: none;
+  }
+}

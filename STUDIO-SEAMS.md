@@ -101,6 +101,8 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/workspace/sidebar.cljs` | F3-A: the collapsed left sidebar renders `studio.workspace.rail/layers-rail*` (the Layers rail) instead of `collapsed-button*`, which stays in place and unused. One require, one element | - | F3-A |
 | `frontend/src/app/main/ui/workspace/sidebar/sitemap.cljs` | F3-B: the current page's item carries `data-ds-page-name="<name>"` (one attribute), the stable hook Studio's `ds-craft.js` reads instead of the CSS-module class names | - | F3-B |
 | `frontend/src/app/main/ui/workspace/colorpicker.cljs` | F3-C (F1 · 13): one require and one element, the token suggestions row (`app.main.ui.studio.workspace.token-suggestions-ui`) under the colour inputs | - | F3-C |
+| `frontend/src/app/main/ui/dashboard.cljs` | F4-A (F1 · 12): the require of `projects-section*` is replaced by `studio.dashboard.home/home*` under the same name. `home*` renders `projects-section*` with the same props, or the first-design page when the team has no project and no file. Require lines only, the body is untouched | - | F4-A |
+| `frontend/src/app/main/ui/dashboard/projects.cljs` | F4-A (F1 · 03): mounts `studio.dashboard.connect-card/home-card*` (the two-step "Connect AI" card and its status bar) as the first row of the projects scroll area. One require, one element | - | F4-A |
 <!-- seams:end -->
 
 ## Mount points (F3)

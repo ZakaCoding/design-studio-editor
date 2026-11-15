@@ -28,6 +28,7 @@
    [app.main.ui.ds.product.empty-placeholder :refer [empty-placeholder*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard.connect-card :refer [home-card*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
@@ -386,6 +387,9 @@
                                                           (not default-team?)
                                                           show-team-hero?
                                                           can-invite))}
+
+          ;; Design Studio seam (STUDIO-SEAMS.md): the "Connect AI" card
+          [:> home-card*]
 
           (when show-deleted?
             [:> deleted/menu* {:team-id team-id

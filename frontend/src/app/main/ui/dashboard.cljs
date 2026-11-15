@@ -29,13 +29,16 @@
    [app.main.ui.dashboard.import]
    [app.main.ui.dashboard.layout-toggle :as lt]
    [app.main.ui.dashboard.libraries :refer [libraries-page*]]
-   [app.main.ui.dashboard.projects :refer [projects-section*]]
    [app.main.ui.dashboard.search :refer [search-page*]]
    [app.main.ui.dashboard.sidebar :refer [sidebar*]]
    [app.main.ui.dashboard.team :refer [team-settings-page* team-members-page* team-invitations-page* webhooks-page*]]
    [app.main.ui.dashboard.templates :refer [templates-section*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.modal :refer [modal-container*]]
+   ;; Design Studio seam (STUDIO-SEAMS.md): `home*` takes the place of
+   ;; `app.main.ui.dashboard.projects/projects-section*`. It renders that
+   ;; section, or the first-design page of an account with nothing in it.
+   [app.main.ui.studio.dashboard.home :refer [home*] :rename {home* projects-section*}]
    [app.main.ui.workspace.plugins]
    [app.plugins.register :as preg]
    [app.util.dom :as dom]

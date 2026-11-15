@@ -7561,3 +7561,123 @@ msgstr "Token yang disarankan"
 #: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
 msgid "ds.colorpicker.exact-match"
 msgstr "sama persis"
+# Design Studio (F4-A)
+msgid "ds.connect.label"
+msgstr "Akses AI"
+
+msgid "ds.connect.badge"
+msgstr "Akses AI"
+
+msgid "ds.connect.title"
+msgstr "Sambungkan asisten AI Anda"
+
+msgid "ds.connect.lead"
+msgstr "Claude, ChatGPT, atau Codex bisa membaca desain Anda dan, jika Anda izinkan, ikut mengedit. Hanya dua langkah."
+
+msgid "ds.connect.step-done"
+msgstr "selesai"
+
+msgid "ds.connect.step-1.title"
+msgstr "Aktifkan akses AI"
+
+msgid "ds.connect.step-1.text"
+msgstr "Satu klik. Kami menyiapkan sambungan antara editor dan akses AI untuk akun ini. Tidak ada yang perlu disalin."
+
+msgid "ds.connect.step-1.cta"
+msgstr "Aktifkan"
+
+msgid "ds.connect.step-1.done"
+msgstr "Akses AI aktif untuk akun ini."
+
+msgid "ds.connect.step-2.title"
+msgstr "Tambahkan Design Studio ke asisten Anda"
+
+msgid "ds.connect.step-2.text"
+msgstr "Tambahkan alamat ini sebagai konektor di asisten Anda, lalu masuk saat diminta."
+
+msgid "ds.connect.step-2.after"
+msgstr "Lalu buka sebuah desain. Asisten Anda bekerja di file yang sedang terbuka."
+
+msgid "ds.connect.copy"
+msgstr "Salin alamat"
+
+msgid "ds.connect.copied"
+msgstr "Tersalin"
+
+msgid "ds.connect.guide"
+msgstr "Baca panduan penyiapan"
+
+msgid "ds.connect.later"
+msgstr "Nanti saja"
+
+msgid "ds.connect.done"
+msgstr "Selesai"
+
+msgid "ds.connect.error.session"
+msgstr "Sesi editor Anda berubah. Muat ulang halaman ini, lalu coba lagi."
+
+msgid "ds.connect.error.no-access"
+msgstr "Akun ini belum punya akses AI."
+
+msgid "ds.connect.error.busy"
+msgstr "Design Studio sedang menangani permintaan lain untuk akun ini. Coba lagi sebentar."
+
+msgid "ds.connect.error.failed"
+msgstr "Kami belum bisa mengaktifkan akses AI. Coba lagi sebentar."
+
+msgid "ds.connect.bar.connected"
+msgstr "Akses AI aktif"
+
+msgid "ds.connect.bar.connected-note"
+msgstr "Asisten Anda bekerja di desain yang sedang Anda buka."
+
+msgid "ds.connect.bar.copy"
+msgstr "Salin alamat asisten"
+
+msgid "ds.connect.bar.manage"
+msgstr "Kelola"
+
+msgid "ds.connect.bar.later"
+msgstr "Sambungkan asisten AI Anda"
+
+msgid "ds.connect.bar.later-note"
+msgstr "Dua langkah, kapan pun Anda siap."
+
+msgid "ds.connect.bar.open"
+msgstr "Siapkan"
+
+msgid "ds.home.greeting"
+msgstr "Selamat datang"
+
+msgid "ds.home.greeting-name"
+msgstr "Selamat datang, %s"
+
+msgid "ds.home.empty.lead"
+msgstr "Anda belum punya desain. Mulai dari kanvas kosong atau bawa file Anda."
+
+msgid "ds.home.empty.create"
+msgstr "Buat desain pertama"
+
+msgid "ds.home.empty.create-text"
+msgstr "Membuka kanvas kosong di editor."
+
+msgid "ds.home.empty.import"
+msgstr "Impor file"
+
+msgid "ds.home.empty.import-text"
+msgstr "Bawa file .penpot atau .zip."
+
+msgid "ds.home.empty.deleted"
+msgstr "File terhapus"
+
+msgid "ds.home.plan.label"
+msgstr "Paket"
+
+msgid "ds.home.plan.badge"
+msgstr "Craft"
+
+msgid "ds.home.plan.text"
+msgstr "Editor dan akses AI gratis. Craft, partner desain AI kami, ada di paket berbayar."
+
+msgid "ds.home.plan.cta"
+msgstr "Lihat paket"
