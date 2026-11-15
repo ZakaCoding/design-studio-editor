@@ -7105,8 +7105,8 @@ msgstr "Editor dan MCP, tanpa batas bulanan."
 msgid "ds.plans.monthly.title"
 msgstr "Bulanan"
 
-msgid "ds.plans.monthly.price"
-msgstr "US$5,49 / bulan"
+msgid "ds.plans.per-month"
+msgstr "/ bulan"
 
 msgid "ds.plans.monthly.desc"
 msgstr "Craft dan 1.000 kredit di setiap siklus tagihan."
@@ -7115,7 +7115,13 @@ msgid "ds.plans.lifetime.title"
 msgstr "Seumur hidup"
 
 msgid "ds.plans.lifetime.desc"
-msgstr "Segera dibuka."
+msgstr "Sekali bayar, Craft selamanya."
+
+msgid "ds.plans.opening-soon"
+msgstr "Segera dibuka"
+
+msgid "ds.plans.side"
+msgstr "Paket"
 
 msgid "ds.plans.see-plans"
 msgstr "Lihat paket"

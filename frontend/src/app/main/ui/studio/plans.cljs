@@ -10,6 +10,7 @@
    [app.main.store :as st]
    [app.main.ui.components.dropdown-menu :refer [dropdown-menu-item*]]
    [app.main.ui.ds.buttons.button :refer [button*]]
+   [app.main.ui.studio.shell-state :as ss]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
    [app.util.keyboard :as kbd]
@@ -18,20 +19,52 @@
 (def plans-uri "/studio/craft/plans")
 
 (def plans
-  "Order and translation keys of the plan summary. Lifetime is paused for now."
+  "Order and translation keys of the plan summary. Prices come from the shell
+  state (`plans`), never from translations."
   [{:id :free     :title "ds.plans.free.title"     :desc "ds.plans.free.desc"}
    {:id :monthly  :title "ds.plans.monthly.title"  :desc "ds.plans.monthly.desc"
-    :price "ds.plans.monthly.price"}
-   {:id :lifetime :title "ds.plans.lifetime.title" :desc "ds.plans.lifetime.desc"
-    :soon true}])
+    :per "ds.plans.per-month"}
+   {:id :lifetime :title "ds.plans.lifetime.title" :desc "ds.plans.lifetime.desc"}])
+
+(defn- group-thousands
+  [n]
+  (-> (str (js/Math.round n))
+      (.replace (js/RegExp. "\\B(?=(\\d{3})+(?!\\d))" "g") ".")))
+
+(defn format-price
+  "Formats a plan entry of the shell state: US$ with 2 decimals, Rp with
+  thousands separators. nil when the entry carries no price."
+  [currency {:keys [priceUsdCents priceIdr]}]
+  (cond
+    (and (= "IDR" currency) (number? priceIdr))
+    (str "Rp" (group-thousands priceIdr))
+
+    (and (not= "IDR" currency) (number? priceUsdCents))
+    (str "US$" (.toFixed (/ priceUsdCents 100) 2))))
+
+(defn plan-price
+  "What the price slot of a plan shows: {:amount \"US$5.49\"}, {:soon true} for a
+  paused Lifetime, or nil (free plan, sales off, state unavailable)."
+  [plans-state id]
+  (when-let [entry (get plans-state id)]
+    (let [amount (format-price (:currency plans-state) entry)]
+      (cond
+        (and (= :lifetime id) (true? (:paused entry))) {:soon true}
+        amount {:amount amount}))))
 
 (mf/defc plan-card*
-  [{:keys [plan]}]
-  [:li {:class (stl/css-case :card true :card-soon (:soon plan))
+  [{:keys [plan price]}]
+  [:li {:class (stl/css-case :card true :card-soon (:soon price))
         :data-testid (str "ds-plan-" (name (:id plan)))}
    [:h3 {:class (stl/css :card-title)} (tr (:title plan))]
-   (when-let [price (:price plan)]
-     [:p {:class (stl/css :card-price)} (tr price)])
+   (cond
+     (:soon price)
+     [:p {:class (stl/css :card-price)} (tr "ds.plans.opening-soon")]
+
+     (:amount price)
+     [:p {:class (stl/css :card-price)}
+      (:amount price)
+      (when (:per plan) (str " " (tr (:per plan))))])
    [:p {:class (stl/css :card-desc)} (tr (:desc plan))]])
 
 (mf/defc plans-page*
@@ -39,7 +72,9 @@
   (mf/with-effect []
     (dom/set-html-title (tr "ds.plans.title")))
 
-  (let [on-see-plans
+  (let [state (ss/use-state)
+        plans-state (:plans state)
+        on-see-plans
         (mf/use-fn
          #(set! (.-href js/location) plans-uri))]
     [:section {:class (stl/css :plans)
@@ -48,7 +83,9 @@
      [:p {:class (stl/css :lead)} (tr "ds.plans.lead")]
      [:ul {:class (stl/css :cards)}
       (for [plan plans]
-        [:> plan-card* {:key (name (:id plan)) :plan plan}])]
+        [:> plan-card* {:key (name (:id plan))
+                        :plan plan
+                        :price (plan-price plans-state (:id plan))}])]
      [:> button* {:variant "primary"
                   :type "button"
                   :data-testid "ds-see-plans"

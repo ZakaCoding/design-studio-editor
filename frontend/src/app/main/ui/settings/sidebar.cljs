@@ -127,7 +127,7 @@
                                     :settings-item true)
                :on-click go-settings-subscription
                :data-testid "settings-subscription"}
-          [:span {:class (stl/css :element-title)} (tr "subscription.labels")]])
+          [:span {:class (stl/css :element-title)} (tr "ds.plans.side")]])
 
        (when (or (contains? cf/flags :access-tokens)
                  (contains? cf/flags :mcp))
