@@ -20,7 +20,10 @@
   --ds-font: "Inter", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   position: fixed;
-  z-index: 900;
+
+  // Over the canvas, under the workspace chrome (`z-panel`): the toolbar's
+  // menus, the quick prompt and the panels are never covered by the tip.
+  z-index: 99;
 
   // 20 px (toolbar and Craft pill) + their 48 px + a 12 px gap.
   inset-block-end: 80px;

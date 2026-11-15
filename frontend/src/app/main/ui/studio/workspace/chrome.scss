@@ -90,7 +90,10 @@ $right-extra: 9 + 9;
   // as floating over the canvas.
   #{ws.on("main_ui_workspace__workspace")} {
     grid-template: "left-sidebar viewport craft right-sidebar" 1fr / auto 1fr auto auto;
-    background-color: ds.token("bg-canvas");
+
+    // The colour of the page's canvas (the shell sets it), so the canvas
+    // has no edge where the viewport ends.
+    background-color: var(--ds-canvas-color, #{ds.token("bg-canvas")});
   }
 
   // Rulers and the frame around the canvas (upstream draws them in SVG with
@@ -98,8 +101,8 @@ $right-extra: 9 + 9;
   // has no box around it, as on the boards.
   // `text.secondary` on `bg.canvas` is 4.2:1, so the numbers use `text.body`.
   g[class~="viewport-frame"] {
-    --panel-background-color: #{ds.token("bg-canvas")};
-    --panel-border-color: #{ds.token("bg-canvas")};
+    --panel-background-color: var(--ds-canvas-color, #{ds.token("bg-canvas")});
+    --panel-border-color: var(--ds-canvas-color, #{ds.token("bg-canvas")});
     --layer-row-foreground-color: #{ds.token("text-body")};
   }
 
@@ -223,7 +226,8 @@ $right-extra: 9 + 9;
 
 // --- 4. Type and labels
 
-$panels: "#left-sidebar-aside, #right-sidebar-aside";
+// By attribute: the stylesheet build scopes `#id` selectors like classes.
+$panels: '[id="left-sidebar-aside"], [id="right-sidebar-aside"]';
 
 #{$scope} :is(#{$panels}) {
   // The DS text face in both panels, on every element because upstream
@@ -258,12 +262,22 @@ $panels: "#left-sidebar-aside, #right-sidebar-aside";
     margin-block-start: $tabs-offset;
   }
 
-  // One `bg.subtle` track with the selected tab as a raised chip in it.
-  #{ws.on("main_ui_ds_layout_tab_switcher__tab-list")} {
-    gap: 0;
-    padding: 2px;
+  // One `bg.subtle` track (upstream's nav) with the selected tab as a
+  // raised chip in it, the tabs equally wide.
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-nav")} {
+    --tabs-bg-color: #{ds.token("bg-subtle")};
+
     border-radius: ds.token("radius-md");
-    background-color: ds.token("bg-subtle");
+  }
+
+  // Upstream keeps a column for the collapse button, which is hidden.
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-nav-start")} {
+    grid-template-columns: 1fr;
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-list")} {
+    grid-auto-columns: 1fr;
+    gap: 0;
   }
 
   #{ws.on("main_ui_ds_layout_tab_switcher__tab")} {
@@ -295,8 +309,27 @@ $panels: "#left-sidebar-aside, #right-sidebar-aside";
   }
 }
 
+// Rows: the selected layer on `bg.selected`, the current page on
+// `bg.subtle` with its name in medium weight. The rows stay as wide as
+// the panel (the layer tree scrolls sideways under them).
+#{$scope} {
+  [class~="main_ui_workspace_sidebar_layer_item__layer-row"][class~="main_ui_workspace_sidebar_layer_item__selected"] {
+    --layer-background-color: #{ds.token("bg-selected")};
+    --shadow-color: #{ds.token("bg-selected")};
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_sitemap__sitemap")} {
+    --layer-row-background-color-selected: #{ds.token("bg-subtle")};
+    --layer-row-foreground-color-selected: #{ds.token("text-primary")};
+  }
+
+  [class~="main_ui_workspace_sidebar_sitemap__page-item"][class~="main_ui_workspace_sidebar_sitemap__selected"] {
+    font-weight: ds.token("weight-medium");
+  }
+}
+
 // Values of the design panel (X, Y, W, H, colours) are mono on the boards.
-#{$scope} #right-sidebar-aside input {
+#{$scope} [id="right-sidebar-aside"] input {
   font-family: ds.token("font-mono");
 }
 

@@ -25,6 +25,7 @@
   (:require-macros
    [app.main.style :as stl])
   (:require
+   [app.common.colors :as clr]
    [app.main.data.workspace :as dw]
    [app.main.refs :as refs]
    [app.main.store :as st]
@@ -66,6 +67,7 @@
                                      (theme/get-system-theme))]
     (.remove classes "ds-chrome")
     (.removeAttribute body "data-ds-width")
+    (.removeProperty (.-style body) "--ds-canvas-color")
     (when (= theme "dark")
       (.remove classes "light")
       (.add classes "default"))))
@@ -132,6 +134,10 @@
         hide-ui?    (contains? layout :hide-ui)
         ready?      (some? page-id)
 
+        ;; As upstream's viewport paints it.
+        page        (mf/deref refs/workspace-page)
+        canvas-color (or (:background page) clr/canvas)
+
         ;; Whether the width rules ask for the Layers rail, what they asked
         ;; last time, and whether the rule itself collapsed Layers.
         rail?       (state/rail? width-class craft-open?)
@@ -154,6 +160,11 @@
 
     (mf/with-effect [width-class]
       (.setAttribute (body-node) "data-ds-width" (name width-class)))
+
+    ;; The gaps around the floating panels show the colour of the page's
+    ;; canvas, so the panels float over one surface.
+    (mf/with-effect [canvas-color]
+      (.setProperty (.-style (body-node)) "--ds-canvas-color" canvas-color))
 
     ;; A panel the person reopened is theirs again.
     (mf/with-effect [collapsed?]

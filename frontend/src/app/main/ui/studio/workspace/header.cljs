@@ -179,7 +179,7 @@
                :aria-haspopup "menu"
                :aria-expanded open?
                :data-tool "mcp"
-               :data-testid "mcp-btn"
+               :data-testid "ds-mcp-pill"
                :data-connected (if connected? "true" "false")
                :on-click on-toggle}
       [:span {:class (stl/css-case :mcp-dot true

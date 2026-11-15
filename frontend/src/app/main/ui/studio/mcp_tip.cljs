@@ -239,26 +239,24 @@
     (mf/with-effect []
       (mf/set-ref-val! alive true)
       (let [on-resize     #(reset! place* (placement))
-            on-visibility #(reset! hidden-tab* (boolean (.-hidden js/document)))
-            ;; Craft opened or closed. The panels settle a moment later
-            ;; (Layers becomes a rail), so look again then.
-            on-craft      (fn []
-                            (on-resize)
-                            (js/setTimeout #(when (mf/ref-val alive) (on-resize)) 400))
-            observer      (js/MutationObserver. on-craft)]
-        (.observe observer
-                  (.-documentElement js/document)
-                  #js {:attributes true
-                       :attributeFilter #js ["data-ds-craft-open"]})
+            on-visibility #(reset! hidden-tab* (boolean (.-hidden js/document)))]
         (.addEventListener js/window "resize" on-resize)
         (.addEventListener js/document "visibilitychange" on-visibility)
         (fn []
           (mf/set-ref-val! alive false)
           (clear! show-timer)
           (clear! hide-timer)
-          (.disconnect observer)
           (.removeEventListener js/window "resize" on-resize)
           (.removeEventListener js/document "visibilitychange" on-visibility))))
+
+    ;; While the tip is on screen the panels can still change under it:
+    ;; the file finishes loading, Craft opens or closes, Layers becomes a
+    ;; rail. Look again a few times a second; an unchanged place renders
+    ;; nothing.
+    (mf/with-effect [(some? phase)]
+      (when (some? phase)
+        (let [timer (js/setInterval #(reset! place* (placement)) 400)]
+          #(js/clearInterval timer))))
 
     (when (some? phase)
       [:aside {:class (stl/css-case :global/ds-toast true

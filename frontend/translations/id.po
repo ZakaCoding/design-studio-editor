@@ -7701,3 +7701,9 @@ msgstr "Tekan %s untuk panel"
 
 msgid "ds.craft.quick.chip"
 msgstr "Ubah dengan Craft"
+
+msgid "workspace.toolbar.mcp-connected"
+msgstr "MCP tersambung"
+
+msgid "workspace.toolbar.mcp-connect-here"
+msgstr "Sambungkan di sini"
