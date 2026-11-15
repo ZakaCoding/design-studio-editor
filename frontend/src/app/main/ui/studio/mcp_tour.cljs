@@ -53,20 +53,24 @@
 
 ;; --- What is on screen
 ;;
-;; The workspace entries are found by the ids upstream gives them; the
-;; Integrations controls by the `data-testid` our seam adds (STUDIO-SEAMS.md).
+;; The workspace entries are found by the ids upstream gives them (the MCP
+;; entry is in the DOM only while the main menu is open); the Integrations
+;; controls by the `data-testid` our seam adds (STUDIO-SEAMS.md).
 
 (defn- query
   [selector]
   (.querySelector js/document selector))
 
 (defn- main-menu-button
-  "The workspace main menu toggle, found by its translated label."
+  "The workspace main menu toggle: the only toggle button in the header of
+  the left sidebar. Its name is a tooltip that exists only on hover (2.18),
+  so the translated `label` is a second way to find it, not the first."
   [label]
-  (->> (.querySelectorAll js/document "button[aria-pressed][aria-label]")
-       (array-seq)
-       (filter #(= label (.getAttribute % "aria-label")))
-       (first)))
+  (or (query "[data-testid=\"left-sidebar\"] header button[aria-pressed]")
+      (->> (.querySelectorAll js/document "button[aria-pressed][aria-label]")
+           (array-seq)
+           (filter #(= label (.getAttribute % "aria-label")))
+           (first))))
 
 (def ^:private modal-selector "[data-testid=\"ds-integrations-modal\"]")
 
@@ -168,11 +172,10 @@
                (reset! view* nil))
              (let [manage (when workspace? (query "#mcp-menu-nav-to-integrations"))
                    entry  (when workspace? (query "#file-menu-mcp"))
-                   menu   (when workspace? (.getElementById js/document "workspace:menu"))
                    copy   (when integrations? (link-copy-button))
                    step   (cadence/advance step {:workspace? workspace?
                                                  :integrations? integrations?
-                                                 :menu-open? (and (some? menu) (some? entry))
+                                                 :menu-open? (some? entry)
                                                  :manage? (some? manage)
                                                  :mcp-enabled? mcp-enabled?
                                                  :copy? (some? copy)})

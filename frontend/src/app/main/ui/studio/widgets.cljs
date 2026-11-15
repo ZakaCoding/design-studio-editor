@@ -11,6 +11,7 @@
   Mounted once, from `app.main.ui/app`."
   (:require
    [app.main.data.auth :as da]
+   [app.main.repo :as rp]
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.error-boundary :refer [error-boundary*]]
@@ -18,6 +19,7 @@
    [app.main.ui.studio.mcp-tip :refer [mcp-tip*]]
    [app.main.ui.studio.mcp-tour :refer [mcp-tour*]]
    [app.main.ui.studio.refusal-card :refer [refusal-card*]]
+   [beicon.v2.core :as rx]
    [cuerdas.core :as str]
    [rumext.v2 :as mf]))
 
@@ -41,18 +43,24 @@
 (mf/defc global-widgets*
   [{:keys [route profile has-exception]}]
   (let [section        (-> route :data :name)
-        authenticated? (da/is-authenticated? profile)
-        ;; The profile is fetched before the first route, so a profile
-        ;; without an account here is a signed-out visitor, not a pending
-        ;; answer.
-        signed-out?    (and (some? profile) (not authenticated?))]
+        ;; Only a signed-in profile is kept in the state, so this is false
+        ;; for a signed-out visitor and, for a moment, while signing in.
+        authenticated? (da/is-authenticated? profile)]
 
     ;; Signed out on a dashboard or settings page, upstream 2.18.7 shows its
     ;; first-run survey (dashboard without a team) or a sign-in dialog over
-    ;; an error page, never the sign-in page. Send the visitor there.
-    (mf/with-effect [section signed-out?]
-      (when (and signed-out? (members-only? section))
-        (st/emit! (rt/nav :auth-login))))
+    ;; an error page, never the sign-in page. Send the visitor there. Only a
+    ;; clear "signed out" from the backend counts: a fault leaves the page
+    ;; alone.
+    (mf/with-effect [section authenticated?]
+      (when (and (not authenticated?) (members-only? section))
+        (let [sub (->> (rp/cmd! :get-profile)
+                       (rx/subs! (fn [profile]
+                                   (when-not (da/is-authenticated? profile)
+                                     (st/emit! (rt/nav :auth-login))))
+                                 (fn [_] nil)))]
+          (fn []
+            (rx/dispose! sub)))))
 
     [:> error-boundary* {:fallback silent*}
      [:> refusal-card*]
