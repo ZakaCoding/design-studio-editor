@@ -49,7 +49,7 @@
   @include ds.type("panel-title");
 
   margin: 0 0 14px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: ds.token("text-primary");
 }
 
@@ -80,17 +80,15 @@
   @include ds.type("panel-title");
 
   margin: 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: ds.token("text-primary");
 }
 
 .switch-state {
   @include ds.type("body");
 
-  font-size: 13px;
-
+  font-size: 0.8125rem;
   margin: 0;
-
   color: ds.token("status-success-text");
 }
 
@@ -102,7 +100,6 @@
   @include ds.type("body");
 
   margin: 0;
-
   color: ds.token("text-body");
 }
 
@@ -110,7 +107,6 @@
   @include ds.type("body");
 
   margin: 0;
-
   color: ds.token("status-danger-text");
 }
 
@@ -206,7 +202,6 @@
   @include ds.type("control-lg");
 
   margin: 0;
-
   color: ds.token("text-primary");
 }
 
@@ -214,7 +209,6 @@
   @include ds.type("body");
 
   margin: 0;
-
   color: ds.token("text-secondary");
 }
 
@@ -227,7 +221,7 @@
   border-radius: ds.token("radius-md");
   background: ds.token("bg-subtle");
   color: ds.token("text-primary");
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .revoke {
@@ -281,7 +275,6 @@
   @include ds.type("body");
 
   margin: 0;
-
   color: ds.token("text-body");
 }
 
@@ -335,7 +328,6 @@
   @include ds.type("control-lg");
 
   margin: 0;
-
   color: ds.token("accent-text-strong");
   font-weight: 600;
 }
@@ -344,7 +336,6 @@
   @include ds.type("body");
 
   margin: 0;
-
   color: ds.token("accent-text-strong");
 }
 
@@ -378,7 +369,6 @@
 // Privacy note
 .privacy {
   display: flex;
-  align-items: flex-start;
   gap: ds.token("space-12");
   align-items: center;
   padding: 0 ds.token("space-20");
@@ -397,7 +387,6 @@
   @include ds.type("body");
 
   margin: 0;
-
   color: ds.token("text-body");
 }
 

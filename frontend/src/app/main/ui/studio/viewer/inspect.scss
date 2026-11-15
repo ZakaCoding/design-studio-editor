@@ -23,7 +23,7 @@
   @include ds.type("panel-title");
 
   margin: 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: ds.token("text-primary");
   overflow: hidden;
   text-overflow: ellipsis;
@@ -59,7 +59,7 @@
   @include ds.type("label");
 
   margin: 0 0 ds.token("space-12");
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 500;
   color: ds.token("text-secondary");
   text-transform: uppercase;
@@ -210,7 +210,7 @@
   z-index: 1;
 
   &:hover {
-    color: #ffffff;
+    color: #fff;
   }
 }
 
@@ -232,7 +232,7 @@
   border-radius: ds.token("radius-sm");
   background: ds.token("bg-subtle");
   color: ds.token("text-primary");
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .export-button {
@@ -244,7 +244,7 @@
   block-size: 32px;
   padding-inline: ds.token("space-20");
   border-radius: ds.token("radius-sm");
-  font-size: 12px;
+  font-size: 0.75rem;
   background: ds.token("bg-inverse");
   color: ds.token("text-on-accent");
   font-weight: 600;
@@ -284,7 +284,7 @@
   @include ds.type("control");
 
   block-size: 36px;
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-block-start: ds.token("space-4");
   border-radius: ds.token("radius-pill");
   background: ds.token("accent-default");

@@ -181,8 +181,6 @@
 // SECTION BUTTONS
 .mode-zone {
   @extend %island;
-
-  padding-inline: deprecated.$s-8;
   @include deprecated.flex-row;
 
   gap: deprecated.$s-4;
