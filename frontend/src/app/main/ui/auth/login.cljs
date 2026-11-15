@@ -169,10 +169,14 @@
     (let [password-login? (or (contains? cf/flags :login)
                               (contains? cf/flags :login-with-password))
           forgot-link     (when (and (not= origin :viewer) password-login?)
-                            [:> lk/link* {:action on-recovery-request
-                                          :class sa/link-class
-                                          :data-testid "forgot-password"}
-                             (tr "ds.signin.forgot")])]
+                            ;; `mf/html`: hiccup in a binding is not compiled by
+                            ;; the component macro; as a raw vector React rendered
+                            ;; its keyword and the sign-in page crashed (#31).
+                            (mf/html
+                             [:> lk/link* {:action on-recovery-request
+                                           :class sa/link-class
+                                           :data-testid "forgot-password"}
+                              (tr "ds.signin.forgot")]))]
       [:*
        (when-let [message @error]
          [:> sa/alert* {} message])
