@@ -12,11 +12,8 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.auth.login :refer [login-dialog*]]
-   [app.main.ui.auth.recovery-request :refer [recovery-request-page*]]
-   [app.main.ui.auth.register :refer [register-methods* register-success-page*
-                                      register-validate-form* terms-service-privacy-policy*]]
-   [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
-   [app.main.ui.ds.foundations.assets.icon :as i]
+   [app.main.ui.auth.recovery-request :refer [recovery-request-page* recovery-sent-page*]]
+   [app.main.ui.studio.auth :as sa]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -27,116 +24,50 @@
   {::mf/register modal/components
    ::mf/register-as :login-register}
   [_]
-  (let [user-email     (mf/use-state "")
-        register-token (mf/use-state "")
-
+  ;; Design Studio (F4-B, F1 · 11): the viewer's share-link sign-in uses our
+  ;; dialog and lockup, the same one a signed-out dashboard visit gets.
+  ;; "Create an account" is a link to /start/signup (ADR 0017), so Penpot's
+  ;; register form is no longer reachable from here.
+  (let [user-email       (mf/use-state "")
         current-section* (mf/use-state :login)
         current-section  (deref current-section*)
 
-        set-current-section
-        (mf/use-fn
-         #(reset! current-section* %))
-
-        set-section
-        (mf/use-fn
-         (fn [event]
-           (let [section (-> (dom/get-current-target event)
-                             (dom/get-data "value")
-                             (keyword))]
-             (set-current-section section))))
+        set-section-recovery
+        (mf/use-fn #(reset! current-section* :recovery-request))
 
         go-back-to-login
-        (mf/use-fn
-         #(set-current-section :login))
+        (mf/use-fn #(reset! current-section* :login))
 
-        main-section (or
-                      (= current-section :login)
-                      (= current-section :register)
-                      (= current-section :register-validate))
         close
         (fn [event]
           (dom/prevent-default event)
           (st/emit! (modal/hide)))
 
-        success-email-sent
+        recovery-email-sent
         (fn [email]
           (reset! user-email email)
-          (set-current-section :email-sent))
+          (reset! current-section* :recovery-email-sent))
 
         success-login
         (fn []
-          (.reload js/window.location true))
-
-        success-register
-        (fn [data]
-          (cond
-            (:invitation-token data)
-            (st/emit! (rt/nav :auth-verify-token {:token (:invitation-token data)}))
-
-            (:is-active data)
-            (st/emit! (modal/hide))
-
-            :else
-            (do
-              (reset! user-email (:email data))
-              (set-current-section :email-sent))))]
+          (.reload js/window.location true))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
-      [:div {:class (stl/css :modal-header)}
-       [:h2 {:class (stl/css :modal-header-title)} (tr "labels.continue-with-penpot")]
-       [:> icon-button* {:variant "ghost"
-                         :class (stl/css :modal-close)
-                         :aria-label (tr "labels.close")
-                         :on-click close
-                         :icon i/close}]]
-
-      [:div  {:class (stl/css :modal-content)}
+     [:> sa/modal* {:on-close close
+                    :close-label (tr "labels.close")}
+      [:*
        (case current-section
          :login
-         [:div {:class (stl/css :login-form)}
-          [:> login-dialog* {:on-success-callback success-login
+         [:> sa/page* {:title (tr "ds.auth.modal.title")
+                       :subtitle (tr "ds.signin.modal.tagline")}
+          [:> login-dialog* {:on-recovery-request set-section-recovery
+                             :on-success-callback success-login
                              :origin :viewer}]
-          [:div {:class (stl/css :login-links)}
-           [:div
-            [:a {:on-click set-section
-                 :data-value "recovery-request"}
-             (tr "auth.forgot-password")]]
-           [:div
-            [:span
-             (tr "auth.register") " "]
-            [:a {:on-click set-section
-                 :data-value "register"}
-             (tr "auth.register-submit")]]]]
-
-         :register
-         [:div {:class (stl/css :login-form)}
-          [:> register-methods* {:on-success-callback success-register}]
-          [:div {:class (stl/css :login-links)}
-           [:div
-            [:span (tr "auth.already-have-account") " "]
-            [:a {:on-click set-section
-                 :data-value "login"}
-             (tr "auth.login-here")]]]]
-
-         :register-validate
-         [:div {:class (stl/css :login-form)}
-          [:> register-validate-form* {:params {:token @register-token}
-                                       :on-success-callback success-email-sent}]
-          [:div {:class (stl/css :login-links)}
-           [:div
-            [:a {:on-click set-section
-                 :data-value "register"}
-             (tr "labels.go-back")]]]]
+          [:> sa/signup-row* {}]]
 
          :recovery-request
          [:> recovery-request-page* {:go-back-callback go-back-to-login
-                                     :on-success-callback success-email-sent}]
+                                     :on-success-callback recovery-email-sent}]
 
-         :email-sent
-         [:div {:class (stl/css :login-form)}
-          [:> register-success-page* {:params {:email @user-email}}]])
-
-       (when main-section
-         [:div {:class (stl/css :login-links)}
-          [:> terms-service-privacy-policy*]])]]]))
+         :recovery-email-sent
+         [:> recovery-sent-page* {:email @user-email}])]]]))
