@@ -20,6 +20,7 @@
 
 .logo-link {
   border-radius: ds.token("radius-sm");
+
   @include ds.focusable(4px);
 
   &:hover {
@@ -30,15 +31,15 @@
 
 // The wordmark is 0.6 of the mark, as on /start (24 px beside a 40 px mark).
 .size-sm {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .size-md {
-  font-size: 19px;
+  font-size: 1.1875rem;
 }
 
 .size-lg {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .mark {

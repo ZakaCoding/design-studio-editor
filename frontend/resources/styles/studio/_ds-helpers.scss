@@ -76,6 +76,7 @@ $type-styles: (
   @if not map.has-key($type-styles, $style) {
     @error "Unknown Design Studio type style `#{$style}`";
   }
+
   $spec: map.get($type-styles, $style);
 
   font-family: tokens.token(list.nth($spec, 1));
@@ -83,6 +84,7 @@ $type-styles: (
   font-weight: tokens.token(list.nth($spec, 3));
   line-height: list.nth($spec, 4);
   letter-spacing: list.nth($spec, 5);
+
   @if $style == "label" {
     text-transform: uppercase;
   }
@@ -94,6 +96,7 @@ $type-styles: (
   box-sizing: border-box;
   color: tokens.token("text-body");
   -webkit-font-smoothing: antialiased;
+
   @include type("body");
 
   *,

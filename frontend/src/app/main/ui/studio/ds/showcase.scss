@@ -10,6 +10,7 @@
   z-index: 1;
   overflow: auto;
   padding: ds.token("space-32");
+
   // White, not bg-canvas: text-secondary is 4.2:1 on the canvas gray.
   background: ds.token("bg-panel");
 }

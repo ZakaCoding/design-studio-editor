@@ -64,6 +64,7 @@
   --ds-brand-wordmark-muted: #627169;
   --ds-radius-button: 999px;
   --ds-radius-card: 14px;
+
   // ds/core
   --ds-radius-xs: 4px;
   --ds-radius-md: 10px;
@@ -83,7 +84,7 @@
   color: var(--ds-text-primary);
   color-scheme: light;
   font-family: var(--ds-font-text);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 
@@ -148,7 +149,7 @@
 
 .lockup-word {
   font-family: var(--ds-font-wordmark);
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.2;
   letter-spacing: -0.4px;
   white-space: nowrap;
@@ -176,7 +177,7 @@
   background: none;
   color: var(--ds-text-secondary);
   font-family: var(--ds-font-mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.2;
   text-transform: uppercase;
@@ -198,8 +199,7 @@
 }
 
 .content {
-  align-self: center;
-  justify-self: center;
+  place-self: center center;
   inline-size: 100%;
   max-inline-size: 400px;
   padding-block: 40px;
@@ -216,7 +216,7 @@
 .legal-text {
   margin: 0;
   color: var(--ds-text-secondary);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.35;
 }
 
@@ -256,27 +256,27 @@
   margin: 0;
   color: var(--ds-text-primary);
   font-family: var(--ds-font-display);
-  font-size: 34px;
+  font-size: 2.125rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.8px;
 
   @media (width <= 600px) {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
 }
 
 .subtitle {
   margin: -6px 0 12px;
   color: var(--ds-text-secondary);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.4;
 }
 
 .body {
   margin: 0 0 12px;
   color: var(--ds-text-body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.5;
 }
 
@@ -296,13 +296,13 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.2;
 }
 
 .field-label {
   color: var(--ds-text-primary);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
@@ -341,7 +341,7 @@
   background: none;
   color: var(--ds-text-primary);
   font-family: var(--ds-font-text);
-  font-size: 14px;
+  font-size: 0.875rem;
 
   &::placeholder {
     color: var(--ds-text-placeholder);
@@ -389,7 +389,7 @@
 
 .field-error {
   color: var(--ds-status-danger-text);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.35;
 }
 
@@ -428,7 +428,7 @@
   border: 1px solid transparent;
   border-radius: var(--ds-radius-button);
   font-family: var(--ds-font-text);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
@@ -473,7 +473,7 @@
   gap: 16px;
   margin-block: 14px;
   color: var(--ds-text-secondary);
-  font-size: 12px;
+  font-size: 0.75rem;
 
   &::before,
   &::after {
@@ -487,7 +487,7 @@
 .signup {
   margin: 16px 0 0;
   color: var(--ds-text-body);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .alert {
@@ -495,7 +495,7 @@
   border-radius: var(--ds-radius-md);
   background: var(--ds-status-danger-bg);
   color: var(--ds-status-danger-text);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.4;
   margin-block-end: 16px;
 }
@@ -506,7 +506,7 @@
   border-radius: var(--ds-radius-card);
   background: var(--ds-bg-subtle);
   color: var(--ds-text-body);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.45;
 }
 
@@ -562,7 +562,7 @@
   }
 
   .title {
-    font-size: 26px;
+    font-size: 1.625rem;
     letter-spacing: -0.5px;
   }
 }
@@ -630,7 +630,7 @@
   box-shadow: var(--ds-shadow-pop);
   color: var(--ds-text-primary);
   font-family: var(--ds-font-display);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
   white-space: nowrap;
   rotate: var(--ds-rotate, 0deg);
@@ -763,7 +763,7 @@
   background: var(--ds-guide-measure);
   color: #fff;
   font-family: var(--ds-font-mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -789,7 +789,7 @@
   border-radius: 999px;
   background: var(--ds-cursor);
   color: #fff;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -820,7 +820,7 @@
   margin: 0;
   color: var(--ds-text-primary);
   font-family: var(--ds-font-display);
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.6px;
@@ -829,6 +829,6 @@
 .panel-text {
   margin: 0;
   color: var(--ds-text-secondary);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.4;
 }

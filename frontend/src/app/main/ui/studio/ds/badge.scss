@@ -88,6 +88,6 @@
   border-radius: 50%;
 
   &:hover {
-    background: color-mix(in srgb, currentColor 14%, transparent);
+    background: color-mix(in srgb, currentcolor 14%, transparent);
   }
 }

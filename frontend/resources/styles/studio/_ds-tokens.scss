@@ -17,7 +17,7 @@
 @use "sass:string";
 
 $core: (
-  "color-gray-0": #ffffff,
+  "color-gray-0": #fff,
   "color-gray-50": #f5f5f8,
   "color-gray-100": #ebebef,
   "color-gray-150": #e4e4ea,
@@ -132,10 +132,10 @@ $light: (
 // file. Keep this list short; promote a value to the Penpot file before it
 // spreads. Motion curves and durations are the /start V4 ones.
 $code-only: (
-  "accent-hover": color-mix(in srgb, var(--ds-accent-default) 86%, #000000),
-  "accent-pressed": color-mix(in srgb, var(--ds-accent-default) 74%, #000000),
+  "accent-hover": color-mix(in srgb, var(--ds-accent-default) 86%, #000),
+  "accent-pressed": color-mix(in srgb, var(--ds-accent-default) 74%, #000),
   "danger-solid": var(--ds-color-red-700),
-  "danger-solid-hover": color-mix(in srgb, var(--ds-color-red-700) 86%, #000000),
+  "danger-solid-hover": color-mix(in srgb, var(--ds-color-red-700) 86%, #000),
   "overlay-scrim": #15151a66,
   "focus-ring-color": var(--ds-accent-default),
   "focus-ring-width": 2px,
@@ -162,12 +162,15 @@ $code-only: (
   @each $name, $value in $core {
     --ds-#{$name}: #{$value};
   }
+
   @each $name, $ref in $light {
     @if not map.has-key($core, $ref) {
       @error "ds/light token `#{$name}` points to unknown ds/core token `#{$ref}`";
     }
+
     --ds-#{$name}: var(--ds-#{$ref});
   }
+
   @each $name, $value in $code-only {
     --ds-#{$name}: #{$value};
   }
@@ -178,5 +181,6 @@ $code-only: (
   @if not(map.has-key($core, $name) or map.has-key($light, $name) or map.has-key($code-only, $name)) {
     @error "Unknown Design Studio token `#{$name}`";
   }
+
   @return var(--ds-#{$name});
 }
