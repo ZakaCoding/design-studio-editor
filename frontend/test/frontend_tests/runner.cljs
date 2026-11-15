@@ -74,6 +74,7 @@
    [frontend-tests.studio.ai-access-test]
    [frontend-tests.studio.craft-rules-test]
    [frontend-tests.studio.dashboard-rules-test]
+   [frontend-tests.studio.dashboard-shell-rules-test]
    [frontend-tests.studio.mcp-cadence-test]
    [frontend-tests.studio.refusal-test]
    [frontend-tests.studio.shell-state-test]
@@ -192,6 +193,7 @@
    'frontend-tests.studio.ai-access-test
    'frontend-tests.studio.craft-rules-test
    'frontend-tests.studio.dashboard-rules-test
+   'frontend-tests.studio.dashboard-shell-rules-test
    'frontend-tests.studio.mcp-cadence-test
    'frontend-tests.studio.refusal-test
    'frontend-tests.studio.shell-state-test

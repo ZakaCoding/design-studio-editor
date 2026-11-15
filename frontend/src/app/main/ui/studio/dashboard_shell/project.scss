@@ -1,0 +1,62 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Project page parts (F1 · 14).
+
+@use "studio/ds" as ds;
+
+// Member avatars: 32 px, a 2 px white ring, 10 px overlap.
+.members {
+  display: flex;
+  align-items: center;
+  margin: 0 -2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.member {
+  margin: 0 0 0 -10px;
+
+  &:first-child {
+    margin-inline-start: 0;
+  }
+}
+
+.member-photo {
+  display: block;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: ds.token("radius-pill");
+  border: 2px solid ds.token("bg-panel");
+  background: ds.token("bg-subtle");
+  object-fit: cover;
+}
+
+.pin {
+  flex: none;
+}
+
+// The dashed tile is as high as a file card (220 px at 1440).
+.new-file-tile {
+  @include ds.control-reset;
+  @include ds.type("control-lg");
+  @include ds.focusable;
+  @include ds.motion((border-color, color));
+
+  display: grid;
+  place-items: center;
+  min-block-size: 220px;
+
+  // #C9C9D3 on the board: between border.strong and text.disabled.
+  border: 1px dashed color-mix(in srgb, ds.token("border-strong") 55%, ds.token("text-disabled"));
+  border-radius: ds.token("radius-card");
+  color: ds.token("text-secondary");
+
+  &:hover {
+    border-color: ds.token("accent-default");
+    color: ds.token("text-primary");
+  }
+}

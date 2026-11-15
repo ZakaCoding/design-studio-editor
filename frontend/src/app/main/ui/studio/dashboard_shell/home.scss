@@ -1,0 +1,66 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Top bar actions and "File terbaru" (F1 · 03).
+
+@use "studio/ds" as ds;
+
+.top-actions {
+  @include ds.root;
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-16");
+  align-self: start;
+
+  // F1 · 03: the search box and the button start 38 px from the top.
+  padding-block-start: 38px;
+}
+
+.search {
+  inline-size: 300px;
+  max-inline-size: 30vw;
+}
+
+.search-input {
+  @include ds.type("control");
+  @include ds.motion((background-color, box-shadow));
+
+  appearance: none;
+  inline-size: 100%;
+  block-size: 40px;
+  margin: 0;
+  padding: 0 20px;
+  border: 0;
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-regular");
+
+  &::placeholder {
+    color: ds.token("text-secondary");
+    opacity: 1;
+  }
+
+  &:hover {
+    background: ds.token("border-default");
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    @include ds.focus-ring(0);
+
+    background: ds.token("bg-panel");
+  }
+}
+
+.recent {
+  // F1 · 03: 32 px under the block above, 40 px above the next one.
+  margin-block: ds.token("space-32") 40px;
+}

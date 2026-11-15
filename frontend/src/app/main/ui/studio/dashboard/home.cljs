@@ -34,6 +34,7 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.dashboard.import :as udi]
+   [app.main.ui.studio.dashboard-shell.home :as shell]
    [app.main.ui.studio.dashboard.connect-card :as connect-card]
    [app.main.ui.studio.dashboard.hero :as hero]
    [app.main.ui.studio.dashboard.icons :as icons]
@@ -266,22 +267,19 @@
       (tr "ds.home.greeting"))))
 
 (mf/defc home*
-  "The home page, mounted by the dashboard in the place of Penpot's
-  `projects-section*` and with its props (`team`, `projects`, `profile`).
-
-  Without the dashboard shell this is the content alone. With the shell
-  (G1) it is its `home-page*` around the same content, with its
-  `recent-files*` as `recent`:
-
+  "The home page, mounted by the dashboard shell in the place of Penpot's
+  `projects-section*` and with its props (`team`, `projects`, `profile`):
+  the shell's `home-page*` (greeting, or \"Selamat datang\" for an account
+  with nothing yet) around the content, with the shell's \"File terbaru\"
+  as `recent`."
+  [{:keys [team projects profile]}]
+  (let [can-edit (-> team :permissions :can-edit)]
     [:> shell/home-page* {:profile profile
-                          :title (greeting profile projects can-edit)}
+                          :title (greeting profile projects can-edit)
+                          :data-testid "ds-home-page"}
      [:> home-content* {:team team
                         :projects projects
                         :recent (mf/html
                                  [:> shell/recent-files*
                                   {:team team
-                                   :project (rules/drafts projects)}])}]]"
-  [{:keys [team projects]}]
-  [:> home-content* {:team team
-                     :projects projects}])
-
+                                   :project (rules/drafts projects)}])}]]))
