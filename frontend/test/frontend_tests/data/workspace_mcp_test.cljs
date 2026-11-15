@@ -8,8 +8,12 @@
   (:require
    [app.common.time :as ct]
    [app.common.uuid :as uuid]
+   [app.main.data.persistence :as dps]
    [app.main.data.profile :as du]
    [app.main.data.workspace.mcp :as mcp]
+   [app.main.errors :as errors]
+   [app.main.store :as st]
+   [beicon.v2.core :as rx]
    [cljs.test :as t :include-macros true]
    [potok.v2.core :as ptk]))
 
@@ -123,3 +127,52 @@
             event  (du/delete-access-token {:id (uuid/next)})
             result (ptk/update event state)]
         (t/is (= 2 (count (:access-tokens result))))))))
+
+;; The persistence operations the MCP save confirmation hands to
+;; `app.plugins.persistence-guard/settle!`. The guard itself is covered in
+;; `frontend-tests.plugins.persistence-guard-test`; this checks the wiring
+;; to the real persistence API: one flush, one bounded wait, one warning.
+(t/deftest test-persistence-ops
+  (let [ops @#'mcp/persistence-ops]
+    (t/testing "force-persist! emits the persistence flush event once"
+      (let [emitted (atom [])]
+        (with-redefs [st/emit! (fn
+                                 ([] nil)
+                                 ([event] (swap! emitted conj event))
+                                 ([event & events] (swap! emitted into (cons event events))))]
+          ((:force-persist! ops)))
+        (t/is (= [::dps/force-persist] @emitted))))
+
+    (t/testing "wait-persisted! maps the save wait to saved / failed and bounds it"
+      (let [outcome (fn [observable]
+                      (let [calls    (atom [])
+                            timeouts (atom [])]
+                        (with-redefs [dps/wait-persisted-or-error
+                                      (fn
+                                        ([] (throw (js/Error. "the MCP wait must be bounded")))
+                                        ([timeout-ms]
+                                         (swap! timeouts conj timeout-ms)
+                                         observable))]
+                          (let [dispose ((:wait-persisted! ops)
+                                         #(swap! calls conj :saved)
+                                         #(swap! calls conj :failed))]
+                            (t/is (fn? dispose))
+                            (dispose)))
+                        (t/is (= [90000] @timeouts))
+                        @calls))]
+        (t/is (= :saved (first (outcome (rx/of :saved))))
+              "a settled queue confirms the save")
+        (t/is (= [:failed] (outcome (rx/throw (ex-info "Changes could not be saved" {}))))
+              "a failed or timed out save does not")
+        (t/is (= [:failed] (outcome (rx/empty)))
+              "a wait that ends without an answer does not")
+        (t/is (= [] (outcome (rx/subject)))
+              "a pending save keeps the task waiting")))
+
+    (t/testing "warn! shows the native save warning, without the retrying variant"
+      (let [calls (atom [])
+            cause (js/Error. "unconfirmed")]
+        (with-redefs [errors/flash-persistence (fn [& args] (swap! calls conj (vec args)))]
+          ((:warn! ops) cause))
+        (t/is (= [[cause]] @calls))))))
+
