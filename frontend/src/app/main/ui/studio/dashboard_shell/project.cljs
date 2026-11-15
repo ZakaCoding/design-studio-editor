@@ -156,6 +156,18 @@
         actions
         (mf/html
          [:*
+          (when-not ^boolean drafts?
+            [:> pin-button* {:class (stl/css :pin)
+                             :tab-index 0
+                             :is-pinned (:is-pinned project)
+                             :on-click toggle-pin}])
+
+          (when ^boolean can-edit
+            [:> sds/icon-button* {:aria-label (tr "dashboard.options")
+                                  :icon-id i/menu
+                                  :on-click on-menu-click
+                                  :data-testid "ds-shell-project-menu"}])
+
           (when-not ^boolean default?
             [:> members* {:members (:members team)}])
 
@@ -169,18 +181,6 @@
                                     :on-click on-create
                                     :data-testid "new-file"}
              (tr "ds.shell.project.new-file")])
-
-          (when-not ^boolean drafts?
-            [:> pin-button* {:class (stl/css :pin)
-                             :tab-index 0
-                             :is-pinned (:is-pinned project)
-                             :on-click toggle-pin}])
-
-          (when ^boolean can-edit
-            [:> sds/icon-button* {:aria-label (tr "dashboard.options")
-                                  :icon-id i/menu
-                                  :on-click on-menu-click
-                                  :data-testid "ds-shell-project-menu"}])
 
           (when ^boolean can-edit
             [:> project-menu* {:project project

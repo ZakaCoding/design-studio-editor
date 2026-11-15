@@ -309,7 +309,8 @@ $settings-sidebar: 264px;
   }
 
   #{ws.on("main_ui_dashboard_sidebar__current-team")} {
-    padding: 0 12px 0 11px;
+    gap: 6px;
+    padding: 0 6px 0 11px;
     border-radius: ds.token("radius-md");
 
     &:focus-visible {
@@ -353,11 +354,13 @@ $settings-sidebar: 264px;
 
   #{ws.on("main_ui_dashboard_sidebar__arrow-icon")} {
     stroke: ds.token("text-secondary");
-    inline-size: 14px;
-    block-size: 14px;
+    inline-size: 12px;
+    block-size: 12px;
   }
 
   #{ws.on("main_ui_dashboard_sidebar__switch-options")} {
+    min-inline-size: 24px;
+    max-inline-size: 24px;
     border-inline-start: 1px solid ds.token("border-default");
 
     svg {
@@ -391,19 +394,19 @@ $settings-sidebar: 264px;
       background: ds.token("color-fun-mint");
     }
 
-    &:nth-child(5n + 2)::before {
+    &:nth-of-type(5n + 2)::before {
       background: ds.token("color-fun-sky");
     }
 
-    &:nth-child(5n + 3)::before {
+    &:nth-of-type(5n + 3)::before {
       background: ds.token("color-fun-yellow");
     }
 
-    &:nth-child(5n + 4)::before {
+    &:nth-of-type(5n + 4)::before {
       background: ds.token("color-fun-pink");
     }
 
-    &:nth-child(5n + 5)::before {
+    &:nth-of-type(5n + 5)::before {
       background: ds.token("color-fun-orange");
     }
 
@@ -440,7 +443,7 @@ $settings-sidebar: 264px;
 
   // Member: avatar 28 px and the name (F1 · 03).
   #{ws.on("main_ui_dashboard_sidebar__profile-section")} {
-    padding: 10px 8px 14px;
+    padding: 18px 8px 22px;
     border: 0;
     background: transparent;
     align-items: center;
@@ -633,6 +636,17 @@ $settings-sidebar: 264px;
     display: none;
   }
 
+  // The "Team up!" banner: the project page has "Undang" (F1 · 14), and the
+  // banner's text names Penpot.
+  #{ws.on("main_ui_dashboard_projects__team-hero")} {
+    display: none;
+  }
+
+  #{ws.on("main_ui_dashboard_projects__grid-container")} {
+    margin: 0;
+    padding: 0;
+  }
+
   #{ws.on("main_ui_dashboard_projects__dashboard-project-row")} {
     margin: 0 0 ds.token("space-24");
 
@@ -755,10 +769,33 @@ $settings-sidebar: 264px;
     }
   }
 
-  // Fonts and team pages: upstream centres a 1000 px column; keep it, on
-  // the light surface.
-  #{ws.on("main_ui_dashboard_fonts__dashboard-fonts")},
-  #{-any("section", "dashboard-container")}#{-any("", "dashboard-team")} {
+  // Fonts and team pages: upstream centres a 1000 px column or pushes it
+  // 120 px in; here it starts at the left edge of the page, like the rest.
+  #{ws.on("main_ui_dashboard_fonts__dashboard-fonts")} {
+    padding-inline-start: 0;
+    font-family: ds.token("font-text");
+  }
+
+  #{ws.on("main_ui_dashboard_fonts__dashboard-fonts-hero")} {
+    margin-block-start: 0;
+    padding-block-start: 0;
+  }
+
+  #{ws.on("main_ui_dashboard_team__dashboard-team-members")},
+  #{ws.on("main_ui_dashboard_team__dashboard-team-invitations")} {
+    justify-content: flex-start;
+    padding: 0;
+    font-family: ds.token("font-text");
+  }
+
+  #{ws.on("main_ui_dashboard_team__dashboard-team-webhooks")} {
+    justify-items: start;
+    font-family: ds.token("font-text");
+  }
+
+  #{ws.on("main_ui_dashboard_team__dashboard-team-settings")} {
+    align-items: flex-start;
+    padding: 0;
     font-family: ds.token("font-text");
   }
 }
@@ -851,10 +888,12 @@ $settings-sidebar: 264px;
   }
 
   #{ws.on("main_ui_settings_sidebar__arrow-icon")} {
-    stroke: currentcolor;
+    flex: none;
+    fill: none;
+    stroke: ds.token("text-secondary");
     margin-inline-end: 0;
-    inline-size: 18px;
-    block-size: 18px;
+    inline-size: 16px;
+    block-size: 16px;
   }
 
   // "Pengaturan"
