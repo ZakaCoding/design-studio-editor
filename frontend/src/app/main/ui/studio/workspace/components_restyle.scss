@@ -1,0 +1,225 @@
+// Design Studio restyle of the editor components of F1 · 13 (F3-C): menus,
+// context menus, colour picker, export dialogs and the shortcut panel.
+//
+// The upstream stylesheets stay untouched. They read Penpot's `--color-*`
+// variables; here each component root maps those variables to the
+// Design Studio semantic tokens (`--ds-*`), so the whole subtree re-themes
+// without a seam, and a few surface rules (radius, shadow, type) are set on
+// top. Components are matched by their exact CSS-module class token
+// (`[class~="<module path>__<name>"]`, the form app.main.style emits). The
+// selector is doubled, so it wins over the upstream rule whatever the order
+// of the bundled stylesheets.
+//
+// Keyboard behaviour and markup are not touched.
+
+@use "sass:list";
+@use "sass:string";
+@use "studio/ds" as ds;
+
+// `[class~="a"][class~="a"]` for each name.
+@function -on($names...) {
+  $out: ();
+
+  @each $n in $names {
+    $out: list.append($out, string.unquote('[class~="#{$n}"][class~="#{$n}"]'), comma);
+  }
+
+  @return $out;
+}
+
+// Maps Penpot's variables to the Design Studio ones for a subtree.
+@mixin -remap {
+  --color-background-primary: #{ds.token("bg-subtle")};
+  --color-background-secondary: #{ds.token("bg-subtle")};
+  --color-background-tertiary: #{ds.token("bg-panel")};
+  --color-background-quaternary: #{ds.token("bg-selected")};
+  --color-background-info: #{ds.token("accent-subtle")};
+  --color-foreground-primary: #{ds.token("text-primary")};
+  --color-foreground-secondary: #{ds.token("text-secondary")};
+  --color-foreground-error: #{ds.token("status-danger-text")};
+  --color-accent-primary: #{ds.token("accent-default")};
+  --color-shadow-dark: transparent;
+  --panel-border-color: #{ds.token("border-default")};
+  --menu-background-color: #{ds.token("bg-panel")};
+  --menu-background-color-hover: #{ds.token("bg-selected")};
+  --menu-background-color-focus: #{ds.token("bg-selected")};
+  --menu-border-color-focus: #{ds.token("accent-default")};
+  --menu-foreground-color: #{ds.token("text-body")};
+  --menu-foreground-color-hover: #{ds.token("text-primary")};
+  --menu-foreground-color-focus: #{ds.token("accent-text-strong")};
+  --menu-shortcut-foreground-color: #{ds.token("text-secondary")};
+  --menu-shortcut-foreground-color-hover: #{ds.token("text-primary")};
+  --menu-shortcut-background-color: #{ds.token("bg-subtle")};
+  --menu-icon-foreground-color: #{ds.token("text-secondary")};
+  --menu-indicator-color: #{ds.token("accent-default")};
+  --modal-title-foreground-color: #{ds.token("text-primary")};
+  --modal-text-foreground-color: #{ds.token("text-body")};
+  --modal-link-foreground-color: #{ds.token("accent-default")};
+  --entry-background-color: #{ds.token("bg-subtle")};
+  --input-foreground: #{ds.token("text-body")};
+  --colorpicker-details-color: #{ds.token("text-secondary")};
+  --colorpicker-details-color-selected: #{ds.token("accent-default")};
+  --color-token-background: #{ds.token("bg-subtle")};
+}
+
+@mixin -popover {
+  @include -remap;
+
+  font-family: ds.token("font-text");
+  background-color: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  box-shadow: ds.token("elevation-popover");
+}
+
+// ---- Menus and context menus --------------------------------------------
+
+#{-on(
+    "main_ui_workspace_context_menu__menu",
+    "main_ui_workspace_context_menu__submenu",
+    "main_ui_workspace_main_menu__base-menu",
+    "main_ui_components_context_menu_a11y__context-menu"
+  )} {
+  @include -popover;
+
+  padding: ds.token("space-4");
+}
+
+#{-on(
+    "main_ui_workspace_context_menu__menu-item",
+    "main_ui_workspace_context_menu__menu-item-icon",
+    "main_ui_workspace_main_menu__base-menu-item"
+  )} {
+  @include ds.type("body");
+
+  border-radius: ds.token("radius-control");
+  border-color: transparent;
+}
+
+#{-on("main_ui_workspace_context_menu__shortcut-key", "main_ui_workspace_main_menu__shortcut-key")} {
+  @include ds.type("value");
+
+  color: ds.token("text-secondary");
+  background-color: ds.token("bg-subtle");
+  border-radius: ds.token("radius-xs");
+}
+
+// ---- Colour picker -------------------------------------------------------
+
+#{-on("main_ui_workspace_colorpicker__colorpicker-tooltip")} {
+  @include -popover;
+
+  padding: ds.token("space-12");
+}
+
+#{-on(
+    "main_ui_workspace_colorpicker__colorpicker",
+    "main_ui_workspace_colorpicker_color_inputs__color-values",
+    "main_ui_workspace_colorpicker_color_tokens__color-tokens-section",
+    "main_ui_workspace_colorpicker_libraries__libraries"
+  )} {
+  @include -remap;
+
+  font-family: ds.token("font-text");
+}
+
+#{-on("main_ui_workspace_colorpicker__accept-color")} {
+  @include ds.type("control");
+
+  color: ds.token("text-on-accent");
+  background: ds.token("accent-default");
+  border-radius: ds.token("radius-button");
+  border: 0;
+
+  &:hover:not(:disabled) {
+    background: ds.token("accent-hover");
+  }
+
+  &:disabled {
+    color: ds.token("text-disabled");
+    background: ds.token("bg-subtle");
+  }
+}
+
+// ---- Export dialogs ------------------------------------------------------
+
+#{-on("main_ui_exports_assets__modal-overlay", "main_ui_exports_files__modal-overlay")} {
+  background-color: ds.token("overlay-scrim");
+}
+
+#{-on("main_ui_exports_assets__modal-container", "main_ui_exports_files__modal-container")} {
+  @include -popover;
+
+  border-radius: ds.token("radius-panel");
+  box-shadow: ds.token("elevation-panel");
+  padding: ds.token("space-24");
+}
+
+#{-on("main_ui_exports_assets__modal-title", "main_ui_exports_files__modal-title")} {
+  @include ds.type("title");
+
+  color: ds.token("text-primary");
+}
+
+#{-on(
+    "main_ui_exports_assets__modal-subtitle",
+    "main_ui_exports_assets__modal-msg",
+    "main_ui_exports_assets__modal-scd-msg",
+    "main_ui_exports_files__modal-content"
+  )} {
+  @include ds.type("body");
+
+  color: ds.token("text-body");
+}
+
+#{-on("main_ui_exports_assets__accept-btn", "main_ui_exports_files__accept-btn")} {
+  @include ds.type("control");
+
+  color: ds.token("text-on-accent");
+  background: ds.token("accent-default");
+  border: 0;
+  border-radius: ds.token("radius-button");
+
+  &:hover:not(:disabled) {
+    background: ds.token("accent-hover");
+  }
+
+  &[class~="danger"] {
+    color: ds.token("text-on-accent");
+    background: ds.token("danger-solid");
+  }
+}
+
+#{-on("main_ui_exports_assets__cancel-button", "main_ui_exports_files__cancel-button")} {
+  @include ds.type("control");
+
+  color: ds.token("text-primary");
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-button");
+
+  &:hover:not(:disabled) {
+    background: ds.token("bg-subtle");
+  }
+}
+
+// ---- Export section of the design tab and the shortcut panel -------------
+
+#{-on(
+    "main_ui_workspace_sidebar_options_menus_exports__element-set",
+    "main_ui_workspace_sidebar_shortcuts__shortcuts"
+  )} {
+  @include -remap;
+
+  font-family: ds.token("font-text");
+}
+
+#{-on("main_ui_workspace_sidebar_shortcuts__shortcuts-list")} {
+  @include ds.type("body");
+
+  color: ds.token("text-body");
+}
+
+#{-on("main_ui_workspace_sidebar_shortcuts__not-found")} {
+  color: ds.token("text-secondary");
+}

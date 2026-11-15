@@ -7553,3 +7553,11 @@ msgstr "Enter untuk kirim · Esc untuk tutup"
 
 msgid "ds.craft.quick.send"
 msgstr "Kirim"
+# Design Studio (F3-C)
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.suggested-tokens"
+msgstr "Token yang disarankan"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.exact-match"
+msgstr "sama persis"
