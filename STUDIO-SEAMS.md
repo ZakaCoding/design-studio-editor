@@ -97,4 +97,5 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `mcp/packages/plugin/package.json` | WP3: `test` script runs `--experimental-transform-types` (the handler imports `Task`, which uses parameter properties) and the `task-handlers` tests | - | WP3 |
 | `mcp/packages/plugin/tsconfig.json` | WP3: excludes `src/**/*.test.ts` from `tsc` like `src/*.test.ts` | - | WP3 |
 | `frontend/test/frontend_tests/main_errors_test.cljs` | WP3 review fix: the save-failed toast has no reload link (keep the tab open), so the two upstream assertions on the reload link now assert its absence | - | F2 |
+| `frontend/src/app/main/ui/workspace/sidebar/sitemap.cljs` | F3-B: the current page's item carries `data-ds-page-name="<name>"` (one attribute), the stable hook Studio's `ds-craft.js` reads instead of the CSS-module class names | - | F3-B |
 <!-- seams:end -->

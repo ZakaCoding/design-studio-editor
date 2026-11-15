@@ -71,6 +71,7 @@
    [frontend-tests.render-dimensions-test]
    [frontend-tests.render-wasm.process-objects-test]
    [frontend-tests.render-wasm.text-editor-caret-color-test]
+   [frontend-tests.studio.craft-rules-test]
    [frontend-tests.studio.mcp-cadence-test]
    [frontend-tests.studio.refusal-test]
    [frontend-tests.studio.shell-state-test]
@@ -183,6 +184,7 @@
    'frontend-tests.plugins.value-objects-test
    'frontend-tests.render-wasm.process-objects-test
    'frontend-tests.render-wasm.text-editor-caret-color-test
+   'frontend-tests.studio.craft-rules-test
    'frontend-tests.studio.mcp-cadence-test
    'frontend-tests.studio.refusal-test
    'frontend-tests.studio.shell-state-test

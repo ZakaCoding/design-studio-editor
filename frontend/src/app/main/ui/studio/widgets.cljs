@@ -7,7 +7,8 @@
 (ns app.main.ui.studio.widgets
   "Design Studio widgets that are not part of one page: the guard refusal
   card, the first steps after sign-up, the workspace MCP tip and its
-  interactive guide, and the way to the sign-in for a signed-out visitor.
+  interactive guide, the Craft dock with its quick prompt, and the way to
+  the sign-in for a signed-out visitor.
   Mounted once, from `app.main.ui/app`."
   (:require
    [app.main.data.auth :as da]
@@ -15,6 +16,7 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.error-boundary :refer [error-boundary*]]
+   [app.main.ui.studio.craft :refer [craft*]]
    [app.main.ui.studio.first-steps :refer [first-steps*]]
    [app.main.ui.studio.mcp-tip :refer [mcp-tip*]]
    [app.main.ui.studio.mcp-tour :refer [mcp-tour*]]
@@ -68,5 +70,7 @@
        [:*
         [:> first-steps* {:section section}]
         [:> mcp-tour* {:section section}]
+        ;; F3-B: the native Craft dock and the quick prompt at the selection.
+        [:> craft* {:section section}]
         (when (= section :workspace)
           [:> mcp-tip*])])]))
