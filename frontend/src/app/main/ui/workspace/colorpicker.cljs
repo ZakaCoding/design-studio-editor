@@ -32,6 +32,7 @@
    [app.main.ui.ds.layout.tab-switcher :refer [tab-switcher*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.workspace.token-suggestions-ui :refer [token-suggestions*]]
    [app.main.ui.workspace.colorpicker.color-inputs :refer [color-inputs*]]
    [app.main.ui.workspace.colorpicker.color-tokens :refer [token-section*]]
    [app.main.ui.workspace.colorpicker.gradients :refer [gradients*]]
@@ -538,6 +539,13 @@
               :on-mode-change #(reset! hsb-mode* %)
               :color current-color
               :on-change handle-change-color}]
+
+            ;; Design Studio seam (STUDIO-SEAMS.md): F3-C token suggestions row
+            (when (and show-tokens? (= origin :sidebar) (seq combined-tokens))
+              [:> token-suggestions* {:combined-tokens combined-tokens
+                                      :hex (:hex current-color)
+                                      :applied-token applied-token
+                                      :on-token-change on-token-change}])
 
             [:> libraries*
              {:state state

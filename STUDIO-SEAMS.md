@@ -69,7 +69,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" and "Plans" sidebar labels (S5, S7) | - | WP4 |
 | `frontend/src/app/main/ui/settings/subscription.cljs` | WP4: Settings > Plans renders the Design Studio plan summary (S7) | - | WP4 |
 | `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8) | - | WP4 |
-| `frontend/test/frontend_tests/runner.cljs` | WP4: registers `frontend-tests.studio.shell-state-test`; WP3: registers `frontend-tests.plugins.persistence-guard-test` (two lines); Registers the `frontend-tests.studio.*` test namespaces | - | WP4, WP3, WP6 |
+| `frontend/test/frontend_tests/runner.cljs` | F3-C: registers `frontend-tests.studio.token-suggestions-test`; WP4: registers `frontend-tests.studio.shell-state-test`; WP3: registers `frontend-tests.plugins.persistence-guard-test` (two lines); Registers the `frontend-tests.studio.*` test namespaces | - | WP4, WP3, WP6 |
 | `frontend/src/app/main/ui/workspace/viewport.cljs` | WP7: requires `ui/studio/touch.js` and starts the touch layer once from `viewport*` | - | F2 |
 | `frontend/src/app/plugins/persistence_guard.cljs` | WP3 (R1, R2): new file, `app.plugins.persistence-guard`. The whole guard: refuses MCP writes while saving is `:error`, `:retrying`, failing or stalled, and confirms the save of an MCP task. Lives beside `register.cljs` instead of `ui/studio/**` because it is plugin API logic that is proposed upstream | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
 | `frontend/src/app/plugins/register.cljs` | WP3 (R1): `check-permission` calls `pguard/note-write!` first (one require, one call). This is the write boundary of the ClojureScript plugin API | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
@@ -97,4 +97,5 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `mcp/packages/plugin/package.json` | WP3: `test` script runs `--experimental-transform-types` (the handler imports `Task`, which uses parameter properties) and the `task-handlers` tests | - | WP3 |
 | `mcp/packages/plugin/tsconfig.json` | WP3: excludes `src/**/*.test.ts` from `tsc` like `src/*.test.ts` | - | WP3 |
 | `frontend/test/frontend_tests/main_errors_test.cljs` | WP3 review fix: the save-failed toast has no reload link (keep the tab open), so the two upstream assertions on the reload link now assert its absence | - | F2 |
+| `frontend/src/app/main/ui/workspace/colorpicker.cljs` | F3-C (F1 · 13): one require and one element, the token suggestions row (`app.main.ui.studio.workspace.token-suggestions-ui`) under the colour inputs | - | F3-C |
 <!-- seams:end -->

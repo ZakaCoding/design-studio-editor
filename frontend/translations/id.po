@@ -7507,3 +7507,12 @@ msgstr "Masuk dengan password"
 # Design Studio (WP3)
 msgid "errors.save-failed"
 msgstr "Penyimpanan otomatis belum dapat dikonfirmasi. Biarkan tab ini terbuka: sebagian perubahan mungkin hanya ada di sini. Hentikan pengeditan dan hubungi dukungan sebelum memuat ulang. Pengeditan MCP dijeda."
+
+# Design Studio (F3-C)
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.suggested-tokens"
+msgstr "Token yang disarankan"
+
+#: src/app/main/ui/studio/workspace/token_suggestions_ui.cljs
+msgid "ds.colorpicker.exact-match"
+msgstr "sama persis"
