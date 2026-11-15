@@ -7,7 +7,8 @@
 (ns app.main.ui.studio.ds.showcase
   "Developer showcase of the Design Studio DS: every base component, in
   every variant, on one page. Mounted in the existing debug playground
-  route (`#/debug/playground`), so the release build compiles all of them.
+  route (`#/debug/playground`, development builds only); the release build
+  still compiles it, and through it every component.
   Copy here is fixed English on purpose: it is not a user-facing screen."
   (:require-macros
    [app.main.style :as stl])

@@ -25,7 +25,7 @@ component into a Studio DS surface, except the icon sprite (see `icon*`).
 | Emits `--ds-*` on `:root` (the only place) | `frontend/src/app/main/ui/studio/ds/tokens.scss` |
 | Components | `frontend/src/app/main/ui/studio/ds/*.cljs` + `.scss` |
 | One-import index | `frontend/src/app/main/ui/studio/ds.cljs` |
-| Showcase | `frontend/src/app/main/ui/studio/ds/showcase.cljs`, route `#/debug/playground` |
+| Showcase | `frontend/src/app/main/ui/studio/ds/showcase.cljs`, route `#/debug/playground` (development builds only) |
 
 ## 2. Tokens
 
@@ -319,8 +319,10 @@ every Penpot release, so:
    `app.main.ui`, or it lands in the first-load bundle.
 
 The foundation's own seam is `frontend/src/app/main/ui/debug/playground.cljs`:
-it mounts the showcase on the debug route `#/debug/playground`, which makes
-the release build compile every base component.
+it mounts the showcase on the debug route `#/debug/playground`. Upstream
+registers that route only when `*assert*` is on, so it exists in development
+builds and not in the release image; the release build still compiles the
+showcase and, through it, every base component.
 
 ## 6. Checks
 
@@ -328,7 +330,8 @@ the release build compile every base component.
 - Local, without a JVM: `sass` for the stylesheets (load paths
   `resources/styles/common`, `resources/styles`, `src/app/main/ui`) and
   `clj-kondo --config-dir ../.clj-kondo --lint src` from `frontend/`.
-- Look at the showcase in a built image: open `/#/debug/playground`.
+- Look at the showcase: `/#/debug/playground` in a development build
+  (`./manage.sh run-devenv`). A release image does not have the route.
 
 ## 7. Open points
 
