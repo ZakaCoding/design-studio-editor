@@ -89,8 +89,12 @@
                                      (* vbox-width)
                                      (/ (:width base-objects-rect)))
 
-        show-v-scroll?           (or @v-scrolling? (> top-offset 0) (> bottom-offset 0))
-        show-h-scroll?           (or @h-scrolling? (> left-offset 0) (> right-offset 0))
+        ;; Design Studio seam (STUDIO-SEAMS.md): a page without shapes has
+        ;; no rect to scroll over; the offsets are then NaN or Infinity and
+        ;; ended up in the <rect> attributes when the canvas was resized
+        has-content?             (some? base-objects-rect)
+        show-v-scroll?           (and has-content? (or @v-scrolling? (> top-offset 0) (> bottom-offset 0)))
+        show-h-scroll?           (and has-content? (or @h-scrolling? (> left-offset 0) (> right-offset 0)))
 
         v-scrollbar-x            (+ vbox-x (:width vbox) (* inv-zoom (- scroll-x)))
         v-scrollbar-y            (+ vbox-y top-offset)

@@ -120,9 +120,8 @@
                       :is-active (= section "assets")}])
 
      (when (and ^boolean design-tokens? (not ^boolean inspect?))
-       ;; Not translated, as in upstream's tab.
        [:> rail-tab* {:id "tokens"
-                      :label "Tokens"
+                      :label (tr "ds.workspace.tab.tokens")
                       :icon-id i/tokens
                       :is-active (= section "tokens")}])
 

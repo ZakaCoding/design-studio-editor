@@ -151,41 +151,66 @@
   transform: translateY(-50%);
 }
 
-// The dock's own control while it is collapsed: bottom of the canvas,
-// left of the design panel. The F3 top bar takes this over.
+// The dock's own control while it is collapsed: bottom right of the
+// canvas, beside the design panel, on the line of the toolbar.
 .floating {
-  @include ds.root;
-
   position: fixed;
   z-index: ds.token("z-panel");
-  inset-block-end: ds.token("space-16");
+  inset-block-end: 20px;
   inset-inline-end: var(--ds-craft-dock-right, #{ds.token("space-16")});
-  border-radius: ds.token("radius-button");
-  box-shadow: ds.token("elevation-panel");
 
   @media (width < 720px) {
     inset-inline-end: ds.token("space-16");
   }
 }
 
-// The MCP tip sits in the same corner: while it shows, the control waits
-// beside it (the tip is 340 px wide).
-:global(html:has(.ds-toast)) .floating {
-  @media (width >= 720px) {
-    inset-inline-end: calc(var(--ds-craft-dock-right, 16px) + 340px + #{ds.token("space-12")});
+// The Craft pill of board F1 · 02.
+.pill {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color));
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  block-size: 48px;
+  padding-inline: 18px;
+  border-radius: 24px; // half of the pill's height, as drawn
+  background-color: ds.token("craft-default");
+
+  // The board's shadow for this pill: the float shadow at twice its opacity.
+  box-shadow: 0 8px 24px color-mix(in srgb, #{ds.token("text-primary")} 16%, transparent);
+  color: ds.token("text-on-accent");
+  cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    background-color: ds.token("accent-hover");
   }
 }
 
-.mark {
-  display: inline-block;
-  inline-size: 8px;
-  block-size: 8px;
-  margin-inline-end: ds.token("space-8");
-  border-radius: ds.token("radius-pill");
-  background: ds.token("craft-default");
+.pill-mark {
+  stroke-width: 1.7;
 }
 
-.mark-busy {
+.pill-label {
+  font-family: ds.token("font-display");
+  font-size: 0.9375rem; // 15 px on the board; the size scale has 14 and 16
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.pill-credits {
+  margin-inline-start: 5px;
+  color: ds.token("craft-subtle");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+}
+
+.pill-busy .pill-mark {
   @media (prefers-reduced-motion: no-preference) {
     animation: craft-pulse 1.2s ease-in-out infinite;
   }

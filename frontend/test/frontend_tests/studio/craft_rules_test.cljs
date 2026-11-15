@@ -95,25 +95,45 @@
 
 (t/deftest quick-prompt-placement
   (let [view {:width 1440 :height 900}]
-    (t/testing "under the selection, centred on it"
-      (t/is (= {:left 420 :top 412}
+    (t/testing "under the selection, from its left edge"
+      (t/is (= {:left 500 :top 406}
                (rules/anchor {:x 500 :y 200 :width 200 :height 200} view))))
     (t/testing "above it when there is no room below"
-      (t/is (= {:left 420 :top 456}
+      (t/is (= {:left 500 :top 530}
                (rules/anchor {:x 500 :y 600 :width 200 :height 280} view))))
     (t/testing "inside the window when the selection fills it"
-      (t/is (= {:left 540 :top 756}
+      (t/is (= {:left 12 :top 824}
                (rules/anchor {:x 0 :y 0 :width 1440 :height 900} view))))
     (t/testing "never past the window's edges"
-      (t/is (= {:left 12 :top 112}
+      (t/is (= {:left 12 :top 106}
                (rules/anchor {:x -400 :y 0 :width 100 :height 100} view)))
-      (t/is (= {:left 1068 :top 112}
+      (t/is (= {:left 1092 :top 106}
                (rules/anchor {:x 1500 :y 0 :width 100 :height 100} view)))
       (t/is (= {:left 12 :top 12}
                (rules/anchor {:x 0 :y -500 :width 100 :height 100} view))))
     (t/testing "in a window smaller than the prompt it keeps the top-left margin"
       (t/is (= {:left 12 :top 12}
-               (rules/anchor {:x 0 :y 0 :width 10 :height 10} {:width 200 :height 100}))))))
+               (rules/anchor {:x 0 :y 0 :width 10 :height 10} {:width 200 :height 60}))))))
+
+(t/deftest selection-chip-placement
+  (let [view {:width 1000 :height 800}]
+    (t/testing "over the selection, from its left edge"
+      (t/is (= {:left 300 :top 160}
+               (rules/chip-anchor {:x 300 :y 200 :width 200 :height 100} view 0))))
+    (t/testing "higher over a board, whose name is drawn there"
+      (t/is (= {:left 300 :top 140}
+               (rules/chip-anchor {:x 300 :y 200 :width 200 :height 100} view 20))))
+    (t/testing "under the selection when there is no room above"
+      (t/is (= {:left 300 :top 128}
+               (rules/chip-anchor {:x 300 :y 20 :width 200 :height 100} view 0))))
+    (t/testing "inside the canvas area"
+      (t/is (= {:left 752 :top 160}
+               (rules/chip-anchor {:x 900 :y 200 :width 200 :height 100} view 0)))
+      (t/is (= {:left 12 :top 756}
+               (rules/chip-anchor {:x -50 :y -100 :width 2000 :height 2000} view 0))))
+    (t/testing "not shown for a selection that is out of view"
+      (t/is (nil? (rules/chip-anchor {:x 1200 :y 200 :width 200 :height 100} view 0)))
+      (t/is (nil? (rules/chip-anchor {:x 300 :y -400 :width 200 :height 100} view 0))))))
 
 (t/deftest quick-prompt-text
   (t/is (nil? (rules/clean-prompt "")))
