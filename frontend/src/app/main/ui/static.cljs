@@ -401,15 +401,15 @@
 
      [:div {:class (stl/css :buttons-container)}
       [:> sbtn/button* {:variant "secondary"
-                    :size "lg"
-                    :type "button"
-                    :class (stl/css :support-btn)
-                    :on-click support-contact-click} (tr "labels.contact-support")]
+                        :size "lg"
+                        :type "button"
+                        :class (stl/css :support-btn)
+                        :on-click support-contact-click} (tr "labels.contact-support")]
       [:> sbtn/button* {:variant "primary"
-                    :size "lg"
-                    :type "button"
-                    :class (stl/css :retry-btn)
-                    :on-click on-reset} (tr "labels.retry")]]]))
+                        :size "lg"
+                        :type "button"
+                        :class (stl/css :retry-btn)
+                        :on-click on-reset} (tr "labels.retry")]]]))
 
 (defn- load-info
   "Load exception page info"
