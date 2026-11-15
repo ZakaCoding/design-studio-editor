@@ -7697,6 +7697,12 @@ msgstr "Kartu nama"
 msgid "ds.hero.chip.brand"
 msgstr "Brand kit"
 
+msgid "ds.home.greeting"
+msgstr "Selamat datang"
+
+msgid "ds.home.greeting-name"
+msgstr "Selamat datang, %s"
+
 msgid "ds.home.start.title-first"
 msgstr "Mulai desain pertamamu"
 

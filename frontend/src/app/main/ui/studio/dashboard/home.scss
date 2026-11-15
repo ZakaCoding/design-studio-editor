@@ -12,12 +12,10 @@
 .home {
   @include ds.root;
 
-  display: flex;
-  flex-direction: column;
-
-  // 32 px between blocks (hero 324 → "File terbaru" 356, cards 280 →
-  // "File kamu" 312); the Connect card sits 40 px under what is above it.
-  gap: ds.token("space-32");
+  // Plain block flow: the blocks keep their distance with margins, which
+  // collapse with those of the shell's "File terbaru" section between
+  // them (32 px above it, 40 px under it).
+  display: block;
   min-width: 0;
   color: ds.token("text-body");
 
@@ -46,6 +44,11 @@
   min-width: 0;
 }
 
+// 32 px between blocks (F1 · 12: cards 280 → "File kamu" 312).
+.section + .section {
+  margin-block-start: ds.token("space-32");
+}
+
 // F1 · 12: the first heading is 8 px lower than the hero of F1 · 03.
 .home > .section:first-child {
   margin-block-start: ds.token("space-8");
@@ -61,22 +64,23 @@
   letter-spacing: 0;
 }
 
+// 40 px under the hero or the files (F1 · 03: 612 → 652).
 .connect {
-  margin-block-start: ds.token("space-8");
+  margin-block-start: 40px;
 
   &:empty {
     display: none;
   }
 }
 
-// F1 · 12: 36 px under the empty box.
+// F1 · 12: 36 px under the empty box (616 → 652).
 .connect-first {
-  margin-block-start: ds.token("space-4");
+  margin-block-start: 36px;
 }
 
-// F1 · 03c: the templates row is 20 px under the status bar.
+// F1 · 03c: the templates row is 20 px under the status bar (708 → 728).
 .after-connect {
-  margin-block-start: -12px;
+  margin-block-start: ds.token("space-20");
 
   &:empty {
     display: none;

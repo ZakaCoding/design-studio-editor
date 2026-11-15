@@ -19,15 +19,12 @@
   With nothing yet (F1 · 12): the four start cards, the empty \"File
   kamu\" box and the \"Connect AI\" card.
 
-  Mount (the one contract with the shell):
-
-    [:> home* {:team team :projects projects :profile profile
-               :recent [:> shell/recent-files* {...}]}]
-
-  `home*` adds no page padding, background or scrolling of its own: the
-  shell's page does. Every section is also exported on its own
-  (`craft-hero*`, `start-cards*`, `empty-files*`, `connect-card*`,
-  `templates-row*`) for a shell that lays the page out itself."
+  `home-content*` is all of it. It adds no page padding, background or
+  scrolling inside the shell (`body.ds-dash`). `home*` is what the
+  dashboard mounts; see it for how the shell's `home-page*` and
+  `recent-files*` go around and into the content. Every section is also
+  exported on its own (`craft-hero*`, `start-cards*`, `empty-files*`,
+  `connect-card*`, `templates-row*`)."
   (:require-macros [app.main.style :as stl])
   (:require
    [app.main.data.common :as dcm]
@@ -185,10 +182,10 @@
 
 ;; --- Home
 
-(mf/defc home*
-  "Props: `team`, `projects`, `profile` (as Penpot's `projects-section*`
-  takes them) and `recent`, the element of the shell's \"File terbaru\"
-  section (optional)."
+(mf/defc home-content*
+  "Everything of the home under the greeting. Props: `team`, `projects`
+  and `recent`, the element of the shell's \"File terbaru\" section
+  (optional)."
   [{:keys [team projects recent]}]
   (let [team-id    (:id team)
         can-edit   (-> team :permissions :can-edit)
@@ -257,3 +254,34 @@
         [:> guard* {}
          [:> templates-row* {:team-id team-id
                              :project-id project-id}]]])]))
+
+(defn greeting
+  "The title of the home of an account with nothing yet (F1 · 12:
+  \"Selamat datang, Zaka\"), or nil: then the shell greets by the time of
+  day (F1 · 03)."
+  [profile projects can-edit]
+  (when (rules/empty-home? projects can-edit)
+    (if-let [name (rules/first-name profile)]
+      (tr "ds.home.greeting-name" name)
+      (tr "ds.home.greeting"))))
+
+(mf/defc home*
+  "The home page, mounted by the dashboard in the place of Penpot's
+  `projects-section*` and with its props (`team`, `projects`, `profile`).
+
+  Without the dashboard shell this is the content alone. With the shell
+  (G1) it is its `home-page*` around the same content, with its
+  `recent-files*` as `recent`:
+
+    [:> shell/home-page* {:profile profile
+                          :title (greeting profile projects can-edit)}
+     [:> home-content* {:team team
+                        :projects projects
+                        :recent (mf/html
+                                 [:> shell/recent-files*
+                                  {:team team
+                                   :project (rules/drafts projects)}])}]]"
+  [{:keys [team projects]}]
+  [:> home-content* {:team team
+                     :projects projects}])
+

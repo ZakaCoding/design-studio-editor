@@ -10988,6 +10988,12 @@ msgstr "Business card"
 msgid "ds.hero.chip.brand"
 msgstr "Brand kit"
 
+msgid "ds.home.greeting"
+msgstr "Welcome"
+
+msgid "ds.home.greeting-name"
+msgstr "Welcome, %s"
+
 msgid "ds.home.start.title-first"
 msgstr "Start your first design"
 
