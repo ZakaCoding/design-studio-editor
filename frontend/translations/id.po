@@ -7507,3 +7507,13 @@ msgstr "Masuk dengan password"
 # Design Studio (WP3)
 msgid "errors.save-failed"
 msgstr "Penyimpanan otomatis belum dapat dikonfirmasi. Biarkan tab ini terbuka: sebagian perubahan mungkin hanya ada di sini. Hentikan pengeditan dan hubungi dukungan sebelum memuat ulang. Pengeditan MCP dijeda."
+
+# Design Studio (F3-A)
+msgid "ds.workspace.rail.label"
+msgstr "Layer, diciutkan"
+
+msgid "ds.workspace.rail.back"
+msgstr "Kembali ke daftar file"
+
+msgid "ds.workspace.focus.show-panels"
+msgstr "Tampilkan panel"

@@ -28,6 +28,7 @@
    [app.main.ui.ds.layout.tab-switcher :refer [tab-switcher*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.hooks.resize :refer [use-resize-hook]]
+   [app.main.ui.studio.workspace.rail :refer [layers-rail*]]
    [app.main.ui.workspace.comments :refer [comments-sidebar*]]
    [app.main.ui.workspace.left-header :refer [left-header*]]
    [app.main.ui.workspace.right-header :refer [right-header*]]
@@ -391,7 +392,10 @@
 
     [:*
      (if (:collapse-left-sidebar layout)
-       [:> collapsed-button*]
+       ;; Design Studio seam (STUDIO-SEAMS.md): the collapsed left sidebar
+       ;; is the Layers rail; upstream's `collapsed-button*` stays unused
+       [:> layers-rail* {:layout layout
+                         :file file}]
        [:> left-sidebar* {:layout layout
                           :file file
                           :page-id page-id

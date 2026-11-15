@@ -10798,3 +10798,13 @@ msgstr "Request a new link"
 
 msgid "ds.used-link.login"
 msgstr "Sign in with password"
+
+# Design Studio (F3-A)
+msgid "ds.workspace.rail.label"
+msgstr "Layers, collapsed"
+
+msgid "ds.workspace.rail.back"
+msgstr "Back to your files"
+
+msgid "ds.workspace.focus.show-panels"
+msgstr "Show panels"

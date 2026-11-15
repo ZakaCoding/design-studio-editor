@@ -1,0 +1,100 @@
+// Design Studio workspace shell: mount points and canvas focus islands.
+// See shell.cljs.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+// Mount point `viewport-overlay`: the canvas area, above the viewport.
+.viewport-overlay {
+  grid-area: viewport;
+  position: relative;
+  z-index: ds.token("z-panel");
+  min-inline-size: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+// Mount point `craft-dock`: a column between the canvas and the right
+// sidebar. Without content it has no size and no gap.
+.craft-dock {
+  grid-area: craft;
+  position: relative;
+  z-index: ds.token("z-panel");
+  display: flex;
+  min-block-size: 0;
+  margin-block: ws.$edge;
+  block-size: calc(100vh - 2 * #{ws.$edge});
+
+  &:empty {
+    display: none;
+  }
+}
+
+// Below 1280 px Craft lies over the canvas instead of beside it (width
+// rules, F1 · 06).
+:global(body.ds-chrome[data-ds-width="narrow"]) .craft-dock {
+  grid-area: viewport;
+  justify-self: end;
+}
+
+// --- Canvas focus (F1 · 02)
+
+.island {
+  @include ds.root;
+  @include ws.island(ds.token("radius-card"));
+
+  position: absolute;
+  inset-block-start: ws.$edge;
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  block-size: 40px;
+  padding-inline: ds.token("space-12");
+  pointer-events: auto;
+}
+
+.island-file {
+  inset-inline-start: ws.$edge;
+  max-inline-size: 280px;
+}
+
+.island-file-name {
+  @include ds.type("control");
+
+  overflow: hidden;
+  color: ds.token("text-primary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.island-panels {
+  @include ds.focusable;
+  @include ds.motion((background-color));
+
+  inset-inline-end: ws.$edge;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+  }
+}
+
+.island-label {
+  @include ds.type("control");
+
+  color: ds.token("text-body");
+}
+
+.island-key {
+  @include ds.type("value");
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 20px;
+  block-size: 20px;
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-xs");
+  background-color: ds.token("bg-subtle");
+  color: ds.token("text-secondary");
+}
