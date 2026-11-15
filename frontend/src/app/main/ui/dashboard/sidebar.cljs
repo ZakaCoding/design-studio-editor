@@ -100,8 +100,9 @@
                    (ts/schedule
                     #(dom/focus-and-untabbable! (dom/get-element element-id)))))
 
+;; Design Studio seam (STUDIO-SEAMS.md): public, the Design Studio sidebar
+;; (`studio.dashboard-shell.sidebar`) lists the projects with it.
 (mf/defc sidebar-project*
-  {::mf/private true}
   [{:keys [item is-selected]}]
   (let [dstate           (mf/deref refs/dashboard-local)
         selected-files   (:selected-files dstate)

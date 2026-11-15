@@ -62,7 +62,9 @@
   [:header {:class (stl/css :dashboard-header)
             :data-testid "dashboard-header"}
    [:div#dashboard-deleted-title {:class (stl/css :dashboard-title)}
-    [:h1 (tr "dashboard.projects-title")]]
+    ;; Design Studio seam (STUDIO-SEAMS.md): the page is "Sampah" of the
+    ;; sidebar (F1 · 03), not a tab of Projects
+    [:h1 (tr "ds.shell.nav.deleted")]]
    [:div {:class (stl/css :dashboard-header-actions)}
     [:> layout-toggle* {:layout layout :on-change on-change}]]])
 

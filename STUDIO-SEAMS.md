@@ -60,13 +60,13 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/config.cljs` | WP1 (S4): mcp-help-center-uri points to /start/guides/ai-agent-mcp | - | WP1 |
 | `frontend/src/app/util/dom.cljs` | WP1 (L9): set-html-title replaces the Penpot brand with Design Studio in every locale | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/subscription.cljs` | WP1 (S3): nitrate-sidebar*, nitrate-current-plan*, cta-power-up*, dashboard-cta* render nil; originals kept private | - | WP1 |
-| `frontend/src/app/main/ui/dashboard/sidebar.cljs` | WP1 (S2, S3): default org shown as Design Studio, create-organization button and menu item removed | - | WP1 |
+| `frontend/src/app/main/ui/dashboard/sidebar.cljs` | WP1 (S2, S3): default org shown as Design Studio, create-organization button and menu item removed; G1 (F1 · 03): `sidebar-project*` is public (one metadata line removed), the Design Studio sidebar lists the projects with it. `sidebar*` and `sidebar-content*` stay in place and unused | - | WP1, G1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.scss` | WP1 (S2): org badge shows the tile without the round frame | - | WP1 |
 | `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end; WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end. WP5: auth copy in a `# Design Studio (WP5)` block after it, and five Indonesian `ds.auth.*` values say "password" as F1 · 08/09 do; WP3: overrides `errors.save-failed` in place with the overlay text ("Keep this tab open ... MCP edits are paused") | - | F2, WP4, WP6, WP3 |
 | `frontend/translations/id.po` | WP2: same for Indonesian; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end; WP3: adds `errors.save-failed` (Indonesian overlay text) in a `# Design Studio (WP3)` block at the end; the key did not exist in id.po | - | F2, WP4, WP6, WP3 |
 | `frontend/src/app/main/ui/settings/password.cljs` | WP4: backup-password title and note (S5) | - | WP4 |
 | `frontend/src/app/main/ui/settings/profile.cljs` | WP4: open sign-up shows an email note instead of change-email (S6) | - | WP4 |
-| `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" and "Plans" sidebar labels (S5, S7) | - | WP4 |
+| `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" and "Plans" sidebar labels (S5, S7); G1 (F1 · 10 chrome): `sidebar*` calls `studio.dashboard-shell.scope/use-scope` (the light chrome while Settings is open), the back link reads "Beranda" and the sidebar gets its title "Pengaturan" (one require, one call, one element, one key) | - | WP4, G1 |
 | `frontend/src/app/main/ui/settings/subscription.cljs` | WP4: Settings > Plans renders the Design Studio plan summary (S7) | - | WP4 |
 | `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8) | - | WP4 |
 | `frontend/test/frontend_tests/runner.cljs` | F3-C: registers `frontend-tests.studio.token-suggestions-test`; WP4: registers `frontend-tests.studio.shell-state-test`; WP3: registers `frontend-tests.plugins.persistence-guard-test` (two lines); Registers the `frontend-tests.studio.*` test namespaces | - | WP4, WP3, WP6 |
@@ -101,8 +101,10 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/workspace/sidebar.cljs` | F3-A: the collapsed left sidebar renders `studio.workspace.rail/layers-rail*` (the Layers rail) instead of `collapsed-button*`, which stays in place and unused. One require, one element | - | F3-A |
 | `frontend/src/app/main/ui/workspace/sidebar/sitemap.cljs` | F3-B: the current page's item carries `data-ds-page-name="<name>"` (one attribute), the stable hook Studio's `ds-craft.js` reads instead of the CSS-module class names | - | F3-B |
 | `frontend/src/app/main/ui/workspace/colorpicker.cljs` | F3-C (F1 · 13): one require and one element, the token suggestions row (`app.main.ui.studio.workspace.token-suggestions-ui`) under the colour inputs | - | F3-C |
-| `frontend/src/app/main/ui/dashboard.cljs` | F4-A (F1 · 12): the require of `projects-section*` is replaced by `studio.dashboard.home/home*` under the same name. `home*` renders `projects-section*` with the same props, or the first-design page when the team has no project and no file. Require lines only, the body is untouched | - | F4-A |
-| `frontend/src/app/main/ui/dashboard/projects.cljs` | F4-A (F1 · 03): mounts `studio.dashboard.connect-card/home-card*` (the two-step "Connect AI" card and its status bar) as the first row of the projects scroll area. One require, one element | - | F4-A |
+| `frontend/src/app/main/ui/dashboard.cljs` | G1 (F1 · 03, 12, 14), replaces the F4-A seam: the require of `sidebar*` points at `studio.dashboard-shell.sidebar` (the Design Studio sidebar, same props), the require of `projects-section*` at `studio.dashboard-shell.views/recent*` under the same name (home, Projects or Templates by the `view` parameter), and `dashboard-content*` mounts `views/top*` once (search, "+ File baru", Library / Font tabs). Two require lines and one element; the rest of the body is untouched | - | F4-A, G1 |
+| `frontend/src/app/main/ui/dashboard/files.cljs` | G1 (F1 · 14): the project page renders `studio.dashboard-shell.project/project-header*` instead of the private `header*` (which stays in place and unused), `files-heading*` ("File n" and the grid / list switch) above the grid and `new-file-tile*` as the child of `grid*`; the section carries `data-ds-dash="files"`. One require, three elements, one attribute | - | G1 |
+| `frontend/src/app/main/ui/dashboard/grid.cljs` | G1 (F1 · 14): `grid*` renders its `children` after the last card (the dashed "+ File baru" tile). One destructured key, one expression | - | G1 |
+| `frontend/src/app/main/ui/dashboard/deleted.cljs` | G1 (F1 · 03): the page title is "Sampah" (`ds.shell.nav.deleted`), the page of the sidebar, instead of "Projects". One key | - | G1 |
 | `frontend/src/app/main/ui/viewer.scss` | F4-B (F1 · 11): `.viewer-layout` and `.inspect-layout` include `ds.viewer-scope`, which maps the theme variables the viewer reads to `ds/light` tokens in that subtree only | - | F4-B |
 | `frontend/src/app/main/ui/viewer/header.scss` | F4-B (F1 · 11): viewer header and menus read DS tokens | - | F4-B |
 | `frontend/src/app/main/ui/viewer/inspect.scss` | F4-B (F1 · 11): Inspect sidebar container reads DS tokens | - | F4-B |
@@ -134,3 +136,27 @@ Shared SCSS for anything that floats in the workspace:
 surface), `ws.$edge` (gap to the window and the canvas), `ws.$rail-size`,
 `ws.$craft-size` and `ws.on("<module>__<class>")` (matches an upstream
 element by its CSS-module class without editing its stylesheet).
+
+## Mount points (dashboard, G1)
+
+The dashboard shell (`frontend/src/app/main/ui/studio/dashboard_shell/**`,
+boards F1 · 03, 03c, 12, 14 and the Settings chrome of F1 · 10) owns the
+sidebar, the top bar and the layout of every dashboard route. Page content
+renders inside it. All files below are DS-owned.
+
+| Mount | Namespace | Props | Contract |
+| --- | --- | --- | --- |
+| `page*` | `app.main.ui.studio.dashboard-shell.page` | `title` (string or element), `eyebrow`, `actions` (element), `tabs` (element, `tabs*` of `tab*`), `title-id`, `children`; other props go to the body element | The one mount for a dashboard page: header, optional tabs, scrolling body. Render it as the root of the page (it returns a fragment whose parts are grid items of the content area; do not wrap it). The shell adds the search box and "+ File baru" to the right of the header itself, so `actions` is only for what the page adds |
+| `home-page*` | `app.main.ui.studio.dashboard-shell.home` | `profile`, optional `title`, `children`, the rest as `page*` | `page*` with the greeting as title ("Selamat pagi / siang / sore / malam, <first name>"). `title` replaces the greeting (F1 · 12 "Selamat datang, Zaka"). **`app.main.ui.studio.dashboard.home/home*` (G2) renders this as its root and puts the home content inside** |
+| `recent-files*` | `app.main.ui.studio.dashboard-shell.home` | `team`, `project` (the drafts: where a dropped file is imported), optional `limit` (4), `title` | "File terbaru": the newest files of the team as upstream grid cards, with "Lihat semua →" to the Projects page. Renders nothing while the team has no file. The home content places it where the board has it |
+| `section-title*`, `text-link*`, `black-button*`, `soft-button*` | `app.main.ui.studio.dashboard-shell.page` | see the docstrings | The block heading ("File terbaru", "Lihat semua →") and the 40 px pill buttons of the boards, for page content that needs the same look |
+| `use-create-file` | `app.main.ui.studio.dashboard-shell.home` | `team-id`, `project-id` → `(fn [origin])` | Penpot's own `create-file` in a project, then the workspace |
+| Craft prompt | `[data-ds-craft-prompt]` | - | "Craft" in the sidebar opens the home and focuses the element with this attribute (the hero input). A Free member goes to Settings > Plans instead |
+| `member` | `app.main.ui.studio.shell-state/use-state` → `:member` | `{:plan :credits {:left :total} :storage {:usedBytes :totalBytes}}` | The plan card of the sidebar. Absent or null fields are left out; without `member` there is no card |
+| scope | `<body class="ds-dash light">` | - | Set while a dashboard or Settings page is mounted (`studio.dashboard-shell.scope/use-scope`). Scope of `studio/dashboard_shell/chrome.scss`, which maps Penpot's `--color-*` to `ds/light` and restyles the upstream pages by CSS-module class |
+| `data-ds-dash` | attribute | `sidebar`, `header`, `top-actions`, `tabs`, `body`, `files`, `templates`, `settings-title`, `new-file-tile` | How `chrome.scss` finds the shell's own parts (grid areas, card grid). `[data-ds-dash="files"]` around an upstream `dashboard-grid` lays its cards out as the board's grid |
+
+Pages of `/dashboard/recent`: no `view` is the home, `view=projects` is
+upstream's Projects page ("Proyek"), `view=templates` the templates page
+("Template"). Library and Font are one sidebar item with two tabs. "Sampah"
+is upstream's deleted page.

@@ -17,8 +17,8 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.dashboard.import :as udi]
-   [app.main.ui.dashboard.projects :refer [projects-section*]]
    [app.main.ui.ds.foundations.assets.icon :as i]
+   [app.main.ui.studio.dashboard-shell.home :as shell]
    [app.main.ui.studio.dashboard.connect-card :refer [connect-card*]]
    [app.main.ui.studio.dashboard.rules :as rules]
    [app.main.ui.studio.ds :as sds]
@@ -133,10 +133,18 @@
   "Takes the props of `projects-section*` and passes them on. With
   projects or files it is Penpot's own section, which mounts the
   \"Connect AI\" card itself (`home-card*`), inside its scroll area."
-  [{:keys [team projects profile] :as props}]
+  [{:keys [team projects profile]}]
   (let [can-edit (-> team :permissions :can-edit)]
-    (if (rules/empty-home? projects can-edit)
-      [:> empty-home* {:team team
-                       :profile profile
-                       :project (rules/drafts projects)}]
-      [:> projects-section* props])))
+    ;; G1 (dashboard shell): the home renders inside the shell's
+    ;; `home-page*` (greeting, top bar). Interim content until G2's home
+    ;; lands: the Connect AI card and "File terbaru".
+    [:> shell/home-page* {:profile profile
+                          :data-testid "ds-home"}
+     (if (rules/empty-home? projects can-edit)
+       [:> empty-home* {:team team
+                        :profile profile
+                        :project (rules/drafts projects)}]
+       [:*
+        [:> connect-card*]
+        [:> shell/recent-files* {:team team
+                                 :project (rules/drafts projects)}]])]))

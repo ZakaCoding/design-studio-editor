@@ -22,6 +22,7 @@
    [app.main.ui.ds.product.empty-placeholder :refer [empty-placeholder*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard-shell.project :refer [files-heading* new-file-tile* project-header*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
@@ -194,14 +195,18 @@
     (hooks/use-shortcuts ::dashboard sc/shortcuts-drafts-libraries :dashboard)
 
     [:*
-     [:> header* {:team team
-                  :can-edit can-edit?
-                  :project project
-                  :create-fn create-file
-                  :layout layout
-                  :on-change on-layout-change}]
+     ;; Design Studio seam (STUDIO-SEAMS.md): the project page chrome of
+     ;; F1 · 14; upstream's `header*` stays in place and unused
+     [:> project-header* {:team team
+                          :can-edit can-edit?
+                          :project project
+                          :create-fn create-file}]
      [:section {:class (stl/css :dashboard-container :no-bg)
+                :data-ds-dash "files"
                 :ref rowref}
+      [:> files-heading* {:file-count file-count
+                          :layout layout
+                          :on-change on-layout-change}]
       (if empty-state-viewer
         [:> empty-placeholder* {:title (if is-draft-proyect
                                          (tr "dashboard.empty-placeholder-drafts-title")
@@ -218,4 +223,6 @@
                    :origin :files
                    :create-fn create-file
                    :limit limit
-                   :layout layout}])]]))
+                   :layout layout}
+         (when (and can-edit? (pos? file-count) (not= layout :list))
+           [:> new-file-tile* {:create-fn create-file}])])]]))

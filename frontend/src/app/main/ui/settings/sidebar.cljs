@@ -16,6 +16,7 @@
    [app.main.store :as st]
    [app.main.ui.dashboard.sidebar :refer [profile-section*]]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard-shell.scope :as ds-scope]
    [app.main.ui.studio.shell-state :as ds-state]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
@@ -85,9 +86,13 @@
       [:button {:class (stl/css :back-to-dashboard)
                 :on-click go-dashboard}
        arrow-icon
-       [:span {:class (stl/css :back-text)} (tr "labels.dashboard")]]]
+       ;; Design Studio seam (STUDIO-SEAMS.md): "‹ Beranda" (F1 · 10)
+       [:span {:class (stl/css :back-text)} (tr "ds.shell.nav.home")]]]
 
      [:hr {:class (stl/css :sidebar-separator)}]
+
+     ;; Design Studio seam (STUDIO-SEAMS.md): the sidebar title of F1 · 10
+     [:h2 {:data-ds-dash "settings-title"} (tr "ds.shell.settings.title")]
 
      [:nav {:class (stl/css :sidebar-content-section)
             :aria-label (tr "labels.settings")}
@@ -154,6 +159,9 @@
 (mf/defc sidebar*
   {::mf/wrap [mf/memo]}
   [{:keys [profile section]}]
+  ;; Design Studio seam (STUDIO-SEAMS.md): the light Design Studio chrome
+  ;; (scope of `studio/dashboard_shell/chrome.scss`) while Settings is open
+  (ds-scope/use-scope)
   [:aside {:class (stl/css :dashboard-sidebar :settings)}
    [:> sidebar-content* {:profile profile
                          :section section}]
