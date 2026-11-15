@@ -186,13 +186,17 @@
                        (reset! status* status)))))
         (fn [] (vreset! alive false))))
 
-    (case mode
-      :hidden
+    ;; `cond`, not `case`: the component macro compiled this `case` (a list
+    ;; clause and a default branch around hiccup) into code that dropped the
+    ;; default branch's value and threw "No matching clause" for every mode.
+    (cond
+      (= mode :hidden)
       nil
 
-      (:connected :later)
+      (contains? #{:connected :later} mode)
       [:> status-bar* {:mode mode :uri uri :on-open on-open}]
 
+      :else
       (let [pairing? (= mode :pairing)
             problem  (deref problem*)]
         [:section {:class (stl/css :card)
