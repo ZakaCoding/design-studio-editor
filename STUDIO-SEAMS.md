@@ -37,6 +37,7 @@ segment, `**` matches any depth.
 - `.github/ds/**`
 - `frontend/src/app/main/ui/studio/**`
 - `frontend/test/frontend_tests/studio/**`
+- `frontend/resources/fonts/studio/**`
 <!-- ds-owned:end -->
 
 ## Seams
@@ -59,7 +60,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/dashboard/subscription.cljs` | WP1 (S3): nitrate-sidebar*, nitrate-current-plan*, cta-power-up*, dashboard-cta* render nil; originals kept private | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.cljs` | WP1 (S2, S3): default org shown as Design Studio, create-organization button and menu item removed | - | WP1 |
 | `frontend/src/app/main/ui/dashboard/sidebar.scss` | WP1 (S2): org badge shows the tile without the round frame | - | WP1 |
-| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end | - | F2, WP4, WP6 |
+| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end; WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end. WP5: auth copy in a `# Design Studio (WP5)` block after it, and five Indonesian `ds.auth.*` values say "password" as F1 · 08/09 do | - | F2, WP4, WP6 |
 | `frontend/translations/id.po` | WP2: same for Indonesian; WP4: `ds.*` strings in the "Design Studio (WP4)" block; `ds.*` strings, in a `# Design Studio (<WP>)` block at the end | - | F2, WP4, WP6 |
 | `frontend/src/app/main/ui/settings/password.cljs` | WP4: backup-password title and note (S5) | - | WP4 |
 | `frontend/src/app/main/ui/settings/profile.cljs` | WP4: open sign-up shows an email note instead of change-email (S6) | - | WP4 |
@@ -83,4 +84,10 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/errors.cljs` | `handle-error :restriction` announces Design Studio guard refusal codes instead of reporting them as unhandled | - | WP6 |
 | `frontend/src/app/main/repo.cljs` | `handle-response` reads the guard's JSON refusal (413/429/503/507, written by the proxy, not the backend) and raises it as `:restriction` with our code; without it these answers become generic `:validation`/`:rate-limit`/`:service-unavailable` errors and never reach the `:restriction` handler | - | WP6 |
 | `frontend/src/app/main/ui/settings/integrations.cljs` | `data-testid` on the MCP switch, the copy button and the key windows, so the MCP guide points at them without CSS-module class names | - | WP6 |
+| `frontend/src/app/main/ui/auth.cljs` | WP5 (L2, L3, L7): auth pages render inside `studio.auth/shell*` (F1 · 08) instead of Penpot's logo and illustration; register routes leave for /start/signup with open sign-up | - | WP5 |
+| `frontend/src/app/main/ui/auth/login.cljs` | WP5 (L2, L3): markup only. Form first, ZakaCoding ID (OIDC) button below, sign-up link to /start/signup; form state, events and redirects unchanged | - | WP5 |
+| `frontend/src/app/main/ui/auth/recovery_request.cljs` | WP5 (L5): markup only. Own title, 15-minute note with open sign-up, DS "mail sent" card | - | WP5 |
+| `frontend/src/app/main/ui/auth/recovery.cljs` | WP5 (L5, L6): markup only, plus a callback so a refused reset link shows "this link can't be used again"; schema and event unchanged | - | WP5 |
+| `frontend/src/app/main/ui/auth/verify_token.cljs` | WP5 (L6): a used or expired sign-up link renders `studio.auth/used-link-page*` with open sign-up | - | WP5 |
+| `frontend/src/app/main/ui/static.cljs` | WP5 (L4): signed-out login modal uses `studio.auth/modal*`; register link goes to /start/signup | - | WP5 |
 <!-- seams:end -->

@@ -7131,13 +7131,13 @@ msgid "ds.auth.caption"
 msgstr "Semua yang dibutuhkan agent-mu, bertumpuk."
 
 msgid "ds.auth.reset.title"
-msgstr "Atur ulang kata sandi"
+msgstr "Atur ulang password"
 
 msgid "ds.auth.reset.subtitle"
 msgstr "Masukkan email akunmu dan kami kirimkan petunjuknya."
 
 msgid "ds.auth.reset.wait-note"
-msgstr "Baru mendaftar atau mengganti kata sandi dalam 15 menit terakhir? Email atur ulang baru bisa dikirim setelah 15 menit berlalu. Kalau belum masuk, coba lagi nanti, dan cek folder spam."
+msgstr "Baru mendaftar atau mengganti password dalam 15 menit terakhir? Email reset baru bisa dikirim setelah 15 menit berlalu. Kalau belum masuk, coba lagi nanti, dan cek folder spam."
 
 msgid "ds.auth.reset.email"
 msgstr "Email"
@@ -7146,7 +7146,7 @@ msgid "ds.auth.reset.submit"
 msgstr "Kirim petunjuk"
 
 msgid "ds.auth.back-to-sign-in"
-msgstr "Kembali ke halaman masuk"
+msgstr "Kembali ke Masuk"
 
 msgid "ds.auth.link-used.title"
 msgstr "Link ini tidak bisa dipakai lagi"
@@ -7155,10 +7155,10 @@ msgid "ds.auth.link-used.description"
 msgstr "Link ini sudah dipakai atau sudah kedaluwarsa. Masuk dengan kata sandimu, atau pakai “Lupa kata sandi?” di halaman masuk."
 
 msgid "ds.auth.new-password.title"
-msgstr "Pilih kata sandi baru"
+msgstr "Pilih password baru"
 
 msgid "ds.auth.new-password.subtitle"
-msgstr "Masukkan kata sandi baru dua kali untuk memastikannya."
+msgstr "Masukkan password baru dua kali untuk memastikannya."
 
 msgid "ds.auth.modal.title"
 msgstr "Masuk untuk melanjutkan"
@@ -7384,3 +7384,118 @@ msgstr "Hubungkan asisten AI"
 
 msgid "ds.first-steps.welcome.create"
 msgstr "Buat desain pertama"
+
+# Design Studio (WP5)
+
+msgid "ds.shell.language"
+msgstr "Bahasa"
+
+msgid "ds.shell.sticker.landing"
+msgstr "Landing page"
+
+msgid "ds.shell.sticker.brand"
+msgstr "Brand kit"
+
+msgid "ds.shell.sticker.poster"
+msgstr "Poster acara"
+
+msgid "ds.shell.sticker.card"
+msgstr "Kartu nama"
+
+msgid "ds.shell.sticker.app"
+msgstr "Layar aplikasi"
+
+msgid "ds.shell.sticker.feed"
+msgstr "Feed Instagram"
+
+msgid "ds.shell.cursor.you"
+msgstr "Kamu"
+
+msgid "ds.shell.panel.title"
+msgstr "Satu kalimat jadi desain."
+
+msgid "ds.shell.panel.text"
+msgstr "Kamu tetap pegang canvas. Craft dan AI kamu bekerja di sampingmu."
+
+msgid "ds.shell.legal.prefix"
+msgstr "Dengan masuk ke Design Studio, kamu setuju dengan"
+
+msgid "ds.shell.legal.terms"
+msgstr "Ketentuan"
+
+msgid "ds.shell.legal.and"
+msgstr "dan"
+
+msgid "ds.shell.legal.privacy"
+msgstr "Kebijakan Privasi"
+
+msgid "ds.signin.title"
+msgstr "Masuk ke Design Studio"
+
+msgid "ds.signin.tagline"
+msgstr "Lanjutkan desainmu di canvas, bersama Craft dan AI kamu."
+
+msgid "ds.signin.email"
+msgstr "Email"
+
+msgid "ds.signin.email-placeholder"
+msgstr "nama@email.com"
+
+msgid "ds.signin.password"
+msgstr "Password"
+
+msgid "ds.signin.forgot"
+msgstr "Lupa password?"
+
+msgid "ds.signin.show-password"
+msgstr "Tampilkan password"
+
+msgid "ds.signin.hide-password"
+msgstr "Sembunyikan password"
+
+msgid "ds.signin.submit"
+msgstr "Masuk"
+
+msgid "ds.signin.sso-existing"
+msgstr "Anggota lama: masuk dengan ZakaCoding ID"
+
+msgid "ds.signin.no-account"
+msgstr "Belum punya akun?"
+
+msgid "ds.signin.signup"
+msgstr "Daftar gratis"
+
+msgid "ds.signin.closed"
+msgstr "Akses lewat undangan. Pendaftaran tetap tertutup."
+
+msgid "ds.signin.modal.tagline"
+msgstr "Kamu sudah keluar. Masuk lagi untuk kembali ke halaman ini."
+
+msgid "ds.recovery.request.submit"
+msgstr "Kirim link reset"
+
+msgid "ds.recovery.sent.title"
+msgstr "Cek email kamu"
+
+msgid "ds.recovery.sent.text"
+msgstr "Kami kirim link reset ke %s."
+
+msgid "ds.recovery.sent.hint"
+msgstr "Buka link di email itu untuk membuat password baru. Link hanya bisa dipakai sekali. Tidak ada di kotak masuk? Cek folder Spam atau Promosi."
+
+msgid "ds.recovery.new.password"
+
+msgid "ds.recovery.new.confirm"
+msgstr "Ulangi password"
+
+msgid "ds.recovery.new.submit"
+msgstr "Simpan password baru"
+
+msgid "ds.used-link.description"
+msgstr "Link ini sudah dipakai atau sudah kedaluwarsa. Link daftar dan reset hanya berlaku sekali, supaya email yang diteruskan tidak bisa dipakai orang lain."
+
+msgid "ds.used-link.request"
+msgstr "Minta link baru"
+
+msgid "ds.used-link.login"
+msgstr "Masuk dengan password"

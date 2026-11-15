@@ -28,6 +28,7 @@
    [app.main.ui.ds.foundations.assets.icon :refer [icon*] :as i]
    [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*]]
    [app.main.ui.ds.product.loader :refer [loader*]]
+   [app.main.ui.studio.auth :as sa]
    [app.main.ui.viewer.header :as viewer.header]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
@@ -152,33 +153,21 @@
         on-nav-root
         (mf/use-fn #(st/emit! (rt/nav :auth-login {})))]
 
+    ;; Design Studio (WP5): our dialog and lockup. "Create an account" is a
+    ;; link to /start/signup (ADR 0017), so the register sections below are
+    ;; no longer reachable from here; they stay for a small upstream diff.
     [:div {:class (stl/css :overlay)}
-     [:div {:class (stl/css :dialog-login)}
-      [:div {:class (stl/css :modal-close)}
-       [:> icon-button* {:variant "ghost"
-                         :aria-label (tr "labels.close")
-                         :on-click on-nav-root
-                         :icon i/close}]]
-      [:div {:class (stl/css :login)}
-       [:div {:class (stl/css :logo)}
-        [:> raw-svg*  {:id "penpot-logo"
-                       :class (stl/css :logo-icon)}]]
-
+     [:> sa/modal* {:on-close on-nav-root
+                    :close-label (tr "labels.close")}
+      [:*
        (case @current-section
          :login
-         [:*
-          [:div {:class (stl/css :logo-title)} (tr "labels.login")]
-          [:div {:class (stl/css :logo-subtitle)} (tr "not-found.login.free")]
+         [:> sa/page* {:title (tr "ds.auth.modal.title")
+                       :subtitle (tr "ds.signin.modal.tagline")}
           [:> login-dialog* {:on-recovery-request set-section-recovery
                              :on-success-callback success-login
                              :handle-redirect true}]
-          [:hr {:class (stl/css :separator)}]
-          [:div {:class (stl/css :change-section)}
-           (tr "auth.register")
-           " "
-           [:a {:data-section "register"
-                :on-click set-section}
-            (tr "auth.register-submit")]]]
+          [:> sa/signup-row* {}]]
 
          :register
          [:*

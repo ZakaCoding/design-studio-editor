@@ -20,6 +20,7 @@
    [app.main.ui.components.link :as lk]
    [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*] :as raw-icons]
    [app.main.ui.ds.notifications.context-notification :refer [context-notification*]]
+   [app.main.ui.studio.auth :as sa]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
    [app.util.storage :as s]
@@ -164,49 +165,47 @@
         (store-login-redirect callback-url)
         (clear-login-redirect)))
 
-    [:*
-     (when-let [message @error]
-       [:> context-notification*
-        {:level :error} message])
+    ;; Design Studio (WP5): same form, state and events; F1 · 08 markup.
+    (let [password-login? (or (contains? cf/flags :login)
+                              (contains? cf/flags :login-with-password))
+          forgot-link     (when (and (not= origin :viewer) password-login?)
+                            [:> lk/link* {:action on-recovery-request
+                                          :class sa/link-class
+                                          :data-testid "forgot-password"}
+                             (tr "ds.signin.forgot")])]
+      [:*
+       (when-let [message @error]
+         [:> sa/alert* {} message])
 
-     [:& fm/form {:on-submit on-submit
-                  :class (stl/css :form)
-                  :form form}
+       [:& fm/form {:on-submit on-submit
+                    :class sa/form-class
+                    :form form}
 
-      [:div {:class (stl/css :form-row)}
-       [:& fm/input {:name :email
-                     :type "email"
-                     :label (tr "auth.work-email")
-                     :class (stl/css :form-field)}]]
+        [:> sa/field* {:field :email
+                       :type "email"
+                       :label (tr "ds.signin.email")
+                       :placeholder (tr "ds.signin.email-placeholder")
+                       :auto-complete "username"
+                       :auto-focus (not (contains? cf/flags :login-with-custom-sso))}]
 
-      (when show-password-field?
-        [:div {:class (stl/css :form-row)}
-         [:& fm/input {:type "password"
-                       :name :password
-                       :auto-focus? true
-                       :label (tr "auth.password")
-                       :class (stl/css :form-field)}]])
+        (when show-password-field?
+          [:> sa/field* {:field :password
+                         :type "password"
+                         :label (tr "ds.signin.password")
+                         :auto-complete "current-password"
+                         :auto-focus (contains? cf/flags :login-with-custom-sso)
+                         :aside forgot-link}])
 
-      (when (and (not= origin :viewer)
-                 (or (contains? cf/flags :login)
-                     (contains? cf/flags :login-with-password)))
-        [:div {:class (stl/css :form-row :forgot-password-row)}
-         [:> lk/link* {:action on-recovery-request
-                       :class (stl/css :forgot-password-link)
-                       :data-testid "forgot-password"}
-          (tr "auth.forgot-password")]])
+        (when-not show-password-field?
+          forgot-link)
 
-      [:div {:class (stl/css :form-submit-buttons)}
-       (when (or (contains? cf/flags :login)
-                 (contains? cf/flags :login-with-password))
-         [:> fm/submit-button* {:label (tr "labels.continue")
-                                :data-testid "login-submit"
-                                :class (stl/css :form-submit-btn)}])
+        (when password-login?
+          [:> sa/submit* {:label (tr "ds.signin.submit")
+                          :data-testid "login-submit"}])
 
-       (when (contains? cf/flags :login-with-ldap)
-         [:> fm/submit-button* {:label (tr "auth.login-with-ldap-submit")
-                                :class (stl/css :form-submit-btn)
-                                :on-click on-submit-ldap}])]]]))
+        (when (contains? cf/flags :login-with-ldap)
+          [:> sa/submit* {:label (tr "auth.login-with-ldap-submit")
+                          :on-click on-submit-ldap}])]])))
 
 (defn raw-icon
   [id]
@@ -254,55 +253,41 @@
                             :label (tr "auth.login-with-gitlab-submit")
                             :class (stl/css :sso-btn)}])
 
+     ;; Design Studio (WP5): OIDC is ZakaCoding ID. With open sign-up it is
+     ;; the way in for members who joined before email + password.
      (when (contains? cf/flags :login-with-oidc)
-       [:> bl/button-link* {:on-click login-with-oidc
-                            :icon (raw-icon raw-icons/brand-openid)
-                            :label (or (not-empty cf/oidc-name) (tr "auth.login-with-oidc-submit"))
-                            :class (stl/css :sso-btn)}])]))
+       [:> sa/sso-button* {:on-click login-with-oidc
+                           :label (if (sa/registration-open?)
+                                    (tr "ds.signin.sso-existing")
+                                    (tr "ds.auth.sso.continue"))}])]))
 
 (mf/defc login-dialog*
   [{:keys [params] :as props}]
-  [:*
-   (when show-sso-login-buttons?
-     [:*
-      [:> sso-buttons* {:params params}]
+  ;; Design Studio (WP5): the form comes first and ZakaCoding ID below it.
+  (let [form? (or (contains? cf/flags :login)
+                  (contains? cf/flags :login-with-password)
+                  (contains? cf/flags :login-with-ldap))]
+    [:> sa/scope* {}
+     (when form?
+       [:> login-form* props])
 
-      (when (or (contains? cf/flags :login)
-                (contains? cf/flags :login-with-password)
-                (contains? cf/flags :login-with-ldap))
-        [:hr {:class (stl/css :separator)}])])
-
-   (when (or (contains? cf/flags :login)
-             (contains? cf/flags :login-with-password)
-             (contains? cf/flags :login-with-ldap))
-     [:> login-form* props])])
+     (when show-sso-login-buttons?
+       [:*
+        (when form?
+          [:> sa/divider* {}])
+        [:> sso-buttons* {:params params}]])]))
 
 (mf/defc login-page*
   [{:keys [params]}]
-  (let [go-register
-        (mf/use-fn
-         #(st/emit! (rt/nav :auth-register params)))]
+  ;; Design Studio (WP5): "create an account" is a link to /start/signup,
+  ;; because Penpot's register form is refused (ADR 0017).
+  [:> sa/page* {:title (tr "ds.signin.title")
+                :title-testid "login-title"
+                :subtitle (tr "ds.signin.tagline")}
 
-    [:div {:class (stl/css :wrapper)}
-     [:h1 {:class (stl/css :title)
-           :data-testid "login-title"} (tr "auth.login-account-title")]
+   (when (contains? cf/flags :demo-warning)
+     [:> demo-warning*])
 
-     [:p {:class (stl/css :tagline)}
-      (tr "auth.login-tagline")]
+   [:> login-dialog* {:params params}]
 
-     (when (contains? cf/flags :demo-warning)
-       [:> demo-warning*])
-
-     [:> login-dialog* {:params params}]
-
-     [:hr {:class (stl/css :separator)}]
-
-     [:div {:class (stl/css :links)}
-      (when (contains? cf/flags :registration)
-        [:div {:class (stl/css :register-row)}
-         [:span {:class (stl/css :register-text)}
-          (tr "auth.register") " "]
-         [:> lk/link* {:action go-register
-                       :class (stl/css :register-link)
-                       :data-testid "register-submit"}
-          (tr "auth.register-submit")]])]]))
+   [:> sa/signup-row* {}]])
