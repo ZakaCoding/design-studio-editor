@@ -13,6 +13,7 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
+   [app.main.ui.studio.auth :as sa]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
 
@@ -28,7 +29,7 @@
       (= password-1 password-2))]])
 
 (defn- on-error
-  [form error]
+  [form on-used-link error]
   (let [{:keys [type code] :as edata} (ex-data error)]
     (if (= [:validation :weak-password] [type code])
       (let [details (:details edata)
@@ -38,8 +39,12 @@
                {:message (tr "errors.weak-password")
                 :options options}))
 
+      ;; Design Studio (WP5): a reset link works once. Besides Penpot's
+      ;; message the screen turns into F1 · 09 "Link sudah dipakai".
       (let [msg (tr "errors.invalid-recovery-token")]
-        (st/emit! (ntf/error msg))))))
+        (st/emit! (ntf/error msg))
+        (when (fn? on-used-link)
+          (on-used-link))))))
 
 (defn- on-success
   [_]
@@ -47,51 +52,59 @@
             (rt/nav :auth-login)))
 
 (defn- on-submit
-  [form _event]
-  (let [mdata  {:on-error (partial on-error form)
+  [on-used-link form _event]
+  (let [mdata  {:on-error (partial on-error form on-used-link)
                 :on-success on-success}
         params {:token (get-in @form [:clean-data :token])
                 :password (get-in @form [:clean-data :password-2])}]
     (st/emit! (du/recover-profile (with-meta params mdata)))))
 
 (mf/defc recovery-form*
-  [{:keys [params]}]
+  [{:keys [params on-used-link]}]
   (let [form (fm/use-form :schema schema:recovery-form
-                          :initial params)]
+                          :initial params)
 
-    [:& fm/form {:on-submit on-submit
-                 :class (stl/css :form)
+        handle-submit
+        (mf/use-fn
+         (mf/deps on-used-link)
+         (fn [form event]
+           (on-submit on-used-link form event)))]
+
+    ;; Design Studio (WP5): same schema (password rules) and event.
+    [:& fm/form {:on-submit handle-submit
+                 :class sa/form-class
                  :form form}
 
-     [:div {:class (stl/css :form-row)}
-      [:& fm/input {:type "password"
-                    :name :password-1
-                    :show-success? true
-                    :label (tr "auth.new-password")
-                    :class (stl/css :form-field)}]]
+     [:> sa/field* {:field :password-1
+                    :type "password"
+                    :label (tr "ds.recovery.new.password")
+                    :auto-complete "new-password"
+                    :auto-focus true}]
 
-     [:div {:class (stl/css :form-row)}
-      [:& fm/input {:type "password"
-                    :name :password-2
-                    :show-success? true
-                    :label (tr "auth.confirm-password")
-                    :class (stl/css :form-field)}]]
+     [:> sa/field* {:field :password-2
+                    :type "password"
+                    :label (tr "ds.recovery.new.confirm")
+                    :auto-complete "new-password"}]
 
-     [:> fm/submit-button* {:label (tr "auth.recovery-submit")
-                            :class (stl/css :form-submit-btn)}]]))
+     [:> sa/submit* {:label (tr "ds.recovery.new.submit")
+                     :data-testid "recovery-submit"}]]))
 
 ;; --- Recovery Request Page
 
 (mf/defc recovery-page*
   [{:keys [params]}]
-  [:div {:class (stl/css :wrapper)}
-   [:h1 {:class (stl/css :title)} (tr "auth.recovery-request-title")]
-   [:div {:class (stl/css :subtitle)} (tr "auth.recovery-request-subtitle")]
-   [:hr {:class (stl/css :separator)}]
-   [:> recovery-form* {:params params}]
-
-   [:div {:class (stl/css :links)}
-    [:div {:class (stl/css :go-back-row)}
-     [:a {:on-click #(st/emit! (rt/nav :auth-login))
-          :class (stl/css :go-back-link)}
-      (tr "profile.recovery.go-to-login")]]]])
+  ;; Design Studio (WP5): says what this screen does (Penpot reuses "Forgot
+  ;; password?" here), and a refused link becomes "Link sudah dipakai".
+  (let [used*        (mf/use-state false)
+        on-used-link (mf/use-fn #(reset! used* true))]
+    (if (deref used*)
+      [:> sa/used-link* {}]
+      [:> sa/page* {:title (tr "ds.recovery.new.title")
+                    :subtitle (tr "ds.recovery.new.subtitle")}
+       [:> recovery-form* {:params params
+                           :on-used-link on-used-link}]
+       [:div
+        [:a {:on-click #(st/emit! (rt/nav :auth-login))
+             :class sa/link-class
+             :data-testid "go-back-link"}
+         (tr "ds.recovery.back")]]])))

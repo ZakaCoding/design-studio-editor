@@ -10405,3 +10405,152 @@ msgstr "Try again"
 
 msgid "dashboard.invite-profile-disabled"
 msgstr "You don't have permission to invite people to this team"
+
+# Design Studio (WP5)
+
+msgid "ds.shell.language"
+msgstr "Language"
+
+msgid "ds.shell.sticker.landing"
+msgstr "Landing page"
+
+msgid "ds.shell.sticker.brand"
+msgstr "Brand kit"
+
+msgid "ds.shell.sticker.poster"
+msgstr "Event poster"
+
+msgid "ds.shell.sticker.card"
+msgstr "Business card"
+
+msgid "ds.shell.sticker.app"
+msgstr "App screen"
+
+msgid "ds.shell.sticker.feed"
+msgstr "Instagram feed"
+
+msgid "ds.shell.cursor.you"
+msgstr "You"
+
+msgid "ds.shell.panel.title"
+msgstr "One sentence becomes a design."
+
+msgid "ds.shell.panel.text"
+msgstr "You stay in charge of the canvas. Craft and your AI work beside you."
+
+msgid "ds.shell.legal.prefix"
+msgstr "By signing in, you agree to the Design Studio"
+
+msgid "ds.shell.legal.terms"
+msgstr "Terms"
+
+msgid "ds.shell.legal.and"
+msgstr "and"
+
+msgid "ds.shell.legal.privacy"
+msgstr "Privacy Policy"
+
+msgid "ds.shell.attribution"
+msgstr "Built on the open-source Penpot engine by Kaleidos. Design Studio is independent and is not affiliated with or endorsed by Penpot or Kaleidos."
+
+msgid "ds.signin.title"
+msgstr "Sign in to Design Studio"
+
+msgid "ds.signin.tagline"
+msgstr "Pick up your designs on the canvas, with Craft and your AI."
+
+msgid "ds.signin.email"
+msgstr "Email"
+
+msgid "ds.signin.email-placeholder"
+msgstr "name@email.com"
+
+msgid "ds.signin.password"
+msgstr "Password"
+
+msgid "ds.signin.forgot"
+msgstr "Forgot password?"
+
+msgid "ds.signin.show-password"
+msgstr "Show password"
+
+msgid "ds.signin.hide-password"
+msgstr "Hide password"
+
+msgid "ds.signin.submit"
+msgstr "Sign in"
+
+msgid "ds.signin.or"
+msgstr "or"
+
+msgid "ds.signin.sso-existing"
+msgstr "Existing member? Sign in with ZakaCoding ID"
+
+msgid "ds.signin.sso"
+msgstr "Continue with ZakaCoding ID"
+
+msgid "ds.signin.no-account"
+msgstr "No account yet?"
+
+msgid "ds.signin.signup"
+msgstr "Sign up free"
+
+msgid "ds.signin.closed"
+msgstr "Access is by invitation. Registration stays closed."
+
+msgid "ds.signin.modal.title"
+msgstr "Sign in to continue"
+
+msgid "ds.signin.modal.tagline"
+msgstr "You are signed out. Sign in again to return to this page."
+
+msgid "ds.recovery.request.title"
+msgstr "Reset your password"
+
+msgid "ds.recovery.request.subtitle"
+msgstr "Enter the email of your account and we will send you a reset link."
+
+msgid "ds.recovery.request.submit"
+msgstr "Send reset link"
+
+msgid "ds.recovery.request.wait-note"
+msgstr "Signed up or changed your password in the last 15 minutes? The reset email can only go out once 15 minutes have passed. If none arrives, try again then, and check your spam folder."
+
+msgid "ds.recovery.back"
+msgstr "Back to sign in"
+
+msgid "ds.recovery.sent.title"
+msgstr "Check your email"
+
+msgid "ds.recovery.sent.text"
+msgstr "We sent a reset link to %s."
+
+msgid "ds.recovery.sent.hint"
+msgstr "Open the link in that email to choose a new password. It works once. Not in your inbox? Check the Spam or Promotions folder."
+
+msgid "ds.recovery.new.title"
+msgstr "Choose a new password"
+
+msgid "ds.recovery.new.subtitle"
+msgstr "Enter your new password twice to confirm it."
+
+msgid "ds.recovery.new.password"
+msgstr "New password"
+
+msgid "ds.recovery.new.confirm"
+msgstr "Confirm password"
+
+msgid "ds.recovery.new.submit"
+msgstr "Change your password"
+
+msgid "ds.used-link.title"
+msgstr "This link can’t be used again"
+
+msgid "ds.used-link.description"
+msgstr "It was already used, or it has expired. Sign-up and reset links work only once, so a forwarded email can’t be used by someone else."
+
+msgid "ds.used-link.request"
+msgstr "Request a new link"
+
+msgid "ds.used-link.login"
+msgstr "Sign in with password"

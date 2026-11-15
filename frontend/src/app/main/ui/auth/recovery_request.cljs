@@ -14,6 +14,7 @@
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
    [app.main.ui.components.link :as lk]
+   [app.main.ui.studio.auth :as sa]
    [app.util.i18n :as i18n :refer [tr]]
    [beicon.v2.core :as rx]
    [rumext.v2 :as mf]))
@@ -69,18 +70,19 @@
              (reset! form nil)
              (st/emit! (du/request-profile-recovery params)))))]
 
+    ;; Design Studio (WP5): same form and events; F1 · 09 markup.
     [:& fm/form {:on-submit on-submit
-                 :class (stl/css :form)
+                 :class sa/form-class
                  :form form}
-     [:div {:class (stl/css :form-row)}
-      [:& fm/input {:name :email
-                    :label (tr "auth.work-email")
+     [:> sa/field* {:field :email
+                    :label (tr "ds.signin.email")
+                    :placeholder (tr "ds.signin.email-placeholder")
                     :type "text"
-                    :class (stl/css :form-field)}]]
+                    :auto-complete "username"
+                    :auto-focus true}]
 
-     [:> fm/submit-button* {:label (tr "auth.recovery-request-submit")
-                            :data-testid "recovery-resquest-submit"
-                            :class (stl/css :form-submit-btn)}]]))
+     [:> sa/submit* {:label (tr "ds.recovery.request.submit")
+                     :data-testid "recovery-resquest-submit"}]]))
 
 
 ;; --- Recovery Request Page
@@ -89,26 +91,28 @@
   [{:keys [params on-success-callback go-back-callback]}]
   (let [default-go-back #(st/emit! (rt/nav :auth-login))
         go-back (or go-back-callback default-go-back)]
-    [:div {:class (stl/css :wrapper)}
-     [:h1 {:class (stl/css :title)} (tr "auth.recovery-request-title")]
-     [:div {:class (stl/css :subtitle)} (tr "auth.recovery-request-subtitle")]
-     [:hr {:class (stl/css :separator)}]
-
-     [:> recovery-form* {:params params :on-success-callback on-success-callback}]
-     [:hr {:class (stl/css :separator)}]
-     [:div {:class (stl/css :go-back-row)}
-      [:> lk/link* {:action go-back
-                    :class (stl/css :go-back-link)
-                    :data-testid "go-back-link"}
-       (tr "labels.go-back")]]]))
+    ;; Design Studio (WP5): F1 · 09 "Lupa password". For 15 minutes after a
+    ;; profile changes Penpot sends no reset mail and answers as if it had
+    ;; (ADR 0017), so with open sign-up the screen says so.
+    [:> sa/scope* {}
+     [:> sa/page* {:title (tr "ds.recovery.request.title")
+                   :subtitle (tr "ds.recovery.request.subtitle")}
+      [:> recovery-form* {:params params :on-success-callback on-success-callback}]
+      (when (sa/registration-open?)
+        [:> sa/note* {:level "warning"
+                      :data-testid "ds-reset-wait"}
+         (tr "ds.recovery.request.wait-note")])
+      [:div
+       [:> lk/link* {:action go-back
+                     :class sa/link-class
+                     :data-testid "go-back-link"}
+        (tr "ds.recovery.back")]]]]))
 
 
 (mf/defc recovery-sent-page*
   [{:keys [email]}]
-  [:div {:class (stl/css :wrapper :register-success)}
-   [:div {:class (stl/css :title-wrapper)}
-    [:h2 {:class (stl/css :title)}
-     (tr "auth.check-email")]
-    [:div {:class (stl/css :notification-text)} (tr "not-found.login.sent-recovery")]]
-   [:div {:class (stl/css :notification-email)} email]
-   [:div {:class (stl/css :notification-text)} (tr "not-found.login.sent-recovery-check")]])
+  ;; Design Studio (WP5): same message in our markup.
+  [:> sa/scope* {}
+   [:> sa/page* {:title (tr "ds.recovery.sent.title")
+                 :subtitle (tr "ds.recovery.sent.text" email)}
+    [:> sa/note* {} (tr "ds.recovery.sent.hint")]]])
