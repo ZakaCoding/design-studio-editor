@@ -32,6 +32,7 @@
    [app.main.ui.ds.tooltip :refer [tooltip*]]
    [app.main.ui.forms :as fc]
    [app.main.ui.studio.ai-access :refer [ai-access-card*]]
+   [app.main.ui.studio.guard :refer [guard*]]
    [app.util.clipboard :as clipboard]
    [app.util.dom :as dom]
    [app.util.forms :as fm]
@@ -654,7 +655,8 @@
                    :id "integrations-section-title"}
       (tr "integrations.title")]
 
-     [:> ai-access-card* {}]
+     [:> guard* {}
+      [:> ai-access-card* {}]]
 
      (when ^boolean mcp-enabled?
        [:> mcp-server-section* props])

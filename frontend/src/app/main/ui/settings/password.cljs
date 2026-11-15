@@ -12,6 +12,7 @@
    [app.main.data.profile :as udu]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
+   [app.main.ui.studio.guard :refer [guard*]]
    [app.main.ui.studio.settings-notes :refer [password-note*]]
    [app.main.ui.studio.shell-state :as ds-state]
    [app.util.dom :as dom]
@@ -125,5 +126,6 @@
        (if backup?
          (tr "ds.settings.password-title")
          (tr "dashboard.password-change"))]
-      [:> password-note* {:state shell}]
+      [:> guard* {}
+       [:> password-note* {:state shell}]]
       [:> password-form*]]]))

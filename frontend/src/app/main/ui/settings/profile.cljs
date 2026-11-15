@@ -17,6 +17,7 @@
    [app.main.ui.components.file-uploader :refer [file-uploader]]
    [app.main.ui.components.forms :as fm]
    [app.main.ui.ds.foundations.assets.icon :as i :refer [icon*]]
+   [app.main.ui.studio.guard :refer [guard*]]
    [app.main.ui.studio.settings-notes :refer [email-note*]]
    [app.main.ui.studio.shell-state :as ds-state]
    [app.util.dom :as dom]
@@ -76,7 +77,8 @@
 
       [:div {:class (stl/css :options)}
        (if open?
-         [:> email-note*]
+         [:> guard* {}
+          [:> email-note*]]
          [:div.change-email
           [:a {:on-click on-show-change-email}
            (tr "dashboard.change-email")]])]]

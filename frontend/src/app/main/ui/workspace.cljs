@@ -23,6 +23,7 @@
    [app.main.ui.hooks :as hooks]
    [app.main.ui.hooks.resize :refer [use-resize-observer]]
    [app.main.ui.modal :refer [modal-container*]]
+   [app.main.ui.studio.guard :refer [guard*]]
    [app.main.ui.studio.workspace.shell :refer [shell*]]
    [app.main.ui.workspace.colorpicker]
    [app.main.ui.workspace.components-debugger :refer [components-debugger*]]
@@ -275,10 +276,11 @@
           [:> context-menu*]
           ;; Design Studio seam (STUDIO-SEAMS.md): workspace shell (chrome
           ;; theme, width rules, Craft dock and viewport-overlay mounts)
-          [:> shell* {:layout layout
-                      :file file
-                      :file-id file-id
-                      :page-id (when file-loaded? page-id)}]
+          [:> guard* {}
+           [:> shell* {:layout layout
+                       :file file
+                       :file-id file-id
+                       :page-id (when file-loaded? page-id)}]]
           (when (and file-loaded? page-id)
             [:> workspace-inner*
              {:page-id page-id
