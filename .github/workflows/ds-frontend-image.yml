@@ -268,6 +268,31 @@ jobs:
           IMAGE: ${{ steps.v.outputs.image }}
         run: bash .github/ds/smoke-frontend.sh "$IMAGE" built
 
+      - name: Render the DS showcase (temporary check, this branch only)
+        env:
+          IMAGE: ${{ steps.v.outputs.image }}
+        run: |
+          set -uo pipefail
+          docker network create rc-net >/dev/null
+          docker run -d --name rc-backend --network rc-net --network-alias penpot-backend --network-alias penpot-exporter \
+            busybox:1.37 sh -c 'mkdir -p /www && printf OK > /www/readyz && exec httpd -f -p 6060 -h /www' >/dev/null
+          docker run -d --name rc-frontend --network rc-net -p 127.0.0.1:18080:8080 "$IMAGE" >/dev/null
+          for _ in $(seq 1 60); do curl -fs -o /dev/null http://127.0.0.1:18080/ && break; sleep 1; done
+          mkdir -p "$RUNNER_TEMP/pw" showcase-out
+          npm i --no-save --silent --prefix "$RUNNER_TEMP/pw" playwright-core@1.55.0
+          PLAYWRIGHT_MODULE="$RUNNER_TEMP/pw/node_modules/playwright-core/index.mjs" \
+            node .github/ds/showcase-check.mjs http://127.0.0.1:18080 showcase-out 2>&1 | tee showcase-out/result.txt
+          docker rm -f rc-frontend rc-backend >/dev/null; docker network rm rc-net >/dev/null
+
+      - name: Upload the showcase check output
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: showcase-check
+          path: showcase-out/
+          if-no-files-found: warn
+          retention-days: 3
+
       - name: Smoke test the official image (same checks)
         env:
           OFFICIAL: ${{ steps.v.outputs.official }}
