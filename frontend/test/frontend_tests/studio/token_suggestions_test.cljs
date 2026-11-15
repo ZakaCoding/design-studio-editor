@@ -25,7 +25,7 @@
 
 (t/deftest rgb-distance
   (t/is (= 0.0 (ts/rgb-distance "#112233" "#112233")))
-  (t/is (= 5.0 (ts/rgb-distance "#000000" "#000305")))
+  (t/is (= 5.0 (ts/rgb-distance "#000000" "#000304")))
   (t/is (nil? (ts/rgb-distance "red" "#000000")))
   (t/is (nil? (ts/rgb-distance "#000000" nil))))
 
