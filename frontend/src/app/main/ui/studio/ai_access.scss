@@ -30,3 +30,8 @@
   margin: 0;
   color: ds.token("text-body");
 }
+
+.connect {
+  max-inline-size: 640px;
+  margin-block-end: ds.token("space-24");
+}

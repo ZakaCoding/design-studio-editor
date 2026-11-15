@@ -13,3 +13,10 @@
 
 (t/deftest manage-link
   (t/is (= "/studio/" aa/manage-uri)))
+
+(t/deftest connect-flow
+  ;; Not connected starts the in-editor flow; the others link to Studio.
+  (t/is (true? (aa/starts-connect-flow? :not-connected)))
+  (t/is (false? (aa/starts-connect-flow? :connected)))
+  (t/is (false? (aa/starts-connect-flow? :unavailable)))
+  (t/is (false? (aa/starts-connect-flow? :loading))))

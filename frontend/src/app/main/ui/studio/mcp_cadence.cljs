@@ -57,13 +57,14 @@
 
 ;; --- Interactive guide
 ;;
-;; Main menu → MCP server → Manage → turn MCP on → copy the editor link, then
-;; the hand-over to AI access. The member performs every click; the guide only
-;; points, so the current step is read from what is on screen and a member can
-;; also click ahead or back.
+;; Two steps, the same two as the dashboard card and the AI access card: press
+;; Connect in the editor, then paste the address in the AI assistant. The
+;; guide opens Settings > Integrations, where the Connect card lives, and
+;; points at its controls. The member performs every click; the guide only
+;; points, so the current step is read from what is on screen.
 
 (def steps
-  [:menu :mcp :manage :enable :copy :done])
+  [:connect :paste :done])
 
 (def ^:private step-set (set steps))
 
@@ -72,27 +73,19 @@
   (contains? step-set step))
 
 (defn step-number
-  "1-based position of `step`, as shown in \"Step n of 5\"."
+  "1-based position of `step`, as shown in \"Step n of 2\"."
   [step]
   (inc (.indexOf steps step)))
 
 (defn advance
   "The step the guide is on, given the stored `step` and the screen:
-    :workspace?    the route is the workspace
     :integrations? the route is Settings > Integrations
-    :menu-open?    the main menu is open and lists the MCP entry
-    :manage?       the MCP sub-menu shows its Manage entry
-    :mcp-enabled?  the profile has MCP turned on
-    :copy?         the editor link copy button is on the page"
-  [step {:keys [workspace? integrations? menu-open? manage? mcp-enabled? copy?]}]
-  (if (or (nil? step) (= step :done))
-    step
-    (let [step (if (and workspace? (contains? #{:menu :mcp :manage} step))
-                 (cond
-                   manage?    :manage
-                   menu-open? :mcp
-                   :else      :menu)
-                 step)]
-      (if (and integrations? (contains? #{:menu :mcp :manage :enable} step))
-        (if (and mcp-enabled? copy?) :copy :enable)
-        step))))
+    :connect?      the Connect button is on the page
+    :address?      the assistant address is ready to copy (Connect is done)"
+  [step {:keys [integrations? connect? address?]}]
+  (cond
+    (or (nil? step) (= step :done)) step
+    (not integrations?)             step
+    address?                        :paste
+    connect?                        :connect
+    :else                           step))

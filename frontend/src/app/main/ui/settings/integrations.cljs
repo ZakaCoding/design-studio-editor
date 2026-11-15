@@ -654,8 +654,7 @@
                    :id "integrations-section-title"}
       (tr "integrations.title")]
 
-     (when ^boolean mcp-enabled?
-       [:> ai-access-card* {}])
+     [:> ai-access-card* {}]
 
      (when ^boolean mcp-enabled?
        [:> mcp-server-section* props])

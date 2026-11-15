@@ -10525,13 +10525,7 @@ msgid "ds.mcp-tip.title"
 msgstr "Have you tried MCP?"
 
 msgid "ds.mcp-tip.body"
-msgstr "Connect your AI assistant (Claude, Codex) to this file through AI access. It reads your design and, when you allow it, edits with you."
-
-msgid "ds.mcp-tip.title-enabled"
-msgstr "MCP is on. One step left"
-
-msgid "ds.mcp-tip.body-enabled"
-msgstr "Copy your private editor link and paste it in AI access to connect your assistant."
+msgstr "Connect your AI assistant (Claude, Codex) to this file in two steps: turn on AI access in the editor with one click, then paste the address in your assistant."
 
 msgid "ds.mcp-tip.cta"
 msgstr "Show me how"
@@ -10552,7 +10546,7 @@ msgid "ds.mcp-tip.scene-canvas"
 msgstr "Your canvas"
 
 msgid "ds.mcp-tour.step"
-msgstr "Step %s of 5"
+msgstr "Step %s of 2"
 
 msgid "ds.mcp-tour.skip"
 msgstr "End the guide"
@@ -10561,31 +10555,16 @@ msgid "ds.mcp-tour.here"
 msgstr "Click here"
 
 msgid "ds.mcp-tour.step-1"
-msgstr "Open the Main menu. MCP lets your AI assistant work on this design through Design Studio AI access."
+msgstr "Press Turn on. One click sets up AI access for this account. There is nothing to copy."
 
 msgid "ds.mcp-tour.step-2"
-msgstr "Choose MCP server."
-
-msgid "ds.mcp-tour.step-3"
-msgstr "Choose Manage to open the MCP settings."
-
-msgid "ds.mcp-tour.step-4"
-msgstr "Turn MCP on. If a window asks for a key, create it there."
-
-msgid "ds.mcp-tour.step-4-modal"
-msgstr "Click this button. When your key is ready, close the window."
-
-msgid "ds.mcp-tour.step-5"
-msgstr "Copy your private editor link. Never paste it into a chat."
+msgstr "Copy this address and paste it in Claude (or your AI client) as a connector."
 
 msgid "ds.mcp-tour.done-title"
-msgstr "Link copied. Paste it in AI access"
+msgstr "Address copied. Paste it in your assistant"
 
 msgid "ds.mcp-tour.done-text"
-msgstr "Open AI access, paste the link in step 1, then add Design Studio to your assistant. Back in your design: Main menu → MCP server → Connect."
-
-msgid "ds.mcp-tour.open-ai-access"
-msgstr "Open AI access"
+msgstr "Add it as a connector in Claude or your AI client and sign in when it asks. Then open a design: your assistant works on the file that is open."
 
 msgid "ds.mcp-tour.read-guide"
 msgstr "Read the setup guide"
@@ -10979,17 +10958,11 @@ msgstr "AI access"
 msgid "ds.ai-access.connected"
 msgstr "Connected"
 
-msgid "ds.ai-access.not-connected"
-msgstr "Not connected"
-
 msgid "ds.ai-access.unavailable"
 msgstr "Unavailable"
 
 msgid "ds.ai-access.connected-text"
 msgstr "Your AI assistant is connected to this editor. You can pause or change the connection at any time."
-
-msgid "ds.ai-access.not-connected-text"
-msgstr "Connect your AI assistant to design on the canvas with it. It takes two steps and no key to copy."
 
 msgid "ds.ai-access.unavailable-text"
 msgstr "AI access is not available for this account right now. Open Design Studio to see why."
@@ -10997,5 +10970,3 @@ msgstr "AI access is not available for this account right now. Open Design Studi
 msgid "ds.ai-access.manage"
 msgstr "Manage AI access"
 
-msgid "ds.ai-access.connect"
-msgstr "Connect AI"

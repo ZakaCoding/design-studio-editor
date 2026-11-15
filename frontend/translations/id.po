@@ -7231,13 +7231,7 @@ msgid "ds.mcp-tip.title"
 msgstr "Sudah coba MCP?"
 
 msgid "ds.mcp-tip.body"
-msgstr "Hubungkan asisten AI-mu (Claude, Codex) ke berkas ini lewat AI access. Ia membaca desainmu dan, jika kamu izinkan, ikut mengedit bersamamu."
-
-msgid "ds.mcp-tip.title-enabled"
-msgstr "MCP sudah aktif. Tinggal satu langkah"
-
-msgid "ds.mcp-tip.body-enabled"
-msgstr "Salin link editor privatmu lalu tempel di AI access untuk menghubungkan asistenmu."
+msgstr "Hubungkan asisten AI-mu (Claude, Codex) ke berkas ini dalam dua langkah: aktifkan AI access di editor dengan satu klik, lalu tempel alamatnya di asistenmu."
 
 msgid "ds.mcp-tip.cta"
 msgstr "Tunjukkan caranya"
@@ -7258,7 +7252,7 @@ msgid "ds.mcp-tip.scene-canvas"
 msgstr "Kanvasmu"
 
 msgid "ds.mcp-tour.step"
-msgstr "Langkah %s dari 5"
+msgstr "Langkah %s dari 2"
 
 msgid "ds.mcp-tour.skip"
 msgstr "Akhiri panduan"
@@ -7267,31 +7261,16 @@ msgid "ds.mcp-tour.here"
 msgstr "Klik di sini"
 
 msgid "ds.mcp-tour.step-1"
-msgstr "Buka Menu utama. MCP membuat asisten AI-mu bisa bekerja di desain ini lewat AI access Design Studio."
+msgstr "Tekan Aktifkan. Satu klik sudah menyiapkan AI access untuk akun ini. Tidak ada yang perlu disalin."
 
 msgid "ds.mcp-tour.step-2"
-msgstr "Pilih Server MCP."
-
-msgid "ds.mcp-tour.step-3"
-msgstr "Pilih Kelola untuk membuka pengaturan MCP."
-
-msgid "ds.mcp-tour.step-4"
-msgstr "Aktifkan MCP. Jika muncul jendela untuk membuat key, buat di sana."
-
-msgid "ds.mcp-tour.step-4-modal"
-msgstr "Klik tombol ini. Setelah key siap, tutup jendelanya."
-
-msgid "ds.mcp-tour.step-5"
-msgstr "Salin link editor privatmu. Jangan pernah menempelkannya di chat."
+msgstr "Salin alamat ini, lalu tempel di Claude (atau klien AI-mu) sebagai konektor."
 
 msgid "ds.mcp-tour.done-title"
-msgstr "Link tersalin. Tempel di AI access"
+msgstr "Alamat tersalin. Tempel di asistenmu"
 
 msgid "ds.mcp-tour.done-text"
-msgstr "Buka AI access, tempel link di langkah 1, lalu tambahkan Design Studio ke asistenmu. Kembali ke desainmu: Menu utama → Server MCP → Connect."
-
-msgid "ds.mcp-tour.open-ai-access"
-msgstr "Buka AI access"
+msgstr "Tambahkan sebagai konektor di Claude atau klien AI-mu, lalu masuk saat diminta. Setelah itu buka sebuah desain: asistenmu bekerja di berkas yang sedang terbuka."
 
 msgid "ds.mcp-tour.read-guide"
 msgstr "Baca panduan setup"
@@ -7688,17 +7667,11 @@ msgstr "Akses AI"
 msgid "ds.ai-access.connected"
 msgstr "Terhubung"
 
-msgid "ds.ai-access.not-connected"
-msgstr "Belum terhubung"
-
 msgid "ds.ai-access.unavailable"
 msgstr "Tidak tersedia"
 
 msgid "ds.ai-access.connected-text"
 msgstr "Asisten AI Anda terhubung ke editor ini. Anda bisa menjeda atau mengubah sambungan kapan saja."
-
-msgid "ds.ai-access.not-connected-text"
-msgstr "Hubungkan asisten AI Anda untuk mendesain di kanvas bersamanya. Hanya dua langkah, tanpa kunci yang perlu disalin."
 
 msgid "ds.ai-access.unavailable-text"
 msgstr "Akses AI belum tersedia untuk akun ini saat ini. Buka Design Studio untuk melihat alasannya."
@@ -7706,5 +7679,3 @@ msgstr "Akses AI belum tersedia untuk akun ini saat ini. Buka Design Studio untu
 msgid "ds.ai-access.manage"
 msgstr "Kelola akses AI"
 
-msgid "ds.ai-access.connect"
-msgstr "Hubungkan AI"

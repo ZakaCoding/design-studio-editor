@@ -11,7 +11,6 @@
   `app.main.ui.studio.mcp-cadence/decide`."
   (:require-macros [app.main.style :as stl])
   (:require
-   [app.main.refs :as refs]
    [app.main.ui.studio.mcp-cadence :as cadence]
    [app.main.ui.studio.mcp-tour :as tour]
    [app.main.ui.studio.shell-client :as shell]
@@ -81,9 +80,7 @@
 
 (mf/defc mcp-tip*
   []
-  (let [profile      (mf/deref refs/profile)
-        mcp-enabled? (-> profile :props :mcp-enabled boolean)
-        touring?     (some? (mf/deref tour/step-ref))
+  (let [touring?     (some? (mf/deref tour/step-ref))
 
         ;; nil: not on screen; :in: showing; :out: leaving (fade)
         phase*       (mf/use-state nil)
@@ -255,9 +252,9 @@
         [:> scene*]]
        [:div {:class (stl/css :body)}
         [:p {:class (stl/css :title)}
-         (if mcp-enabled? (tr "ds.mcp-tip.title-enabled") (tr "ds.mcp-tip.title"))]
+         (tr "ds.mcp-tip.title")]
         [:p {:class (stl/css :text)}
-         (if mcp-enabled? (tr "ds.mcp-tip.body-enabled") (tr "ds.mcp-tip.body"))]
+         (tr "ds.mcp-tip.body")]
         [:div {:class (stl/css :actions)}
          [:button {:type "button"
                    :class (stl/css :global/ds-t-cta :cta)

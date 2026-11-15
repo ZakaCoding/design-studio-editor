@@ -79,40 +79,27 @@
              (cadence/decide (assoc member :last-day day :last-shown 0) t0 day)))))
 
 (t/deftest guide-steps
-  (t/is (= [:menu :mcp :manage :enable :copy :done] cadence/steps))
-  (t/is (= 1 (cadence/step-number :menu)))
-  (t/is (= 5 (cadence/step-number :copy)))
-  (t/is (true? (cadence/step? :enable)))
-  (t/is (false? (cadence/step? :other)))
+  (t/is (= [:connect :paste :done] cadence/steps))
+  (t/is (= 1 (cadence/step-number :connect)))
+  (t/is (= 2 (cadence/step-number :paste)))
+  (t/is (true? (cadence/step? :paste)))
+  (t/is (false? (cadence/step? :enable)))
   (t/is (false? (cadence/step? nil))))
-
-(t/deftest guide-advance-in-workspace
-  (let [screen {:workspace? true}]
-    (t/testing "the step follows what is open, forwards and back"
-      (t/is (= :menu (cadence/advance :menu screen)))
-      (t/is (= :mcp (cadence/advance :menu (assoc screen :menu-open? true))))
-      (t/is (= :manage (cadence/advance :mcp (assoc screen :menu-open? true :manage? true))))
-      (t/is (= :menu (cadence/advance :manage screen)))
-      (t/is (= :mcp (cadence/advance :manage (assoc screen :menu-open? true)))))
-    (t/testing "later steps wait for the Integrations page"
-      (t/is (= :enable (cadence/advance :enable (assoc screen :menu-open? true))))
-      (t/is (= :copy (cadence/advance :copy screen))))))
 
 (t/deftest guide-advance-on-integrations
   (let [screen {:integrations? true}]
-    (t/is (= :enable (cadence/advance :manage screen)))
-    (t/is (= :enable (cadence/advance :menu screen)))
-    (t/testing "MCP on but no link on the page yet"
-      (t/is (= :enable (cadence/advance :enable (assoc screen :mcp-enabled? true)))))
-    (t/testing "the link is there but MCP is off"
-      (t/is (= :enable (cadence/advance :enable (assoc screen :copy? true)))))
-    (t/is (= :copy (cadence/advance :enable (assoc screen :mcp-enabled? true :copy? true))))
-    (t/testing "the copy step stays once reached"
-      (t/is (= :copy (cadence/advance :copy screen))))))
+    (t/testing "Connect on screen: step 1"
+      (t/is (= :connect (cadence/advance :connect (assoc screen :connect? true))))
+      (t/is (= :connect (cadence/advance :paste (assoc screen :connect? true)))))
+    (t/testing "address ready: step 2, forwards"
+      (t/is (= :paste (cadence/advance :connect (assoc screen :address? true)))))
+    (t/testing "nothing to point at yet: the step stays"
+      (t/is (= :connect (cadence/advance :connect screen)))
+      (t/is (= :paste (cadence/advance :paste screen))))))
 
 (t/deftest guide-advance-elsewhere
-  (t/testing "no guide, or a finished one, stays as it is"
-    (t/is (nil? (cadence/advance nil {:workspace? true :menu-open? true})))
-    (t/is (= :done (cadence/advance :done {:integrations? true :mcp-enabled? true :copy? true}))))
+  (t/testing "no guide, or finished: unchanged"
+    (t/is (nil? (cadence/advance nil {:integrations? true :connect? true})))
+    (t/is (= :done (cadence/advance :done {:integrations? true :address? true}))))
   (t/testing "another page keeps the step"
-    (t/is (= :manage (cadence/advance :manage {})))))
+    (t/is (= :connect (cadence/advance :connect {:connect? true})))))

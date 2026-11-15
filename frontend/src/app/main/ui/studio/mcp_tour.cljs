@@ -5,27 +5,24 @@
 ;; Copyright (c) ZakaCoding
 
 (ns app.main.ui.studio.mcp-tour
-  "Interactive MCP guide: a blinking \"click here\" ring walks the member to
-  Main menu → MCP server → Manage → turn MCP on → copy the editor link, then
-  hands over to AI access. The member performs every click; the guide only
-  points, and the ring never takes pointer events.
+  "Interactive MCP guide, two steps: a blinking \"click here\" ring points
+  at Connect in Settings > Integrations, then at the copy button of the
+  assistant address, and the card hands over to \"paste it in your assistant\".
+  The member performs every click; the guide only points, and the ring never
+  takes pointer events.
 
   The step lives in session storage, so it survives the route change from
   the workspace to Settings > Integrations and a reload."
   (:require-macros [app.main.style :as stl])
   (:require
-   [app.main.data.event :as-alias ev]
    [app.main.data.modal :as-alias modal]
-   [app.main.refs :as refs]
+   [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.studio.mcp-cadence :as cadence]
    [app.main.ui.studio.shell-client :as shell]
    [app.util.i18n :refer [tr]]
-   [beicon.v2.core :as rx]
-   [potok.v2.core :as ptk]
    [rumext.v2 :as mf]))
 
-(def ^:private studio-uri "/studio/")
 (def ^:private guide-uri "/start/guides/ai-agent-mcp")
 
 ;; --- Step
@@ -48,44 +45,27 @@
   (reset! step-ref step))
 
 (defn start!
+  "Begin the guide on Settings > Integrations, where Connect lives."
   []
-  (set-step! :menu))
+  (set-step! :connect)
+  (st/emit! (rt/nav :settings-integrations)))
 
 ;; --- What is on screen
 ;;
-;; The workspace entries are found by the ids upstream gives them (the MCP
-;; entry is in the DOM only while the main menu is open); the Integrations
-;; controls by the `data-testid` our seam adds (STUDIO-SEAMS.md).
+;; The controls are found by the `data-testid` of the Connect card
+;; (`app.main.ui.studio.dashboard.connect-card`).
 
 (defn- query
   [selector]
   (.querySelector js/document selector))
 
-(defn- main-menu-button
-  "The workspace main menu toggle: the only toggle button in the header of
-  the left sidebar. Its name is a tooltip that exists only on hover (2.18),
-  so the translated `label` is a second way to find it, not the first."
-  [label]
-  (or (query "[data-testid=\"left-sidebar\"] header button[aria-pressed]")
-      (->> (.querySelectorAll js/document "button[aria-pressed][aria-label]")
-           (array-seq)
-           (filter #(= label (.getAttribute % "aria-label")))
-           (first))))
-
-(def ^:private modal-selector "[data-testid=\"ds-integrations-modal\"]")
-
-(defn- link-copy-button
-  "The copy button of the editor link on the page (the key window has a copy
-  button of its own, for the key)."
+(defn- address-copy-button
+  "The copy button of the assistant address, once Connect is done (it is
+  disabled before)."
   []
-  (->> (.querySelectorAll js/document "[data-testid=\"ds-input-copy\"]")
-       (array-seq)
-       (remove #(some? (.closest % modal-selector)))
-       (first)))
-
-(defn- last-button
-  [node]
-  (last (array-seq (.querySelectorAll node "button"))))
+  (let [button (query "[data-testid=\"ds-connect-copy\"]")]
+    (when (and (some? button) (not (.-disabled button)))
+      button)))
 
 ;; --- Placement
 
@@ -128,34 +108,23 @@
 ;; --- Component
 
 (defn- step-text
-  [step modal?]
-  (cond
-    (= step :done) (tr "ds.mcp-tour.done-text")
-    modal?         (tr "ds.mcp-tour.step-4-modal")
-    :else
-    (case step
-      :menu   (tr "ds.mcp-tour.step-1")
-      :mcp    (tr "ds.mcp-tour.step-2")
-      :manage (tr "ds.mcp-tour.step-3")
-      :enable (tr "ds.mcp-tour.step-4")
-      :copy   (tr "ds.mcp-tour.step-5"))))
+  [step]
+  (case step
+    :done    (tr "ds.mcp-tour.done-text")
+    :connect (tr "ds.mcp-tour.step-1")
+    :paste   (tr "ds.mcp-tour.step-2")))
 
 (mf/defc mcp-tour*
   [{:keys [section]}]
   (let [step          (mf/deref step-ref)
-        profile       (mf/deref refs/profile)
-        mcp-enabled?  (-> profile :props :mcp-enabled boolean)
-        workspace?    (= section :workspace)
         integrations? (= section :settings-integrations)
-        menu-label    (tr "shortcut-subsection.main-menu")
 
         ;; What the guide currently shows, as a primitive so an unchanged
-        ;; screen does not render again: "<step>|<m when the key window is
-        ;; open>|<t when there is a control to point at>".
+        ;; screen does not render again: "<step>|<t when there is a control
+        ;; to point at>".
         view*         (mf/use-state nil)
         view          (deref view*)
         shown-step    (mf/use-ref nil)
-        modal-ref     (mf/use-ref false)
         target-ref    (mf/use-ref nil)
         ring-ref      (mf/use-ref nil)
         tip-ref       (mf/use-ref nil)
@@ -164,48 +133,28 @@
 
         read
         (mf/use-fn
-         (mf/deps step workspace? integrations? mcp-enabled? menu-label)
+         (mf/deps step integrations?)
          (fn []
            (if (nil? step)
              (do
                (mf/set-ref-val! target-ref nil)
                (reset! view* nil))
-             (let [manage (when workspace? (query "#mcp-menu-nav-to-integrations"))
-                   entry  (when workspace? (query "#file-menu-mcp"))
-                   copy   (when integrations? (link-copy-button))
-                   step   (cadence/advance step {:workspace? workspace?
-                                                 :integrations? integrations?
-                                                 :menu-open? (some? entry)
-                                                 :manage? (some? manage)
-                                                 :mcp-enabled? mcp-enabled?
-                                                 :copy? (some? copy)})
-                   ;; While the key window is open, point at its main button
-                   ;; instead of the switch on the page.
-                   modal  (when (and integrations? (= step :enable))
-                            (query modal-selector))
-                   target (cond
-                            (some? modal)
-                            (last-button modal)
-
-                            workspace?
-                            (case step
-                              :menu   (main-menu-button menu-label)
-                              :mcp    entry
-                              :manage manage
-                              nil)
-
-                            integrations?
-                            (case step
-                              :enable (query "[data-testid=\"ds-mcp-switch\"]")
-                              :copy   copy
-                              nil))]
+             (let [activate (when integrations? (query "[data-testid=\"ds-connect-activate\"]"))
+                   copy     (when integrations? (address-copy-button))
+                   step     (cadence/advance step {:integrations? integrations?
+                                                   :connect? (some? activate)
+                                                   :address? (some? copy)})
+                   target   (when integrations?
+                              (case step
+                                :connect activate
+                                :paste   copy
+                                nil))]
                (when (not= step @step-ref)
                  (set-step! step))
                (mf/set-ref-val! target-ref target)
                (mf/set-ref-val! shown-step step)
-               (mf/set-ref-val! modal-ref (some? modal))
-               (reset! view* (when (or (some? target) (some? modal) (= step :done))
-                               (str (name step) "|" (when modal "m") "|" (when target "t"))))))))
+               (reset! view* (when (or (some? target) (= step :done))
+                               (str (name step) "|" (when target "t"))))))))
 
         on-end
         (mf/use-fn #(set-step! nil))]
@@ -214,8 +163,8 @@
     (mf/with-effect [read]
       (read))
 
-    ;; While the guide runs, re-read on every DOM batch: menus open and
-    ;; close, the Integrations page loads, the key window appears.
+    ;; While the guide runs, re-read on every DOM batch: the page loads,
+    ;; the card moves from step 1 to step 2.
     (mf/with-effect [read (some? step)]
       (when (some? step)
         (let [queued   (volatile! false)
@@ -244,16 +193,17 @@
           (fn []
             (some-> @frame js/cancelAnimationFrame)))))
 
-    ;; Copying the editor link completes the in-editor part of the guide.
+    ;; Copying the address completes the in-editor part of the guide.
     (mf/with-effect [step]
-      (when (= step :copy)
-        (let [sub (->> st/stream
-                       (rx/filter (ptk/type? ::ev/event))
-                       (rx/filter #(= "copy-mcp-url" (::ev/name (deref %))))
-                       (rx/subs! (fn [_]
-                                   (js/setTimeout #(set-step! :done) 0))))]
+      (when (= step :paste)
+        (let [on-click (fn [event]
+                         (when-let [target (.-target event)]
+                           (when (and (fn? (.-closest target))
+                                      (some? (.closest target "[data-testid=\"ds-connect-copy\"]")))
+                             (js/setTimeout #(set-step! :done) 0))))]
+          (.addEventListener js/document "click" on-click true)
           (fn []
-            (rx/dispose! sub)))))
+            (.removeEventListener js/document "click" on-click true)))))
 
     ;; Escape ends the guide, unless a Penpot window is open and takes it.
     (mf/with-effect [(some? view)]
@@ -269,7 +219,6 @@
 
     (when (some? view)
       (let [step    (mf/ref-val shown-step)
-            modal?  (mf/ref-val modal-ref)
             target? (some? (mf/ref-val target-ref))
             done?   (= step :done)]
         [:*
@@ -295,20 +244,15 @@
              (tr "ds.mcp-tour.step" (cadence/step-number step))])
           (when done?
             [:p {:class (stl/css :title)} (tr "ds.mcp-tour.done-title")])
-          [:p {:class (stl/css :text)} (step-text step modal?)]
+          [:p {:class (stl/css :text)} (step-text step)]
           [:div {:class (stl/css :actions)}
            (if done?
              [:*
               [:a {:class (stl/css :primary)
-                   :href studio-uri
+                   :href guide-uri
                    :target "_blank"
                    :rel "noopener"
                    :on-click on-end}
-               (tr "ds.mcp-tour.open-ai-access")]
-              [:a {:class (stl/css :link)
-                   :href guide-uri
-                   :target "_blank"
-                   :rel "noopener"}
                (tr "ds.mcp-tour.read-guide")]
               [:button {:type "button"
                         :class (stl/css :global/ds-coach-skip :skip)
