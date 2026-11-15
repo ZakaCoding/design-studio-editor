@@ -101,6 +101,7 @@
                     (dom/stop-propagation event)
                     (create (d/nilv origin "studio:shell-new-file"))))]
     [:> page/black-button* {:plus true
+                            :class (stl/css :new-file)
                             :on-click on-click
                             :disabled (nil? project-id)
                             :data-testid (d/nilv test-id "project-new-file")}

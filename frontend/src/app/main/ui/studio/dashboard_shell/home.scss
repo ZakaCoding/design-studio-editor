@@ -60,6 +60,11 @@
   }
 }
 
+// F1 · 03: the button is 144 px wide.
+.new-file {
+  min-inline-size: 144px;
+}
+
 .recent {
   // F1 · 03: 32 px under the block above, 40 px above the next one.
   margin-block: ds.token("space-32") 40px;
