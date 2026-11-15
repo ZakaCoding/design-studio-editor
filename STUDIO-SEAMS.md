@@ -47,4 +47,6 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
+| `frontend/translations/en.po` | WP2: brand, Plans, MCP and autosave overrides in place; new keys in a `# Design Studio (WP2)` block at the end | - | F2 |
+| `frontend/translations/id.po` | WP2: same for Indonesian | - | F2 |
 <!-- seams:end -->
