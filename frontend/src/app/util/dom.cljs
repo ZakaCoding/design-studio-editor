@@ -69,7 +69,11 @@
 
 (defn set-html-title
   [^string title]
-  (set! (.-title globals/document) title))
+  ;; Design Studio: tab titles carry the product name in every locale.
+  (let [title (-> title
+                  (str/replace "Penpot | Full-stack design" "Design Studio")
+                  (str/replace "Penpot" "Design Studio"))]
+    (set! (.-title globals/document) title)))
 
 (defn set-page-style!
   [styles]

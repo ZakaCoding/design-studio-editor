@@ -392,11 +392,8 @@
         (when (= (:default-team-id organization-item) (:default-team-id organization))
           tick-icon)])
 
+     ;; Design Studio: no "create organization" (commercial surface off).
      [:hr {:role "separator" :class (stl/css :team-separator)}]
-     [:> dropdown-menu-item* {:on-click    on-create-organization-click
-                              :class       (stl/css :organization-dropdown-item :action)}
-      [:span {:class (stl/css :icon-wrapper)} add-organization-icon]
-      [:span {:class (stl/css :team-text)} (tr "dashboard.create-new-organization")]]
      (when is-valid-license?
        [:> dropdown-menu-item* {:on-click    on-go-to-cc-click
                                 :class       (stl/css :organization-dropdown-item :action)}
@@ -882,11 +879,8 @@
       [:div {:class (stl/css :selected-organization)}
        [:span {:class (stl/css :organization-penpot-icon)}
         [:> raw-svg* {:id penpot-logo-icon}]]
-       "Penpot"
-       [:> button* {:variant "ghost"
-                    :type "button"
-                    :class (stl/css :create-organization)
-                    :on-click on-create-organization-click} (tr "dashboard.plus-create-new-organization")]])))
+       ;; Design Studio: product name instead of the default organisation name, no create button.
+       "Design Studio"])))
 
 (mf/defc sidebar-team-switch*
   [{:keys [team profile]}]

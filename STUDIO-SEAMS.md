@@ -47,4 +47,15 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 <!-- seams:begin -->
 | Path | Why | Upstream | Since |
 | --- | --- | --- | --- |
+| `frontend/resources/templates/index.mustache` | WP1 (L1): tab title, description, og/twitter tags, drop @penpotapp, SVG favicon link | - | WP1 |
+| `frontend/resources/images/icons/penpot-logo.svg` | WP1 (S1): official Design Studio tile + dual-tone wordmark; symbol name unchanged | - | WP1 |
+| `frontend/resources/images/icons/penpot-logo-icon.svg` | WP1 (S1): official Design Studio tile; symbol name unchanged | - | WP1 |
+| `frontend/resources/images/icons/penpot-logo-icon-loader.svg` | WP1 (S1): official Design Studio tile; symbol name unchanged | - | WP1 |
+| `frontend/resources/images/icons/logo-error-screen.svg` | WP1 (S1): official Design Studio tile; symbol name unchanged | - | WP1 |
+| `frontend/resources/images/favicon.svg` | WP1 (L1): new file, official Design Studio SVG favicon (not in base tag) | - | WP1 |
+| `frontend/src/app/config.cljs` | WP1 (S4): mcp-help-center-uri points to /start/guides/ai-agent-mcp | - | WP1 |
+| `frontend/src/app/util/dom.cljs` | WP1 (L9): set-html-title replaces the Penpot brand with Design Studio in every locale | - | WP1 |
+| `frontend/src/app/main/ui/dashboard/subscription.cljs` | WP1 (S3): nitrate-sidebar*, nitrate-current-plan*, cta-power-up*, dashboard-cta* render nil; originals kept private | - | WP1 |
+| `frontend/src/app/main/ui/dashboard/sidebar.cljs` | WP1 (S2, S3): default org shown as Design Studio, create-organization button and menu item removed | - | WP1 |
+| `frontend/src/app/main/ui/dashboard/sidebar.scss` | WP1 (S2): org badge shows the tile without the round frame | - | WP1 |
 <!-- seams:end -->

@@ -635,15 +635,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  // Design Studio: the official tile as-is, without the round frame.
+  border-radius: 10px;
+  overflow: hidden;
   height: var(--sp-xxxl);
   width: var(--sp-xxxl);
-  background-color: var(--color-foreground-primary);
 
   svg {
-    fill: var(--icon-stroke-color);
-    width: var(--sp-xxl);
-    height: var(--sp-xxl);
+    width: 100%;
+    height: 100%;
   }
 }
 
