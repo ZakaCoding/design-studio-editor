@@ -7231,7 +7231,7 @@ msgid "ds.mcp-tip.title"
 msgstr "Sudah coba MCP?"
 
 msgid "ds.mcp-tip.body"
-msgstr "Hubungkan asisten AI-mu (Claude, Codex) ke berkas ini dalam dua langkah: aktifkan AI access di editor dengan satu klik, lalu tempel alamatnya di asistenmu."
+msgstr "Biarkan Claude atau Codex ikut mengerjakan file ini. Cukup dua langkah."
 
 msgid "ds.mcp-tip.cta"
 msgstr "Tunjukkan caranya"
@@ -7244,12 +7244,6 @@ msgstr "Ingatkan besok"
 
 msgid "ds.mcp-tip.label"
 msgstr "Tips Design Studio"
-
-msgid "ds.mcp-tip.scene-ai"
-msgstr "Buatkan hero section"
-
-msgid "ds.mcp-tip.scene-canvas"
-msgstr "Kanvasmu"
 
 msgid "ds.mcp-tour.step"
 msgstr "Langkah %s dari 2"

@@ -39,7 +39,7 @@
   []
   (true? (get-in @st/state [:workspace-global :read-only?])))
 
-(defn- selection
+(defn selection
   "What is selected now: how many layers, the name of a single one,
   whether that one is a board, and their box on screen (client px). Nil without a selection, or while the
   canvas is not there."
@@ -106,6 +106,12 @@
         canvas   (mf/deref ref:canvas)
         drawtool (mf/deref refs/selected-drawing-tool)
 
+        ;; The canvas area moves when Craft opens or closes or Layers
+        ;; becomes a rail, without a change of the canvas itself: render
+        ;; again then, so the chip does not stay where the area was.
+        resized* (mf/use-state 0)
+        _        (deref resized*)
+
         ;; Read when the selection, a layer or the canvas changed.
         current  (when (and (seq selected)
                             (some? objects)
@@ -124,6 +130,21 @@
         (mf/use-fn
          (fn [event]
            (.stopPropagation event)))]
+
+    (mf/with-effect [is-overlay]
+      (let [node  (.getElementById js/document overlay-id)
+            timer (volatile! nil)
+            bump  (fn []
+                    (swap! resized* inc)
+                    ;; The viewport reports its new box a frame later.
+                    (some-> @timer js/clearTimeout)
+                    (vreset! timer (js/setTimeout #(swap! resized* inc) 120)))
+            obs   (when (and (some? node) (exists? js/ResizeObserver))
+                    (js/ResizeObserver. bump))]
+        (some-> obs (.observe node))
+        (fn []
+          (some-> @timer js/clearTimeout)
+          (some-> obs (.disconnect)))))
 
     (when (some? place)
       [:button {:class (stl/css-case :chip true

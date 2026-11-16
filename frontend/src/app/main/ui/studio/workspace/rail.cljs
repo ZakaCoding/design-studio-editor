@@ -101,10 +101,12 @@
                 :on-click go-back}
        [:> sds/logo-mark* {:size 28}]]]
 
-     ;; Upstream's main menu, unchanged. Its dropdown is placed from
-     ;; `--left-sidebar-width`, which the stylesheet sets for the rail. The
-     ;; board has no menu on the rail; it stays here because the file name
-     ;; and its chevron are not on the rail.
+     ;; Upstream's main menu, unchanged; the stylesheet draws its button as
+     ;; a rail button (menu lines, hover, pressed) like the tabs. Its
+     ;; dropdown is placed from `--left-sidebar-width`, which the
+     ;; stylesheet sets for the rail, at the top: so the button stays under
+     ;; the logo. The board has no menu on the rail; it stays because the
+     ;; file name and its chevron are not on the rail.
      [:div {:class (stl/css :rail-menu)}
       [:> main-menu/menu* {:layout layout
                            :file file}]]

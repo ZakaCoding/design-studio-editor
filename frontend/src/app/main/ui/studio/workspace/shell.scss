@@ -100,8 +100,9 @@
 .focus-hint {
   @include ds.root;
 
+  // Centred on the row of the toolbar (20 px up, 48 px tall).
   position: absolute;
-  inset-block-end: 24px;
+  inset-block-end: 28px;
   inset-inline-start: ws.$edge;
   display: flex;
   align-items: center;
