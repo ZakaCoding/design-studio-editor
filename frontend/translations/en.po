@@ -10515,7 +10515,7 @@ msgid "ds.plans.opening-soon"
 msgstr "Opening soon"
 
 msgid "ds.plans.side"
-msgstr "Plans"
+msgstr "Plans and credits"
 
 msgid "ds.plans.see-plans"
 msgstr "See plans"
@@ -11429,3 +11429,9 @@ msgstr "All properties"
 msgid "ds.viewer.inspect.layers"
 msgstr "Layers"
 
+# Design Studio (lead: settings side labels as F1 · 10)
+msgid "ds.settings.ai-access-side"
+msgstr "AI access"
+
+msgid "ds.settings.options-side"
+msgstr "Language and theme"

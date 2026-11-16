@@ -125,7 +125,7 @@
                                   :settings-item true)
              :on-click go-settings-options
              :data-testid "settings-profile"}
-        [:span {:class (stl/css :element-title)} (tr "labels.settings")]]
+        [:span {:class (stl/css :element-title)} (tr "ds.settings.options-side")]]
 
        (when (or (contains? cf/flags :subscriptions)
                  (contains? cf/flags :admin-console))
@@ -141,7 +141,7 @@
                                     :settings-item true)
                :on-click go-settings-integrations
                :data-testid "settings-integrations"}
-          [:span {:class (stl/css :element-title)} (tr "labels.integrations")]])
+          [:span {:class (stl/css :element-title)} (tr "ds.settings.ai-access-side")]])
 
        [:hr {:class (stl/css :sidebar-separator)}]
 

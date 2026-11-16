@@ -7221,7 +7221,7 @@ msgid "ds.plans.opening-soon"
 msgstr "Segera dibuka"
 
 msgid "ds.plans.side"
-msgstr "Paket"
+msgstr "Paket dan kredit"
 
 msgid "ds.plans.see-plans"
 msgstr "Lihat paket"
@@ -8143,3 +8143,9 @@ msgstr "Semua properti"
 msgid "ds.viewer.inspect.layers"
 msgstr "Layer"
 
+# Design Studio (lead: settings side labels as F1 · 10)
+msgid "ds.settings.ai-access-side"
+msgstr "Akses AI"
+
+msgid "ds.settings.options-side"
+msgstr "Bahasa dan tampilan"
