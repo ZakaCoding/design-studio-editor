@@ -649,21 +649,30 @@
 
     [:section {:class (stl/css :integrations)
                :aria-labelledby "integrations-section-title"}
-     [:> heading* {:level 2
-                   :typography t/title-large
-                   :class (stl/css :color-primary)
-                   :id "integrations-section-title"}
-      (tr "integrations.title")]
+     [:header {:class (stl/css :ds-head)}
+      [:h1 {:class (stl/css :ds-title)
+            :id "integrations-section-title"}
+       (tr "ds.ai.page.title")]
+      [:p {:class (stl/css :ds-subtitle)}
+       (tr "ds.ai.page.subtitle")]]
 
      [:> guard* {}
       [:> ai-access-card* {}]]
 
-     (when ^boolean mcp-enabled?
-       [:> mcp-server-section* props])
+     ;; Penpot's own keys and tokens stay, behind one line, for people who
+     ;; use them; the board has no place for them in the main flow.
+     (when (or ^boolean mcp-enabled?
+               ^boolean access-tokens-enabled?)
+       [:details {:class (stl/css :ds-advanced)}
+        [:summary {:class (stl/css :ds-advanced-summary)}
+         (tr "ds.ai.advanced")]
 
-     (when (and ^boolean mcp-enabled?
-                ^boolean access-tokens-enabled?)
-       [:hr {:class (stl/css :separator)}])
+        (when ^boolean mcp-enabled?
+          [:> mcp-server-section* props])
 
-     (when ^boolean access-tokens-enabled?
-       [:> access-tokens-section* props])]))
+        (when (and ^boolean mcp-enabled?
+                   ^boolean access-tokens-enabled?)
+          [:hr {:class (stl/css :separator)}])
+
+        (when ^boolean access-tokens-enabled?
+          [:> access-tokens-section* props])])]))

@@ -8006,3 +8006,140 @@ msgstr "Design Studio sedang tidak terjangkau"
 #: src/app/main/ui/static.cljs
 msgid "ds.error.unavailable.text"
 msgstr "Biasanya sebentar saja. Coba lagi sebentar lagi."
+# Design Studio (G5)
+msgid "ds.ai.page.title"
+msgstr "Akses AI"
+
+msgid "ds.ai.page.subtitle"
+msgstr "Atur AI yang boleh melihat dan mengedit desainmu."
+
+msgid "ds.ai.advanced"
+msgstr "Kunci dan token pribadi (lanjutan)"
+
+msgid "ds.ai.switch.title"
+msgstr "AI untuk desainmu"
+
+msgid "ds.ai.switch.on"
+msgstr "Aktif · editor tersambung otomatis setiap kali file terbuka, dari satu tab."
+
+msgid "ds.ai.switch.on-note"
+msgstr "Matikan: kunci dicabut dan semua aplikasi di bawah terputus. Bisa dinyalakan lagi kapan saja."
+
+msgid "ds.ai.switch.off"
+msgstr "Nonaktif · tidak ada aplikasi AI yang bisa melihat atau mengedit desainmu."
+
+msgid "ds.ai.switch.off-note"
+msgstr "Nyalakan lagi supaya aplikasi AI-mu bisa tersambung."
+
+msgid "ds.ai.apps.title"
+msgstr "Aplikasi tersambung"
+
+msgid "ds.ai.apps.generic"
+msgstr "Asisten AI kamu"
+
+msgid "ds.ai.apps.generic-meta"
+msgstr "Tersambung ke editor ini"
+
+msgid "ds.ai.apps.meta"
+msgstr "Tersambung %s · dipakai %s"
+
+msgid "ds.ai.apps.meta-since"
+msgstr "Tersambung %s"
+
+msgid "ds.ai.apps.view"
+msgstr "Lihat saja"
+
+msgid "ds.ai.apps.edit"
+msgstr "Lihat + edit"
+
+msgid "ds.ai.apps.revoke"
+msgstr "Cabut"
+
+msgid "ds.ai.apps.add"
+msgstr "Sambungkan aplikasi lain"
+
+msgid "ds.ai.apps.add-text"
+msgstr "Tambahkan alamat ini sebagai konektor di aplikasi AI-mu, lalu masuk saat diminta."
+
+msgid "ds.ai.revoke.title"
+msgstr "Cabut akses AI?"
+
+msgid "ds.ai.revoke.message"
+msgstr "Kunci dicabut dan semua aplikasi AI terputus. Akses AI bisa dinyalakan lagi kapan saja."
+
+msgid "ds.ai.craft.title"
+msgstr "Craft"
+
+msgid "ds.ai.craft.left"
+msgstr "%s dari %s kredit tersisa"
+
+msgid "ds.ai.craft.plan"
+msgstr "Paket %s · desain rata-rata ±140 kredit"
+
+msgid "ds.ai.craft.plan-renews"
+msgstr "Paket %s · diperbarui %s · desain rata-rata ±140 kredit"
+
+msgid "ds.ai.craft.link"
+msgstr "Paket dan kredit"
+
+msgid "ds.ai.craft.free"
+msgstr "Craft ada di paket Monthly"
+
+msgid "ds.ai.craft.free-text"
+msgstr "Aplikasi AI-mu tersambung gratis. Craft, mitra desain kami di dalam editor, memakai kredit."
+
+msgid "ds.ai.craft.see"
+msgstr "Lihat paket"
+
+msgid "ds.ai.privacy"
+msgstr "Kunci AI disimpan terenkripsi dan tidak pernah ditampilkan. Jangan tempel link atau kunci ke chat."
+
+msgid "ds.ai.privacy.history"
+msgstr "Lihat riwayat akses"
+msgid "ds.viewer.view"
+msgstr "Lihat"
+
+msgid "ds.viewer.inspect"
+msgstr "Inspect"
+
+msgid "ds.viewer.comments"
+msgstr "Komentar"
+
+msgid "ds.viewer.inspect.size"
+msgstr "Ukuran dan posisi"
+
+msgid "ds.viewer.inspect.style"
+msgstr "Gaya"
+
+msgid "ds.viewer.inspect.no-style"
+msgstr "Layer ini tidak punya isian atau garis."
+
+msgid "ds.viewer.inspect.code"
+msgstr "Kode"
+
+msgid "ds.viewer.inspect.copy-code"
+msgstr "Salin kode"
+
+msgid "ds.viewer.inspect.export"
+msgstr "Ekspor"
+
+msgid "ds.viewer.inspect.export-button"
+msgstr "Ekspor"
+
+msgid "ds.viewer.inspect.handoff"
+msgstr "Handoff ke AI coding"
+
+msgid "ds.viewer.inspect.handoff-title"
+msgstr "Spec dan token untuk developer"
+
+msgid "ds.viewer.inspect.handoff-text"
+msgstr "Satu paket: ukuran, jarak, token dan CSS, siap ditempel ke Claude Code atau Codex."
+
+msgid "ds.viewer.inspect.handoff-button"
+msgstr "Salin paket handoff"
+
+msgid "ds.viewer.inspect.all-properties"
+msgstr "Semua properti"
+msgid "ds.viewer.inspect.layers"
+msgstr "Layer"
+

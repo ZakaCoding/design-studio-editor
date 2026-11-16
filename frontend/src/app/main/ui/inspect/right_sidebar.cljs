@@ -21,6 +21,8 @@
    [app.main.ui.inspect.code :refer [code*]]
    [app.main.ui.inspect.selection-feedback :refer [resolve-shapes]]
    [app.main.ui.inspect.styles :refer [styles-tab*]]
+   [app.main.ui.studio.guard :refer [guard*]]
+   [app.main.ui.studio.viewer.inspect :refer [viewer-inspect*]]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
    [app.util.shape-icon :as usi]
@@ -126,7 +128,20 @@
 
     [:aside {:class (stl/css-case :settings-bar-right true
                                   :viewer-code (= from :viewer))}
-     (if (seq shapes)
+     (cond
+       (and (= from :viewer) (seq shapes))
+       [:> guard* {}
+        [:> viewer-inspect* {:shapes shapes
+                             :frame frame
+                             :objects objects
+                             :page-id page-id
+                             :file-id file-id
+                             :share-id share-id
+                             :color-space color-space
+                             :libraries libraries
+                             :from from}]]
+
+       (seq shapes)
        [:div {:class (stl/css :tool-windows)}
         [:div {:class (stl/css-case :shape-info true :shape-info-subtitle (some? subtitle))}
          (if (> (count shapes) 1)
@@ -227,6 +242,7 @@
                          :on-expand handle-expand
                          :from from}])])]]
 
+       :else
        [:*
         [:div {:class (stl/css :empty)}
          [:> empty-state* {:icon i/code

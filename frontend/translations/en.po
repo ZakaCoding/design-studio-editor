@@ -11292,3 +11292,140 @@ msgstr "Design Studio is not reachable right now"
 #: src/app/main/ui/static.cljs
 msgid "ds.error.unavailable.text"
 msgstr "This is usually brief. Try again in a moment."
+# Design Studio (G5)
+msgid "ds.ai.page.title"
+msgstr "AI access"
+
+msgid "ds.ai.page.subtitle"
+msgstr "Choose which AI can see and edit your designs."
+
+msgid "ds.ai.advanced"
+msgstr "Keys and personal tokens (advanced)"
+
+msgid "ds.ai.switch.title"
+msgstr "AI for your designs"
+
+msgid "ds.ai.switch.on"
+msgstr "Active · the editor connects on its own every time a file opens, from one tab."
+
+msgid "ds.ai.switch.on-note"
+msgstr "Turn off: the key is removed and every app below is disconnected. You can turn it on again at any time."
+
+msgid "ds.ai.switch.off"
+msgstr "Off · no AI app can see or edit your designs."
+
+msgid "ds.ai.switch.off-note"
+msgstr "Turn it on and your AI apps can connect again."
+
+msgid "ds.ai.apps.title"
+msgstr "Connected apps"
+
+msgid "ds.ai.apps.generic"
+msgstr "Your AI assistant"
+
+msgid "ds.ai.apps.generic-meta"
+msgstr "Connected to this editor"
+
+msgid "ds.ai.apps.meta"
+msgstr "Connected %s · used %s"
+
+msgid "ds.ai.apps.meta-since"
+msgstr "Connected %s"
+
+msgid "ds.ai.apps.view"
+msgstr "View only"
+
+msgid "ds.ai.apps.edit"
+msgstr "View + edit"
+
+msgid "ds.ai.apps.revoke"
+msgstr "Disconnect"
+
+msgid "ds.ai.apps.add"
+msgstr "Connect another app"
+
+msgid "ds.ai.apps.add-text"
+msgstr "Add this address as a connector in your AI app, then sign in when it asks."
+
+msgid "ds.ai.revoke.title"
+msgstr "Disconnect AI access?"
+
+msgid "ds.ai.revoke.message"
+msgstr "The key is removed and every AI app is disconnected. You can turn AI access on again at any time."
+
+msgid "ds.ai.craft.title"
+msgstr "Craft"
+
+msgid "ds.ai.craft.left"
+msgstr "%s of %s credits left"
+
+msgid "ds.ai.craft.plan"
+msgstr "%s plan · a design costs about ±140 credits"
+
+msgid "ds.ai.craft.plan-renews"
+msgstr "%s plan · renews %s · a design costs about ±140 credits"
+
+msgid "ds.ai.craft.link"
+msgstr "Plans and credits"
+
+msgid "ds.ai.craft.free"
+msgstr "Craft comes with the Monthly plan"
+
+msgid "ds.ai.craft.free-text"
+msgstr "Your AI apps connect for free. Craft, our design partner inside the editor, uses credits."
+
+msgid "ds.ai.craft.see"
+msgstr "See plans"
+
+msgid "ds.ai.privacy"
+msgstr "AI keys are stored encrypted and never shown. Never paste a link or a key into a chat."
+
+msgid "ds.ai.privacy.history"
+msgstr "See access history"
+msgid "ds.viewer.view"
+msgstr "View"
+
+msgid "ds.viewer.inspect"
+msgstr "Inspect"
+
+msgid "ds.viewer.comments"
+msgstr "Comments"
+
+msgid "ds.viewer.inspect.size"
+msgstr "Size and position"
+
+msgid "ds.viewer.inspect.style"
+msgstr "Style"
+
+msgid "ds.viewer.inspect.no-style"
+msgstr "No fill or stroke on this layer."
+
+msgid "ds.viewer.inspect.code"
+msgstr "Code"
+
+msgid "ds.viewer.inspect.copy-code"
+msgstr "Copy code"
+
+msgid "ds.viewer.inspect.export"
+msgstr "Export"
+
+msgid "ds.viewer.inspect.export-button"
+msgstr "Export"
+
+msgid "ds.viewer.inspect.handoff"
+msgstr "Handoff to AI coding"
+
+msgid "ds.viewer.inspect.handoff-title"
+msgstr "Spec and tokens for developers"
+
+msgid "ds.viewer.inspect.handoff-text"
+msgstr "One package: size, position, tokens and CSS, ready to paste into Claude Code or Codex."
+
+msgid "ds.viewer.inspect.handoff-button"
+msgstr "Copy handoff package"
+
+msgid "ds.viewer.inspect.all-properties"
+msgstr "All properties"
+msgid "ds.viewer.inspect.layers"
+msgstr "Layers"
+

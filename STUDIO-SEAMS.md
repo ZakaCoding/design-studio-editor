@@ -116,6 +116,10 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/workspace/context_menu.cljs` | G4 (F1 · 13): one require and one element, `studio.workspace.components/context-menu-craft*` ("Change with Craft", Ctrl Enter) before the hide/lock group; shown only when Studio says the member has Craft | - | G4 |
 | `frontend/src/app/main/ui/workspace/sidebar/shortcuts.cljs` | G4 (F1 · 13): one require and one element (`craft-shortcuts*`, the Craft section) and the search placeholder key | - | G4 |
 | `frontend/src/app/main/ui/exports/assets.cljs` | G4 (F1 · 13): dialog title "Export N layers" and the scale shown as "2x" | - | G4 |
+| `frontend/src/app/main/ui/settings/integrations.scss` | G5 (F1 · 10): page heading and the folded Penpot keys section, content column 760 px | - | G5 |
+| `frontend/src/app/main/ui/viewer/header.cljs` | G5 (F1 · 11): text mode buttons (Lihat, Inspect, Komentar) instead of icons, file name and frame counter in the left island | - | G5 |
+| `frontend/src/app/main/ui/viewer/inspect.cljs` | G5 (F1 · 11): no layer list and no pagination in Inspect; the panel floats over the canvas | - | G5 |
+| `frontend/src/app/main/ui/inspect/right_sidebar.cljs` | G5 (F1 · 11): in the viewer a selected layer renders `studio.viewer.inspect/viewer-inspect*` (inside a guard) instead of the tab switcher; the workspace Inspect and the empty state are unchanged | - | G5 |
 <!-- seams:end -->
 
 ## Mount points (F3)
