@@ -17,8 +17,7 @@
 //    highlight, without the darker squares upstream paints in them.
 // 3. Inspector: a hairline between the sections (F1 · 01) and checkboxes
 //    in the DS style.
-// 4. Rulers: on a panel strip, framed like the canvas.
-// 5. The main menu's tooltip stays away while the menu is open.
+// 4. The main menu's tooltip stays away while the menu is open.
 
 @use "studio/ds" as ds;
 @use "studio/workspace" as ws;
@@ -193,19 +192,7 @@ $label-start: 16px;
   background-color: ds.token("accent-default");
 }
 
-// --- 4. Rulers (Ctrl+Shift+R)
-
-// Upstream draws the rulers as a strip in `--panel-background-color` around
-// the canvas, which `chrome.scss` paints in the canvas colour so the canvas
-// has no box. With the rulers on, the strip is a panel surface with the
-// canvas framed by a hairline, so the numbers never float on the design.
-#{$scope} g[class~="viewport-frame"]:has(g[class~="viewport-frame-rulers"]) {
-  --panel-background-color: #{ds.token("bg-panel")};
-  --panel-border-color: #{ds.token("border-default")};
-  --layer-row-foreground-color: #{ds.token("text-secondary")};
-}
-
-// --- 5. Main menu
+// --- 4. Main menu
 
 // Upstream's main menu button keeps its "Main menu" tooltip while the menu
 // is open, over the menu's first items.
