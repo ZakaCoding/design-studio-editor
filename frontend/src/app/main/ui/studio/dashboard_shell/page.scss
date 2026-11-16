@@ -1,0 +1,229 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// The page parts of the dashboard shell (F1 · 03, 12, 14). Where each part
+// sits in the content area is in `chrome.scss` (grid areas, by the
+// `data-ds-dash` attribute).
+
+@use "studio/ds" as ds;
+
+// --- Header
+
+.header {
+  @include ds.root;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ds.token("space-16");
+  min-inline-size: 0;
+
+  // F1 · 03: the greeting starts 40 px from the top, 38 px high; the first
+  // block of the page starts at 104 px.
+  padding-block: 40px 26px;
+}
+
+// F1 · 14: breadcrumb at 32 px, the title under it, tabs at 110 px.
+.header-eyebrow {
+  padding-block: 32px 16px;
+}
+
+.heading {
+  min-inline-size: 0;
+}
+
+.eyebrow {
+  @include ds.type("control");
+
+  font-weight: ds.token("weight-regular");
+  color: ds.token("text-secondary");
+  margin-block-end: 4px;
+}
+
+.title {
+  // F1 · 03 sets the greeting in Funnel Display 32 / 600, 1.2.
+  @include ds.type("display");
+
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: ds.token("text-primary");
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.header-eyebrow .title {
+  // F1 · 14: 30 px.
+  font-size: 1.875rem;
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-12");
+  min-block-size: 40px;
+}
+
+.header-eyebrow .actions {
+  // F1 · 14: the buttons start at 48 px.
+  margin-block-start: 16px;
+}
+
+// --- Buttons (40 px pills, F1 · 03 and 14)
+
+@mixin pill {
+  @include ds.control-reset;
+  @include ds.type("control-lg");
+  @include ds.focusable;
+  @include ds.motion((background-color, color));
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-8");
+  block-size: 40px;
+  padding-inline: 26px;
+  border-radius: ds.token("radius-button");
+  white-space: nowrap;
+  user-select: none;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+.black-button {
+  @include pill;
+
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: ds.token("text-body");
+  }
+}
+
+.black-button-plus {
+  font-weight: ds.token("weight-regular");
+}
+
+.soft-button {
+  @include pill;
+
+  padding-inline: 22px;
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-size: ds.token("size-13");
+
+  &:hover:not(:disabled) {
+    background: ds.token("border-default");
+  }
+}
+
+// --- Tabs (F1 · 14)
+
+.tabs {
+  @include ds.root;
+
+  display: flex;
+  gap: 40px;
+  border-block-end: 1px solid ds.token("border-default");
+  margin-block-end: ds.token("space-24");
+}
+
+.tab {
+  @include ds.control-reset;
+  @include ds.type("body-lg");
+  @include ds.focusable;
+
+  line-height: 1.2;
+  padding-block: 0 8px;
+  margin-block-end: -1px;
+  border-block-end: 2px solid transparent;
+  color: ds.token("text-secondary");
+  white-space: nowrap;
+
+  &:hover {
+    color: ds.token("text-primary");
+  }
+}
+
+.tab-current {
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-primary");
+  border-block-end-color: ds.token("text-primary");
+}
+
+// --- Body
+
+.body {
+  @include ds.root;
+  @include ds.type("body-lg");
+
+  min-block-size: 0;
+  overflow: hidden auto;
+  padding-block-end: ds.token("space-32");
+
+  // Room for focus rings and card shadows at the edges of the scroll area.
+  margin-inline: -4px;
+  padding-inline: 4px;
+}
+
+// --- Section heading
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ds.token("space-16");
+  margin-block-end: 14px;
+}
+
+.section-title {
+  // F1 · 03 "File terbaru": Geist 18 / 600.
+  @include ds.type("control-lg");
+
+  font-size: ds.token("size-18");
+  color: ds.token("text-primary");
+  margin: 0;
+}
+
+.section-count {
+  @include ds.type("control");
+
+  font-weight: ds.token("weight-regular");
+  color: ds.token("text-secondary");
+  margin-inline-start: 10px;
+}
+
+.section-action {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-12");
+}
+
+.text-link {
+  @include ds.control-reset;
+  @include ds.type("control");
+  @include ds.focusable;
+
+  font-weight: ds.token("weight-regular");
+  color: ds.token("accent-default");
+  border-radius: ds.token("radius-xs");
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

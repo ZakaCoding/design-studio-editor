@@ -7707,3 +7707,120 @@ msgstr "MCP tersambung"
 
 msgid "workspace.toolbar.mcp-connect-here"
 msgstr "Sambungkan di sini"
+# Design Studio (G1)
+msgid "ds.shell.greeting.morning"
+msgstr "Selamat pagi"
+
+msgid "ds.shell.greeting.morning-name"
+msgstr "Selamat pagi, %s"
+
+msgid "ds.shell.greeting.midday"
+msgstr "Selamat siang"
+
+msgid "ds.shell.greeting.midday-name"
+msgstr "Selamat siang, %s"
+
+msgid "ds.shell.greeting.afternoon"
+msgstr "Selamat sore"
+
+msgid "ds.shell.greeting.afternoon-name"
+msgstr "Selamat sore, %s"
+
+msgid "ds.shell.greeting.evening"
+msgstr "Selamat malam"
+
+msgid "ds.shell.greeting.evening-name"
+msgstr "Selamat malam, %s"
+
+msgid "ds.shell.search.placeholder"
+msgstr "Cari file, proyek, komponen…"
+
+msgid "ds.shell.new-file"
+msgstr "File baru"
+
+msgid "ds.shell.nav.label"
+msgstr "Halaman dasbor"
+
+msgid "ds.shell.nav.home"
+msgstr "Beranda"
+
+msgid "ds.shell.nav.craft"
+msgstr "Craft"
+
+msgid "ds.shell.nav.projects"
+msgstr "Proyek"
+
+msgid "ds.shell.nav.libraries"
+msgstr "Library"
+
+msgid "ds.shell.nav.templates"
+msgstr "Template"
+
+msgid "ds.shell.nav.deleted"
+msgstr "Sampah"
+
+msgid "ds.shell.projects.title"
+msgstr "Proyek"
+
+msgid "ds.shell.projects.empty"
+msgstr "Belum ada proyek"
+
+msgid "ds.shell.plan.label"
+msgstr "Paket"
+
+msgid "ds.shell.plan.see-plans"
+msgstr "Lihat paket →"
+
+msgid "ds.shell.plan.credits"
+msgstr "%s / %s kredit Craft"
+
+msgid "ds.shell.plan.storage"
+msgstr "%s dari %s"
+
+msgid "ds.shell.files.edited"
+msgstr "Diedit"
+
+msgid "ds.shell.recent.title"
+msgstr "File terbaru"
+
+msgid "ds.shell.recent.all"
+msgstr "Lihat semua →"
+
+msgid "ds.shell.templates.page-title"
+msgstr "Template - Design Studio"
+
+msgid "ds.shell.templates.none"
+msgstr "Template belum tersedia untuk tim ini."
+
+msgid "ds.shell.tabs.libraries"
+msgstr "Library"
+
+msgid "ds.shell.tabs.fonts"
+msgstr "Font"
+
+msgid "ds.shell.project.invite"
+msgstr "Undang"
+
+msgid "ds.shell.project.new-file"
+msgstr "File"
+
+msgid "ds.shell.project.tab.files"
+msgstr "File"
+
+msgid "ds.shell.project.tab.libraries"
+msgstr "Library"
+
+msgid "ds.shell.project.tab.members"
+msgstr "Anggota"
+
+msgid "ds.shell.project.tab.settings"
+msgstr "Pengaturan"
+
+msgid "ds.shell.project.files"
+msgstr "File"
+
+msgid "ds.shell.project.new-file-tile"
+msgstr "+ File baru"
+
+msgid "ds.shell.settings.title"
+msgstr "Pengaturan"

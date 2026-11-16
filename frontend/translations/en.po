@@ -10992,3 +10992,120 @@ msgstr "Press %s for panels"
 
 msgid "ds.craft.quick.chip"
 msgstr "Change with Craft"
+# Design Studio (G1)
+msgid "ds.shell.greeting.morning"
+msgstr "Good morning"
+
+msgid "ds.shell.greeting.morning-name"
+msgstr "Good morning, %s"
+
+msgid "ds.shell.greeting.midday"
+msgstr "Good afternoon"
+
+msgid "ds.shell.greeting.midday-name"
+msgstr "Good afternoon, %s"
+
+msgid "ds.shell.greeting.afternoon"
+msgstr "Good afternoon"
+
+msgid "ds.shell.greeting.afternoon-name"
+msgstr "Good afternoon, %s"
+
+msgid "ds.shell.greeting.evening"
+msgstr "Good evening"
+
+msgid "ds.shell.greeting.evening-name"
+msgstr "Good evening, %s"
+
+msgid "ds.shell.search.placeholder"
+msgstr "Search files, projects, components…"
+
+msgid "ds.shell.new-file"
+msgstr "New file"
+
+msgid "ds.shell.nav.label"
+msgstr "Dashboard pages"
+
+msgid "ds.shell.nav.home"
+msgstr "Home"
+
+msgid "ds.shell.nav.craft"
+msgstr "Craft"
+
+msgid "ds.shell.nav.projects"
+msgstr "Projects"
+
+msgid "ds.shell.nav.libraries"
+msgstr "Library"
+
+msgid "ds.shell.nav.templates"
+msgstr "Templates"
+
+msgid "ds.shell.nav.deleted"
+msgstr "Trash"
+
+msgid "ds.shell.projects.title"
+msgstr "Projects"
+
+msgid "ds.shell.projects.empty"
+msgstr "No projects yet"
+
+msgid "ds.shell.plan.label"
+msgstr "Plan"
+
+msgid "ds.shell.plan.see-plans"
+msgstr "See plans →"
+
+msgid "ds.shell.plan.credits"
+msgstr "%s / %s Craft credits"
+
+msgid "ds.shell.plan.storage"
+msgstr "%s of %s"
+
+msgid "ds.shell.files.edited"
+msgstr "Edited"
+
+msgid "ds.shell.recent.title"
+msgstr "Recent files"
+
+msgid "ds.shell.recent.all"
+msgstr "See all →"
+
+msgid "ds.shell.templates.page-title"
+msgstr "Templates - Design Studio"
+
+msgid "ds.shell.templates.none"
+msgstr "Templates are not available for this team."
+
+msgid "ds.shell.tabs.libraries"
+msgstr "Library"
+
+msgid "ds.shell.tabs.fonts"
+msgstr "Fonts"
+
+msgid "ds.shell.project.invite"
+msgstr "Invite"
+
+msgid "ds.shell.project.new-file"
+msgstr "File"
+
+msgid "ds.shell.project.tab.files"
+msgstr "Files"
+
+msgid "ds.shell.project.tab.libraries"
+msgstr "Library"
+
+msgid "ds.shell.project.tab.members"
+msgstr "Members"
+
+msgid "ds.shell.project.tab.settings"
+msgstr "Settings"
+
+msgid "ds.shell.project.files"
+msgstr "Files"
+
+msgid "ds.shell.project.new-file-tile"
+msgstr "+ New file"
+
+msgid "ds.shell.settings.title"
+msgstr "Settings"

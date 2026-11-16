@@ -522,7 +522,7 @@
          menu-element]]])))
 
 (mf/defc grid*
-  [{:keys [files project origin limit create-fn can-edit selected-files can-restore layout]}]
+  [{:keys [files project origin limit create-fn can-edit selected-files can-restore layout children]}]
   (let [dragging?  (mf/use-state false)
         list?      (= layout :list)
         project-id (get project :id)
@@ -625,7 +625,11 @@
                                     :origin origin
                                     :project-id project-id
                                     :team-id team-id
-                                    :on-finish-import on-finish-import}])]))
+                                    :on-finish-import on-finish-import}])
+
+     ;; Design Studio seam (STUDIO-SEAMS.md): the "+ File baru" tile of
+     ;; F1 · 14, after the last card
+     children]))
 
 (mf/defc line-grid-row*
   {::mf/private true}

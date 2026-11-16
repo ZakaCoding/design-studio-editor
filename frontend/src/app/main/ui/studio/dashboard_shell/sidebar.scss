@@ -1,0 +1,228 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// The dashboard sidebar (F1 · 03, 12, 14): 248 px, `bg.subtle`. The
+// upstream parts inside it (team switcher, project rows, member) are
+// restyled in `chrome.scss`.
+
+@use "studio/ds" as ds;
+
+.sidebar {
+  @include ds.root;
+
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+  block-size: 100vh;
+  background: ds.token("bg-subtle");
+  padding: 0 ds.token("space-16");
+  overflow: hidden;
+}
+
+// Logo: mark 28 px at 24 / 24, wordmark Inter 15.
+.brand {
+  flex: none;
+  padding: 24px 8px 0;
+  block-size: 76px;
+}
+
+.logo {
+  font-size: 0.9375rem;
+
+  svg {
+    inline-size: 28px;
+    block-size: 28px;
+  }
+}
+
+.team {
+  flex: none;
+  position: relative;
+  margin-block-end: 20px;
+}
+
+// --- Pages
+
+.nav {
+  flex: none;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-row {
+  margin: 0;
+}
+
+.nav-item {
+  @include ds.control-reset;
+  @include ds.type("body-lg");
+  @include ds.focusable(-2px);
+  @include ds.motion((background-color, color));
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  inline-size: 100%;
+  block-size: 32px;
+  padding-inline: 14px 12px;
+  border-radius: ds.token("radius-control");
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+  text-align: start;
+
+  &:hover {
+    color: ds.token("text-primary");
+    background: color-mix(in srgb, ds.token("bg-panel") 60%, transparent);
+  }
+}
+
+.nav-icon {
+  flex: none;
+  inline-size: 12px;
+  block-size: 12px;
+
+  // Radius 3 on a 12 px mark (F1 · 03); the DS scale starts at 4.
+  border-radius: 3px;
+
+  // #C9C9D3 on the board: between border.strong and text.disabled.
+  background: color-mix(in srgb, ds.token("border-strong") 55%, ds.token("text-disabled"));
+}
+
+.nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-current {
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-semibold");
+
+  &:hover {
+    background: ds.token("bg-panel");
+  }
+
+  .nav-icon {
+    background: ds.token("accent-default");
+  }
+}
+
+// --- Projects
+
+.projects {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+  margin-block-start: 22px;
+}
+
+.projects-title {
+  @include ds.type("label");
+
+  flex: none;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: ds.token("text-secondary");
+  padding-inline: 8px;
+  margin-block-end: 10px;
+}
+
+.projects-list {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden auto;
+  scrollbar-width: thin;
+}
+
+.projects-empty {
+  @include ds.type("control");
+
+  font-weight: ds.token("weight-regular");
+  color: ds.token("text-secondary");
+  margin: 8px 0 0;
+  padding-inline: 16px;
+}
+
+// --- Plan card and member
+
+.foot {
+  flex: none;
+  position: relative;
+  padding-block: 12px 0;
+}
+
+.plan {
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+
+  // 12 px on the board; radius.md is 10, radius.lg 14.
+  border-radius: 12px;
+  padding: 11px 13px;
+  min-block-size: 72px;
+}
+
+.plan-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ds.token("space-8");
+}
+
+.plan-name {
+  @include ds.type("panel-title");
+
+  line-height: 1.2;
+  color: ds.token("text-primary");
+}
+
+.plan-link {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  color: ds.token("accent-default");
+  border-radius: ds.token("radius-xs");
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.plan-text {
+  font-size: ds.token("size-12");
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+  margin: 4px 0 0;
+}
+
+.plan-bar {
+  block-size: 6px;
+  margin-block-start: 8px;
+
+  // Radius 3 on a 6 px bar: a full round.
+  border-radius: ds.token("radius-pill");
+  background: ds.token("border-default");
+  overflow: hidden;
+}
+
+.plan-bar-fill {
+  block-size: 100%;
+  min-inline-size: 4px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-default");
+}
