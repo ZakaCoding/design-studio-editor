@@ -15,7 +15,8 @@
 // 2. Pages: the list is as tall as its pages (up to the height the member
 //    dragged it to, then it scrolls); rows and layer rows are one rounded
 //    highlight, without the darker squares upstream paints in them.
-// 3. Inspector: checkboxes in the DS style.
+// 3. Inspector: a hairline between the sections (F1 · 01) and checkboxes
+//    in the DS style.
 // 4. Rulers: on a panel strip, framed like the canvas.
 // 5. The main menu's tooltip stays away while the menu is open.
 
@@ -159,7 +160,16 @@ $label-start: 16px;
   }
 }
 
-// --- 3. Inspector checkboxes ("Fix when scrolling", "Show in exports", …)
+// --- 3. Inspector: sections and checkboxes
+
+// A hairline between the sections, as on F1 · 01 (the sections of the
+// Design tab are the direct children of its options).
+#{$scope} [id="right-sidebar-aside"] #{ws.on("main_ui_workspace_sidebar_options__element-options")} > * + * {
+  padding-block-start: ds.token("space-4");
+  border-block-start: 1px solid ds.token("border-default");
+}
+
+// Checkboxes ("Fix when scrolling", "Show in exports", …)
 
 #{$scope} :is(#{$panels}) [class*="__check-mark"] {
   box-sizing: border-box;
