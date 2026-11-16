@@ -40,11 +40,23 @@
 (defn- json->status
   [data]
   (when (object? data)
-    {:ai-access (true? (unchecked-get data "aiAccess"))
-     :connected (true? (unchecked-get data "connected"))}))
+    (let [assistant (unchecked-get data "assistant")]
+      {:ai-access       (true? (unchecked-get data "aiAccess"))
+       :connected       (true? (unchecked-get data "connected"))
+       ;; A Studio that says which AI app is connected has the field, with
+       ;; null for none.
+       :assistant-known (not (undefined? assistant))
+       :assistant       (when (and (object? assistant)
+                                   (string? (unchecked-get assistant "name")))
+                          {:name   (unchecked-get assistant "name")
+                           :access (if (= "write" (unchecked-get assistant "access"))
+                                     :write
+                                     :read)})})))
 
 (defn fetch-status
-  "A promise of `{:ai-access bool :connected bool}`, or nil when Studio
+  "A promise of `{:ai-access :connected :assistant-known :assistant}`
+  (`:assistant` is `{:name :access}` of the AI app that connected last, or
+  nil), or nil when Studio
   can't say (signed out, Studio away). Never rejects. Asked fresh, because
   the card must not claim a connection that was removed."
   []
@@ -126,15 +138,8 @@
       ;; The RPC error may describe the request; nothing of it is shown.
       (.catch (constantly :failed))))
 
-;; --- What this browser remembers
-
-(defn dismissed?
-  []
-  (true? (some-> (shell/store-get :local "connect-card")
-                 (unchecked-get "dismissed"))))
-
-(defn set-dismissed!
-  [value]
-  (if value
-    (shell/store-set! :local "connect-card" #js {:dismissed true})
-    (shell/store-remove! :local "connect-card")))
+(def guides
+  "The setup guide of each AI app step 2 offers."
+  {:claude "/start/guides/claude-mcp"
+   :codex  "/start/guides/codex-mcp"
+   :other  guide-uri})

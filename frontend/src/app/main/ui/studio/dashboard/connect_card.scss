@@ -4,8 +4,9 @@
 //
 // Copyright (c) ZakaCoding
 
-// Dashboard "Connect AI": the two-step card (F1 · 03, 03b) and the status
-// bar it shrinks to (F1 · 03c).
+// Dashboard "Connect AI": the two-step card (F1 · 03, 03b, 12; board
+// "Kartu Sambungkan AI", 1112 × 236) and the status bar it shrinks to
+// (F1 · 03c; "Bar AI tersambung", 1112 × 56).
 
 @use "studio/ds" as ds;
 
@@ -17,166 +18,464 @@
 
 .card {
   @include ds.root;
-  @include ds.surface-card;
-  @include ds.type("body-lg");
 
   display: grid;
-  gap: ds.token("space-20");
-  max-width: 720px;
-  padding: ds.token("space-24");
-  box-shadow: ds.token("elevation-control");
+  gap: 23px;
+  padding: 19px 23px 23px;
+  border: 1px solid ds.token("border-default");
+  border-radius: 20px;
+  background: ds.token("bg-panel");
   color: ds.token("text-body");
 }
 
 .card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ds.token("space-8") ds.token("space-16");
+}
+
+.card-heading {
   display: grid;
-  justify-items: start;
-  gap: ds.token("space-8");
+  gap: 5px;
+  min-width: 0;
 }
 
 .card-title {
-  @include ds.type("title");
-
   margin: 0;
   color: ds.token("text-primary");
+  font-family: ds.token("font-display");
+  font-size: ds.token("size-18");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 .card-lead {
   margin: 0;
   color: ds.token("text-secondary");
+  font-size: ds.token("size-12");
+  line-height: 1.2;
 }
+
+.progress {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 28px;
+  padding: 0 ds.token("space-16");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.card-close {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  flex: none;
+  height: 28px;
+  padding: 0 ds.token("space-16");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+// --- Steps, side by side
 
 .steps {
-  display: grid;
-  gap: ds.token("space-16");
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: ds.token("space-20") ds.token("space-24");
 }
 
-.step {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: ds.token("space-12");
-  padding: ds.token("space-16");
-  border: 1px solid ds.token("border-default");
-  border-radius: ds.token("radius-md");
-  background: ds.token("bg-panel");
+.step-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 22px;
 }
 
-.step-mark {
-  @include ds.type("control");
-
+.mark {
+  flex: none;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border-radius: ds.token("radius-pill");
   background: ds.token("accent-default");
   color: ds.token("text-on-accent");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1;
 }
 
-.step-body {
-  display: grid;
-  justify-items: start;
-  gap: ds.token("space-12");
-  min-width: 0;
+.mark-two {
+  background: ds.token("accent-subtle");
+  color: ds.token("accent-default");
 }
 
 .step-title {
-  @include ds.type("control-lg");
-
+  padding: 0;
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
-
-  // Lines up with the 28 px step mark.
-  line-height: 28px;
   color: ds.token("text-primary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-13");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+// Step 1 ("langkah 1 bg", 420 × 128)
+
+.step-one {
+  flex: 0 1 420px;
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  min-width: min(100%, 280px);
+  min-height: 128px;
+
+  // The 1.5 px border is inside the board's box.
+  padding: 13.5px 12.5px 4.5px 14.5px;
+  border: 1.5px solid ds.token("accent-default");
+  border-radius: 16px;
+  background: ds.token("accent-subtle");
+
+  .step-head {
+    width: 100%;
+  }
+}
+
+.step-one-done {
+  padding: 14px 13px 11px 15px;
+  border: 1px solid ds.token("status-success-border");
+  background: ds.token("status-success-bg");
+
+  .mark {
+    background: ds.token("status-success");
+  }
 }
 
 .step-text {
-  margin: 0;
+  margin: 11px 0 0;
   color: ds.token("text-body");
+  font-size: ds.token("size-12");
+  line-height: 1.45;
 }
 
-.step-done {
-  border-color: ds.token("status-success-border");
-  background: ds.token("status-success-bg");
+.switch {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion(background-color);
 
-  .step-mark {
+  flex: none;
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("border-strong");
+
+  &[aria-checked="true"] {
     background: ds.token("status-success");
   }
 
-  .step-text {
-    color: ds.token("status-success-text");
+  &[aria-busy="true"] {
+    cursor: progress;
   }
 }
 
-// Step 2 before step 1: readable, but clearly not the current step.
-.step-waiting {
-  background: ds.token("bg-subtle");
+.switch-knob {
+  @include ds.motion(transform);
 
-  .step-mark {
-    border: 1px solid ds.token("border-strong");
-    background: ds.token("bg-panel");
-    color: ds.token("text-secondary");
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-control");
+
+  .switch[aria-checked="true"] & {
+    transform: translateX(16px);
+  }
+}
+
+.activate {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion(background-color);
+
+  height: 28px;
+  min-width: 116px;
+  margin-block-start: ds.token("space-12");
+  padding: 0 ds.token("space-24");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  white-space: nowrap;
+
+  &:hover {
+    background: ds.token("accent-hover");
   }
 
-  .step-title,
-  .step-text {
-    color: ds.token("text-secondary");
+  &:active {
+    background: ds.token("accent-pressed");
   }
+
+  &[aria-busy="true"] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+}
+
+.active {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0 0;
+  color: ds.token("status-success-text");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
 }
 
 .problem {
-  margin: 0;
+  margin: ds.token("space-8") 0 ds.token("space-8");
   padding: ds.token("space-8") ds.token("space-12");
   border-radius: ds.token("radius-control");
   background: ds.token("status-danger-bg");
   color: ds.token("status-danger-text");
+  font-size: ds.token("size-12");
+  line-height: 1.45;
+}
+
+// Step 2
+
+.step-two {
+  flex: 1 1 480px;
+  display: grid;
+  align-content: start;
+  gap: ds.token("space-12");
+  min-width: 0;
+}
+
+.step-two-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: ds.token("space-12") ds.token("space-16");
+}
+
+// Three choices of 100 px, 8 px apart. The waiting line may reach into the
+// gap to the address, as on the board (320 px over 316).
+.apps {
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: ds.token("space-12");
+  width: 316px;
+  max-width: 100%;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: ds.token("space-8");
+}
+
+.choice {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion(border-color);
+
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  width: 100px;
+  height: 54px;
+  padding: 8px 11px;
+  border: 1px solid ds.token("border-default");
+  border-radius: 12px;
+  background: ds.token("bg-panel");
+  text-align: start;
+
+  &:hover:not(:disabled) {
+    border-color: ds.token("accent-default");
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.choice-selected {
+  padding: 7.5px 10.5px;
+  border: 1.5px solid ds.token("accent-default");
+  background: ds.token("accent-subtle");
+
+  .choice-name {
+    color: ds.token("accent-default");
+  }
+}
+
+.choice-name {
+  color: ds.token("text-primary");
+  font-size: ds.token("size-13");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.choice-note {
+  color: ds.token("text-secondary");
+  font-size: ds.token("size-11");
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.link {
+  flex: 1 1 240px;
+  display: grid;
+
+  // The address is one long word: the column must not grow with it.
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  min-width: 0;
 }
 
 .address {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: ds.token("space-8");
-  width: 100%;
-  min-width: 0;
+  gap: 6px;
+  height: 36px;
+  padding: 0 4px 0 10px;
+  border-radius: 12px;
+  background: ds.token("bg-subtle");
+}
+
+.address-icon {
+  color: ds.token("text-secondary");
 }
 
 .address-value {
-  @include ds.type("value");
   @include ds.truncate;
 
-  flex: 1 1 240px;
+  flex: 1 1 auto;
   min-width: 0;
-  padding: ds.token("space-8") ds.token("space-12");
-  border: 1px solid ds.token("border-strong");
-  border-radius: ds.token("radius-control");
-  background: ds.token("bg-panel");
   color: ds.token("text-primary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
   user-select: all;
 }
 
-.card-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: ds.token("space-12");
+.copy {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  flex: none;
+  height: 28px;
+  min-width: 62px;
+  padding: 0 ds.token("space-16");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  white-space: nowrap;
+
+  &:disabled {
+    background: ds.token("text-disabled");
+    cursor: default;
+  }
+}
+
+.hint {
+  margin: 0;
+  color: ds.token("text-secondary");
+  font-size: ds.token("size-11");
+  line-height: 1.4;
 }
 
 .guide {
   @include ds.focusable;
 
   border-radius: ds.token("radius-xs");
-  color: ds.token("accent-text-strong");
+  color: ds.token("accent-default");
   font-weight: ds.token("weight-medium");
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
+  white-space: nowrap;
 
   &:hover {
-    color: ds.token("accent-default");
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+.waiting {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  margin: 0;
+  padding: 4px 14px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("status-warning-bg");
+  color: ds.token("status-warning-text");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.waiting-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("status-warning");
+}
+
+.locked {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  margin: 0;
+  color: ds.token("text-secondary");
+  font-size: ds.token("size-11");
+  line-height: 1.2;
+}
+
+// Step 2 before step 1 is done: there, and out of reach (F1 · 12).
+.step-two-locked {
+  .mark,
+  .step-title,
+  .choices,
+  .link {
+    opacity: 0.45;
   }
 }
 
@@ -184,36 +483,42 @@
 
 .bar {
   @include ds.root;
-  @include ds.surface-card;
-  @include ds.type("body-lg");
 
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: ds.token("space-12");
-  max-width: 720px;
-  padding: ds.token("space-8") ds.token("space-16");
+  gap: ds.token("space-8") ds.token("space-16");
+  min-height: 56px;
+  padding: 11px 15px 11px 19px;
+  border: 1px solid ds.token("status-success-border");
+  border-radius: 16px;
+  background: ds.token("status-success-bg");
   color: ds.token("text-body");
 }
 
 .bar-dot {
   flex: none;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: ds.token("radius-pill");
-  background: ds.token("border-strong");
+  background: ds.token("status-success");
 }
 
 .bar-text {
   display: flex;
   flex: 1 1 240px;
   flex-wrap: wrap;
-  gap: ds.token("space-4") ds.token("space-8");
+  align-items: baseline;
+  gap: ds.token("space-4") 9px;
   min-width: 0;
-  margin: 0;
+  margin: 0 0 0 -7px;
+  color: ds.token("status-success-text");
+  font-size: ds.token("size-12");
+  line-height: 1.2;
 
   strong {
     color: ds.token("text-primary");
+    font-size: ds.token("size-13");
     font-weight: ds.token("weight-semibold");
   }
 }
@@ -222,19 +527,46 @@
   display: flex;
   flex: none;
   align-items: center;
-  gap: ds.token("space-4");
+  gap: ds.token("space-24");
 }
 
-.bar-connected {
-  border-color: ds.token("status-success-border");
-  background: ds.token("status-success-bg");
+.bar-manage {
+  @include ds.control-reset;
+  @include ds.focusable;
 
-  .bar-dot {
-    background: ds.token("status-success");
+  border-radius: ds.token("radius-xs");
+  color: ds.token("accent-default");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
+}
 
-  strong {
-    color: ds.token("status-success-text");
+.bar-add {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion(border-color);
+
+  display: inline-flex;
+  align-items: center;
+  gap: ds.token("space-4");
+  height: 32px;
+  padding: 0 ds.token("space-16") 0 13px;
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: ds.token("accent-default");
   }
 }
 

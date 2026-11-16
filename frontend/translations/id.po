@@ -7544,50 +7544,89 @@ msgstr "sama persis"
 msgid "ds.connect.label"
 msgstr "Akses AI"
 
-msgid "ds.connect.badge"
-msgstr "Akses AI"
-
 msgid "ds.connect.title"
-msgstr "Sambungkan asisten AI Anda"
+msgstr "Sambungkan AI kamu ke Design Studio"
 
 msgid "ds.connect.lead"
-msgstr "Claude, ChatGPT, atau Codex bisa membaca desain Anda dan, jika Anda izinkan, ikut mengedit. Hanya dua langkah."
+msgstr "Dua langkah dari halaman ini. Tidak perlu membuka Settings, Integrations atau /studio."
+
+msgid "ds.connect.progress"
+msgstr "%s dari 2 selesai"
 
 msgid "ds.connect.step-done"
 msgstr "selesai"
 
 msgid "ds.connect.step-1.title"
-msgstr "Aktifkan akses AI"
+msgstr "Aktifkan AI untuk desainmu"
 
 msgid "ds.connect.step-1.text"
-msgstr "Satu klik. Kami menyiapkan sambungan antara editor dan akses AI untuk akun ini. Tidak ada yang perlu disalin."
-
-msgid "ds.connect.step-1.cta"
-msgstr "Aktifkan"
+msgstr "Satu klik: MCP menyala, kunci tersimpan terenkripsi, editor tersambung sendiri."
 
 msgid "ds.connect.step-1.done"
-msgstr "Akses AI aktif untuk akun ini."
+msgstr "Satu klik. Design Studio menyalakan MCP di akunmu, menyimpan kuncinya terenkripsi, dan menyambungkan editor sendiri setiap kali file terbuka."
+
+msgid "ds.connect.step-1.cta"
+msgstr "Aktifkan AI"
+
+msgid "ds.connect.step-1.switch"
+msgstr "AI untuk desainmu"
+
+msgid "ds.connect.step-1.active"
+msgstr "Aktif · editor tersambung otomatis"
 
 msgid "ds.connect.step-2.title"
-msgstr "Tambahkan Design Studio ke asisten Anda"
+msgstr "Sambungkan aplikasi AI kamu"
 
-msgid "ds.connect.step-2.text"
-msgstr "Tambahkan alamat ini sebagai konektor di asisten Anda, lalu masuk saat diminta."
+msgid "ds.connect.step-2.locked"
+msgstr "Langkah 2 terbuka sesudah langkah 1."
 
-msgid "ds.connect.step-2.after"
-msgstr "Lalu buka sebuah desain. Asisten Anda bekerja di file yang sedang terbuka."
+msgid "ds.connect.apps"
+msgstr "Aplikasi AI kamu"
+
+msgid "ds.connect.app.claude"
+msgstr "Claude"
+
+msgid "ds.connect.app.claude-note"
+msgstr "aplikasi & web"
+
+msgid "ds.connect.app.codex"
+msgstr "Codex"
+
+msgid "ds.connect.app.codex-note"
+msgstr "di komputer"
+
+msgid "ds.connect.app.other"
+msgstr "Lainnya"
+
+msgid "ds.connect.app.other-note"
+msgstr "klien MCP lain"
+
+msgid "ds.connect.hint.claude"
+msgstr "Di Claude: Customize → Connectors → Add custom connector, tempel link, lalu Izinkan."
+
+msgid "ds.connect.hint.codex"
+msgstr "Di terminal: codex mcp add design-studio --url, lalu link ini. Masuk saat diminta."
+
+msgid "ds.connect.hint.other"
+msgstr "Di klien MCP kamu: tambah server remote dengan link ini, lalu masuk saat diminta."
+
+msgid "ds.connect.waiting.claude"
+msgstr "Menunggu Claude… jadi hijau sendiri saat tersambung"
+
+msgid "ds.connect.waiting.codex"
+msgstr "Menunggu Codex… jadi hijau sendiri saat tersambung"
+
+msgid "ds.connect.waiting.other"
+msgstr "Menunggu aplikasi AI kamu… jadi hijau sendiri saat tersambung"
 
 msgid "ds.connect.copy"
-msgstr "Salin alamat"
+msgstr "Salin"
 
 msgid "ds.connect.copied"
 msgstr "Tersalin"
 
 msgid "ds.connect.guide"
-msgstr "Baca panduan penyiapan"
-
-msgid "ds.connect.later"
-msgstr "Nanti saja"
+msgstr "Panduan"
 
 msgid "ds.connect.done"
 msgstr "Selesai"
@@ -7604,26 +7643,59 @@ msgstr "Design Studio sedang menangani permintaan lain untuk akun ini. Coba lagi
 msgid "ds.connect.error.failed"
 msgstr "Kami belum bisa mengaktifkan akses AI. Coba lagi sebentar."
 
+msgid "ds.connect.bar.app-connected"
+msgstr "%s tersambung"
+
 msgid "ds.connect.bar.connected"
 msgstr "Akses AI aktif"
 
-msgid "ds.connect.bar.connected-note"
-msgstr "Asisten Anda bekerja di desain yang sedang Anda buka."
+msgid "ds.connect.bar.read"
+msgstr "Lihat saja · editor tersambung otomatis"
 
-msgid "ds.connect.bar.copy"
-msgstr "Salin alamat asisten"
+msgid "ds.connect.bar.write"
+msgstr "Bisa mengedit · editor tersambung otomatis"
+
+msgid "ds.connect.bar.auto"
+msgstr "Editor tersambung otomatis"
 
 msgid "ds.connect.bar.manage"
 msgstr "Kelola"
 
-msgid "ds.connect.bar.later"
-msgstr "Sambungkan asisten AI Anda"
+msgid "ds.connect.bar.add"
+msgstr "Aplikasi AI lain"
 
-msgid "ds.connect.bar.later-note"
-msgstr "Dua langkah, kapan pun Anda siap."
+msgid "ds.hero.tag"
+msgstr "Baru · Craft di Beranda"
 
-msgid "ds.connect.bar.open"
-msgstr "Siapkan"
+msgid "ds.hero.title"
+msgstr "Mulai dari satu kalimat"
+
+msgid "ds.hero.placeholder"
+msgstr "Ceritakan desain yang kamu butuhkan, misalnya “landing page kedai kopi, nuansa hangat”…"
+
+msgid "ds.hero.label"
+msgstr "Ceritakan desainmu untuk Craft"
+
+msgid "ds.hero.submit"
+msgstr "Mulai dengan Craft"
+
+msgid "ds.hero.chips"
+msgstr "Mulai dari jenis desain"
+
+msgid "ds.hero.chip.landing"
+msgstr "Landing page"
+
+msgid "ds.hero.chip.poster"
+msgstr "Poster acara"
+
+msgid "ds.hero.chip.app"
+msgstr "Layar aplikasi"
+
+msgid "ds.hero.chip.card"
+msgstr "Kartu nama"
+
+msgid "ds.hero.chip.brand"
+msgstr "Brand kit"
 
 msgid "ds.home.greeting"
 msgstr "Selamat datang"
@@ -7631,35 +7703,68 @@ msgstr "Selamat datang"
 msgid "ds.home.greeting-name"
 msgstr "Selamat datang, %s"
 
-msgid "ds.home.empty.lead"
-msgstr "Anda belum punya desain. Mulai dari kanvas kosong atau bawa file Anda."
+msgid "ds.home.start.title-first"
+msgstr "Mulai desain pertamamu"
 
-msgid "ds.home.empty.create"
-msgstr "Buat desain pertama"
+msgid "ds.home.start.title"
+msgstr "Mulai desain"
 
-msgid "ds.home.empty.create-text"
-msgstr "Membuka kanvas kosong di editor."
+msgid "ds.home.start.blank"
+msgstr "File kosong"
 
-msgid "ds.home.empty.import"
+msgid "ds.home.start.blank-text"
+msgstr "Mulai dari canvas putih."
+
+msgid "ds.home.start.template"
+msgstr "Dari template"
+
+msgid "ds.home.start.template-text"
+msgstr "Landing page, poster, kartu nama, dan lain-lain."
+
+msgid "ds.home.start.import"
 msgstr "Impor file"
 
-msgid "ds.home.empty.import-text"
-msgstr "Bawa file .penpot atau .zip."
+msgid "ds.home.start.import-text"
+msgstr "Buka file .penpot yang sudah ada."
 
-msgid "ds.home.empty.deleted"
-msgstr "File terhapus"
-
-msgid "ds.home.plan.label"
-msgstr "Paket"
-
-msgid "ds.home.plan.badge"
+msgid "ds.home.start.craft"
 msgstr "Craft"
 
-msgid "ds.home.plan.text"
-msgstr "Editor dan akses AI gratis. Craft, partner desain AI kami, ada di paket berbayar."
+msgid "ds.home.start.craft-text"
+msgstr "Satu kalimat jadi desain di canvas. Ada di paket Monthly."
 
-msgid "ds.home.plan.cta"
+msgid "ds.home.start.craft-text-price"
+msgstr "Satu kalimat jadi desain di canvas. Ada di Monthly, %s."
+
+msgid "ds.home.start.craft-text-member"
+msgstr "Satu kalimat jadi desain di canvas."
+
+msgid "ds.home.start.craft-plans"
 msgstr "Lihat paket"
+
+msgid "ds.home.start.craft-open"
+msgstr "Mulai dengan Craft"
+
+msgid "ds.home.files.title"
+msgstr "File kamu"
+
+msgid "ds.home.files.empty"
+msgstr "Belum ada file"
+
+msgid "ds.home.files.empty-text"
+msgstr "File yang kamu buat, impor, atau buat lewat AI kamu akan muncul di sini."
+
+msgid "ds.home.files.create"
+msgstr "Buat file kosong"
+
+msgid "ds.home.templates.title"
+msgstr "Template Design Studio"
+
+msgid "ds.home.templates.add"
+msgstr "Tambahkan %s ke draf kamu"
+
+msgid "ds.home.see-all"
+msgstr "Lihat semua →"
 # Design Studio (F4-B)
 msgid "ds.ai-access.title"
 msgstr "Akses AI"
