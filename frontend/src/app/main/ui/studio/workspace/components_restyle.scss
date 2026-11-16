@@ -215,12 +215,12 @@ $-dialog: -on("main_ui_exports_assets__modal-container");
 }
 
 #{$-dialog} #{-on("main_ui_exports_assets__selection-row")} #{-on("main_ui_exports_assets__selection-btn")} {
-  grid-template-columns: min-content 1fr auto auto;
+  grid-template-columns: min-content 1fr auto auto !important;
   gap: ds.token("space-8");
 }
 
 #{$-dialog} #{-on("main_ui_exports_assets__image-wrapper")} {
-  display: none;
+  display: none !important;
 }
 
 #{$-dialog} #{-on("main_ui_exports_assets__selection-row")} #{-on("main_ui_exports_assets__selection-name")} {
@@ -234,11 +234,13 @@ $-dialog: -on("main_ui_exports_assets__modal-container");
   #{-on("main_ui_exports_assets__selection-scale", "main_ui_exports_assets__selection-extension")} {
   @include ds.type("value");
 
-  min-inline-size: 0;
-  padding: 6px ds.token("space-12");
+  min-inline-size: 0 !important;
+  padding: 6px ds.token("space-12") !important;
+  overflow: visible !important;
   color: ds.token("text-body");
   background: ds.token("bg-subtle");
   border-radius: ds.token("radius-control");
+  text-overflow: clip !important;
 }
 
 // Format before scale, as on the board.
