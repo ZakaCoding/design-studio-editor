@@ -25,7 +25,24 @@
                        :hex hex
                        :applied-token applied-token
                        :to-hex token->hex}))]
-    (when (seq suggestions)
+    (cond
+      ;; F1 · 13: the colour is the same as a token. One card, one button.
+      (:exact? (first suggestions))
+      (let [{:keys [token]} (first suggestions)]
+        [:section {:class (stl/css :match)
+                   :aria-label (tr "ds.colorpicker.same-as" (:name token))}
+         [:div {:class (stl/css :match-head)}
+          [:span {:class (stl/css :match-title)
+                  :title (:name token)}
+           (tr "ds.colorpicker.same-as" (:name token))]
+          [:button {:type "button"
+                    :class (stl/css :match-use)
+                    :on-click #(on-token-change % token)}
+           (tr "ds.colorpicker.use")]]
+         [:p {:class (stl/css :match-note)}
+          (tr "ds.colorpicker.follows-token")]])
+
+      (seq suggestions)
       [:section {:class (stl/css :suggestions)
                  :aria-label (tr "ds.colorpicker.suggested-tokens")}
        [:span {:class (stl/css :title)}

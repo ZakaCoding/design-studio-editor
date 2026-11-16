@@ -146,8 +146,8 @@
                     (cond-> (:name shape) suffix (str suffix))]
                    (when (:scale export)
                      [:div {:class (stl/css :selection-scale)}
-                      (dm/str (ust/format-precision (* width (:scale export)) 2) "x"
-                              (ust/format-precision (* height (:scale export)) 2))])
+                      ;; Design Studio (F1 · 13): the scale as the board shows it, "2x"
+                      (dm/str (ust/format-precision (:scale export) 2) "x")])
 
                    (when (:type export)
                      [:div {:class (stl/css :selection-extension)}
@@ -186,7 +186,11 @@
   {::mf/register modal/components
    ::mf/register-as :export-shapes}
   [{:keys [exports origin name]}]
-  (let [title (tr "dashboard.export-shapes.title")]
+  (let [n     (count (into #{} (map (comp :id :shape)) exports))
+        ;; Design Studio (F1 · 13): "Export 3 layers"
+        title (if (pos? n)
+                (tr "ds.export.title" (c n))
+                (tr "dashboard.export-shapes.title"))]
     [:> export-multiple-dialog*
      {:exports exports
       :title title

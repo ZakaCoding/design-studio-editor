@@ -25,10 +25,12 @@
    [app.main.ui.dashboard.sidebar :refer [sidebar*]]
    [app.main.ui.ds.buttons.button :refer [button*]]
    [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
-   [app.main.ui.ds.foundations.assets.icon :refer [icon*] :as i]
+   [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*]]
    [app.main.ui.ds.product.loader :refer [loader*]]
    [app.main.ui.studio.auth :as sa]
+   [app.main.ui.studio.ds.button :as sbtn]
+   [app.main.ui.studio.error-page :refer [error-shell*]]
    [app.main.ui.viewer.header :as viewer.header]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
@@ -42,7 +44,8 @@
 (def TimeoutError rxjs/TimeoutError)
 
 (mf/defc error-container*
-  [{:keys [children]}]
+  "Design Studio seam (STUDIO-SEAMS.md): the page is `studio.error-page/error-shell*`."
+  [{:keys [children code primary-home?]}]
   (let [profile     (mf/deref refs/profile)
         profile-id  (:id profile)
         on-nav-root (mf/use-fn
@@ -52,27 +55,10 @@
                          (st/emit! (dcm/go-to-dashboard-recent
                                     :team-id (:default-team-id profile)))
                          (st/emit! (rt/nav-root)))))]
-    [:section {:class (stl/css :exception-layout)}
-     [:button
-      {:class (stl/css :exception-header)
-       :on-click on-nav-root}
-      [:> raw-svg* {:id "penpot-logo-icon" :class (stl/css :penpot-logo)}]
-      (when profile-id
-        [:div {:class (stl/css :go-back-wrapper)}
-         [:> icon* {:icon-id i/arrow :class (stl/css :back-arrow)}] [:span (tr "not-found.no-permission.go-dashboard")]])]
-     [:div {:class (stl/css :deco-before)} [:> raw-svg* {:id "logo-error-screen"}]]
-     (when-not profile-id
-       [:button {:class (stl/css :login-header)
-                 :on-click on-nav-root}
-        (tr "labels.login")])
-
-     [:div {:class (stl/css :exception-content)}
-      [:div {:class (stl/css :container)} children]]
-
-     [:div {:class (stl/css :deco-after2)}
-      [:span (tr "labels.copyright-period")]
-      [:> raw-svg* {:id "logo-error-screen"}]
-      [:span (tr "not-found.made-with-love")]]]))
+    [:> error-shell* {:code code
+                      :on-home on-nav-root
+                      :primary-home? primary-home?}
+     children]))
 
 (mf/defc invalid-token
   [{:keys [reason]}]
@@ -82,7 +68,7 @@
   ;;
   ;; The branches use `tr` with literal keys (instead of `(tr key-var)`)
   ;; so the i18n usage scanner can statically track every key.
-  [:> error-container* {}
+  [:> error-container* {:primary-home? true}
    (case reason
      :email-mismatch
      [:*
@@ -305,30 +291,29 @@
 
 (mf/defc not-found*
   []
-  [:> error-container* {}
-   [:div {:class (stl/css :main-message)} (tr "labels.not-found.main-message")]
-   [:div {:class (stl/css :desc-message)} (tr "not-found.desc-message.error")]
-   [:div {:class (stl/css :desc-message)} (tr "not-found.desc-message.doesnt-exist")]])
+  [:> error-container* {:code "404" :primary-home? true}
+   [:div {:class (stl/css :main-message)} (tr "ds.error.404.title")]
+   [:div {:class (stl/css :desc-message)} (tr "ds.error.404.text")]])
 
 (mf/defc bad-gateway*
   []
   (let [handle-retry
         (mf/use-fn
          (fn [] (st/emit! (rt/assign-exception nil))))]
-    [:> error-container* {}
-     [:div {:class (stl/css :main-message)} (tr "labels.bad-gateway.main-message")]
-     [:div {:class (stl/css :desc-message)} (tr "labels.bad-gateway.desc-message")]
+    [:> error-container* {:code "502"}
+     [:div {:class (stl/css :main-message)} (tr "ds.error.unavailable.title")]
+     [:div {:class (stl/css :desc-message)} (tr "ds.error.unavailable.text")]
      [:div {:class (stl/css :sign-info)}
-      [:> button* {:variant "primary" :on-click handle-retry} (tr "labels.retry")]]]))
+      [:> sbtn/button* {:variant "primary" :size "lg" :on-click handle-retry} (tr "labels.retry")]]]))
 
 (mf/defc service-unavailable*
   []
   (let [on-click (mf/use-fn #(st/emit! (rt/assign-exception nil)))]
-    [:> error-container* {}
-     [:div {:class (stl/css :main-message)} (tr "labels.service-unavailable.main-message")]
-     [:div {:class (stl/css :desc-message)} (tr "labels.service-unavailable.desc-message")]
+    [:> error-container* {:code "503"}
+     [:div {:class (stl/css :main-message)} (tr "ds.error.unavailable.title")]
+     [:div {:class (stl/css :desc-message)} (tr "ds.error.unavailable.text")]
      [:div {:class (stl/css :sign-info)}
-      [:> button* {:variant "primary" :on-click on-click} (tr "labels.retry")]]]))
+      [:> sbtn/button* {:variant "primary" :size "lg" :on-click on-click} (tr "labels.retry")]]]))
 
 (mf/defc nitrate-unavailable*
   []
@@ -368,7 +353,7 @@
      [:div {:class (stl/css :main-message)} (tr "errors.webgl-context-lost.main-message")]
      [:div {:class (stl/css :desc-message)} (tr "errors.webgl-context-lost.desc-message")]
      [:div {:class (stl/css :buttons-container)}
-      [:> button* {:variant "primary" :on-click on-reload}
+      [:> sbtn/button* {:variant "primary" :size "lg" :on-click on-reload}
        (tr "labels.reload-page")]]]))
 
 (mf/defc internal-error*
@@ -405,25 +390,26 @@
           (fn []
             (wapi/revoke-uri uri)))))
 
-    [:> error-container* {}
-     [:div {:class (stl/css :main-message)} (tr "labels.internal-error.main-message")]
+    [:> error-container* {:code "500"}
+     [:div {:class (stl/css :main-message)} (tr "ds.error.500.title")]
 
      [:div {:class (stl/css :desc-message)}
-      [:p {:class (stl/css :desc-text)} (tr "labels.internal-error.desc-message-first")]
-      [:p {:class (stl/css :desc-text)} (tr "labels.internal-error.desc-message-second")]]
+      [:p {:class (stl/css :desc-text)} (tr "ds.error.500.text")]]
 
      (when (some? report)
        [:a {:class (stl/css :download-link) :on-click on-download} (tr "labels.download" "report.txt")])
 
      [:div {:class (stl/css :buttons-container)}
-      [:> button* {:variant "secondary"
-                   :type "button"
-                   :class (stl/css :support-btn)
-                   :on-click support-contact-click} (tr "labels.contact-support")]
-      [:> button* {:variant "primary"
-                   :type "button"
-                   :class (stl/css :retry-btn)
-                   :on-click on-reset} (tr "labels.retry")]]]))
+      [:> sbtn/button* {:variant "secondary"
+                        :size "lg"
+                        :type "button"
+                        :class (stl/css :support-btn)
+                        :on-click support-contact-click} (tr "labels.contact-support")]
+      [:> sbtn/button* {:variant "primary"
+                        :size "lg"
+                        :type "button"
+                        :class (stl/css :retry-btn)
+                        :on-click on-reset} (tr "labels.retry")]]]))
 
 (defn- load-info
   "Load exception page info"

@@ -213,6 +213,7 @@
            (.stopPropagation event)))]
 
     ;; Ctrl/Cmd+Enter anywhere in the workspace, except while writing text.
+    ;; The right-click menu asks for the same thing with `ds-craft:quick-open`.
     (mf/with-effect [open]
       (let [on-key
             (fn [event]
@@ -226,10 +227,17 @@
                          (not (read-only?)))
                 (.preventDefault event)
                 (.stopPropagation event)
+                (open)))
+
+            on-request
+            (fn []
+              (when-not (read-only?)
                 (open)))]
         (.addEventListener js/document "keydown" on-key true)
+        (.addEventListener js/window "ds-craft:quick-open" on-request)
         (fn []
-          (.removeEventListener js/document "keydown" on-key true))))
+          (.removeEventListener js/document "keydown" on-key true)
+          (.removeEventListener js/window "ds-craft:quick-open" on-request))))
 
     ;; While it is open: focus the box; a press outside or a resized
     ;; window closes it.

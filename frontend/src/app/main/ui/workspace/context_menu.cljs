@@ -35,6 +35,7 @@
    [app.main.ui.components.dropdown :refer [dropdown]]
    [app.main.ui.context :as ctx]
    [app.main.ui.ds.foundations.assets.icon :refer [icon*] :as i]
+   [app.main.ui.studio.workspace.components :refer [context-menu-craft*]]
    [app.main.ui.workspace.sidebar.assets.common :as cmm]
    [app.util.clipboard :as clipboard]
    [app.util.debug :as dbg]
@@ -781,6 +782,7 @@
        [:> context-menu-group* props]
        [:> context-focus-mode-menu* props]
        [:> context-menu-path* props]
+       [:> context-menu-craft* {}]
        [:> context-menu-layer-options* props]
        [:> context-menu-prototype* props]
        (when is-not-variant-container?

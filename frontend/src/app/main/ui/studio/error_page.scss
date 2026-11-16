@@ -1,0 +1,128 @@
+// Design Studio full-page errors (404, 500, 502/503). Light page, one card.
+// The message and buttons come from `static.cljs` with its own classes;
+// they are matched here by their exact CSS-module token, inside `.card`.
+
+@use "studio/ds" as ds;
+
+.page {
+  @include ds.root;
+
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+  inline-size: 100%;
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  font-family: ds.token("font-text");
+  background: ds.token("bg-subtle");
+}
+
+.top {
+  display: flex;
+  padding: ds.token("space-24") ds.token("space-32");
+}
+
+.brand {
+  @include ds.control-reset;
+  @include ds.focusable(4px);
+
+  display: inline-flex;
+  border-radius: ds.token("radius-sm");
+}
+
+.center {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: ds.token("space-16");
+}
+
+.card {
+  display: grid;
+  gap: ds.token("space-16");
+  justify-items: center;
+  inline-size: min(100%, 480px);
+  padding: ds.token("space-32") ds.token("space-32") ds.token("space-24");
+  text-align: center;
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-panel");
+  box-shadow: ds.token("elevation-popover");
+}
+
+.code {
+  @include ds.type("label");
+
+  padding: 2px ds.token("space-8");
+  color: ds.token("accent-text-strong");
+  background: ds.token("accent-subtle");
+  border-radius: ds.token("radius-button");
+}
+
+.content {
+  display: grid;
+  gap: ds.token("space-12");
+  justify-items: center;
+  inline-size: 100%;
+
+  [class~="main_ui_static__main-message"] {
+    @include ds.type("title");
+
+    color: ds.token("text-primary");
+    font-family: ds.token("font-display");
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+
+  [class~="main_ui_static__desc-message"],
+  [class~="main_ui_static__desc-text"] {
+    @include ds.type("body");
+
+    margin: 0;
+    color: ds.token("text-secondary");
+  }
+
+  [class~="main_ui_static__download-link"] {
+    @include ds.type("value");
+
+    color: ds.token("text-secondary");
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  [class~="main_ui_static__sign-info"],
+  [class~="main_ui_static__buttons-container"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ds.token("space-8");
+    justify-content: center;
+    margin-block-start: ds.token("space-8");
+  }
+}
+
+.home {
+  display: flex;
+  justify-content: center;
+}
+
+.credit {
+  @include ds.type("body");
+
+  display: flex;
+  gap: ds.token("space-8");
+  justify-content: center;
+  padding: ds.token("space-16");
+  color: ds.token("text-secondary");
+  font-size: 0.75rem;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: ds.token("text-primary");
+  }
+}

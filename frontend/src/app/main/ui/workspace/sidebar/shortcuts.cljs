@@ -24,6 +24,7 @@
    [app.main.ui.ds.foundations.assets.icon :as i  :refer [icon*]]
    [app.main.ui.ds.product.panel-title :refer [panel-title*]]
    [app.main.ui.shortcuts :as ss]
+   [app.main.ui.studio.workspace.components :refer [craft-shortcuts*]]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
    [app.util.strings :refer [matches-search]]
@@ -130,12 +131,14 @@
       [:> search-bar* {:on-change on-search-term-change-2
                        :on-clear on-search-clear-click
                        :value filter-term
-                       :placeholder (tr "shortcuts.title")
+                       :placeholder (tr "ds.shortcuts.search")
                        :icon-id i/search
                        :auto-focus true}]]
 
      (if match-any?
        [:div {:class (stl/css :shortcuts-list)}
+        ;; Design Studio seam (STUDIO-SEAMS.md): G4 Craft section (F1 · 13)
+        [:> craft-shortcuts* {:filter-term filter-term}]
         (for [section all-shortcuts]
           (let [[section-key _] section]
             [:> ss/shortcut-section* {:key (name section-key)

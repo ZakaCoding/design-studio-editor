@@ -1,0 +1,123 @@
+// Design Studio editor components of F1 · 13 (G4): Craft item of the
+// right-click menu, Craft section of the shortcut panel, Color / Token
+// switch of the colour picker.
+
+@use "studio/ds" as ds;
+
+// ---- Right-click menu ----------------------------------------------------
+
+.craft-separator {
+  block-size: 1px;
+  margin: ds.token("space-4") ds.token("space-8");
+  background: ds.token("border-default");
+}
+
+.craft-item {
+  @include ds.type("body");
+  @include ds.focusable(-2px);
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  block-size: 30px;
+  inline-size: 100%;
+  padding: 0 ds.token("space-8");
+  color: ds.token("accent-text-strong");
+  background: ds.token("bg-selected");
+  border-radius: ds.token("radius-control");
+  cursor: pointer;
+  list-style: none;
+
+  &:hover {
+    background: color-mix(in srgb, ds.token("accent-default") 14%, ds.token("bg-panel"));
+  }
+}
+
+.craft-icon {
+  flex: none;
+  color: ds.token("accent-default");
+}
+
+.craft-title {
+  flex: 1;
+  font-weight: ds.token("weight-semibold");
+}
+
+.craft-shortcut {
+  @include ds.type("value");
+
+  color: ds.token("accent-text-strong");
+}
+
+// ---- Shortcut panel ------------------------------------------------------
+
+.craft-section {
+  @include ds.root;
+
+  display: grid;
+  gap: ds.token("space-8");
+  padding: ds.token("space-12") 0 ds.token("space-4");
+}
+
+.craft-section-title {
+  @include ds.type("label");
+
+  margin: 0;
+  color: ds.token("accent-default");
+}
+
+.craft-row {
+  @include ds.type("body");
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-8");
+  min-block-size: 28px;
+  color: ds.token("text-body");
+}
+
+.craft-key {
+  @include ds.type("value");
+
+  padding: 3px ds.token("space-8");
+  color: ds.token("text-primary");
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-xs");
+}
+
+// ---- Colour picker -------------------------------------------------------
+
+.tabs {
+  @include ds.root;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  gap: 2px;
+  padding: 3px;
+  background: ds.token("bg-subtle");
+  border-radius: ds.token("radius-control");
+}
+
+.tab {
+  @include ds.control-reset;
+  @include ds.type("control");
+  @include ds.focusable;
+
+  min-block-size: 26px;
+  color: ds.token("text-secondary");
+  border-radius: ds.token("radius-control");
+  text-align: center;
+
+  &:hover {
+    color: ds.token("text-primary");
+  }
+}
+
+.tab-active {
+  color: ds.token("text-primary");
+  background: ds.token("bg-panel");
+  box-shadow: 0 1px 2px rgb(21 21 26 / 0.12);
+}
