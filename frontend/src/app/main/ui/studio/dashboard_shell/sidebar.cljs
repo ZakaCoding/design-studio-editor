@@ -148,6 +148,7 @@
          #(st/emit! (dcm/go-to-dashboard-deleted :team-id team-id)))]
 
     (scope/use-scope)
+    (scope/use-board-scope)
 
     [:nav {:class (stl/css :sidebar)
            :data-testid "dashboard-sidebar"

@@ -48,3 +48,14 @@
       (fn []
         (dispose)
         (remove-scope!)))))
+
+(defn use-board-scope
+  "Hook: <body> also has the class `ds-board` while the calling component
+  is mounted: the dashboard pages and the dialogs opened from them, not
+  Settings (P2 `polish.scss` lives under it)."
+  []
+  (mf/with-effect []
+    (let [classes (.-classList (.-body js/document))]
+      (.add classes "ds-board")
+      (fn []
+        (.remove classes "ds-board")))))

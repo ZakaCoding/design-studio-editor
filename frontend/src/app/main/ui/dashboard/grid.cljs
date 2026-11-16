@@ -111,6 +111,9 @@
     [:div {:class (stl/css-case :grid-item-thumbnail true
                                 :is-deleted can-restore)
            :style {:background-color bg-color}
+           ;; Design Studio seam (STUDIO-SEAMS.md): a file never edited
+           ;; (revision 0) shows the empty-sheet placeholder of the DS card.
+           :data-ds-empty (when (= 0 revn) "true")
            :ref container}
      (when visible?
        (if thumbnail-id
