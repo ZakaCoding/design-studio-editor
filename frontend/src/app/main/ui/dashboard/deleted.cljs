@@ -23,6 +23,7 @@
    [app.main.ui.ds.product.empty-placeholder :refer [empty-placeholder*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard-shell.empty :as ds-empty]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
@@ -334,6 +335,5 @@
                                           :key id}]))]
 
           ;; when no deleted projects
-          [:div {:class (stl/css :deleted-info-content)}
-           [:p {:class (stl/css :deleted-info)}
-            (tr "dashboard.deleted.empty-state-description")]])]]]]))
+          ;; Design Studio seam (STUDIO-SEAMS.md): the DS empty state.
+          [:> ds-empty/trash-empty* {:days deletion-days}])]]]]))

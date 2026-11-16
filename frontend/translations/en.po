@@ -11429,3 +11429,37 @@ msgstr "AI access"
 
 msgid "ds.settings.options-side"
 msgstr "Language and theme"
+
+# Design Studio (P2)
+msgid "ds.shell.team.switch"
+msgstr "Switch team"
+
+msgid "ds.shell.libraries.empty"
+msgstr "No shared libraries yet"
+
+msgid "ds.shell.libraries.empty-text"
+msgstr "Share a file as a library and it shows up here, ready for every file in this team."
+
+msgid "ds.shell.libraries.empty-text-viewer"
+msgstr "Libraries shared in this team show up here."
+
+msgid "ds.shell.libraries.open-templates"
+msgstr "Open templates"
+
+msgid "ds.shell.fonts.empty"
+msgstr "No custom fonts yet"
+
+msgid "ds.shell.fonts.empty-text"
+msgstr "Fonts you upload show up here and in the text options of every file in this team."
+
+msgid "ds.shell.trash.empty"
+msgstr "Trash is empty"
+
+msgid "ds.shell.trash.empty-text"
+msgstr "Deleted files and projects stay here for %s days, then they are removed for good."
+
+msgid "ds.home.templates.add-short"
+msgstr "Add to Drafts"
+
+msgid "ds.shell.files.removed"
+msgstr "Removed for good"
