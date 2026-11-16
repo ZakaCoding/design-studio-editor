@@ -69,8 +69,9 @@ $tool-size: 36px;
 .flyout {
   @include ws.island(ds.token("radius-card"));
 
+  // 10 px over the bar (the tool sits 6 px inside it).
   position: absolute;
-  inset-block-end: calc(100% + 10px);
+  inset-block-end: calc(100% + 16px);
   inset-inline-start: 50%;
   display: flex;
   gap: 2px;
@@ -90,7 +91,7 @@ $tool-size: 36px;
     position: absolute;
     inset-block-start: 100%;
     inset-inline: 0;
-    block-size: 12px;
+    block-size: 18px;
   }
 }
 
@@ -148,9 +149,39 @@ $tool-size: 36px;
     color: ds.token("text-primary");
   }
 
-  // The menu opens over the bar instead of under the header.
+  // The menu opens over the bar instead of under the header, 10 px over
+  // it like the tools' flyouts.
   #{ws.on("main_ui_workspace_right_header__dropdown")} {
-    inset-block: auto calc(100% + 10px);
+    inset-block: auto calc(100% + 16px);
     inset-inline: auto 0;
+  }
+}
+
+// Craft docked in a window under 1320 px leaves the canvas area narrower
+// than the bar and its margins: the bar gets compact (32 px tools, no
+// gaps) so it keeps a gap to Layers and to Craft.
+@media (width < 1320px) {
+  :global(html[data-ds-craft-open="dock"]) {
+    .toolbar,
+    .tools {
+      gap: 0;
+    }
+
+    .toolbar {
+      padding-inline: 3px;
+    }
+
+    .tool {
+      inline-size: 32px;
+      block-size: 32px;
+    }
+
+    .divider {
+      margin-inline-start: 4px;
+    }
+
+    .zoom {
+      padding-inline: 6px 2px;
+    }
   }
 }

@@ -85,9 +85,10 @@
 ;; --- Quick prompt
 
 (def prompt-size
-  "Box of the quick prompt in px (board F1 · 06): the 40 px prompt and the
-  key hint under it."
-  {:width 336 :height 64 :gap 6 :margin 12})
+  "Box of the quick prompt in px (board F1 · 06): the 40 px prompt row and
+  the key footer of the same card. `:gap` keeps Penpot's size label under
+  the selection (about 24 px tall) in view."
+  {:width 336 :height 66 :gap 28 :margin 12})
 
 (def prompt-max
   "Longest quick prompt, in characters."
@@ -127,19 +128,20 @@
   "Box of the \"Change with Craft\" chip at the selection in px (board
   F1 · 06, step 1). The width is the Indonesian chip's; it only keeps the
   chip inside the canvas."
-  {:width 236 :height 32 :gap 8 :margin 12})
+  {:width 236 :height 32 :gap 8 :below 28 :margin 12})
 
 (defn chip-anchor
   "Top-left corner (px) of the chip for a selection whose box is `rect` in
   a canvas area of `view` ({:width :height}), both in the same px. Over
   the selection, from its left edge, `lift` px higher when something is
-  drawn there (a board's name); under the selection when there is no room
-  above. Nil when the selection is not in view at all."
+  drawn there (a board's name); under the selection, clear of Penpot's
+  size label, when there is no room above. Nil when the selection is not
+  in view at all."
   [rect view lift]
-  (let [{w :width h :height gap :gap margin :margin} chip-size
+  (let [{w :width h :height gap :gap under :below margin :margin} chip-size
         clamp (fn [v lo hi] (max lo (min v (max lo hi))))
         above (- (:y rect) gap lift h)
-        below (+ (:y rect) (:height rect) gap)
+        below (+ (:y rect) (:height rect) under)
         top   (if (>= above margin) above below)]
     (when (and (< (:x rect) (:width view))
                (> (+ (:x rect) (:width rect)) 0)

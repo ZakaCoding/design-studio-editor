@@ -68,7 +68,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/settings/profile.cljs` | WP4: open sign-up shows an email note instead of change-email (S6) | - | WP4 |
 | `frontend/src/app/main/ui/settings/sidebar.cljs` | WP4: "Backup password" and "Plans" sidebar labels (S5, S7); G1 (F1 · 10 chrome): `sidebar*` calls `studio.dashboard-shell.scope/use-scope` (the light chrome while Settings is open), the back link reads "Beranda" and the sidebar gets its title "Pengaturan" (one require, one call, one element, one key) | - | WP4, G1 |
 | `frontend/src/app/main/ui/settings/subscription.cljs` | WP4: Settings > Plans renders the Design Studio plan summary (S7) | - | WP4 |
-| `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8) | - | WP4 |
+| `frontend/src/app/main/ui/workspace/main_menu.cljs` | WP4: power-up entry opens Design Studio Plans (S8); P1: that entry gets the menu's item class (`base-menu-item`, same padding as its neighbours) and a separator before it | - | WP4, P1 |
 | `frontend/test/frontend_tests/runner.cljs` | F3-C: registers `frontend-tests.studio.token-suggestions-test`; WP4: registers `frontend-tests.studio.shell-state-test`; WP3: registers `frontend-tests.plugins.persistence-guard-test` (two lines); Registers the `frontend-tests.studio.*` test namespaces | - | WP4, WP3, WP6 |
 | `frontend/src/app/main/ui/workspace/viewport.cljs` | WP7: requires `ui/studio/touch.js` and starts the touch layer once from `viewport*` | - | F2 |
 | `frontend/src/app/plugins/persistence_guard.cljs` | WP3 (R1, R2): new file, `app.plugins.persistence-guard`. The whole guard: refuses MCP writes while saving is `:error`, `:retrying`, failing or stalled, and confirms the save of an MCP task. Lives beside `register.cljs` instead of `ui/studio/**` because it is plugin API logic that is proposed upstream | Proposed upstream, text in `docs/upstream-pr-persistence-guard.md` (owner sends it after F2 is live) | WP3 |
@@ -120,6 +120,8 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/viewer/header.cljs` | G5 (F1 · 11): text mode buttons (Lihat, Inspect, Komentar) instead of icons, file name and frame counter in the left island | - | G5 |
 | `frontend/src/app/main/ui/viewer/inspect.cljs` | G5 (F1 · 11): no layer list and no pagination in Inspect; the panel floats over the canvas | - | G5 |
 | `frontend/src/app/main/ui/inspect/right_sidebar.cljs` | G5 (F1 · 11): in the viewer a selected layer renders `studio.viewer.inspect/viewer-inspect*` (inside a guard) instead of the tab switcher; the workspace Inspect and the empty state are unchanged | - | G5 |
+| `frontend/src/app/util/i18n.cljs` | P1 (owner, 16 Nov): the default UI language is English. `autodetect` returns `cf/default-language` instead of the browser language, so a new member is never switched to Indonesian by the browser; a language saved in the profile still wins (`set-locale`). The unused `browser-locales` is removed | - | P1 |
+| `frontend/src/app/main/ui/workspace/sidebar/layers.cljs` | P1 (F1 · 01): the bar over the layer tree says "Layers" (`workspace.sidebar.layers`) instead of the page name, so it reads as the section header next to "Pages"; `use-search` keeps its `page` argument as `_page` | - | P1 |
 <!-- seams:end -->
 
 ## Mount points (F3)

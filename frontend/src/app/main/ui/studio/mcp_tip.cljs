@@ -5,14 +5,17 @@
 ;; Copyright (c) ZakaCoding
 
 (ns app.main.ui.studio.mcp-tip
-  "Workspace MCP onboarding tip: a card at the bottom of the canvas that
-  invites the member to connect their AI assistant and starts the
-  interactive guide. It sits at the bottom right of the canvas, left of the
-  design panel; while Craft is open it sits at the bottom left of the
-  canvas, so it never covers Craft or the design panel (owner, 16 Nov).
-  When it shows is decided by `app.main.ui.studio.mcp-cadence/decide`."
+  "Workspace MCP onboarding tip: a compact card at the bottom of the canvas
+  that invites the member to connect their AI assistant and starts the
+  interactive guide. It sits at the bottom right of the canvas, in line
+  with the Craft pill; while Craft is open it sits at the bottom left of
+  the canvas (owner, 16 Nov). Always above the row of the floating toolbar,
+  and on the other side when the selection is under it. When it shows is
+  decided by `app.main.ui.studio.mcp-cadence/decide`."
   (:require-macros [app.main.style :as stl])
   (:require
+   [app.main.ui.studio.craft.quick-prompt :as qp]
+   [app.main.ui.studio.ds :as sds]
    [app.main.ui.studio.mcp-cadence :as cadence]
    [app.main.ui.studio.mcp-tour :as tour]
    [app.main.ui.studio.shell-client :as shell]
@@ -38,63 +41,62 @@
      :dismissed  (field session "dismissed")
      :last-shown (field session "lastShown")}))
 
-(defn- right-offset
-  "Keep the tip on the canvas, left of the right-hand design panel."
-  []
-  (let [panel (.querySelector js/document "[data-testid=\"right-sidebar\"]")
-        width (some-> panel (.getBoundingClientRect) (.-width))
-        width (if (and (number? width) (< width (/ (.-innerWidth js/window) 2))) width 0)]
-    (str (+ width 16) "px")))
+(def ^:private card-width 300)
+
+(def ^:private gap
+  "Gap between the tip and the edges of the canvas area."
+  12)
+
+(def ^:private lift
+  "Distance from the bottom of the window to the tip: the 20 px under the
+  floating toolbar and the Craft pill, their 48 px and a 12 px gap, so the
+  tip never touches that row."
+  80)
+
+(defn- overlaps?
+  [a b]
+  (and (< (:x a) (+ (:x b) (:width b)))
+       (< (:x b) (+ (:x a) (:width a)))
+       (< (:y a) (+ (:y b) (:height b)))
+       (< (:y b) (+ (:y a) (:height a)))))
 
 (defn- placement
   "Where the tip sits: `{:side :left | :right, :offset \"<n>px\"}`, the
-  distance from that edge of the window.
+  distance from that edge of the window. Always above the row of the
+  floating toolbar and the Craft pill, inside the canvas area (the
+  workspace shell's `viewport-overlay` mount point).
 
-  While Craft is open (`<html data-ds-craft-open>`, set by the dock) the
-  tip moves to the left edge of the canvas area, which is the workspace
-  shell's `viewport-overlay` mount point: right of Layers or its rail."
-  []
-  (let [root (.-documentElement js/document)
-        area (.getElementById js/document "ds-viewport-overlay")]
-    (if (and (.hasAttribute root "data-ds-craft-open") (some? area))
-      {:side :left
-       :offset (str (+ (js/Math.round (.-left (.getBoundingClientRect area))) 12) "px")}
-      {:side :right
-       :offset (right-offset)})))
-
-(mf/defc scene*
-  {::mf/private true}
-  []
-  [:svg {:class (stl/css :scene)
-         :view-box "0 0 280 120"
-         :aria-hidden "true"
-         :focusable "false"}
-   [:rect {:x 1 :y 1 :width 278 :height 118 :rx 14 :class (stl/css :sc-bg)}]
-   [:g
-    [:rect {:x 12 :y 20 :width 140 :height 34 :rx 12 :class (stl/css :sc-bubble)}]
-    [:circle {:cx 27 :cy 37 :r 7 :class (stl/css :sc-ai)}]
-    [:text {:x 39 :y 40.5 :class (stl/css :sc-txt)} (tr "ds.mcp-tip.scene-ai")]
-    [:g {:class (stl/css :sc-dots)}
-     [:circle {:cx 30 :cy 68 :r 3}]
-     [:circle {:cx 40 :cy 68 :r 3}]
-     [:circle {:cx 50 :cy 68 :r 3}]]]
-   [:path {:d "M152 37 C163 37 161 58 172 58" :class (stl/css :sc-wire)}]
-   [:circle {:r 3.5 :class (stl/css :sc-pulse)}
-    [:animateMotion {:dur "2.4s"
-                     :repeatCount "indefinite"
-                     :path "M152 37 C163 37 161 58 172 58"}]]
-   [:rect {:x 118 :y 76 :width 38 :height 18 :rx 9 :class (stl/css :sc-chip)}]
-   [:text {:x 137 :y 88.5 :text-anchor "middle" :class (stl/css :sc-chiptxt)} "MCP"]
-   [:g
-    [:rect {:x 172 :y 14 :width 96 :height 92 :rx 8 :class (stl/css :sc-board)}]
-    [:text {:x 180 :y 28 :class (stl/css :sc-cap)} (tr "ds.mcp-tip.scene-canvas")]
-    [:rect {:x 180 :y 36 :width 80 :height 30 :rx 4 :class (stl/css :sc-frame)}]
-    [:rect {:x 180 :y 72 :width 50 :height 7 :rx 3.5 :class (stl/css :sc-line :sc-line-1)}]
-    [:rect {:x 180 :y 84 :width 34 :height 7 :rx 3.5 :class (stl/css :sc-line :sc-line-2)}]
-    [:g {:class (stl/css :sc-cursor)}
-     [:path {:d "M0 0l10 4-4.4 1.6L3.6 10z"}]
-     [:rect {:x 9 :y 9 :width 18 :height 11 :rx 5.5}]
-     [:text {:x 18 :y 17.5 :text-anchor "middle"} "AI"]]]])
+  While Craft is open (`<html data-ds-craft-open>`, set by the dock) it
+  sits at the left edge of the canvas area, right of Layers or its rail;
+  else at the right edge, in line with the Craft pill. When the selection
+  is under that place and the other side is free, it takes the other
+  side. `height` is the tip's own height in px."
+  [height]
+  (let [root   (.-documentElement js/document)
+        area   (some-> (.getElementById js/document "ds-viewport-overlay")
+                       (.getBoundingClientRect))
+        pill   (some-> (.querySelector js/document "#ds-viewport-overlay [data-testid=\"ds-craft-toggle\"], #ds-craft-dock [data-testid=\"ds-craft-toggle\"]")
+                       (.getBoundingClientRect))
+        vw     (.-innerWidth js/window)
+        vh     (.-innerHeight js/window)
+        left   (if (some? area) (+ (.-left area) gap) 16)
+        right  (cond
+                 (and (some? pill) (pos? (.-width pill))) (- vw (.-right pill))
+                 (some? area) (+ (- vw (.-right area)) gap)
+                 :else 16)
+        card   (fn [side]
+                 {:x (if (= side :left) left (- vw right card-width))
+                  :y (- vh lift height)
+                  :width card-width
+                  :height height})
+        under  (:rect (qp/selection))
+        free?  (fn [side]
+                 (or (nil? under) (not (overlaps? (card side) under))))
+        prefer (if (and (.hasAttribute root "data-ds-craft-open") (some? area)) :left :right)
+        other  (if (= prefer :left) :right :left)
+        side   (if (and (not (free? prefer)) (free? other)) other prefer)]
+    {:side side
+     :offset (str (js/Math.round (if (= side :left) left right)) "px")}))
 
 (mf/defc mcp-tip*
   []
@@ -105,7 +107,8 @@
         phase        (deref phase*)
         place*       (mf/use-state {:side :right :offset "16px"})
         place        (deref place*)
-        hidden-tab*  (mf/use-state (boolean (.-hidden js/document)))
+        card-ref     (mf/use-ref nil)
+        hidden-tab* (mf/use-state (boolean (.-hidden js/document)))
 
         still?       (mf/with-memo [] (shell/reduced-motion?))
 
@@ -134,6 +137,15 @@
         hold
         (mf/use-fn #(clear! hide-timer))
 
+        ;; Before the first render the tip has no height yet: 150 px is
+        ;; about what it measures.
+        place!
+        (mf/use-fn
+         (fn []
+           (let [node   (mf/ref-val card-ref)
+                 height (if (some? node) (.-offsetHeight node) 0)]
+             (reset! place* (placement (if (pos? height) height 150))))))
+
         show
         (mf/use-fn
          (fn []
@@ -141,7 +153,7 @@
              (shell/store-merge! :session "toast" #js {:lastShown (js/Date.now)})
              (shell/store-merge! :local "toast" #js {:lastDay (shell/today)})
              (mf/set-ref-val! showing true)
-             (reset! place* (placement))
+             (place!)
              (reset! phase* :out)
              ;; One frame later, so the card animates in.
              (js/requestAnimationFrame
@@ -238,7 +250,7 @@
 
     (mf/with-effect []
       (mf/set-ref-val! alive true)
-      (let [on-resize     #(reset! place* (placement))
+      (let [on-resize     #(place!)
             on-visibility #(reset! hidden-tab* (boolean (.-hidden js/document)))]
         (.addEventListener js/window "resize" on-resize)
         (.addEventListener js/document "visibilitychange" on-visibility)
@@ -255,7 +267,7 @@
     ;; nothing.
     (mf/with-effect [(some? phase)]
       (when (some? phase)
-        (let [timer (js/setInterval #(reset! place* (placement)) 400)]
+        (let [timer (js/setInterval #(place!) 400)]
           #(js/clearInterval timer))))
 
     (when (some? phase)
@@ -266,6 +278,7 @@
                                     :toast-left (= (:side place) :left)
                                     :still still?
                                     :paused (deref hidden-tab*))
+               :ref card-ref
                :style {"--ds-offset" (:offset place)}
                :data-side (name (:side place))
                :role "region"
@@ -275,28 +288,29 @@
                :on-pointer-leave release
                :on-focus hold
                :on-blur release}
-       [:button {:type "button"
-                 :class (stl/css :scene-button)
-                 :aria-label (tr "ds.mcp-tip.cta")
-                 :on-click on-guide}
-        [:> scene*]]
-       [:div {:class (stl/css :body)}
+       [:div {:class (stl/css :head)}
+        ;; The MCP plug, the mark of the MCP pill's menu.
+        [:span {:class (stl/css :mark)
+                :aria-hidden "true"}
+         [:svg {:view-box "0 0 16 16" :focusable "false"}
+          [:path {:d "M6 1.75v3M10 1.75v3M4.25 4.75h7.5v2.5a3.75 3.75 0 0 1-7.5 0zM8 11v3.25"}]]]
         [:p {:class (stl/css :title)}
          (tr "ds.mcp-tip.title")]
-        [:p {:class (stl/css :text)}
-         (tr "ds.mcp-tip.body")]
-        [:div {:class (stl/css :actions)}
-         [:button {:type "button"
-                   :class (stl/css :global/ds-t-cta :cta)
-                   :on-click on-guide}
-          (tr "ds.mcp-tip.cta")]
-         [:button {:type "button"
-                   :class (stl/css :global/ds-t-never :later)
-                   :on-click on-later}
-          (tr "ds.mcp-tip.later")]]]
-       [:button {:type "button"
-                 :class (stl/css :global/ds-t-close :close)
-                 :aria-label (tr "ds.mcp-tip.close")
-                 :on-click on-close}
-        [:svg {:view-box "0 0 16 16" :aria-hidden "true" :focusable "false"}
-         [:path {:d "M4 4l8 8M12 4l-8 8"}]]]])))
+        [:button {:type "button"
+                  :class (stl/css :global/ds-t-close :close)
+                  :aria-label (tr "ds.mcp-tip.close")
+                  :title (tr "ds.mcp-tip.close")
+                  :on-click on-close}
+         [:svg {:view-box "0 0 16 16" :aria-hidden "true" :focusable "false"}
+          [:path {:d "M4.5 4.5l7 7M11.5 4.5l-7 7"}]]]]
+       [:p {:class (stl/css :text)}
+        (tr "ds.mcp-tip.body")]
+       [:div {:class (stl/css :actions)}
+        [:> sds/button* {:class (stl/css :global/ds-t-cta :cta)
+                         :size "sm"
+                         :on-click on-guide}
+         (tr "ds.mcp-tip.cta")]
+        [:button {:type "button"
+                  :class (stl/css :global/ds-t-never :later)
+                  :on-click on-later}
+         (tr "ds.mcp-tip.later")]]])))

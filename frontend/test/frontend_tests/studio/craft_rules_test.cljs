@@ -96,18 +96,18 @@
 (t/deftest quick-prompt-placement
   (let [view {:width 1440 :height 900}]
     (t/testing "under the selection, from its left edge"
-      (t/is (= {:left 500 :top 406}
+      (t/is (= {:left 500 :top 428}
                (rules/anchor {:x 500 :y 200 :width 200 :height 200} view))))
     (t/testing "above it when there is no room below"
-      (t/is (= {:left 500 :top 530}
+      (t/is (= {:left 500 :top 506}
                (rules/anchor {:x 500 :y 600 :width 200 :height 280} view))))
     (t/testing "inside the window when the selection fills it"
-      (t/is (= {:left 12 :top 824}
+      (t/is (= {:left 12 :top 822}
                (rules/anchor {:x 0 :y 0 :width 1440 :height 900} view))))
     (t/testing "never past the window's edges"
-      (t/is (= {:left 12 :top 106}
+      (t/is (= {:left 12 :top 128}
                (rules/anchor {:x -400 :y 0 :width 100 :height 100} view)))
-      (t/is (= {:left 1092 :top 106}
+      (t/is (= {:left 1092 :top 128}
                (rules/anchor {:x 1500 :y 0 :width 100 :height 100} view)))
       (t/is (= {:left 12 :top 12}
                (rules/anchor {:x 0 :y -500 :width 100 :height 100} view))))
@@ -124,7 +124,7 @@
       (t/is (= {:left 300 :top 140}
                (rules/chip-anchor {:x 300 :y 200 :width 200 :height 100} view 20))))
     (t/testing "under the selection when there is no room above"
-      (t/is (= {:left 300 :top 128}
+      (t/is (= {:left 300 :top 148}
                (rules/chip-anchor {:x 300 :y 20 :width 200 :height 100} view 0))))
     (t/testing "inside the canvas area"
       (t/is (= {:left 752 :top 160}

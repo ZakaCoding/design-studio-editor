@@ -67,25 +67,17 @@
       (str/includes? locale "_")
       (conj (subs locale 0 2)))))
 
-(def ^:private browser-locales
-  (delay
-    (-> (.-language globals/navigator)
-        (parse-locale))))
-
 ;; Set initial translation loading state as globaly stored variable;
 ;; this facilitates hot reloading
 (when-not (exists? (unchecked-get globals/global "penpotTranslations"))
   (unchecked-set globals/global "penpotTranslations" #js {}))
 
 (defn- autodetect
+  "Design Studio: the default language is English for everyone who has
+  not chosen one (owner, 16 Nov); the browser language no longer picks it.
+  A language saved in the profile still wins (`set-locale`)."
   []
-  (let [supported (into #{} (map :value supported-locales))]
-    (loop [locales (seq @browser-locales)]
-      (if-let [locale (first locales)]
-        (if (contains? supported locale)
-          locale
-          (recur (rest locales)))
-        cf/default-language))))
+  cf/default-language)
 
 (defn get-current
   "Get the currently memoized locale or execute the autodetection"

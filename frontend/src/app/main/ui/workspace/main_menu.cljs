@@ -1128,9 +1128,11 @@
                      (not= "enterprise" subscription-type))
                 (contains? cf/flags :admin-console))
         [:> guard* {}
-         [:> plans-menu-item* {:class (stl/css :menu-item)
-                               :name-class (stl/css :item-name)
-                               :on-pointer-enter close-sub-menu}]])]
+         [:*
+          [:div {:class (stl/css :separator)}]
+          [:> plans-menu-item* {:class (stl/css :base-menu-item :menu-item)
+                                :name-class (stl/css :item-name)
+                                :on-pointer-enter close-sub-menu}]]])]
 
      (case selected-sub-menu
        :file

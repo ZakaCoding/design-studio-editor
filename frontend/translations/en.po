@@ -10525,7 +10525,7 @@ msgid "ds.mcp-tip.title"
 msgstr "Have you tried MCP?"
 
 msgid "ds.mcp-tip.body"
-msgstr "Connect your AI assistant (Claude, Codex) to this file in two steps: turn on AI access in the editor with one click, then paste the address in your assistant."
+msgstr "Let Claude or Codex work on this file with you. Setup takes two steps."
 
 msgid "ds.mcp-tip.cta"
 msgstr "Show me how"
@@ -10538,12 +10538,6 @@ msgstr "Remind me tomorrow"
 
 msgid "ds.mcp-tip.label"
 msgstr "Design Studio tip"
-
-msgid "ds.mcp-tip.scene-ai"
-msgstr "Make a hero section"
-
-msgid "ds.mcp-tip.scene-canvas"
-msgstr "Your canvas"
 
 msgid "ds.mcp-tour.step"
 msgstr "Step %s of 2"
