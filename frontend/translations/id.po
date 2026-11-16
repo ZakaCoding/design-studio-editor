@@ -8174,3 +8174,6 @@ msgstr "File dan proyek yang dihapus disimpan di sini selama %s hari, lalu dihap
 
 msgid "ds.home.templates.add-short"
 msgstr "Tambah ke Draf"
+
+msgid "ds.shell.files.removed"
+msgstr "Dihapus permanen"

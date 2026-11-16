@@ -22,7 +22,9 @@
     (.add classes "light")
     (.add classes "ds-dash")
     ;; Read by `chrome.scss`: the file cards say "Edited 2 hours ago".
-    (.setProperty (.-style body) "--ds-dash-edited" (js/JSON.stringify (str (tr "ds.shell.files.edited") " ")))))
+    (.setProperty (.-style body) "--ds-dash-edited" (js/JSON.stringify (str (tr "ds.shell.files.edited") " ")))
+    ;; In Trash the date is when the file goes for good ("in 7 days").
+    (.setProperty (.-style body) "--ds-dash-removed" (js/JSON.stringify (str (tr "ds.shell.files.removed") " ")))))
 
 (defn- remove-scope!
   "Gives <body> back to the theme of the profile."
@@ -33,6 +35,7 @@
                                      (theme/get-system-theme))]
     (.remove classes "ds-dash")
     (.removeProperty (.-style body) "--ds-dash-edited")
+    (.removeProperty (.-style body) "--ds-dash-removed")
     (when (= theme "dark")
       (.remove classes "light")
       (.add classes "default"))))

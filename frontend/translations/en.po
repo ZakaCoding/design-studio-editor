@@ -11460,3 +11460,6 @@ msgstr "Deleted files and projects stay here for %s days, then they are removed 
 
 msgid "ds.home.templates.add-short"
 msgstr "Add to Drafts"
+
+msgid "ds.shell.files.removed"
+msgstr "Removed for good"

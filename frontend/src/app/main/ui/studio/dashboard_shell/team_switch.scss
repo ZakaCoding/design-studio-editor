@@ -88,6 +88,7 @@
   box-shadow: ds.token("elevation-popover");
 }
 
+// Small mono caps, as "PROJECTS" in the sidebar.
 .label {
   @include ds.type("label");
   @include ds.truncate;

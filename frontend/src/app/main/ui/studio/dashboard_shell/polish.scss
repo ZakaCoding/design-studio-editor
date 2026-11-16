@@ -118,6 +118,13 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 }
 
+// The team menu's "TEAMS" label is upstream's: the mono caps of the
+// other labels of the menu and the sidebar.
+#{$scope} [data-testid="ds-team-menu"] #{ws.on("main_ui_dashboard_sidebar__organization-section-label")} {
+  font-family: ds.token("font-mono");
+  letter-spacing: 0.06em;
+}
+
 // --- 2. Page headers
 
 #{$scope} #{$content} {
@@ -168,14 +175,18 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
     > nav {
       grid-area: tabs;
-      display: block;
+      display: flex;
+      justify-content: flex-start;
+      inline-size: 100%;
       border-block-end: 1px solid ds.token("border-default");
       margin-block-end: ds.token("space-24");
     }
 
     #{-any("dashboard-header-options")} {
       display: flex;
+      justify-content: flex-start;
       gap: 40px;
+      inline-size: auto;
       margin: 0;
       padding: 0;
 
@@ -218,19 +229,25 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   // Upstream DS buttons in page headers and toolbars ("Invite people",
   // "Restore all", "Clear trash"): DS pills, sentence case.
-  :is(#{-any("dashboard-buttons")}, #{-any("deleted-options")}) [class*="main_ui_ds_buttons_button__"] {
+  :is(#{-any("dashboard-buttons")}, #{-any("deleted-options")})
+    #{ws.on("main_ui_ds_buttons_button__button")} {
     @include -soft-pill;
   }
 
-  :is(#{-any("dashboard-buttons")}) [class*="main_ui_ds_buttons_button__primary"],
-  :is(#{-any("dashboard-buttons")}) [class*="main_ui_ds_buttons_button__secondary"] {
+  #{-any("dashboard-buttons")}
+    #{ws.on("main_ui_ds_buttons_button__button-primary", "main_ui_ds_buttons_button__button-secondary")} {
     @include -black-pill;
   }
 
-  #{-any("deleted-options")} [class*="main_ui_ds_buttons_button__destructive"] {
+  #{-any("deleted-options")} #{ws.on("main_ui_ds_buttons_button__button-ghost")} {
+    background: ds.token("bg-panel");
+  }
+
+  #{-any("deleted-options")} #{ws.on("main_ui_ds_buttons_button__button-destructive")} {
     @include -danger-pill;
 
     svg {
+      color: inherit;
       stroke: currentcolor;
     }
   }
@@ -242,6 +259,12 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     border-radius: ds.token("radius-control");
     background: ds.token("bg-subtle");
   }
+}
+
+// The project page: the hidden import form was the last item of the
+// actions and pushed "+ File" 12 px off the right edge.
+#{$scope} [data-ds-dash="header"] form[class*="import-file"] {
+  position: absolute;
 }
 
 // --- 3. File cards
@@ -326,6 +349,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       }
 
       svg {
+        color: inherit;
         stroke: currentcolor;
       }
     }
@@ -341,6 +365,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // projects list): the card is as wide as on the home.
   [data-ds-dash="files"] #{ws.on("main_ui_dashboard_grid__dashboard-grid")},
   #{ws.on("main_ui_dashboard_projects__grid-container")} #{ws.on("main_ui_dashboard_grid__dashboard-grid")},
+  [data-testid="deleted-page-section"] #{ws.on("main_ui_dashboard_grid__dashboard-grid")},
   #{-any("search")} #{ws.on("main_ui_dashboard_grid__dashboard-grid")} {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -362,6 +387,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     min-block-size: 0;
     block-size: 100%;
   }
+}
+
+// Trash: the date of a card is when it goes for good, not an edit.
+#{$scope} [data-testid="deleted-page-section"] #{ws.on("main_ui_dashboard_grid__grid-item-date")}::before {
+  content: var(--ds-dash-removed, "");
 }
 
 // The home's "Recent files": always one row of four.
@@ -386,26 +416,30 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     padding-block-end: ds.token("space-32");
   }
 
-  #{ws.on("main_ui_dashboard_projects__dashboard-project-row")} {
+  :is(
+    #{ws.on("main_ui_dashboard_projects__dashboard-project-row", "main_ui_dashboard_deleted__dashboard-project-row")}
+  ) {
     margin: 0 0 40px;
     padding: 0;
   }
 
   // A project's heading: name, files and time, actions on the right.
-  #{ws.on("main_ui_dashboard_projects__project")} {
+  :is(#{ws.on("main_ui_dashboard_projects__project", "main_ui_dashboard_deleted__project")}) {
     inline-size: 100%;
     min-block-size: 32px;
     margin: 0 0 ds.token("space-16");
     padding: 0;
   }
 
-  #{ws.on("main_ui_dashboard_projects__project-name-wrapper")} {
+  :is(
+    #{ws.on("main_ui_dashboard_projects__project-name-wrapper", "main_ui_dashboard_deleted__project-name-wrapper")}
+  ) {
     gap: ds.token("space-12");
     margin: 0;
     min-inline-size: 0;
   }
 
-  #{ws.on("main_ui_dashboard_projects__project-name")} {
+  :is(#{ws.on("main_ui_dashboard_projects__project-name", "main_ui_dashboard_deleted__project-name")}) {
     flex: none;
     max-inline-size: 50% !important;
     block-size: auto;
@@ -422,7 +456,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
   }
 
-  #{ws.on("main_ui_dashboard_projects__info-wrapper")} {
+  :is(#{ws.on("main_ui_dashboard_projects__info-wrapper", "main_ui_dashboard_deleted__info-wrapper")}) {
     flex: 1 1 auto;
     min-inline-size: 0;
     justify-content: space-between;
@@ -438,7 +472,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   // Pin, "+" and "⋯" stay visible (they were hidden until hover).
-  #{ws.on("main_ui_dashboard_projects__project-actions")} {
+  :is(#{ws.on("main_ui_dashboard_projects__project-actions", "main_ui_dashboard_deleted__project-actions")}) {
     --actions-opacity: 1;
 
     gap: ds.token("space-4");
@@ -458,6 +492,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       }
 
       svg {
+        color: inherit;
         stroke: currentcolor;
       }
     }
@@ -478,6 +513,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
 
     svg {
+      color: inherit;
       stroke: currentcolor;
     }
   }
@@ -507,7 +543,20 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 // --- 6. Team pages
 
 #{$scope} #{$content} {
-  #{ws.on("main_ui_dashboard_team__dashboard-table")} {
+  #{ws.on("main_ui_dashboard_team__dashboard-team-members")},
+  #{ws.on("main_ui_dashboard_team__dashboard-team-invitations")} {
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  #{ws.on("main_ui_dashboard_team__dashboard-table")},
+  #{ws.on("main_ui_dashboard_team__team-members")},
+  #{ws.on("main_ui_dashboard_team__invitations")},
+  #{ws.on("main_ui_dashboard_team__empty-invitations")},
+  #{ws.on("main_ui_dashboard_team__table-header")},
+  #{ws.on("main_ui_dashboard_team__table-rows")} {
+    inline-size: 100%;
+    max-inline-size: none;
     font-family: ds.token("font-text");
   }
 
@@ -620,7 +669,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       color: ds.token("text-primary");
     }
 
-    [class*="main_ui_ds_buttons_button__"] {
+    #{ws.on("main_ui_ds_buttons_button__button")} {
       @include -black-pill;
 
       margin-block-start: ds.token("space-8");
@@ -639,11 +688,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 #{$scope} #{$content} {
   #{ws.on("main_ui_dashboard_fonts__dashboard-fonts-hero")} {
     max-inline-size: 640px;
-    margin: 0 0 ds.token("space-32");
+    margin: 0 0 ds.token("space-24");
     padding: 0;
 
     h2 {
-      margin: 0 0 ds.token("space-8");
+      margin: 0;
       font-size: ds.token("size-16");
       font-weight: ds.token("weight-semibold");
       line-height: 1.3;
@@ -652,6 +701,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
     p,
     span {
+      margin: 0;
       font-size: ds.token("size-13");
       line-height: 1.5;
       color: ds.token("text-secondary");
@@ -662,7 +712,13 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
       inline-size: auto;
       align-self: flex-start;
-      margin-block-start: ds.token("space-16");
+      margin-block-start: ds.token("space-8");
+
+      span {
+        color: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+      }
     }
   }
 
@@ -670,6 +726,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: ds.token("space-8");
     inline-size: 100%;
   }
 
@@ -830,18 +887,19 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   // Cancel: quiet pill; accept: black pill; a destructive accept: red.
-  #{-any("modal-container")} :is(#{-any("cancel-button")}, #{-any("cancel-btn")}) {
+  #{-any("modal-container")} :is(#{-any("cancel-button")}, #{-any("cancel-btn")}),
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-secondary")} {
     @include -soft-pill;
   }
 
   #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")}, #{-any("primary-button")}),
-  #{-any("modal-container")} [class*="main_ui_ds_buttons_button__primary"],
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-primary")},
   #{ws.on("main_ui_dashboard_team__modal-team-container")} :is(button[type="submit"], input[type="submit"]) {
     @include -black-pill;
   }
 
   #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")})#{-any("danger")},
-  #{-any("modal-container")} [class*="main_ui_ds_buttons_button__destructive"] {
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-destructive")} {
     @include -danger-pill;
   }
 }
