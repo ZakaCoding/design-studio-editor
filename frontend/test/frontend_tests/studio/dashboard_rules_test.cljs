@@ -150,7 +150,15 @@
   (t/is (= [{:template :a :tone "pink"} {:template :b :tone "sky"}]
            (rules/template-tiles [:a :b])))
   (t/is (= ["pink" "sky" "mint" "yellow" "lilac" "peach"]
-           (mapv :tone (rules/template-tiles (range 9))))))
+           (mapv :tone (rules/template-tiles (range 9)))))
+  (t/is (= [{:id "a"}]
+           (mapv :template (rules/template-tiles [{:id "welcome"} {:id "a"} {:id "tutorial-for-beginners"}])))))
+
+(t/deftest template-names
+  (t/is (= "Pencil Design System" (rules/template-name "Penpot Design System | Pencil")))
+  (t/is (= "Lucide Icons" (rules/template-name " Lucide Icons ")))
+  (t/is (= "B A" (rules/template-name "A|B")))
+  (t/is (= "" (rules/template-name nil))))
 
 (t/deftest craft-card-price
   (t/is (= "US$5.49" (rules/price-label {:currency "USD" :monthly {:priceUsdCents 549 :credits 1000}})))

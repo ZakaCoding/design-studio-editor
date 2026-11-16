@@ -24,6 +24,7 @@
    [app.main.ui.ds.product.empty-placeholder :refer [empty-placeholder*]]
    [app.main.ui.icons :as deprecated-icon]
    [app.main.ui.notifications.context-notification :refer [context-notification]]
+   [app.main.ui.studio.dashboard-shell.empty :as ds-empty]
    [app.util.dom :as dom]
    [app.util.http :as http]
    [app.util.i18n :as i18n :refer [tr]]
@@ -490,9 +491,8 @@
 
        :else
        (if ^boolean can-edit
-         [:div {:class (stl/css :fonts-placeholder)}
-          [:div {:class (stl/css :icon)} deprecated-icon/text]
-          [:div {:class (stl/css :label)} (tr "dashboard.fonts.empty-placeholder")]]
+         ;; Design Studio seam (STUDIO-SEAMS.md): the DS empty state.
+         [:> ds-empty/fonts-empty*]
 
          [:> empty-placeholder*
           {:title (tr "dashboard.fonts.empty-placeholder-viewer")

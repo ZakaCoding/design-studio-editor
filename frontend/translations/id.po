@@ -8143,3 +8143,34 @@ msgstr "Akses AI"
 
 msgid "ds.settings.options-side"
 msgstr "Bahasa dan tampilan"
+
+# Design Studio (P2)
+msgid "ds.shell.team.switch"
+msgstr "Ganti tim"
+
+msgid "ds.shell.libraries.empty"
+msgstr "Belum ada library bersama"
+
+msgid "ds.shell.libraries.empty-text"
+msgstr "Bagikan file sebagai library, lalu file itu muncul di sini dan siap dipakai semua file tim ini."
+
+msgid "ds.shell.libraries.empty-text-viewer"
+msgstr "Library yang dibagikan di tim ini muncul di sini."
+
+msgid "ds.shell.libraries.open-templates"
+msgstr "Buka template"
+
+msgid "ds.shell.fonts.empty"
+msgstr "Belum ada font khusus"
+
+msgid "ds.shell.fonts.empty-text"
+msgstr "Font yang kamu unggah muncul di sini dan di opsi teks setiap file tim ini."
+
+msgid "ds.shell.trash.empty"
+msgstr "Sampah kosong"
+
+msgid "ds.shell.trash.empty-text"
+msgstr "File dan proyek yang dihapus disimpan di sini selama %s hari, lalu dihapus permanen."
+
+msgid "ds.home.templates.add-short"
+msgstr "Tambah ke Draf"

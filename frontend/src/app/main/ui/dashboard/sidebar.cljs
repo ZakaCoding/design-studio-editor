@@ -398,8 +398,9 @@
         [:span {:class (stl/css :icon-wrapper)} arrow-up-right-icon]
         [:span {:class (stl/css :team-text)} (tr "dashboard.go-to-admin-console")]])]))
 
+;; Design Studio seam (STUDIO-SEAMS.md): public, the Design Studio team
+;; switcher (`studio.dashboard-shell.team-switch`) shows it in its menu.
 (mf/defc teams-selector-dropdown*
-  {::mf/private true}
   [{:keys [team profile teams] :rest props}]
   (let [default-team-id (or (->> teams
                                  vals
@@ -470,8 +471,9 @@
       [:span {:class (stl/css :icon-wrapper)} add-icon]
       [:span {:class (stl/css :team-text)} (tr "dashboard.create-new-team")]]]))
 
+;; Design Studio seam (STUDIO-SEAMS.md): public, the Design Studio team
+;; switcher (`studio.dashboard-shell.team-switch`) shows it in its menu.
 (mf/defc team-options-dropdown*
-  {::mf/private true}
   [{:keys [team profile] :rest props}]
   (let [go-members     #(st/emit! (dcm/go-to-dashboard-members))
         go-invitations #(st/emit! (dcm/go-to-dashboard-invitations))

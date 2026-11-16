@@ -22,6 +22,8 @@
    [app.main.ui.dashboard.sidebar :as upstream]
    [app.main.ui.studio.dashboard-shell.rules :as rules]
    [app.main.ui.studio.dashboard-shell.scope :as scope]
+   [app.main.ui.studio.dashboard-shell.team-switch :refer [team-switch*]]
+   [app.main.ui.studio.dashboard.icons :as icons]
    [app.main.ui.studio.ds :as sds]
    [app.main.ui.studio.guard :refer [guard*]]
    [app.main.ui.studio.shell-state :as shell-state]
@@ -48,7 +50,7 @@
 
 (mf/defc nav-item*
   {::mf/private true}
-  [{:keys [label is-current on-click test-id]}]
+  [{:keys [label icon is-current on-click test-id]}]
   [:li {:class (stl/css :nav-row)}
    [:button {:type "button"
              :class (stl/css-case :nav-item true
@@ -56,7 +58,7 @@
              :aria-current (when ^boolean is-current "page")
              :on-click on-click
              :data-testid test-id}
-    [:span {:class (stl/css :nav-icon) :aria-hidden true}]
+    [:> icon {:size "m" :class (stl/css :nav-icon)}]
     [:span {:class (stl/css :nav-label)} label]]])
 
 ;; --- Plan card (F1 · 03: "Monthly, 812 / 1000 kredit Craft"; F1 · 12: "Free, 12 MB dari 1 GB")
@@ -153,34 +155,42 @@
      [:div {:class (stl/css :brand)}
       [:> sds/logo* {:size "sm" :class (stl/css :logo)}]]
 
-     ;; Upstream: the team list, "create team" and the team menu.
+     ;; One switcher: the team list, "create team" and the team's own
+     ;; actions (members, invitations, settings, rename, leave, delete) in
+     ;; one menu; the items are upstream's.
      [:div {:class (stl/css :team)}
-      [:> upstream/sidebar-team-switch* {:team team :profile profile}]]
+      [:> team-switch* {:team team :profile profile}]]
 
      [:ul {:class (stl/css :nav)
            :aria-label (tr "ds.shell.nav.label")}
       [:> nav-item* {:label (tr "ds.shell.nav.home")
+                     :icon icons/home*
                      :is-current (= current :home)
                      :on-click go-home
                      :test-id "ds-shell-nav-home"}]
       [:> nav-item* {:label (tr "ds.shell.nav.craft")
+                     :icon icons/sparkle*
                      :is-current false
                      :on-click go-craft
                      :test-id "ds-shell-nav-craft"}]
       [:> nav-item* {:label (tr "ds.shell.nav.projects")
+                     :icon icons/folder*
                      :is-current (= current :projects)
                      :on-click go-projects
                      :test-id "ds-shell-nav-projects"}]
       [:> nav-item* {:label (tr "ds.shell.nav.libraries")
+                     :icon icons/library*
                      :is-current (= current :libraries)
                      :on-click go-libraries
                      :test-id "libs-link-sidebar"}]
       [:> nav-item* {:label (tr "ds.shell.nav.templates")
+                     :icon icons/layout*
                      :is-current (= current :templates)
                      :on-click go-templates
                      :test-id "ds-shell-nav-templates"}]
       (when ^boolean can-edit
         [:> nav-item* {:label (tr "ds.shell.nav.deleted")
+                       :icon icons/trash*
                        :is-current (= current :deleted)
                        :on-click go-deleted
                        :test-id "ds-shell-nav-deleted"}])]

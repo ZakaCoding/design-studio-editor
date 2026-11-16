@@ -17,15 +17,14 @@
    [app.common.data.macros :as dm]
    [app.config :as cf]
    [app.main.data.common :as dcm]
-   [app.main.data.dashboard :as dd]
    [app.main.refs :as refs]
    [app.main.store :as st]
    [app.main.ui.dashboard.projects :refer [projects-section*]]
-   [app.main.ui.dashboard.templates :refer [templates-section*]]
    [app.main.ui.studio.dashboard-shell.home :as home]
    [app.main.ui.studio.dashboard-shell.page :as page]
    [app.main.ui.studio.dashboard-shell.rules :as rules]
    [app.main.ui.studio.dashboard.home :refer [home*]]
+   [app.main.ui.studio.dashboard.templates :as templates]
    [app.main.ui.studio.guard :refer [guard*]]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
@@ -35,7 +34,7 @@
 
 (mf/defc templates-page*
   {::mf/private true}
-  [{:keys [team profile projects]}]
+  [{:keys [team projects]}]
   (let [team-id    (:id team)
         project-id (:id (rules/drafts projects))
         can-edit   (dm/get-in team [:permissions :can-edit])]
@@ -43,20 +42,15 @@
     (mf/with-effect [team]
       (dom/set-html-title (tr "ds.shell.templates.page-title")))
 
-    ;; The upstream section only loads the templates while its drawer is
-    ;; open; here it is a page, always open.
-    (mf/with-effect []
-      (st/emit! (dd/fetch-builtin-templates)))
-
     [:> page/page* {:title (tr "ds.shell.nav.templates")
                     :data-testid "ds-shell-templates"}
      (if (and ^boolean can-edit (contains? cf/flags :dashboard-templates-section))
+       ;; P2: the cards of the home row (preview, name under it), every
+       ;; template; a card adds it to Drafts with Penpot's import dialog.
        [:div {:class (stl/css :templates)
               :data-ds-dash "templates"}
-        [:> templates-section* {:profile profile
-                                :project-id project-id
-                                :team-id team-id
-                                :default-project-id project-id}]]
+        [:> templates/templates-grid* {:team-id team-id
+                                       :project-id project-id}]]
        [:p {:class (stl/css :templates-empty)} (tr "ds.shell.templates.none")])]))
 
 ;; --- /dashboard/recent
@@ -64,7 +58,7 @@
 (mf/defc recent*
   "Takes the props of `projects-section*` (`team`, `projects`, `profile`,
   `layout`, `on-layout-change`) and renders the page the URL names."
-  [{:keys [team projects profile] :as props}]
+  [{:keys [team projects] :as props}]
   (let [route (mf/deref refs/route)
         view  (rules/view (dm/get-in route [:params :query]))]
     (cond
@@ -73,7 +67,6 @@
 
       (= view :templates)
       [:> templates-page* {:team team
-                           :profile profile
                            :projects projects}]
 
       :else

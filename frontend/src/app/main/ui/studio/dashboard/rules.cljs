@@ -210,10 +210,28 @@
   "The six tile colours of the row, in the board's order."
   ["pink" "sky" "mint" "yellow" "lilac" "peach"])
 
+(def ^:private hidden-templates
+  "Upstream's onboarding files; its own templates list hides them too."
+  #{"welcome" "tutorial-for-beginners"})
+
+(defn visible-templates
+  "The built-in templates a member can add, without the onboarding ones."
+  [templates]
+  (into [] (remove #(contains? hidden-templates (:id %))) templates))
+
+(defn template-name
+  "The name under a template card. \"Penpot Design System | Pencil\" was
+  cut at the bar on the home; it reads \"Pencil Design System\"."
+  [name]
+  (let [name (str/trim (str name))]
+    (if-let [[_ head tail] (re-matches #"(.+?)\s*\|\s*(.+)" name)]
+      (str (str/trim tail) " " (str/trim (str/replace head #"^[Pp]enpot\s+" "")))
+      name)))
+
 (defn template-tiles
   "At most six templates with the colour of their tile."
   [templates]
-  (->> (take 6 templates)
+  (->> (take 6 (visible-templates templates))
        (map-indexed (fn [index template]
                       {:template template
                        :tone (nth template-tones (mod index (count template-tones)))}))

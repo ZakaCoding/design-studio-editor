@@ -10,9 +10,9 @@
    [app.main.data.event :as ev]
    [app.main.store :as st]
    [app.main.ui.dashboard.import :as udi]
-   [app.main.ui.ds.product.empty-placeholder :refer [empty-placeholder*]]
    [app.main.ui.ds.product.loader :refer [loader*]]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard-shell.empty :as ds-empty]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [okulary.core :as l]
@@ -29,7 +29,9 @@
            (st/emit! (ev/event {::ev/name "explore-libraries-click"
                                 ::ev/origin "dashboard"
                                 :section "empty-placeholder-projects"}))
-           (dom/open-new-window "https://penpot.app/penpothub/libraries-templates")))
+           ;; Design Studio seam (STUDIO-SEAMS.md): the Templates page of
+           ;; the dashboard instead of penpot.app.
+           (ds-empty/go-to-templates!)))
 
         on-import
         (mf/use-fn #(dom/click (mf/ref-val file-input)))]
@@ -106,17 +108,9 @@
        [:li {:class (stl/css :grid-item :grid-empty-placeholder :is-dragged)}]]
 
       (= :libraries origin)
-      [:> empty-placeholder*
-       {:title (tr "dashboard.empty-placeholder-libraries-title")
-        :type 2
-        :subtitle (when-not can-edit
-                    (tr "dashboard.empty-placeholder-libraries-subtitle-viewer-role"))
-        :class (stl/css :empty-placeholder-libraries)}
-
-       (when can-edit
-         [:> i18n/tr-html* {:content (tr "dashboard.empty-placeholder-libraries")
-                            :class (stl/css :placeholder-markdown)
-                            :tag-name "span"}])]
+      ;; Design Studio seam (STUDIO-SEAMS.md): the DS empty state instead
+      ;; of upstream's illustration and its penpot.app link.
+      [:> ds-empty/libraries-empty* {:can-edit can-edit}]
 
       :else
       (if-not has-other?

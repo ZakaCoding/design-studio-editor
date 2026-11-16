@@ -70,7 +70,7 @@
   gap: 10px;
   inline-size: 100%;
   block-size: 32px;
-  padding-inline: 14px 12px;
+  padding-inline: 12px;
   border-radius: ds.token("radius-control");
   line-height: 1.2;
   color: ds.token("text-secondary");
@@ -79,19 +79,18 @@
   &:hover {
     color: ds.token("text-primary");
     background: color-mix(in srgb, ds.token("bg-panel") 60%, transparent);
+
+    .nav-icon {
+      color: ds.token("text-primary");
+    }
   }
 }
 
 .nav-icon {
   flex: none;
-  inline-size: 12px;
-  block-size: 12px;
+  color: ds.token("text-secondary");
 
-  // Radius 3 on a 12 px mark (F1 · 03); the DS scale starts at 4.
-  border-radius: 3px;
-
-  // #C9C9D3 on the board: between border.strong and text.disabled.
-  background: color-mix(in srgb, ds.token("border-strong") 55%, ds.token("text-disabled"));
+  @include ds.motion(color);
 }
 
 .nav-label {
@@ -104,13 +103,15 @@
   background: ds.token("bg-panel");
   color: ds.token("text-primary");
   font-weight: ds.token("weight-semibold");
+  box-shadow: ds.token("elevation-control");
 
   &:hover {
     background: ds.token("bg-panel");
   }
 
-  .nav-icon {
-    background: ds.token("accent-default");
+  .nav-icon,
+  &:hover .nav-icon {
+    color: ds.token("accent-default");
   }
 }
 

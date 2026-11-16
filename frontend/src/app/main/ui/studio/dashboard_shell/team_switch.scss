@@ -1,0 +1,210 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// The team switcher (P2): one white field, 40 px (F1 · 03), and one menu
+// under it with the team list and the team's actions. The menu items are
+// upstream's (`main_ui_dashboard_sidebar__*`), restyled here by their
+// class token.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+.switch {
+  @include ds.root;
+
+  position: relative;
+}
+
+.current {
+  @include ds.control-reset;
+  @include ds.focusable(-2px);
+  @include ds.motion((border-color, background-color));
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  inline-size: 100%;
+  block-size: 40px;
+  padding: 0 10px 0 11px;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  text-align: start;
+
+  &:hover {
+    border-color: ds.token("border-strong");
+  }
+}
+
+.current-open {
+  border-color: ds.token("border-strong");
+}
+
+.avatar {
+  flex: none;
+  inline-size: 20px;
+  block-size: 20px;
+
+  // Radius 6 on a 20 px tile (F1 · 03).
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.avatar-personal {
+  background: ds.token("color-fun-orange");
+}
+
+.name {
+  @include ds.type("panel-title");
+  @include ds.truncate;
+
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  line-height: 1.2;
+}
+
+.chevron {
+  flex: none;
+  color: ds.token("text-secondary");
+}
+
+// --- Menu
+
+.panel {
+  @include ds.surface-panel;
+
+  position: absolute;
+  inset-block-start: calc(100% + 6px);
+  inset-inline: 0;
+  z-index: 20;
+  max-block-size: calc(100vh - 140px);
+  overflow: hidden auto;
+  padding: ds.token("space-4");
+  border-radius: ds.token("radius-lg");
+  box-shadow: ds.token("elevation-popover");
+}
+
+.label {
+  @include ds.type("label");
+  @include ds.truncate;
+
+  padding: 10px 10px 6px;
+  color: ds.token("text-secondary");
+}
+
+.separator {
+  block-size: 1px;
+  margin: ds.token("space-4") 6px;
+  background: ds.token("border-default");
+}
+
+.menu {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  // Upstream items: one row style for both lists.
+  :global(li[role="menuitem"]) {
+    @include ds.type("control");
+    @include ds.motion(background-color);
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    block-size: 34px;
+    padding: 0 10px;
+    border-radius: ds.token("radius-control");
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-primary");
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  // The personal space: the orange tile, as in the field.
+  #{ws.on("main_ui_dashboard_sidebar__penpot-icon")} {
+    flex: none;
+    inline-size: 20px;
+    block-size: 20px;
+    border-radius: 6px;
+    background: ds.token("color-fun-orange");
+
+    svg {
+      display: none;
+    }
+  }
+
+  #{ws.on("main_ui_dashboard_sidebar__team-picture")} {
+    flex: none;
+    inline-size: 20px;
+    block-size: 20px;
+    border-radius: 6px;
+  }
+
+  #{ws.on("main_ui_dashboard_sidebar__team-text")} {
+    @include ds.truncate;
+
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  #{ws.on("main_ui_dashboard_sidebar__tick-icon")} {
+    flex: none;
+    inline-size: 16px;
+    block-size: 16px;
+    stroke: ds.token("accent-default");
+  }
+
+  // "Create new team": a quiet + tile.
+  #{ws.on("main_ui_dashboard_sidebar__icon-wrapper")} {
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: 20px;
+    block-size: 20px;
+    border-radius: 6px;
+    background: ds.token("bg-subtle");
+
+    svg {
+      inline-size: 12px;
+      block-size: 12px;
+      stroke: ds.token("text-secondary");
+    }
+  }
+
+  #{ws.on("main_ui_dashboard_sidebar__team-separator")},
+  #{ws.on("main_ui_dashboard_sidebar__team-option-separator")} {
+    block-size: 0;
+    margin: ds.token("space-4") 6px;
+    border: 0;
+    border-block-start: 1px solid ds.token("border-default");
+  }
+
+  #{ws.on("main_ui_dashboard_sidebar__organization-section-label")} {
+    @include ds.type("label");
+
+    padding: 10px 10px 6px;
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_dashboard_sidebar__warning")} {
+    color: ds.token("status-danger-text");
+
+    &:hover,
+    &:focus-visible {
+      background: ds.token("status-danger-bg");
+    }
+  }
+}
