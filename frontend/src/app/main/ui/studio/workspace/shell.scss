@@ -48,30 +48,42 @@
   display: flex;
   align-items: center;
   gap: ds.token("space-8");
-  block-size: 40px;
-  padding-inline: ds.token("space-12");
+  box-sizing: border-box;
+  block-size: 48px;
   pointer-events: auto;
 }
 
 .island-file {
+  // Upstream's main menu places itself from this width: under the island,
+  // from its left edge.
+  --left-sidebar-width: 44px;
+
   inset-inline-start: ws.$edge;
-  max-inline-size: 280px;
+  max-inline-size: 360px;
+  padding-inline: 10px 7px;
 }
 
-.island-file-name {
-  @include ds.type("control");
-
-  overflow: hidden;
-  color: ds.token("text-primary");
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.island-divider {
+  flex: none;
+  inline-size: 1px;
+  block-size: 24px;
+  margin-inline-start: ds.token("space-8");
+  background-color: ds.token("border-default");
 }
 
-.island-panels {
+.island-action {
+  @include ds.control-reset;
   @include ds.focusable;
   @include ds.motion((background-color));
 
-  inset-inline-end: ws.$edge;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: ds.token("radius-control");
+  color: ds.token("text-primary");
   cursor: pointer;
 
   &:hover {
@@ -79,22 +91,38 @@
   }
 }
 
-.island-label {
-  @include ds.type("control");
-
-  color: ds.token("text-body");
+.island-sharing {
+  inset-inline-end: ws.$edge;
+  padding-inline: 11px 9px;
 }
 
-.island-key {
-  @include ds.type("value");
+// "Press \ for panels": a quiet chip, not a control.
+.focus-hint {
+  @include ds.root;
 
-  display: inline-flex;
+  position: absolute;
+  inset-block-end: 24px;
+  inset-inline-start: ws.$edge;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  min-inline-size: 20px;
-  block-size: 20px;
-  border: 1px solid ds.token("border-strong");
-  border-radius: ds.token("radius-xs");
-  background-color: ds.token("bg-subtle");
+  block-size: 32px;
+  margin: 0;
+  padding-inline: 13px;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-panel");
+  background-color: ds.token("bg-panel");
   color: ds.token("text-secondary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+// The Craft pill (the dock's own control), bottom right as on the board.
+.focus-craft {
+  position: absolute;
+  inset-block-end: 20px;
+  inset-inline-end: ws.$edge;
+  pointer-events: auto;
 }

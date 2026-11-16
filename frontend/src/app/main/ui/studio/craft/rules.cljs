@@ -85,8 +85,9 @@
 ;; --- Quick prompt
 
 (def prompt-size
-  "Box of the quick prompt in px; the height is its tallest state."
-  {:width 360 :height 132 :gap 12 :margin 12})
+  "Box of the quick prompt in px (board F1 · 06): the 40 px prompt and the
+  key hint under it."
+  {:width 336 :height 64 :gap 6 :margin 12})
 
 (def prompt-max
   "Longest quick prompt, in characters."
@@ -105,13 +106,13 @@
 (defn anchor
   "Top-left corner (client px) of the quick prompt for a selection whose
   box on screen is `rect` ({:x :y :width :height}, client px) in a window
-  of `view` ({:width :height}). It goes under the selection, centred on
-  it; above it when there is no room below; and always fully inside the
-  window, `:margin` px from its edges."
+  of `view` ({:width :height}). It goes under the selection, from its left
+  edge (board F1 · 06); above it when there is no room below; and always
+  fully inside the window, `:margin` px from its edges."
   [rect view]
   (let [{w :width h :height gap :gap margin :margin} prompt-size
         clamp  (fn [v lo hi] (max lo (min v (max lo hi))))
-        left   (- (+ (:x rect) (/ (:width rect) 2)) (/ w 2))
+        left   (:x rect)
         below  (+ (:y rect) (:height rect) gap)
         above  (- (:y rect) gap h)
         bottom (- (:height view) margin h)
@@ -121,6 +122,31 @@
                  :else             bottom)]
     {:left (js/Math.round (clamp left margin (- (:width view) margin w)))
      :top  (js/Math.round (clamp top margin bottom))}))
+
+(def chip-size
+  "Box of the \"Change with Craft\" chip at the selection in px (board
+  F1 · 06, step 1). The width is the Indonesian chip's; it only keeps the
+  chip inside the canvas."
+  {:width 236 :height 32 :gap 8 :margin 12})
+
+(defn chip-anchor
+  "Top-left corner (px) of the chip for a selection whose box is `rect` in
+  a canvas area of `view` ({:width :height}), both in the same px. Over
+  the selection, from its left edge, `lift` px higher when something is
+  drawn there (a board's name); under the selection when there is no room
+  above. Nil when the selection is not in view at all."
+  [rect view lift]
+  (let [{w :width h :height gap :gap margin :margin} chip-size
+        clamp (fn [v lo hi] (max lo (min v (max lo hi))))
+        above (- (:y rect) gap lift h)
+        below (+ (:y rect) (:height rect) gap)
+        top   (if (>= above margin) above below)]
+    (when (and (< (:x rect) (:width view))
+               (> (+ (:x rect) (:width rect)) 0)
+               (< (:y rect) (:height view))
+               (> (+ (:y rect) (:height rect)) 0))
+      {:left (js/Math.round (clamp (:x rect) margin (- (:width view) margin w)))
+       :top  (js/Math.round (clamp top margin (- (:height view) margin h)))})))
 
 (defn clean-prompt
   "The text that is sent: trimmed and cut to `prompt-max`; nil when empty."

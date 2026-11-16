@@ -16,19 +16,29 @@
      scripts.
   2. Applies the width rules (see `app.main.ui.studio.workspace.state`).
   3. Renders the mount points of the other F3 packages: `craft-dock` and
-     `viewport-overlay` (listed in STUDIO-SEAMS.md).
-  4. In canvas focus (upstream's hide-ui flag, key `\\`) renders two small
-     islands over the canvas: the file, and the way back to the panels."
+     `viewport-overlay` (listed in STUDIO-SEAMS.md), and in the overlay the
+     floating toolbar at the bottom centre of the canvas.
+  4. In canvas focus (upstream's hide-ui flag, key `\\`) renders what
+     board F1 · 02 keeps of the panels: the file island (top left), the
+     sharing island (top right), the key hint (bottom left) and the Craft
+     pill (bottom right). The toolbar stays."
   (:require-macros
    [app.main.style :as stl])
   (:require
+   [app.common.colors :as clr]
    [app.main.data.workspace :as dw]
    [app.main.refs :as refs]
    [app.main.store :as st]
-   [app.main.ui.studio.ds :as sds]
+   [app.main.ui.studio.craft.dock :refer [craft-toggle*]]
+   [app.main.ui.studio.craft.state :as craft-state]
+   [app.main.ui.studio.guard :refer [guard*]]
+   [app.main.ui.studio.shell-state :as ss]
    [app.main.ui.studio.workspace.craft-dock :refer [craft-dock*]]
+   [app.main.ui.studio.workspace.glyphs :refer [glyph*]]
+   [app.main.ui.studio.workspace.header :as header]
    [app.main.ui.studio.workspace.quick-prompt :refer [quick-prompt*]]
    [app.main.ui.studio.workspace.state :as state]
+   [app.main.ui.studio.workspace.toolbar :refer [toolbar*]]
    [app.util.i18n :refer [tr]]
    [app.util.theme :as theme]
    [rumext.v2 :as mf]))
@@ -57,6 +67,7 @@
                                      (theme/get-system-theme))]
     (.remove classes "ds-chrome")
     (.removeAttribute body "data-ds-width")
+    (.removeProperty (.-style body) "--ds-canvas-color")
     (when (= theme "dark")
       (.remove classes "light")
       (.add classes "default"))))
@@ -65,30 +76,52 @@
 
 (defn- show-panels
   []
-  (st/emit! (dw/toggle-layout-flag :hide-ui)))
+  (st/emit! (dw/remove-layout-flag :hide-ui)))
+
+(defn- open-craft
+  "The Craft pill of canvas focus: back to the panels, with Craft open."
+  []
+  (craft-state/open!)
+  (show-panels))
 
 (mf/defc focus-islands*
   {::mf/private true}
-  [{:keys [file-name]}]
-  [:*
-   [:div {:class (stl/css :island :island-file)
-          :data-testid "ds-focus-file"}
-    [:> sds/logo-mark* {:size 20}]
-    [:span {:class (stl/css :island-file-name)
-            :title file-name}
-     file-name]]
+  [{:keys [file layout file-id page-id]}]
+  (let [shell   (ss/use-state)
+        craft?  (true? (:craft shell))
+        credits (get-in shell [:member :credits :left])
+        label   (tr "ds.workspace.focus.show-panels")]
+    [:*
+     [:div {:class (stl/css :island :island-file)
+            :data-testid "ds-focus-file"}
+      [:> header/logo-button* {:size 26}]
+      [:> header/file-title* {:file file
+                              :layout layout}]
+      [:div {:class (stl/css :island-divider)
+             :role "separator"}]
+      [:button {:class (stl/css :island-action)
+                :type "button"
+                :aria-label label
+                :title label
+                :data-testid "ds-focus-show-panels"
+                :on-click show-panels}
+       [:> glyph* {:id "panel"}]]]
 
-   [:button {:class (stl/css :island :island-panels)
-             :type "button"
-             :data-testid "ds-focus-show-panels"
-             :on-click show-panels}
-    [:span {:class (stl/css :island-label)}
-     (tr "ds.workspace.focus.show-panels")]
-    ;; The key is upstream's hide-ui shortcut. A backslash is not a word,
-    ;; so it stays out of the translations.
-    [:kbd {:class (stl/css :island-key)
-           :aria-hidden true}
-     "\\"]]])
+     [:div {:class (stl/css :island :island-sharing)
+            :data-testid "ds-focus-sharing"}
+      [:> header/sharing* {:file-id file-id
+                           :page-id page-id}]]
+
+     ;; The key is upstream's hide-ui shortcut. A backslash is not a word,
+     ;; so it stays out of the translations.
+     [:p {:class (stl/css :focus-hint)
+          :data-testid "ds-focus-hint"}
+      (tr "ds.workspace.focus.hint" "\\")]
+
+     (when ^boolean craft?
+       [:> craft-toggle* {:class (stl/css :focus-craft)
+                          :credits credits
+                          :on-click open-craft}])]))
 
 ;; --- Shell
 
@@ -100,6 +133,10 @@
         collapsed?  (contains? layout :collapse-left-sidebar)
         hide-ui?    (contains? layout :hide-ui)
         ready?      (some? page-id)
+
+        ;; As upstream's viewport paints it.
+        page        (mf/deref refs/workspace-page)
+        canvas-color (or (:background page) clr/canvas)
 
         ;; Whether the width rules ask for the Layers rail, what they asked
         ;; last time, and whether the rule itself collapsed Layers.
@@ -123,6 +160,11 @@
 
     (mf/with-effect [width-class]
       (.setAttribute (body-node) "data-ds-width" (name width-class)))
+
+    ;; The gaps around the floating panels show the colour of the page's
+    ;; canvas, so the panels float over one surface.
+    (mf/with-effect [canvas-color]
+      (.setProperty (.-style (body-node)) "--ds-canvas-color" canvas-color))
 
     ;; A panel the person reopened is theirs again.
     (mf/with-effect [collapsed?]
@@ -156,7 +198,15 @@
             :class (stl/css :viewport-overlay)
             :data-ds-mount "viewport-overlay"}
       (when (and ^boolean ready? ^boolean hide-ui?)
-        [:> focus-islands* {:file-name (:name file)}])
+        [:> guard* {}
+         [:> focus-islands* {:file file
+                             :layout layout
+                             :file-id file-id
+                             :page-id page-id}]])
+      (when ^boolean ready?
+        [:> guard* {}
+         [:> toolbar* {:file-id file-id
+                       :page-id page-id}]])
       (when ^boolean ready?
         [:> quick-prompt* mount-props])]
 

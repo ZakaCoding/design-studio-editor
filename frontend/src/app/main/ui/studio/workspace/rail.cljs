@@ -29,6 +29,7 @@
    [app.main.store :as st]
    [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.studio.ds :as sds]
+   [app.main.ui.studio.workspace.glyphs :refer [glyph*]]
    [app.main.ui.workspace.main-menu :as main-menu]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
@@ -65,12 +66,13 @@
   {::mf/private true}
   [{:keys [id label icon-id is-active]}]
   [:> sds/tooltip* {:content label :placement "right"}
-   [:> sds/icon-button* {:aria-label label
-                         :icon-id icon-id
+   [:> sds/icon-button* {:class (stl/css :rail-tab)
+                         :aria-label label
                          :is-active is-active
                          :data-tab id
                          :data-testid (str "ds-rail-tab-" id)
-                         :on-click open-tab}]])
+                         :on-click open-tab}
+    [:> sds/icon* {:icon-id icon-id :size "l"}]]])
 
 (mf/defc layers-rail*
   {::mf/memo true}
@@ -97,10 +99,12 @@
                 :aria-label (tr "ds.workspace.rail.back")
                 :data-testid "ds-rail-back"
                 :on-click go-back}
-       [:> sds/logo-mark* {:size 24}]]]
+       [:> sds/logo-mark* {:size 28}]]]
 
      ;; Upstream's main menu, unchanged. Its dropdown is placed from
-     ;; `--left-sidebar-width`, which the stylesheet sets for the rail.
+     ;; `--left-sidebar-width`, which the stylesheet sets for the rail. The
+     ;; board has no menu on the rail; it stays here because the file name
+     ;; and its chevron are not on the rail.
      [:div {:class (stl/css :rail-menu)}
       [:> main-menu/menu* {:layout layout
                            :file file}]]
@@ -120,16 +124,16 @@
                       :is-active (= section "assets")}])
 
      (when (and ^boolean design-tokens? (not ^boolean inspect?))
-       ;; Not translated, as in upstream's tab.
        [:> rail-tab* {:id "tokens"
-                      :label "Tokens"
+                      :label (tr "ds.workspace.tab.tokens")
                       :icon-id i/tokens
                       :is-active (= section "tokens")}])
 
      [:div {:class (stl/css :rail-spacer)}]
 
      [:> sds/tooltip* {:content (tr "workspace.sidebar.expand") :placement "right"}
-      [:> sds/icon-button* {:aria-label (tr "workspace.sidebar.expand")
-                            :icon-id i/arrow
+      [:> sds/icon-button* {:class (stl/css :rail-tab)
+                            :aria-label (tr "workspace.sidebar.expand")
                             :data-testid "ds-rail-expand"
-                            :on-click expand}]]]))
+                            :on-click expand}
+       [:> glyph* {:id "panel"}]]]]))

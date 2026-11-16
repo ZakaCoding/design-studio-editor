@@ -4,70 +4,132 @@
 //
 // Copyright (c) ZakaCoding
 
-// Quick prompt at the selection (F1 · 06). Its box (360 px wide, at most
-// 132 px tall) is the one `craft.rules/prompt-size` places.
+// Quick prompt at the selection (F1 · 06): the chip over the selection
+// (step 1) and the one-line prompt under it (step 2). The prompt's box
+// (336 px wide, 64 px with its hint) is the one `craft.rules/prompt-size`
+// places; the chip's is `craft.rules/chip-size`.
 
 @use "studio/ds" as ds;
+
+// --- Step 1: the chip
+
+.chip {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  position: fixed;
+  z-index: ds.token("z-panel");
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  block-size: 32px;
+  padding-inline: 9px 13px;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-md");
+  background-color: ds.token("bg-panel");
+
+  // The board's shadow for this chip, between `raised` and `pop`.
+  box-shadow: 0 4px 12px color-mix(in srgb, #{ds.token("text-primary")} 12%, transparent);
+  color: ds.token("accent-default");
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+  }
+}
+
+// In the workspace shell's `viewport-overlay` mount point, which ignores
+// the pointer itself.
+.chip-overlay {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.chip-mark {
+  stroke-width: 1.8;
+}
+
+.chip-label {
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.chip-divider {
+  flex: none;
+  inline-size: 1px;
+  block-size: 16px;
+  margin-inline: 3px;
+  background-color: ds.token("border-default");
+}
+
+.chip-keys {
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+}
+
+// --- Step 2: the prompt
 
 .prompt {
   @include ds.root;
 
   position: fixed;
   z-index: ds.token("z-popover");
-  inline-size: 360px;
-  max-inline-size: calc(100vw - 2 * #{ds.token("space-12")});
   display: flex;
   flex-direction: column;
-  gap: ds.token("space-8");
+  align-items: flex-start;
+  gap: 6px;
+  inline-size: 336px;
+  max-inline-size: calc(100vw - 2 * #{ds.token("space-12")});
   margin: 0;
-  padding: ds.token("space-12");
-  border: 1px solid ds.token("border-default");
-  border-radius: ds.token("radius-card");
-  background: ds.token("bg-panel");
-  box-shadow: ds.token("elevation-popover");
 }
 
-// In the workspace shell's `viewport-overlay` mount point, which ignores
-// the pointer itself.
 .prompt-overlay {
   position: absolute;
   pointer-events: auto;
 }
 
-.context {
+.field {
   display: flex;
   align-items: center;
   gap: ds.token("space-8");
-  min-inline-size: 0;
-  margin: 0;
-  color: ds.token("text-secondary");
+  inline-size: 100%;
+  block-size: 40px;
+  padding-inline: 11px 9px;
+
+  // 1.5 px, as the selection outline it belongs to.
+  border: 1.5px solid ds.token("craft-default");
+  border-radius: ds.token("radius-md");
+  background-color: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
 }
 
-.context-text {
-  @include ds.truncate;
-}
-
-.mark {
-  flex: none;
-  inline-size: 8px;
-  block-size: 8px;
-  border-radius: ds.token("radius-pill");
-  background: ds.token("craft-default");
+.field-mark {
+  color: ds.token("craft-default");
+  stroke-width: 1.8;
 }
 
 .input {
-  @include ds.type("control");
+  @include ds.type("body");
 
-  inline-size: 100%;
-  block-size: 44px;
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 18px;
   margin: 0;
-  padding: ds.token("space-4") ds.token("space-8");
-  border: 1px solid ds.token("border-strong");
-  border-radius: ds.token("radius-control");
-  background: ds.token("bg-panel");
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: ds.token("text-primary");
-  line-height: 1.4;
   resize: none;
+  overflow: hidden;
+  white-space: nowrap;
 
   &::placeholder {
     color: ds.token("text-placeholder");
@@ -76,23 +138,49 @@
   &:focus {
     outline: none;
   }
+}
 
-  &:focus-visible {
-    @include ds.focus-ring(0);
+.send {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, opacity));
 
-    border-color: ds.token("accent-default");
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: ds.token("radius-pill");
+  background-color: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  cursor: pointer;
+
+  &:disabled {
+    background-color: ds.token("text-disabled");
+    cursor: default;
   }
 }
 
-.foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ds.token("space-8");
+.send-icon {
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
+// Lies on the design, whatever its colours are: a faint plate keeps the
+// keys readable.
 .hint {
-  @include ds.truncate;
-
+  margin: 0;
+  padding: 2px 6px;
+  border-radius: ds.token("radius-xs");
+  background-color: color-mix(in srgb, #{ds.token("bg-panel")} 88%, transparent);
   color: ds.token("text-secondary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-10");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.2;
+  white-space: nowrap;
 }

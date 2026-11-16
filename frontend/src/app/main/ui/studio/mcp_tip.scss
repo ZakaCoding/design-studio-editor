@@ -4,7 +4,9 @@
 //
 // Copyright (c) ZakaCoding
 
-// Workspace MCP tip: bottom of the canvas, left of the design panel.
+// Workspace MCP tip: bottom of the canvas, over the row of the floating
+// toolbar and the Craft pill. Right of the canvas, beside the design panel;
+// left of the canvas while Craft is open (`.toast-left`).
 // Colours are the Design Studio `ds/light` tokens.
 
 .toast {
@@ -18,9 +20,14 @@
   --ds-font: "Inter", "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   position: fixed;
-  z-index: 900;
-  inset-block-end: 16px;
-  inset-inline-end: var(--ds-right, 336px);
+
+  // Over the canvas, under the workspace chrome (`z-panel`): the toolbar's
+  // menus, the quick prompt and the panels are never covered by the tip.
+  z-index: 99;
+
+  // 20 px (toolbar and Craft pill) + their 48 px + a 12 px gap.
+  inset-block-end: 80px;
+  inset-inline-end: var(--ds-offset, 336px);
   inline-size: min(340px, calc(100vw - 32px));
   display: grid;
   grid-template-columns: 1fr;
@@ -47,6 +54,10 @@
 .toast-in {
   opacity: 1;
   transform: none;
+}
+
+.toast-left {
+  inset-inline: var(--ds-offset, 16px) auto;
 }
 
 .scene-button {
@@ -363,6 +374,6 @@
 
 @media (width <= 720px) {
   .toast {
-    inset-inline-end: 16px;
+    inset-inline: auto 16px;
   }
 }

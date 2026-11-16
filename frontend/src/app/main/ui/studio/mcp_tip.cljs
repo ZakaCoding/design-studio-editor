@@ -5,10 +5,12 @@
 ;; Copyright (c) ZakaCoding
 
 (ns app.main.ui.studio.mcp-tip
-  "Workspace MCP onboarding tip: a card at the bottom of the canvas, left of
-  the design panel, that invites the member to connect their AI assistant
-  and starts the interactive guide. When it shows is decided by
-  `app.main.ui.studio.mcp-cadence/decide`."
+  "Workspace MCP onboarding tip: a card at the bottom of the canvas that
+  invites the member to connect their AI assistant and starts the
+  interactive guide. It sits at the bottom right of the canvas, left of the
+  design panel; while Craft is open it sits at the bottom left of the
+  canvas, so it never covers Craft or the design panel (owner, 16 Nov).
+  When it shows is decided by `app.main.ui.studio.mcp-cadence/decide`."
   (:require-macros [app.main.style :as stl])
   (:require
    [app.main.ui.studio.mcp-cadence :as cadence]
@@ -43,6 +45,22 @@
         width (some-> panel (.getBoundingClientRect) (.-width))
         width (if (and (number? width) (< width (/ (.-innerWidth js/window) 2))) width 0)]
     (str (+ width 16) "px")))
+
+(defn- placement
+  "Where the tip sits: `{:side :left | :right, :offset \"<n>px\"}`, the
+  distance from that edge of the window.
+
+  While Craft is open (`<html data-ds-craft-open>`, set by the dock) the
+  tip moves to the left edge of the canvas area, which is the workspace
+  shell's `viewport-overlay` mount point: right of Layers or its rail."
+  []
+  (let [root (.-documentElement js/document)
+        area (.getElementById js/document "ds-viewport-overlay")]
+    (if (and (.hasAttribute root "data-ds-craft-open") (some? area))
+      {:side :left
+       :offset (str (+ (js/Math.round (.-left (.getBoundingClientRect area))) 12) "px")}
+      {:side :right
+       :offset (right-offset)})))
 
 (mf/defc scene*
   {::mf/private true}
@@ -85,7 +103,8 @@
         ;; nil: not on screen; :in: showing; :out: leaving (fade)
         phase*       (mf/use-state nil)
         phase        (deref phase*)
-        offset*      (mf/use-state "16px")
+        place*       (mf/use-state {:side :right :offset "16px"})
+        place        (deref place*)
         hidden-tab*  (mf/use-state (boolean (.-hidden js/document)))
 
         still?       (mf/with-memo [] (shell/reduced-motion?))
@@ -122,7 +141,7 @@
              (shell/store-merge! :session "toast" #js {:lastShown (js/Date.now)})
              (shell/store-merge! :local "toast" #js {:lastDay (shell/today)})
              (mf/set-ref-val! showing true)
-             (reset! offset* (right-offset))
+             (reset! place* (placement))
              (reset! phase* :out)
              ;; One frame later, so the card animates in.
              (js/requestAnimationFrame
@@ -219,7 +238,7 @@
 
     (mf/with-effect []
       (mf/set-ref-val! alive true)
-      (let [on-resize     #(reset! offset* (right-offset))
+      (let [on-resize     #(reset! place* (placement))
             on-visibility #(reset! hidden-tab* (boolean (.-hidden js/document)))]
         (.addEventListener js/window "resize" on-resize)
         (.addEventListener js/document "visibilitychange" on-visibility)
@@ -230,14 +249,25 @@
           (.removeEventListener js/window "resize" on-resize)
           (.removeEventListener js/document "visibilitychange" on-visibility))))
 
+    ;; While the tip is on screen the panels can still change under it:
+    ;; the file finishes loading, Craft opens or closes, Layers becomes a
+    ;; rail. Look again a few times a second; an unchanged place renders
+    ;; nothing.
+    (mf/with-effect [(some? phase)]
+      (when (some? phase)
+        (let [timer (js/setInterval #(reset! place* (placement)) 400)]
+          #(js/clearInterval timer))))
+
     (when (some? phase)
       [:aside {:class (stl/css-case :global/ds-toast true
                                     :global/ds-in (= phase :in)
                                     :toast true
                                     :toast-in (= phase :in)
+                                    :toast-left (= (:side place) :left)
                                     :still still?
                                     :paused (deref hidden-tab*))
-               :style {"--ds-right" (deref offset*)}
+               :style {"--ds-offset" (:offset place)}
+               :data-side (name (:side place))
                :role "region"
                :aria-label (tr "ds.mcp-tip.label")
                :on-key-down on-key-down
