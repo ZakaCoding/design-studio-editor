@@ -87,6 +87,8 @@
   z-index: ds.token("z-popover");
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  gap: 0;
   inline-size: 336px;
   max-inline-size: calc(100vw - 2 * #{ds.token("space-12")});
   margin: 0;
@@ -179,6 +181,7 @@
   margin: 0;
   padding-inline: 12px;
   border-block-start: 1px solid ds.token("border-default");
+  border-radius: 0;
   background-color: ds.token("bg-subtle");
   color: ds.token("text-secondary");
   font-family: ds.token("font-mono");

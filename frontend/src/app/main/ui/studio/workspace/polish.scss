@@ -27,7 +27,7 @@ $panels: '[id="left-sidebar-aside"], [id="right-sidebar-aside"]';
 
 // Left edge of the labels and of the rows' content, from the panel's edge.
 $row-inset: 8px;
-$label-start: 12px;
+$label-start: 16px;
 
 // --- 1. Section headers
 
@@ -63,8 +63,13 @@ $label-start: 12px;
 // Inspector: every section label starts where the text inside the fields
 // starts (the fields' edge + 8 px).
 #{$scope} [id="right-sidebar-aside"] {
-  #{ws.on("main_ui_components_title_bar__title-wrapper", "main_ui_components_title_bar__title-only")} {
+  #{ws.on("main_ui_components_title_bar__title-wrapper")} {
     margin-inline-start: 8px;
+  }
+
+  // The bars of these sections start 2 px further in.
+  #{ws.on("main_ui_components_title_bar__title-only")} {
+    margin-inline-start: 6px;
   }
 }
 
