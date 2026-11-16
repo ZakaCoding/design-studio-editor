@@ -494,9 +494,14 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
   }
 
+  // "Show all files": under the cards (upstream put it at the top right,
+  // where the project's actions are now always shown).
   #{ws.on("main_ui_dashboard_projects__show-more")} {
     @include ds.type("control");
 
+    position: static;
+    display: inline-flex;
+    gap: ds.token("space-4");
     margin: ds.token("space-12") 0 0;
     padding: 0;
     border: 0;
