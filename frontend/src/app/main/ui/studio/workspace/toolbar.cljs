@@ -220,6 +220,7 @@
                    :type "button"
                    :aria-label move-label
                    :aria-pressed move?
+                   :data-tool "move"
                    :on-click select-move}
           [:> glyph* {:id "select"}]]]
         [:> tool* {:tool "frame" :current current}]
