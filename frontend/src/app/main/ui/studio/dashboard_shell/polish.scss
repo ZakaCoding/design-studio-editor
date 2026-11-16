@@ -227,16 +227,12 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
   }
 
-  // Upstream DS buttons in page headers and toolbars ("Invite people",
-  // "Restore all", "Clear trash"): DS pills, sentence case.
+  // Upstream DS buttons in page headers and toolbars: "Invite people" is
+  // the soft pill of "Invite" on a project page; "Restore all" and "Clear
+  // trash" sit on the Trash info bar.
   :is(#{-any("dashboard-buttons")}, #{-any("deleted-options")})
     #{ws.on("main_ui_ds_buttons_button__button")} {
     @include -soft-pill;
-  }
-
-  #{-any("dashboard-buttons")}
-    #{ws.on("main_ui_ds_buttons_button__button-primary", "main_ui_ds_buttons_button__button-secondary")} {
-    @include -black-pill;
   }
 
   #{-any("deleted-options")} #{ws.on("main_ui_ds_buttons_button__button-ghost")} {
