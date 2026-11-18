@@ -479,7 +479,7 @@
   // washed accent (P3-B).
   &:disabled {
     border-color: var(--ds-border-default);
-    background: var(--ds-bg-subtle);
+    background: var(--ds-border-default);
     color: var(--ds-text-disabled);
     cursor: not-allowed;
   }

@@ -2995,7 +2995,7 @@ msgstr "Jika pemilik mengizinkan, Anda akan diundang ke tim."
 
 #: src/app/main/ui/static.cljs:527, src/app/main/ui/static.cljs:540
 msgid "not-found.no-permission.penpot-file"
-msgstr "Berkas Penpot"
+msgstr "File desain"
 
 #: src/app/main/ui/static.cljs:264, src/app/main/ui/static.cljs:296
 msgid "not-found.no-permission.project"

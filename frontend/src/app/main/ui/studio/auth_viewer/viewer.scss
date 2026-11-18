@@ -153,14 +153,18 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   box-shadow: ds.token("elevation-control");
   color: ds.token("text-secondary");
 
+  // Penpot's icons carry their own (transparent) colour: name the stroke.
   svg {
-    stroke: currentcolor;
+    stroke: ds.token("text-secondary");
   }
 
   &:hover {
     background: ds.token("bg-panel");
     border-color: ds.token("border-strong");
-    color: ds.token("text-primary");
+
+    svg {
+      stroke: ds.token("text-primary");
+    }
   }
 }
 
@@ -737,6 +741,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // The pager keeps clear of the Inspect panel (it sat under it).
   #{-v("inspect-layout")} #{-v("viewer-go-next")} {
     inset-inline-end: calc(320px + 28px);
+  }
+
+  // … and of the Layers panel while it is open.
+  #{-v("viewer-go-prev")}#{-v("left-bar")} {
+    inset-inline-start: calc(240px + 28px);
   }
 
   #{-v("inspect-layout")} #{-v("viewer-bottom")} {
