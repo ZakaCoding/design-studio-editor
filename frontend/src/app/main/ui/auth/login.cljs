@@ -112,6 +112,12 @@
                    (= :account-without-password (:code cause)))
               (reset! error (tr "errors.wrong-credentials"))
 
+              ;; Design Studio: a 429 (the backend's own limit, or a proxy's
+              ;; plain-text one, see main/repo.cljs) only picks the message.
+              (or (= :rate-limit (:type cause))
+                  (= 429 (:status cause)))
+              (reset! error (tr "ds.auth.login.rate-limited"))
+
               :else
               (reset! error (tr "errors.generic")))))
 

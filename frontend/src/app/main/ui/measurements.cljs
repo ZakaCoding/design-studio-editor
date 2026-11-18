@@ -23,12 +23,6 @@
 ;; CONSTANTS
 ;; ------------------------------------------------
 
-(def ^:private ^:const size-display-color "var(--app-white)")
-(def ^:private ^:const size-display-opacity 0.7)
-(def ^:private ^:const size-display-text-color "var(--app-black)")
-(def ^:private ^:const size-display-width-min 50)
-(def ^:private ^:const size-display-width-max 75)
-(def ^:private ^:const size-display-height 16)
 
 (def ^:private ^:const distance-border-radius 2)
 (def ^:private ^:const distance-pill-width 50)
@@ -100,30 +94,29 @@
 ;; COMPONENTS
 ;; ------------------------------------------------
 
-(mf/defc size-display* [{:keys [selrect zoom]}]
+(mf/defc size-display*
+  ;; Design Studio: Inspect only (nothing else renders this). A small accent
+  ;; pill with white monospace text, centred below the selection (board F1-11).
+  [{:keys [selrect zoom]}]
   (let [{:keys [x y width height]} selrect
         size-label (dm/str (fmt/format-number width) " x " (fmt/format-number height))
-
-        rect-height (/ size-display-height zoom)
-        rect-width (/ (if (<= (count size-label) 9)
-                        size-display-width-min
-                        size-display-width-max)
-                      zoom)
-        text-padding (/ 4 zoom)]
+        rect-height (/ 18 zoom)
+        rect-width (/ (+ 16 (* 6.6 (count size-label))) zoom)
+        rect-x (+ x (/ width 2) (- (/ rect-width 2)))
+        rect-y (+ y height (/ 6 zoom))]
     [:g.size-display
-     [:rect {:x (+ x (/ width 2) (- (/ rect-width 2)))
-             :y (- (+ y height) rect-height)
+     [:rect {:x rect-x
+             :y rect-y
              :width rect-width
              :height rect-height
-             :style {:fill size-display-color
-                     :fill-opacity size-display-opacity}}]
-
-     [:text {:x (+ (+ x (/ width 2) (- (/ rect-width 2))) (/ rect-width 2))
-             :y (- (+ y height (+ text-padding (/ rect-height 2))) rect-height)
-             :width rect-width
-             :height rect-height
+             :rx (/ rect-height 2)
+             :style {:fill "var(--ds-accent-default, #5b5bd6)"}}]
+     [:text {:x (+ rect-x (/ rect-width 2))
+             :y (+ rect-y (/ rect-height 2))
              :text-anchor "middle"
-             :style {:fill size-display-text-color
+             :dominant-baseline "central"
+             :style {:fill "#fff"
+                     :font-family "var(--ds-font-mono, ui-monospace, monospace)"
                      :font-size (/ mconst/font-size zoom)}}
       size-label]]))
 
