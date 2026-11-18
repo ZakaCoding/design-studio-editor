@@ -9,7 +9,7 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.components.dropdown-menu :refer [dropdown-menu-item*]]
-   [app.main.ui.ds.buttons.button :refer [button*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
    [app.main.ui.studio.shell-state :as ss]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
@@ -53,10 +53,17 @@
         amount {:amount amount}))))
 
 (mf/defc plan-card*
-  [{:keys [plan price]}]
-  [:li {:class (stl/css-case :card true :card-soon (:soon price))
+  [{:keys [plan price is-current]}]
+  [:li {:class (stl/css-case :card true
+                             :card-soon (:soon price)
+                             :card-current is-current)
         :data-testid (str "ds-plan-" (name (:id plan)))}
-   [:h3 {:class (stl/css :card-title)} (tr (:title plan))]
+   [:div {:class (stl/css :card-head)}
+    [:h3 {:class (stl/css :card-title)} (tr (:title plan))]
+    (when ^boolean is-current
+      [:span {:class (stl/css :card-badge)
+              :data-testid "ds-plan-current"}
+       (tr "ds.plans.current")])]
    (cond
      (:soon price)
      [:p {:class (stl/css :card-price)} (tr "ds.plans.opening-soon")]
@@ -74,22 +81,26 @@
 
   (let [state (ss/use-state)
         plans-state (:plans state)
+        ;; "free" | "monthly" | "lifetime", or nil when the state has no member
+        current (get-in state [:member :plan])
         on-see-plans
         (mf/use-fn
          #(set! (.-href js/location) plans-uri))]
     [:section {:class (stl/css :plans)
                :aria-labelledby "ds-plans-title"}
-     [:h2 {:id "ds-plans-title" :class (stl/css :title)} (tr "ds.plans.title")]
-     [:p {:class (stl/css :lead)} (tr "ds.plans.lead")]
+     [:> page-head* {:id "ds-plans-title"
+                     :title (tr "ds.plans.side")
+                     :subtitle (tr "ds.plans.lead")}]
      [:ul {:class (stl/css :cards)}
       (for [plan plans]
         [:> plan-card* {:key (name (:id plan))
                         :plan plan
+                        :is-current (= current (name (:id plan)))
                         :price (plan-price plans-state (:id plan))}])]
-     [:> button* {:variant "primary"
-                  :type "button"
-                  :data-testid "ds-see-plans"
-                  :on-click on-see-plans}
+     [:button {:class (stl/css :see)
+               :type "button"
+               :data-testid "ds-see-plans"
+               :on-click on-see-plans}
       (tr "ds.plans.see-plans")]]))
 
 (mf/defc plans-menu-item*

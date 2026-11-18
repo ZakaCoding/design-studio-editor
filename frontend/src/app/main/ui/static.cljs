@@ -22,16 +22,12 @@
    [app.main.ui.auth.login :refer [login-dialog*]]
    [app.main.ui.auth.recovery-request :refer [recovery-request-page* recovery-sent-page*]]
    [app.main.ui.auth.register :as register]
-   [app.main.ui.dashboard.sidebar :refer [sidebar*]]
-   [app.main.ui.ds.buttons.button :refer [button*]]
-   [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
-   [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*]]
    [app.main.ui.ds.product.loader :refer [loader*]]
    [app.main.ui.studio.auth :as sa]
    [app.main.ui.studio.ds.button :as sbtn]
+   [app.main.ui.studio.ds.logo :refer [logo* logo-mark*]]
    [app.main.ui.studio.error-page :refer [error-shell*]]
-   [app.main.ui.viewer.header :as viewer.header]
    [app.util.dom :as dom]
    [app.util.i18n :refer [tr]]
    [app.util.timers :as tm]
@@ -45,7 +41,7 @@
 
 (mf/defc error-container*
   "Design Studio seam (STUDIO-SEAMS.md): the page is `studio.error-page/error-shell*`."
-  [{:keys [children code primary-home?]}]
+  [{:keys [children code primary-home? actions]}]
   (let [profile     (mf/deref refs/profile)
         profile-id  (:id profile)
         on-nav-root (mf/use-fn
@@ -57,7 +53,8 @@
                          (st/emit! (rt/nav-root)))))]
     [:> error-shell* {:code code
                       :on-home on-nav-root
-                      :primary-home? primary-home?}
+                      :primary-home? primary-home?
+                      :actions actions}
      children]))
 
 (mf/defc invalid-token
@@ -197,22 +194,34 @@
 (mf/defc request-dialog*
   [{:keys [title content button-text on-button-click cancel-text on-close]}]
   (let [on-click (or on-button-click on-close)]
-    [:div {:class (stl/css :overlay)}
-     [:div {:class (stl/css :dialog)}
-      [:div {:class (stl/css :modal-close)}
-       [:> icon-button* {:variant "ghost"
-                         :aria-label (tr "labels.close")
-                         :on-click on-close
-                         :icon i/close}]]
-      [:div {:class (stl/css :dialog-title)} title]
+    ;; Design Studio (P3-A): the light DS dialog of the dashboard (card
+    ;; radius 16, sentence-case title, soft and black pills) wherever it
+    ;; appears: over the dashboard, the workspace and the viewer.
+    [:div {:class (stl/css :overlay :overlay-request)}
+     [:div {:class (stl/css :dialog)
+            :role "dialog"
+            :aria-modal "true"
+            :data-testid "ds-request-dialog"}
+      [:button {:class (stl/css :modal-close)
+                :type "button"
+                :aria-label (tr "labels.close")
+                :on-click on-close}
+       [:svg {:width 16 :height 16 :view-box "0 0 24 24" :aria-hidden true}
+        [:path {:d "M6 6l12 12M18 6L6 18"}]]]
+      [:h2 {:class (stl/css :dialog-title)} title]
       (for [[index content] (d/enumerate content)]
-        [:div {:key index} content])
+        [:p {:key index :class (stl/css :dialog-text)} content])
       [:div {:class (stl/css :sign-info)}
        (when cancel-text
          [:button {:class (stl/css :cancel-button)
+                   :type "button"
                    :on-click on-close}
           cancel-text])
-       [:> button* {:variant "primary" :on-click on-click} button-text]]]]))
+       [:button {:class (stl/css :accept-button)
+                 :type "button"
+                 :data-testid "ds-request-accept"
+                 :on-click on-click}
+        button-text]]]]))
 
 (mf/defc request-access*
   [{:keys [file-id team-id is-default is-workspace profile]}]
@@ -275,7 +284,7 @@
       [:> request-dialog* {:title (tr "not-found.no-permission.file")
                            :content [(tr "not-found.no-permission.you-can-ask.file")
                                      (tr "not-found.no-permission.if-approves")]
-                           :button-text (tr "not-found.no-permission.ask")
+                           :button-text (tr "ds.access.ask")
                            :on-button-click on-request-access
                            :cancel-text (tr "not-found.no-permission.go-dashboard")
                            :on-close on-close}]
@@ -284,7 +293,7 @@
       [:> request-dialog* {:title (tr "not-found.no-permission.project")
                            :content [(tr "not-found.no-permission.you-can-ask.project")
                                      (tr "not-found.no-permission.if-approves")]
-                           :button-text (tr "not-found.no-permission.ask")
+                           :button-text (tr "ds.access.ask")
                            :on-button-click on-request-access
                            :cancel-text (tr "not-found.no-permission.go-dashboard")
                            :on-close on-close}])))
@@ -300,20 +309,22 @@
   (let [handle-retry
         (mf/use-fn
          (fn [] (st/emit! (rt/assign-exception nil))))]
-    [:> error-container* {:code "502"}
+    [:> error-container* {:code "502"
+                          :actions (mf/html
+                                    [:> sbtn/button* {:variant "primary" :on-click handle-retry}
+                                     (tr "labels.retry")])}
      [:div {:class (stl/css :main-message)} (tr "ds.error.unavailable.title")]
-     [:div {:class (stl/css :desc-message)} (tr "ds.error.unavailable.text")]
-     [:div {:class (stl/css :sign-info)}
-      [:> sbtn/button* {:variant "primary" :size "lg" :on-click handle-retry} (tr "labels.retry")]]]))
+     [:div {:class (stl/css :desc-message)} (tr "ds.error.unavailable.text")]]))
 
 (mf/defc service-unavailable*
   []
   (let [on-click (mf/use-fn #(st/emit! (rt/assign-exception nil)))]
-    [:> error-container* {:code "503"}
+    [:> error-container* {:code "503"
+                          :actions (mf/html
+                                    [:> sbtn/button* {:variant "primary" :on-click on-click}
+                                     (tr "labels.retry")])}
      [:div {:class (stl/css :main-message)} (tr "ds.error.unavailable.title")]
-     [:div {:class (stl/css :desc-message)} (tr "ds.error.unavailable.text")]
-     [:div {:class (stl/css :sign-info)}
-      [:> sbtn/button* {:variant "primary" :size "lg" :on-click on-click} (tr "labels.retry")]]]))
+     [:div {:class (stl/css :desc-message)} (tr "ds.error.unavailable.text")]]))
 
 (mf/defc nitrate-unavailable*
   []
@@ -349,12 +360,11 @@
 (mf/defc webgl-context-lost*
   []
   (let [on-reload (mf/use-fn #(js/location.reload))]
-    [:> error-container* {}
+    [:> error-container* {:actions (mf/html
+                                    [:> sbtn/button* {:variant "primary" :on-click on-reload}
+                                     (tr "labels.reload-page")])}
      [:div {:class (stl/css :main-message)} (tr "errors.webgl-context-lost.main-message")]
-     [:div {:class (stl/css :desc-message)} (tr "errors.webgl-context-lost.desc-message")]
-     [:div {:class (stl/css :buttons-container)}
-      [:> sbtn/button* {:variant "primary" :size "lg" :on-click on-reload}
-       (tr "labels.reload-page")]]]))
+     [:div {:class (stl/css :desc-message)} (tr "errors.webgl-context-lost.desc-message")]]))
 
 (mf/defc internal-error*
   [{:keys [on-reset report] :as props}]
@@ -390,26 +400,26 @@
           (fn []
             (wapi/revoke-uri uri)))))
 
-    [:> error-container* {:code "500"}
+    [:> error-container* {:code "500"
+                          :actions (mf/html
+                                    [:*
+                                     [:> sbtn/button* {:variant "secondary"
+                                                       :type "button"
+                                                       :class (stl/css :support-btn)
+                                                       :on-click support-contact-click}
+                                      (tr "labels.contact-support")]
+                                     [:> sbtn/button* {:variant "primary"
+                                                       :type "button"
+                                                       :class (stl/css :retry-btn)
+                                                       :on-click on-reset}
+                                      (tr "labels.retry")]])}
      [:div {:class (stl/css :main-message)} (tr "ds.error.500.title")]
 
      [:div {:class (stl/css :desc-message)}
       [:p {:class (stl/css :desc-text)} (tr "ds.error.500.text")]]
 
      (when (some? report)
-       [:a {:class (stl/css :download-link) :on-click on-download} (tr "labels.download" "report.txt")])
-
-     [:div {:class (stl/css :buttons-container)}
-      [:> sbtn/button* {:variant "secondary"
-                        :size "lg"
-                        :type "button"
-                        :class (stl/css :support-btn)
-                        :on-click support-contact-click} (tr "labels.contact-support")]
-      [:> sbtn/button* {:variant "primary"
-                        :size "lg"
-                        :type "button"
-                        :class (stl/css :retry-btn)
-                        :on-click on-reset} (tr "labels.retry")]]]))
+       [:a {:class (stl/css :download-link) :on-click on-download} (tr "labels.download" "report.txt")])]))
 
 (defn- load-info
   "Load exception page info"
@@ -439,48 +449,48 @@
                        (rx/of default)
                        (rx/throw cause)))))))
 
+;; Design Studio (P3-A): what stands behind the sign-in and the
+;; request-access dialogs is a light outline of the page the link points
+;; to (editor, viewer or dashboard) with our mark. Upstream drew Penpot's
+;; dark sidebar, its viewer header and a file named "Penpot file" there,
+;; for a member who cannot open the page anyway.
 (mf/defc context-wrapper*
-  [{:keys [is-workspace is-dashboard is-viewer profile children]}]
+  [{:keys [is-workspace is-dashboard is-viewer children]}]
   [:*
    (cond
      is-workspace
-     [:div {:class (stl/css :workspace)}
+     [:div {:class (stl/css :workspace)
+            :data-testid "ds-outline-workspace"}
       [:div {:class (stl/css :workspace-left)}
-       [:> raw-svg* {:id "penpot-logo-icon"}]
-       [:div
-        [:div {:class (stl/css :project-name)} (tr "not-found.no-permission.project-name")]
-        [:div {:class (stl/css :file-name)} (tr "not-found.no-permission.penpot-file")]]]
+       [:> logo-mark* {:size 28}]
+       [:div {:class (stl/css :outline-lines) :aria-hidden true}
+        [:div {:class (stl/css :outline-line-short)}]
+        [:div {:class (stl/css :outline-line)}]]]
       [:div {:class (stl/css :workspace-right)}]]
 
      is-viewer
-     [:div {:class (stl/css :viewer)}
-      ;; FIXME: the viewer header was never designed to be reused
-      ;; from other parts of the application, and this code looks
-      ;; like a fast workaround reusing it as-is without a proper
-      ;; component adaptation for be able to use it easily it on
-      ;; viewer context or static error page context
-      [:& viewer.header/header {:project
-                                {:name (tr "not-found.no-permission.project-name")}
-                                :index 0
-                                :file {:name (tr "not-found.no-permission.penpot-file")}
-                                :page nil
-                                :frame nil
-                                :permissions {:is-logged true}
-                                :zoom 1
-                                :section :interactions
-                                :shown-thumbnails false
-                                :interactions-mode nil}]]
+     [:div {:class (stl/css :viewer)
+            :data-testid "ds-outline-viewer"}
+      [:div {:class (stl/css :viewer-island)}
+       [:> logo-mark* {:size 28}]
+       [:div {:class (stl/css :outline-lines) :aria-hidden true}
+        [:div {:class (stl/css :outline-line-short)}]
+        [:div {:class (stl/css :outline-line)}]]]]
 
      is-dashboard
-     [:div {:class (stl/css :dashboard)}
+     [:div {:class (stl/css :dashboard)
+            :data-testid "ds-outline-dashboard"}
       [:div {:class (stl/css :dashboard-sidebar)}
-       [:> sidebar*
-        {:team nil
-         :projects []
-         :project (:default-project-id profile)
-         :profile profile
-         :section :dashboard-projects
-         :search-term ""}]]])
+       [:> logo* {:size "sm"}]
+       [:div {:class (stl/css :outline-lines :outline-nav) :aria-hidden true}
+        [:div {:class (stl/css :outline-line)}]
+        [:div {:class (stl/css :outline-line-short)}]
+        [:div {:class (stl/css :outline-line)}]]]]
+
+     ;; Signed out, the route has no page yet: a plain light ground (it
+     ;; was the dark page background).
+     :else
+     [:div {:class (stl/css :outline-plain)}])
 
    children])
 

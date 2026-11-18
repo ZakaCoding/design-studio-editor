@@ -67,21 +67,26 @@
   justify-items: center;
   inline-size: 100%;
 
+  // The title type of the dashboard (Funnel Display, semibold).
   [class~="main_ui_static__main-message"] {
-    @include ds.type("title");
+    @include ds.type("display");
 
     color: ds.token("text-primary");
-    font-family: ds.token("font-display");
-    font-size: 1.75rem;
-    line-height: 1.2;
+    font-size: 1.5rem;
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-wrap: balance;
   }
 
   [class~="main_ui_static__desc-message"],
   [class~="main_ui_static__desc-text"] {
-    @include ds.type("body");
+    @include ds.type("body-lg");
 
     margin: 0;
+    line-height: 1.5;
     color: ds.token("text-secondary");
+    text-wrap: balance;
   }
 
   [class~="main_ui_static__download-link"] {
@@ -102,9 +107,45 @@
   }
 }
 
-.home {
+// One row: the way back and the page's own action (Retry, Reload…). The
+// pills of the dashboard: black for the main action, soft for the other.
+.actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: ds.token("space-8");
   justify-content: center;
+  margin-block-start: ds.token("space-8");
+}
+
+// `.card .actions`: one class more than the DS button's own variant rules,
+// whatever the order of the two stylesheets in the bundle.
+.card .actions {
+  [class~="main_ui_studio_ds_button__button"] {
+    block-size: 40px;
+    padding: 0 ds.token("space-20");
+    border: 0;
+    font-weight: ds.token("weight-semibold");
+  }
+
+  [class~="main_ui_studio_ds_button__variant-primary"] {
+    background: ds.token("bg-inverse");
+    color: ds.token("text-on-accent");
+
+    &:hover {
+      background: ds.token("text-body");
+      color: ds.token("text-on-accent");
+    }
+  }
+
+  [class~="main_ui_studio_ds_button__variant-secondary"] {
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+
+    &:hover {
+      background: ds.token("border-default");
+      color: ds.token("text-primary");
+    }
+  }
 }
 
 .credit {

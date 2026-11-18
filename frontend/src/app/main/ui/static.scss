@@ -214,59 +214,95 @@
   text-align: center;
 }
 
-.workspace {
-  inline-size: 100%;
-  block-size: 100%;
-  display: flex;
-  justify-content: space-between;
-  background-color: var(--color-canvas);
-  position: relative;
-}
-
-.workspace .workspace-left,
-.workspace .workspace-right {
-  padding: var(--sp-m);
-  inline-size: px2rem(276);
-  block-size: 100%;
-  background-color: var(--color-background-primary);
-  display: flex;
-  gap: var(--sp-xs);
-
-  svg {
-    inline-size: 2rem;
-    block-size: 2rem;
-    fill: var(--color-foreground-primary);
-  }
-}
-
-.workspace .workspace-left .project-name,
-.workspace .workspace-right .project-name {
-  @include t.use-typography("headline-small");
-
-  color: var(--color-foreground-secondary);
-}
-
-.workspace .workspace-left .file-name,
-.workspace .workspace-right .file-name {
-  @include t.use-typography("title-small");
-
-  color: var(--color-foreground-primary);
-  text-transform: none;
-}
-
+// Design Studio (P3-A): the light outline of the editor, the viewer or
+// the dashboard behind the sign-in and the request-access dialogs.
+.workspace,
+.viewer,
 .dashboard {
   inline-size: 100%;
   block-size: 100%;
+  position: relative;
+  display: flex;
+  font-family: var(--ds-font-text);
 }
 
-.dashboard .dashboard-sidebar {
-  inline-size: px2rem(300);
+.workspace,
+.viewer {
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--ds-space-panel-edge);
+  background-color: var(--ds-bg-canvas);
+}
+
+.workspace-left,
+.workspace-right,
+.viewer-island {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-12);
+  padding: var(--ds-space-12);
+  border: $b-1 solid var(--ds-border-default);
+  border-radius: var(--ds-radius-panel);
+  background-color: var(--ds-bg-panel);
+  box-shadow: var(--ds-elevation-panel);
+}
+
+.workspace-left,
+.workspace-right {
+  inline-size: px2rem(264);
   block-size: 100%;
 }
 
-.viewer {
+.viewer-island {
+  align-items: center;
+  inline-size: px2rem(220);
+}
+
+.dashboard {
+  background-color: var(--ds-bg-panel);
+}
+
+.dashboard-sidebar {
+  box-sizing: border-box;
+  inline-size: px2rem(248);
+  block-size: 100%;
+  padding: var(--ds-space-24) var(--ds-space-24) 0;
+  background-color: var(--ds-bg-subtle);
+}
+
+.outline-plain {
   inline-size: 100%;
   block-size: 100%;
+  background-color: var(--ds-bg-canvas);
+}
+
+.outline-lines {
+  display: grid;
+  gap: var(--ds-space-8);
+  padding-block-start: var(--sp-xs);
+}
+
+.outline-nav {
+  gap: var(--ds-space-20);
+  padding-block-start: px2rem(44);
+}
+
+.outline-line,
+.outline-line-short {
+  block-size: px2rem(8);
+  inline-size: px2rem(128);
+  border-radius: var(--ds-radius-pill);
+  background-color: var(--ds-border-strong);
+}
+
+.outline-line-short {
+  inline-size: px2rem(72);
+  background-color: var(--ds-border-default);
+}
+
+.outline-nav .outline-line-short {
+  background-color: var(--ds-border-strong);
 }
 
 // TODO: `.login-container` appears unused in CLJS — verify before removal
@@ -282,64 +318,144 @@
   inset-block-start: 0;
   inset-inline-start: 0;
   z-index: 100;
-  background-color: rgb(0 0 0 / 0.65);
+
+  // Design Studio (P3-A): the scrim of the DS dialogs (it was 65% black).
+  background-color: var(--ds-overlay-scrim);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+// Design Studio (P3-A): the request-access dialogs ("You don't have access
+// to this file", "Request sent"…) in the dialog look of the dashboard.
+.overlay-request {
+  background-color: var(--ds-overlay-scrim);
+  padding: var(--ds-space-16);
+}
+
 .overlay .dialog,
 .overlay .dialog-login {
-  inline-size: 556px;
-  background-color: var(--color-background-primary);
-  border-radius: $br-8;
+  box-sizing: border-box;
+  inline-size: min(100%, px2rem(440));
+  background-color: var(--ds-bg-panel);
+  border: $b-1 solid var(--ds-border-default);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-elevation-popover);
   display: flex;
   flex-direction: column;
   align-content: stretch;
-  padding: $sz-36;
-  color: var(--color-foreground-secondary);
+  gap: var(--ds-space-8);
+  padding: var(--ds-space-24);
+  color: var(--ds-text-secondary);
+  font-family: var(--ds-font-text);
+  -webkit-font-smoothing: antialiased;
   position: relative;
 }
 
 .modal-close {
   position: absolute;
-  inset-block-start: $sz-16;
-  inset-inline-end: $sz-16;
+  inset-block-start: var(--ds-space-16);
+  inset-inline-end: var(--ds-space-16);
+  display: grid;
+  place-items: center;
+  inline-size: $sz-32;
+  block-size: $sz-32;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-control);
+  background: none;
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+
+  svg {
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  &:hover {
+    background-color: var(--ds-bg-subtle);
+    color: var(--ds-text-primary);
+  }
+
+  &:focus-visible {
+    outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+    outline-offset: 2px;
+  }
 }
 
 .overlay .dialog .dialog-title,
 .overlay .dialog-login .dialog-title {
-  font-size: 1.25rem;
+  margin: 0;
+  padding-inline-end: $sz-40;
+  font-family: var(--ds-font-text);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--ds-text-primary);
+}
+
+.dialog-text {
+  margin: 0;
+  font-family: var(--ds-font-text);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ds-text-secondary);
 }
 
 .overlay .dialog .sign-info,
 .overlay .dialog-login .sign-info {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
-  margin-block-start: var(--sp-xxxl);
+  gap: var(--ds-space-8);
+  margin-block-start: var(--ds-space-16);
 }
 
-.overlay .dialog .sign-info,
-.overlay .dialog-login .sign-info {
-  .cancel-button {
-    background: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: $br-8;
-    background-color: var(--color-background-tertiary);
-    border: $b-1 solid var(--color-background-tertiary);
-    color: var(--color-foreground-secondary);
-    padding: var(--sp-s) var(--sp-l);
-    font-size: 0.688rem;
-    text-transform: uppercase;
-    margin-inline-end: var(--sp-l);
+.cancel-button,
+.accept-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: px2rem(36);
+  margin: 0;
+  padding: 0 px2rem(18);
+  border: 0;
+  border-radius: var(--ds-radius-button);
+  font-family: var(--ds-font-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--ds-focus-ring-width) solid var(--ds-focus-ring-color);
+    outline-offset: 2px;
   }
 }
 
-.overlay .dialog {
-  gap: var(--sp-m);
+.cancel-button {
+  background-color: var(--ds-bg-subtle);
+  color: var(--ds-text-primary);
+
+  &:hover {
+    background-color: var(--ds-border-default);
+  }
+}
+
+.accept-button {
+  background-color: var(--ds-bg-inverse);
+  color: var(--ds-text-on-accent);
+
+  &:hover {
+    background-color: var(--ds-text-body);
+  }
 }
 
 .overlay .login {
