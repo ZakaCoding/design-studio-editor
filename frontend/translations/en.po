@@ -11522,3 +11522,8 @@ msgstr "Open in the editor"
 
 msgid "ds.viewer.inspect.image-fill"
 msgstr "Image fill"
+
+# Design Studio (P3 follow-ups)
+
+msgid "ds.auth.login.rate-limited"
+msgstr "Too many sign-in attempts. Wait a few minutes, then try again."

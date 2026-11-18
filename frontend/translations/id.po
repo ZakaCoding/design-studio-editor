@@ -8236,3 +8236,8 @@ msgstr "Buka di editor"
 
 msgid "ds.viewer.inspect.image-fill"
 msgstr "Isi gambar"
+
+# Design Studio (P3 follow-ups)
+
+msgid "ds.auth.login.rate-limited"
+msgstr "Terlalu banyak percobaan masuk. Tunggu beberapa menit, lalu coba lagi."
