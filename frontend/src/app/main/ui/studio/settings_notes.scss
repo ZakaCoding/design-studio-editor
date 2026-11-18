@@ -1,25 +1,35 @@
-@use "common/refactor/common-refactor" as *;
+// Design Studio (WP4; P3-A look): the notes of the Password and Profile
+// pages.
 
+@use "studio/ds" as ds;
+
+// What the password is: a quiet DS note over the form.
 .note {
-  max-width: $s-500;
-  margin: 0 0 $s-24;
-  padding: $s-12 $s-16;
-  border: $s-1 solid var(--color-background-quaternary);
-  border-radius: $s-8;
-  color: var(--color-foreground-secondary);
-  font-size: $fs-14;
+  box-sizing: border-box;
+  max-inline-size: 440px;
+  margin: 0 0 ds.token("space-24");
+  padding: ds.token("space-12") ds.token("space-16");
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-subtle");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-13");
   line-height: 1.55;
+  color: ds.token("text-body");
 }
 
+// Under the email field: "To change your email, write to hello@…".
 .email-note {
   margin: 0;
-  color: var(--color-foreground-secondary);
-  font-size: $fs-12;
-  line-height: 1.55;
-  text-align: end;
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  line-height: 1.5;
+  text-align: start;
+  color: ds.token("text-secondary");
 
   a {
-    color: var(--color-accent-primary);
+    font-weight: ds.token("weight-medium");
+    color: ds.token("accent-default");
     text-decoration: underline;
+    text-underline-offset: 2px;
   }
 }
