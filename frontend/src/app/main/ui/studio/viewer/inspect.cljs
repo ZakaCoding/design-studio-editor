@@ -18,6 +18,7 @@
    [app.common.geom.shapes :as gsh]
    [app.common.types.shape-tree :as ctst]
    [app.main.data.exports.assets :as de]
+   [app.main.fonts :as fonts]
    [app.main.store :as st]
    [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.inspect.styles :refer [styles-tab*]]
@@ -73,7 +74,10 @@
   (when (some? node)
     (let [size   (d/parse-double (:font-size node))
           height (d/parse-double (:line-height node))
-          family (:font-family node)
+          ;; The name people know ("Source Sans Pro"), not the font id
+          ;; ("sourcesanspro") that Penpot stores as the family (P3-B).
+          family (or (some-> (:font-id node) fonts/get-font-data :name)
+                     (:font-family node))
           weight (:font-weight node)]
       (str family
            (when weight (str " " weight))
@@ -87,9 +91,14 @@
   (let [node (or (text-node shape) shape)
         fill (first (or (seq (:fills node)) (:fills shape)))
         hex  (:fill-color fill)]
-    (when (string? hex)
+    (cond
+      (string? hex)
       {:hex (.toUpperCase hex)
-       :token (get-in shape [:applied-tokens :fill])})))
+       :token (get-in shape [:applied-tokens :fill])}
+
+      ;; An image fill has no colour to name; the row says so (P3-B).
+      (some? (:fill-image fill))
+      {:image true})))
 
 (defn stroke-text
   [shape]
@@ -218,10 +227,13 @@
     [:div {:class (stl/css :style)}
      (when (some? fill)
        [:div {:class (stl/css :fill)}
-        [:span {:class (stl/css :swatch)
+        [:span {:class (stl/css-case :swatch true
+                                     :swatch-image (:image fill))
                 :style {:background-color (:hex fill)}}]
         [:span {:class (stl/css :fill-name)}
-         (or (:token fill) (:hex fill))]
+         (if (:image fill)
+           (tr "ds.viewer.inspect.image-fill")
+           (or (:token fill) (:hex fill)))]
         (when (some? (:token fill))
           [:span {:class (stl/css :fill-hex)} (:hex fill)])])
      (for [line lines]
@@ -322,7 +334,9 @@
                (map (d/getf objects))))
 
         css (mf/with-memo [shapes* all-children objects]
-              (-> (cg/generate-style-code objects "css" shapes* all-children)
+              ;; Without Penpot's page prelude (`html, body { … }`): the
+              ;; box shows the layer's own rule first, as on F1 · 11 (P3-B).
+              (-> (cg/generate-style-code objects "css" shapes* all-children {:with-prelude? false})
                   (cb/format-code "css")))
         svg (mf/with-memo [shapes* objects]
               (cg/generate-formatted-markup-code objects "svg" shapes*))
