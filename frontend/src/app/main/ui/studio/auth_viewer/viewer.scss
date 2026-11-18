@@ -611,6 +611,12 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     @include ds.type("body-lg");
 
     color: ds.token("text-secondary");
+
+    > span {
+      padding: 14px 22px;
+      border: 1px dashed ds.token("border-strong");
+      border-radius: ds.token("radius-card");
+    }
   }
 
   // The scrim behind the open strip covers the whole window (it stopped
@@ -750,6 +756,18 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{-v("inspect-layout")} #{-v("viewer-bottom")} {
     inline-size: calc(100% - 320px - 24px);
+  }
+
+  #{-v("inspect-layout")} #{-v("viewer-bottom")}#{-v("left-bar")} {
+    inset-inline-start: calc(240px + 12px);
+    inline-size: calc(100% - 240px - 12px - 320px - 24px);
+  }
+
+  // Selection and distances in the DS colours (F1 · 11: accent outline,
+  // `guide.measure` pink for the distances).
+  [id="inspect-svg-wrapper"] {
+    --color-accent-tertiary: #{ds.token("accent-default")};
+    --color-accent-quaternary: #{ds.token("guide-measure")};
   }
 }
 
@@ -1111,8 +1129,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   #{-s("subtitle")} {
-    inline-size: 128px;
-    block-size: 36px;
+    flex: none;
+    inline-size: 150px;
+    min-block-size: 36px;
+    block-size: auto;
+    padding-inline-end: 12px;
   }
 
   #{-s("items")},
