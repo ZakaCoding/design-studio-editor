@@ -42,7 +42,6 @@
      [:div {:class (stl/css :content)} children]
      [:div {:class (stl/css :actions)}
       [:> button* {:variant (if primary-home? "primary" "secondary")
-                   :class (stl/css :home)
                    :on-click on-home}
        (tr "ds.error.home")]
       actions]]]

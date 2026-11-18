@@ -115,7 +115,11 @@
   gap: ds.token("space-8");
   justify-content: center;
   margin-block-start: ds.token("space-8");
+}
 
+// `.card .actions`: one class more than the DS button's own variant rules,
+// whatever the order of the two stylesheets in the bundle.
+.card .actions {
   [class~="main_ui_studio_ds_button__button"] {
     block-size: 40px;
     padding: 0 ds.token("space-20");
@@ -142,10 +146,6 @@
       color: ds.token("text-primary");
     }
   }
-}
-
-.home {
-  order: 0;
 }
 
 .credit {

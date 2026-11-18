@@ -907,6 +907,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
     #{-any("field-label")} {
       display: block;
+      block-size: auto;
       margin-block-end: ds.token("space-8");
     }
 
@@ -1174,6 +1175,21 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{ws.on("main_ui_settings_delete_account__modal-container")} #{-any("warning-notice")} {
     margin: 0;
+  }
+
+  // The same note in the MCP key and token windows (another upstream
+  // component).
+  #{-any("modal-container")}
+    #{ws.on("main_ui_ds_notifications_shared_notification_pill__notification-pill")} {
+    padding: 10px ds.token("space-12");
+    border: 0;
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-body");
+
+    #{ws.on("main_ui_ds_notifications_shared_notification_pill__icon")} {
+      color: ds.token("text-secondary");
+    }
   }
 }
 
