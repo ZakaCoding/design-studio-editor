@@ -188,7 +188,11 @@
        :on-fullscreen toggle-fullscreen}]
 
      (when (:in-team permissions)
+       ;; Design Studio (P3-B): the pencil says what it does.
        [:span {:on-click go-to-workspace
+               :title (tr "ds.viewer.open-editor")
+               :role "button"
+               :aria-label (tr "ds.viewer.open-editor")
                :class (stl/css :edit-btn)}
         deprecated-icon/curve])
 
@@ -203,9 +207,12 @@
                  :class (stl/css :share-btn)}
         (tr "labels.share")])
 
+     ;; Design Studio (P3-B): "Sign in", the word of our sign-in screens
+     ;; (sign-up is a link inside that dialog).
      (when-not (:is-logged permissions)
        [:span {:on-click open-login-dialog
-               :class (stl/css :go-log-btn)} (tr "labels.log-or-sign")])]))
+               :role "button"
+               :class (stl/css :go-log-btn)} (tr "ds.signin.submit")])]))
 
 (mf/defc header-sitemap
   [{:keys [project file page frame index toggle-thumbnails] :as props}]

@@ -26,6 +26,7 @@
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
    [app.main.ui.modal :refer [modal-container*]]
+   [app.main.ui.studio.auth-viewer.scope :as scope]
    [app.main.ui.viewer.comments :refer [comments-layer comments-sidebar*]]
    [app.main.ui.viewer.header :as header]
    [app.main.ui.viewer.inspect :as inspect]
@@ -624,6 +625,10 @@
 
 (mf/defc viewer*
   [{:keys [file-id share-id page-id] :as props}]
+  ;; Design Studio (P3-B): light theme and the `ds-viewer` scope for the
+  ;; viewer, its menus, comments and dialogs.
+  (scope/use-scope "ds-viewer")
+
   (mf/with-effect [file-id page-id share-id]
     (let [params {:file-id file-id
                   :page-id page-id

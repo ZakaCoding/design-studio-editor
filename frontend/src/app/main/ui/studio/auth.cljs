@@ -17,6 +17,7 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
+   [app.main.ui.studio.auth-viewer.scope :as scope]
    [app.main.ui.studio.ds :as sds]
    [app.util.dom :as dom]
    [app.util.forms :as uf]
@@ -75,6 +76,7 @@
 ;; Classes for upstream components that take a `:class` (form, link).
 (def form-class (stl/css :form))
 (def link-class (stl/css :link))
+(def links-class (stl/css :links))
 
 ;; --- Brand
 
@@ -206,12 +208,17 @@
              [:li {:key option} option])])])]))
 
 ;; Primary button. Disabled while the form is invalid, as `fm/submit-button*`.
+;; `busy` only draws the spinner while the request is on its way (P3-B): the
+;; button itself behaves as before.
 (mf/defc submit*
-  [{:keys [label data-testid on-click]}]
+  [{:keys [label data-testid on-click busy]}]
   [:> fm/submit-button* {:label label
                          :data-testid data-testid
                          :on-click on-click
-                         :class (stl/css :button :button-primary)}])
+                         :aria-busy (when (true? busy) "true")
+                         :class (stl/css-case :button true
+                                              :button-primary true
+                                              :button-busy (true? busy))}])
 
 (mf/defc sso-button*
   [{:keys [label on-click]}]
@@ -221,19 +228,38 @@
             :on-click on-click}
    label])
 
-;; Open sign-up: a plain link to our sign-up form. Closed: say so.
+;; Open sign-up: a link to our sign-up form, in a row of its own under the
+;; form so a newcomer sees it (P3-B). Closed: say so, in the same place.
 (mf/defc signup-row*
   []
   (if (registration-open?)
     [:p {:class (stl/css :signup)}
-     (tr "ds.signin.no-account")
-     " "
-     [:a {:class (stl/css :link)
+     [:span {:class (stl/css :signup-text)}
+      (tr "ds.signin.no-account")]
+     [:a {:class (stl/css :signup-link)
           :href (signup-href)
           :data-testid "register-submit"}
-      (tr "ds.signin.signup")]]
+      (tr "ds.signin.signup")
+      [:svg {:viewBox "0 0 16 16"
+             :aria-hidden "true"}
+       [:path {:d "M3.5 8h9m-3.5-3.5L12.5 8 9 11.5"}]]]]
     [:> note* {:data-testid "ds-signup-closed"}
      (tr "ds.signin.closed")]))
+
+;; --- Mail sent (F1 · 09 "Cek email kamu")
+
+(mf/defc sent*
+  [{:keys [title text children]}]
+  [:div {:class (stl/css :page)
+         :data-testid "ds-auth-sent"}
+   [:span {:class (stl/css :state-icon :state-icon-accent)
+           :aria-hidden "true"}
+    [:svg {:viewBox "0 0 24 24"}
+     [:rect {:x "3" :y "5" :width "18" :height "14" :rx "3"}]
+     [:path {:d "m4 7.5 8 6 8-6"}]]]
+   [:h1 {:class (stl/css :title)} title]
+   [:p {:class (stl/css :body)} text]
+   children])
 
 ;; --- Used link (F1 · 09 "Link sudah dipakai")
 
@@ -326,6 +352,10 @@
   (let [locale (mf/deref i18n/locale)
         leave? (and (true? leave-to-signup)
                     (registration-open?))]
+
+    ;; Light theme and the `ds-auth` scope for what Penpot draws here
+    ;; (toasts, the register form while sign-up is closed).
+    (scope/use-scope "ds-auth")
 
     (mf/with-effect []
       (when-let [value (lang-param)]

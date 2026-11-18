@@ -86,32 +86,57 @@
 
 ;; --- Recovery Request Page
 
+;; Design Studio (P3-B): the answer to a reset request. `on-back` and
+;; `on-again` are optional links under it.
+(mf/defc recovery-sent-page*
+  [{:keys [email on-back on-again]}]
+  [:> sa/scope* {}
+   [:> sa/sent* {:title (tr "ds.recovery.sent.title")
+                 :text (tr "ds.recovery.sent.text" email)}
+    [:> sa/note* {} (tr "ds.recovery.sent.hint")]
+    (when (or (fn? on-back) (fn? on-again))
+      [:div {:class sa/links-class}
+       (when (fn? on-back)
+         [:> lk/link* {:action on-back
+                       :class sa/link-class
+                       :data-testid "go-back-link"}
+          (tr "ds.auth.back-to-sign-in")])
+       (when (fn? on-again)
+         [:> lk/link* {:action on-again
+                       :class sa/link-class
+                       :data-testid "ds-reset-again"}
+          (tr "ds.recovery.sent.again")])])]])
+
 (mf/defc recovery-request-page*
   [{:keys [params on-success-callback go-back-callback]}]
   (let [default-go-back #(st/emit! (rt/nav :auth-login))
-        go-back (or go-back-callback default-go-back)]
+        go-back (or go-back-callback default-go-back)
+
+        ;; Design Studio (P3-B): on the page itself the answer replaces the
+        ;; form ("Check your email"), as it already did in the viewer's
+        ;; dialog, instead of a toast over an emptied form. Same request.
+        sent*    (mf/use-state nil)
+        sent     (deref sent*)
+        on-sent  (mf/use-fn #(reset! sent* %))
+        on-again (mf/use-fn #(reset! sent* nil))
+        on-success-callback (or on-success-callback on-sent)]
     ;; Design Studio (WP5): F1 · 09 "Lupa password". For 15 minutes after a
     ;; profile changes Penpot sends no reset mail and answers as if it had
     ;; (ADR 0017), so with open sign-up the screen says so.
-    [:> sa/scope* {}
-     [:> sa/page* {:title (tr "ds.auth.reset.title")
-                   :subtitle (tr "ds.auth.reset.subtitle")}
-      [:> recovery-form* {:params params :on-success-callback on-success-callback}]
-      (when (sa/registration-open?)
-        [:> sa/note* {:level "warning"
-                      :data-testid "ds-reset-wait"}
-         (tr "ds.auth.reset.wait-note")])
-      [:div
-       [:> lk/link* {:action go-back
-                     :class sa/link-class
-                     :data-testid "go-back-link"}
-        (tr "ds.auth.back-to-sign-in")]]]]))
-
-
-(mf/defc recovery-sent-page*
-  [{:keys [email]}]
-  ;; Design Studio (WP5): same message in our markup.
-  [:> sa/scope* {}
-   [:> sa/page* {:title (tr "ds.recovery.sent.title")
-                 :subtitle (tr "ds.recovery.sent.text" email)}
-    [:> sa/note* {} (tr "ds.recovery.sent.hint")]]])
+    (if (some? sent)
+      [:> recovery-sent-page* {:email sent
+                               :on-back go-back
+                               :on-again on-again}]
+      [:> sa/scope* {}
+       [:> sa/page* {:title (tr "ds.auth.reset.title")
+                     :subtitle (tr "ds.auth.reset.subtitle")}
+        [:> recovery-form* {:params params :on-success-callback on-success-callback}]
+        (when (sa/registration-open?)
+          [:> sa/note* {:level "warning"
+                        :data-testid "ds-reset-wait"}
+           (tr "ds.auth.reset.wait-note")])
+        [:div
+         [:> lk/link* {:action go-back
+                       :class sa/link-class
+                       :data-testid "go-back-link"}
+          (tr "ds.auth.back-to-sign-in")]]]])))

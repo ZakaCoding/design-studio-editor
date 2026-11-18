@@ -12,6 +12,7 @@
    [app.main.store :as st]
    [app.main.ui.auth.login :refer [login-dialog*]]
    [app.main.ui.auth.recovery-request :refer [recovery-request-page* recovery-sent-page*]]
+   [app.main.ui.components.link :as lk]
    [app.main.ui.studio.auth :as sa]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
@@ -58,10 +59,17 @@
        (case current-section
          :login
          [:> sa/page* {:title (tr "ds.auth.modal.title")
-                       :subtitle (tr "ds.signin.modal.tagline")}
+                       :subtitle (tr "ds.viewer.login.tagline")}
           [:> login-dialog* {:on-recovery-request set-section-recovery
                              :on-success-callback success-login
                              :origin :viewer}]
+          ;; Design Studio (P3-B): Penpot's dialog had this link under its
+          ;; form; without it the reset section below could not be reached.
+          [:div
+           [:> lk/link* {:action set-section-recovery
+                         :class sa/link-class
+                         :data-testid "forgot-password"}
+            (tr "ds.signin.forgot")]]
           [:> sa/signup-row* {}]]
 
          :recovery-request
@@ -69,4 +77,5 @@
                                      :on-success-callback recovery-email-sent}]
 
          :recovery-email-sent
-         [:> recovery-sent-page* {:email @user-email}])]]]))
+         [:> recovery-sent-page* {:email @user-email
+                                  :on-back go-back-to-login}])]]]))
