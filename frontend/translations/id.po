@@ -8177,3 +8177,40 @@ msgstr "Tambah ke Draf"
 
 msgid "ds.shell.files.removed"
 msgstr "Dihapus permanen"
+
+# Design Studio (P3-A)
+msgid "ds.settings.profile.subtitle"
+msgstr "Nama, foto, dan email kamu."
+
+msgid "ds.settings.photo.title"
+msgstr "Foto profil"
+
+msgid "ds.settings.photo.hint"
+msgstr "JPG atau PNG. Tim kamu melihatnya di samping namamu."
+
+msgid "ds.settings.photo.change"
+msgstr "Ganti foto"
+
+msgid "ds.settings.delete.title"
+msgstr "Hapus akun"
+
+msgid "ds.settings.delete.text"
+msgstr "Proyek dan file kamu ikut terhapus. Tindakan ini tidak bisa dibatalkan."
+
+msgid "ds.settings.delete.action"
+msgstr "Hapus akun"
+
+msgid "ds.settings.password.subtitle"
+msgstr "Ganti kata sandi akunmu."
+
+msgid "ds.settings.options.subtitle"
+msgstr "Pilih bahasa dan tampilan editor."
+
+msgid "ds.settings.notifications.subtitle"
+msgstr "Pilih kabar yang kami kirim, di sini dan lewat email."
+
+msgid "ds.plans.current"
+msgstr "Paket kamu"
+
+msgid "ds.feedback.email-text"
+msgstr "Tulis ke kami lewat email, kami balas secepatnya."

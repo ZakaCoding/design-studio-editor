@@ -19,6 +19,7 @@
    [app.main.ui.ds.foundations.assets.icon :as i :refer [icon*]]
    [app.main.ui.studio.guard :refer [guard*]]
    [app.main.ui.studio.settings-notes :refer [email-note*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
    [app.main.ui.studio.shell-state :as ds-state]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
@@ -88,11 +89,19 @@
        :disabled (empty? (:touched @form))
        :class (stl/css :btn-primary)}]
 
-     [:div {:class (stl/css :links)}
+     ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): deleting the account is
+     ;; its own block at the foot of the page; same dialog, same test id.
+     [:div {:class (stl/css :links)
+            :data-ds-settings "danger"}
       [:div {:class (stl/css :link-item)}
+       [:div {:data-ds-settings "danger-text"}
+        [:h3 (tr "ds.settings.delete.title")]
+        [:p (tr "ds.settings.delete.text")]]
        [:a {:on-click on-show-delete-account
+            :role "button"
+            :tab-index 0
             :data-testid "remove-acount-btn"}
-        (tr "dashboard.remove-account")]]]]))
+        (tr "ds.settings.delete.action")]]]]))
 
 ;; --- Profile Photo Form
 
@@ -126,7 +135,8 @@
                        :accept-label (tr "labels.delete")
                        :on-accept (fn [_] (st/emit! du/delete-photo))}))))]
 
-    [:form {:class (stl/css :avatar-form)}
+    [:form {:class (stl/css :avatar-form)
+            :data-ds-settings "photo"}
      [:div {:class (stl/css :image-change-field)}
       [:span {:class (stl/css :update-overlay)
               :on-click on-image-click} (tr "labels.update")]
@@ -143,7 +153,17 @@
                          :multi false
                          :ref input-ref
                          :on-selected on-file-selected
-                         :data-testid "profile-image-input"}]]]))
+                         :data-testid "profile-image-input"}]]
+     ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the photo is a small
+     ;; avatar with what it is and a button next to it (it was a 148 px
+     ;; disc with the action only on hover).
+     [:div {:data-ds-settings "photo-text"}
+      [:p {:data-ds-settings "photo-title"} (tr "ds.settings.photo.title")]
+      [:p {:data-ds-settings "photo-hint"} (tr "ds.settings.photo.hint")]]
+     [:button {:type "button"
+               :data-ds-settings "photo-button"
+               :on-click on-image-click}
+      (tr "ds.settings.photo.change")]]))
 
 ;; --- Profile Page
 
@@ -155,6 +175,8 @@
   [:section {:class (stl/css :dashboard-settings)
              :aria-labelledby "profile-section-title"}
    [:div {:class (stl/css :form-container)}
-    [:h2 {:id "profile-section-title"} (tr "labels.profile")]
+    [:> page-head* {:id "profile-section-title"
+                    :title (tr "labels.profile")
+                    :subtitle (tr "ds.settings.profile.subtitle")}]
     [:> profile-photo-form*]
     [:> profile-form*]]])

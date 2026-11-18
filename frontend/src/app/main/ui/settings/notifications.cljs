@@ -12,6 +12,7 @@
    [app.main.data.profile :as dp]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
+   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -49,7 +50,10 @@
                   :on-submit on-submit
                   :form form}
       [:div {:class (stl/css :form-container)}
-       [:h2 (tr "dashboard.settings.notifications.title")]
+       ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the page header of
+       ;; every Settings page.
+       [:> page-head* {:title (tr "labels.notifications")
+                       :subtitle (tr "ds.settings.notifications.subtitle")}]
        [:h3 (tr "dashboard.settings.notifications.dashboard.title")]
        [:h4 (tr "dashboard.settings.notifications.dashboard-comments.title")]
        [:div {:class (stl/css :fields-row)}

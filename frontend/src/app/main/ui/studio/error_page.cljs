@@ -23,8 +23,9 @@
 (mf/defc error-shell*
   "Props: `code` (\"404\", \"500\"... shown as a small label), `on-home`
   (go to the home page), `primary-home?` (the home button is the main
-  action, when the page has no other), `children` (message and actions)."
-  [{:keys [code on-home primary-home? children]}]
+  action, when the page has no other), `actions` (the page's own buttons,
+  in one row with the home button), `children` (the message)."
+  [{:keys [code on-home primary-home? actions children]}]
   [:section {:class (stl/css :page)
              :data-testid "ds-error-page"}
    [:header {:class (stl/css :top)}
@@ -39,11 +40,12 @@
      (when (some? code)
        [:span {:class (stl/css :code)} code])
      [:div {:class (stl/css :content)} children]
-     [:div {:class (stl/css :home)}
-      [:> button* {:variant (if primary-home? "primary" "ghost")
-                   :size "lg"
+     [:div {:class (stl/css :actions)}
+      [:> button* {:variant (if primary-home? "primary" "secondary")
+                   :class (stl/css :home)
                    :on-click on-home}
-       (tr "ds.error.home")]]]]
+       (tr "ds.error.home")]
+      actions]]]
 
    [:footer {:class (stl/css :credit)}
     [:span (tr "ds.error.built-on") " "

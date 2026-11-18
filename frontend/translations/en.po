@@ -11463,3 +11463,40 @@ msgstr "Add to Drafts"
 
 msgid "ds.shell.files.removed"
 msgstr "Removed for good"
+
+# Design Studio (P3-A)
+msgid "ds.settings.profile.subtitle"
+msgstr "Your name, photo and email."
+
+msgid "ds.settings.photo.title"
+msgstr "Profile photo"
+
+msgid "ds.settings.photo.hint"
+msgstr "JPG or PNG. Your team sees it next to your name."
+
+msgid "ds.settings.photo.change"
+msgstr "Change photo"
+
+msgid "ds.settings.delete.title"
+msgstr "Delete account"
+
+msgid "ds.settings.delete.text"
+msgstr "Your projects and files go with it. This cannot be undone."
+
+msgid "ds.settings.delete.action"
+msgstr "Delete account"
+
+msgid "ds.settings.password.subtitle"
+msgstr "Change the password of your account."
+
+msgid "ds.settings.options.subtitle"
+msgstr "Choose the language and the look of the editor."
+
+msgid "ds.settings.notifications.subtitle"
+msgstr "Choose what we tell you about, here and by email."
+
+msgid "ds.plans.current"
+msgstr "Your plan"
+
+msgid "ds.feedback.email-text"
+msgstr "Write to us by email and we answer as soon as we can."
