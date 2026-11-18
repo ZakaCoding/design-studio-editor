@@ -1,0 +1,180 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio auth polish (P3-B): Penpot's own register screens inside
+// our shell. They only show while sign-up is closed (an invitation); with
+// open sign-up those routes leave for /start/signup. Markup, form and rules
+// are Penpot's; this gives them the type, fields and buttons of sign in.
+// Rules live under `body.ds-auth` (set by `studio.auth-viewer.scope`); the
+// `--ds-*` values come from the shell (`studio/auth.scss`).
+
+$scope: ":global(body.ds-auth) main[data-ds-auth]";
+$text-tags: "h1, h2, p, span, a, div, label, button, input";
+
+@function -r($name) {
+  @return '[class~="main_ui_auth_register__#{$name}"]';
+}
+
+@function -f($name) {
+  @return '[class~="main_ui_components_forms__#{$name}"]';
+}
+
+#{$scope} {
+  :is([class*="main_ui_auth_register__"], [class*="main_ui_components_forms__"]),
+  :is([class*="main_ui_auth_register__"], [class*="main_ui_components_forms__"]) :is(#{$text-tags}) {
+    font-family: var(--ds-font-text);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  #{-r("wrapper")} {
+    gap: 16px;
+  }
+
+  #{-r("title")},
+  #{-r("register-success-title")} {
+    margin: 0;
+    color: var(--ds-text-primary);
+    font-family: var(--ds-font-display);
+    font-size: 2.125rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+  }
+
+  #{-r("subtitle")},
+  #{-r("tagline")} {
+    margin: 0;
+    color: var(--ds-text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  #{-r("form")} {
+    gap: 18px;
+    margin: 8px 0 0;
+  }
+
+  #{-f("input-label")} {
+    color: var(--ds-text-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  #{-f("input-and-icon")} {
+    margin-block-start: 8px;
+  }
+
+  #{-f("input-and-icon")} input {
+    block-size: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-bg-panel);
+    color: var(--ds-text-primary);
+    font-size: 0.875rem;
+    font-weight: 400;
+
+    &::placeholder {
+      color: var(--ds-text-placeholder);
+      opacity: 1;
+    }
+
+    &:focus,
+    &:focus-visible {
+      border-color: var(--ds-accent-default);
+      outline: 0;
+      box-shadow:
+        0 0 0 1px var(--ds-accent-default),
+        0 0 0 4px var(--ds-accent-subtle);
+    }
+  }
+
+  #{-f("hint")} {
+    margin-block-start: 6px;
+    color: var(--ds-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  #{-f("checkbox-label")} {
+    color: var(--ds-text-body);
+    font-size: 0.8125rem;
+  }
+
+  #{-r("form-submit-btn")} {
+    min-block-size: 44px;
+    block-size: 44px;
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-button);
+    background: var(--ds-accent-default);
+    color: var(--ds-text-on-accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    span {
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--ds-accent-text-strong);
+    }
+
+    &:disabled {
+      border-color: var(--ds-border-default);
+      background: var(--ds-border-default);
+      color: var(--ds-text-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  #{-r("go-back-link")} {
+    min-block-size: 44px;
+    block-size: 44px;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: var(--ds-radius-button);
+    background: var(--ds-bg-panel);
+    color: var(--ds-text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--ds-bg-subtle);
+      color: var(--ds-text-primary);
+    }
+  }
+
+  #{-r("separator")} {
+    border-color: var(--ds-border-default);
+  }
+
+  #{-r("account-text")},
+  #{-r("notification-text")} {
+    color: var(--ds-text-body);
+    font-size: 0.875rem;
+  }
+
+  #{-r("account-link")} {
+    color: var(--ds-accent-default);
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    &:hover {
+      color: var(--ds-accent-text-strong);
+    }
+  }
+
+  #{-r("notification-email")} {
+    margin-inline: 0;
+    color: var(--ds-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}

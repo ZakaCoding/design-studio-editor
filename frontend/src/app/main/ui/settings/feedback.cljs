@@ -127,7 +127,8 @@
       [:p {:class (stl/css :field-text)} (tr "feedback.penpot.link")]
       [:& fm/input {:label ""
                     :name :error-href
-                    :placeholder "https://penpot.app/"
+                    ;; Design Studio (P3-A): our own address as the example
+                    :placeholder (str (.-origin js/location) "/")
                     :show-success? true}]
 
       (when report
@@ -144,17 +145,13 @@
      [:h2 {:class (stl/css :feedback-title)} (tr "feedback.other-ways-contact")]
 
 
+     ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the other way to reach
+     ;; us is our own mail address; upstream listed Penpot's community
+     ;; forum and its X account, which do not answer for Design Studio.
      [:a {:class (stl/css :link)
-          :href "https://community.penpot.app"
-          :target "_blank"}
-      (tr "feedback.discourse-title")]
-     [:p {:class (stl/css :field-text :bottom-margin)} (tr "feedback.discourse-subtitle1")]
-
-     [:a {:class (stl/css :link)
-          :href "https://x.com/penpotapp"
-          :target "_blank"}
-      (tr "feedback.twitter-title")]
-     [:p {:class (stl/css :field-text)} (tr "feedback.twitter-subtitle1")]]))
+          :href "mailto:hello@zakacoding.dev"}
+      "hello@zakacoding.dev"]
+     [:p {:class (stl/css :field-text)} (tr "ds.feedback.email-text")]]))
 
 (mf/defc feedback-page*
   [{:keys [error-report-id] :as props}]

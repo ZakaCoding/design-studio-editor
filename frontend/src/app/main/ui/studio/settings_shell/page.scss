@@ -1,0 +1,97 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Settings (P3-A): the page header and the sidebar row. The row is the
+// dashboard's (`dashboard_shell/sidebar.scss`, `.nav-item`).
+
+@use "studio/ds" as ds;
+
+// --- Page header: the dashboard title, one line under it.
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 ds.token("space-32");
+}
+
+.title {
+  @include ds.type("display");
+
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: ds.token("text-primary");
+}
+
+.subtitle {
+  @include ds.type("body-lg");
+
+  margin: 0;
+  line-height: 1.5;
+  color: ds.token("text-secondary");
+}
+
+// --- Sidebar row
+
+.row {
+  @include ds.type("body-lg");
+  @include ds.focusable(-2px);
+  @include ds.motion((background-color, color));
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  inline-size: 100%;
+  block-size: 32px;
+  margin: 0;
+  padding-inline: 12px;
+  border-radius: ds.token("radius-control");
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: ds.token("text-primary");
+    background: color-mix(in srgb, ds.token("bg-panel") 60%, transparent);
+
+    .row-icon {
+      color: ds.token("text-primary");
+    }
+  }
+}
+
+.row-icon {
+  @include ds.motion(color);
+
+  flex: none;
+  color: ds.token("text-secondary");
+}
+
+.row-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-current {
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-semibold");
+  box-shadow: ds.token("elevation-control");
+
+  &:hover {
+    background: ds.token("bg-panel");
+  }
+
+  .row-icon,
+  &:hover .row-icon {
+    color: ds.token("accent-default");
+  }
+}

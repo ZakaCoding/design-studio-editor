@@ -78,6 +78,10 @@
 
         error   (mf/use-state false)
 
+        ;; Design Studio (P3-B): drawn on the button only, between the
+        ;; submit and its answer.
+        busy*   (mf/use-state false)
+
         show-password-field* (mf/use-state #(not (contains? cf/flags :login-with-custom-sso)))
         show-password-field? (deref show-password-field*)
 
@@ -85,6 +89,7 @@
 
         on-error
         (fn [cause]
+          (reset! busy* false)
           (let [cause (ex-data cause)]
             (cond
               (and (= :restriction (:type cause))
@@ -112,6 +117,7 @@
 
         on-success
         (fn [data]
+          (reset! busy* false)
           (when (fn? on-success-callback)
             (on-success-callback data)))
 
@@ -126,6 +132,7 @@
                (let [params (-> (merge params data)
                                 (with-meta {:on-error on-error
                                             :on-success on-success}))]
+                 (reset! busy* true)
                  (st/emit! (da/login params)))
 
                (let [params (merge params data)]
@@ -205,6 +212,7 @@
 
         (when password-login?
           [:> sa/submit* {:label (tr "ds.signin.submit")
+                          :busy (deref busy*)
                           :data-testid "login-submit"}])
 
         (when (contains? cf/flags :login-with-ldap)

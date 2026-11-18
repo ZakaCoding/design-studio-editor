@@ -20,6 +20,7 @@
    [app.main.ui.ds.foundations.typography :as t]
    [app.main.ui.ds.foundations.typography.heading :refer [heading*]]
    [app.main.ui.ds.foundations.typography.text :refer [text*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.theme :as theme]
@@ -126,11 +127,11 @@
                :aria-labelledby "options-section-title"}
      [:*
       [:div {:class (stl/css :form-container) :data-testid "settings-form"}
-       [:> heading* {:level 2
-                     :typography t/title-large
-                     :class (stl/css :color-primary)
-                     :id "options-section-title"}
-        (tr "labels.settings")]
+       ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the page header of
+       ;; every Settings page; the title is the sidebar's label.
+       [:> page-head* {:id "options-section-title"
+                       :title (tr "ds.settings.options-side")
+                       :subtitle (tr "ds.settings.options.subtitle")}]
        [:> options-form*]]
       (when (contains? cf/flags :render-switch)
         [:> webgl-settings* {:renderer renderer}])]]))

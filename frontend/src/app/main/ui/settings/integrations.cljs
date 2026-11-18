@@ -33,6 +33,7 @@
    [app.main.ui.forms :as fc]
    [app.main.ui.studio.ai-access :refer [ai-access-card*]]
    [app.main.ui.studio.guard :refer [guard*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
    [app.util.clipboard :as clipboard]
    [app.util.dom :as dom]
    [app.util.forms :as fm]
@@ -649,12 +650,11 @@
 
     [:section {:class (stl/css :integrations)
                :aria-labelledby "integrations-section-title"}
-     [:header {:class (stl/css :ds-head)}
-      [:h1 {:class (stl/css :ds-title)
-            :id "integrations-section-title"}
-       (tr "ds.ai.page.title")]
-      [:p {:class (stl/css :ds-subtitle)}
-       (tr "ds.ai.page.subtitle")]]
+     ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the page header of
+     ;; every Settings page.
+     [:> page-head* {:id "integrations-section-title"
+                     :title (tr "ds.ai.page.title")
+                     :subtitle (tr "ds.ai.page.subtitle")}]
 
      [:> guard* {}
       [:> ai-access-card* {}]]

@@ -23,6 +23,6 @@
   []
   [:p {:class (stl/css :email-note)
        :data-testid "ds-email-note"}
-   (tr "ds.settings.email-note")
+   [:span (tr "ds.settings.email-note")]
    [:a {:href "mailto:hello@zakacoding.dev"} "hello@zakacoding.dev"]
-   "."])
+   [:span "."]])
