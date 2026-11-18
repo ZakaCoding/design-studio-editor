@@ -809,7 +809,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   // "All properties": Penpot's own property list, in sentence case.
-  [data-testid="ds-viewer-inspect"] :is([class*="main_ui_inspect_"], [class*="main_ui_ds_"]) {
+  [data-testid="ds-viewer-inspect"]
+    :is([class*="main_ui_inspect_"], [class*="main_ui_ds_"], [class*="main_ui_components_"]) {
     text-transform: none;
     letter-spacing: 0;
   }

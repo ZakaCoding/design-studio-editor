@@ -270,9 +270,13 @@
 }
 
 .title,
-.subtitle,
 .body {
   text-wrap: pretty;
+}
+
+// Two even lines instead of one long line and a lone last word.
+.subtitle {
+  text-wrap: balance;
 }
 
 .subtitle {
