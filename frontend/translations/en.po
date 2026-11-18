@@ -240,7 +240,7 @@ msgstr "(current)"
 
 #: src/app/main/ui/viewer/share_link.cljs:208, src/app/main/ui/viewer/share_link.cljs:215
 msgid "common.share-link.destroy-link"
-msgstr "Destroy link"
+msgstr "Remove link"
 
 #: src/app/main/ui/viewer/share_link.cljs:222
 msgid "common.share-link.get-link"
@@ -248,7 +248,7 @@ msgstr "Get link"
 
 #: src/app/main/ui/viewer/share_link.cljs:138
 msgid "common.share-link.link-copied-success"
-msgstr "Link copied successfully"
+msgstr "Link copied"
 
 #: src/app/main/ui/viewer/share_link.cljs:232
 msgid "common.share-link.manage-ops"
@@ -270,7 +270,7 @@ msgstr "Can inspect code"
 
 #: src/app/main/ui/viewer/share_link.cljs:194
 msgid "common.share-link.permissions-hint"
-msgstr "Anyone with link will have access"
+msgstr "Anyone with the link can view"
 
 #: src/app/main/ui/viewer/share_link.cljs:242
 msgid "common.share-link.permissions-pages"
@@ -286,11 +286,11 @@ msgstr "Only team members"
 
 #: src/app/main/ui/viewer/share_link.cljs:172
 msgid "common.share-link.title"
-msgstr "Share prototypes"
+msgstr "Share this design"
 
 #: src/app/main/ui/viewer/share_link.cljs:270
 msgid "common.share-link.view-all"
-msgstr "Select All"
+msgstr "Select all"
 
 #: src/app/main/ui/workspace/libraries.cljs:344
 msgid "common.unpublish"
@@ -11463,3 +11463,17 @@ msgstr "Add to Drafts"
 
 msgid "ds.shell.files.removed"
 msgstr "Removed for good"
+
+# Design Studio (P3-B) auth and viewer polish
+
+msgid "ds.viewer.login.tagline"
+msgstr "Sign in to inspect, comment on or edit this design."
+
+msgid "ds.recovery.sent.again"
+msgstr "Use another email"
+
+msgid "ds.viewer.open-editor"
+msgstr "Open in the editor"
+
+msgid "ds.viewer.inspect.image-fill"
+msgstr "Image fill"

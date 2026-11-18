@@ -28,6 +28,8 @@
   (t/is (= {:hex "#C8743A" :token "brand.cta"}
            (vi/fill-info {:fills [{:fill-color "#c8743a"}]
                           :applied-tokens {:fill "brand.cta"}})))
+  (t/is (= {:image true}
+           (vi/fill-info {:fills [{:fill-image {:id "x"} :fill-opacity 1}]})))
   (t/is (nil? (vi/fill-info {:fills []}))))
 
 (t/deftest geometry-is-relative-to-the-frame

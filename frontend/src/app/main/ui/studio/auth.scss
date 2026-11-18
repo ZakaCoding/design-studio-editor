@@ -51,6 +51,7 @@
   --ds-text-body: #3a3a44;
   --ds-text-secondary: #6a6a75;
   --ds-text-placeholder: #737380;
+  --ds-text-disabled: #9c9ca8;
   --ds-text-on-accent: #fff;
   --ds-accent-default: #5b5bd6;
   --ds-accent-subtle: #eeeefc;
@@ -59,6 +60,8 @@
   --ds-status-warning-bg: #fff6e0;
   --ds-status-danger-text: #b42318;
   --ds-status-danger-bg: #fdecec;
+  --ds-status-success-text: #1b7a52;
+  --ds-status-success-bg: #f3fbf7;
   --ds-guide-measure: #ff3d8b;
   --ds-brand-wordmark-ink: #182421;
   --ds-brand-wordmark-muted: #627169;
@@ -266,6 +269,12 @@
   }
 }
 
+.title,
+.subtitle,
+.body {
+  text-wrap: pretty;
+}
+
 .subtitle {
   margin: -6px 0 12px;
   color: var(--ds-text-secondary);
@@ -313,19 +322,31 @@
   border: 1px solid var(--ds-border-strong);
   border-radius: var(--ds-radius-md);
   background: var(--ds-bg-panel);
+  transition:
+    border-color 120ms ease-out,
+    box-shadow 120ms ease-out;
+
+  &:hover {
+    border-color: var(--ds-text-disabled);
+  }
 
   &:focus-within {
     border-color: var(--ds-accent-default);
-    box-shadow: 0 0 0 1px var(--ds-accent-default);
+    box-shadow:
+      0 0 0 1px var(--ds-accent-default),
+      0 0 0 4px var(--ds-accent-subtle);
   }
 }
 
-.control-invalid {
+.control-invalid,
+.control-invalid:hover {
   border-color: var(--ds-status-danger-text);
 
   &:focus-within {
     border-color: var(--ds-status-danger-text);
-    box-shadow: 0 0 0 1px var(--ds-status-danger-text);
+    box-shadow:
+      0 0 0 1px var(--ds-status-danger-text),
+      0 0 0 4px var(--ds-status-danger-bg);
   }
 }
 
@@ -449,11 +470,44 @@
     background: var(--ds-accent-text-strong);
   }
 
-  // Disabled keeps the accent, dimmed: white on it stays readable.
+  &:active:not(:disabled) {
+    background: var(--ds-accent-text-strong);
+    transform: translateY(1px);
+  }
+
+  // The DS disabled look (`studio/ds/button`): a quiet grey pill, not a
+  // washed accent (P3-B).
   &:disabled {
-    background: var(--ds-accent-default);
-    opacity: 0.55;
+    border-color: var(--ds-border-default);
+    background: var(--ds-bg-subtle);
+    color: var(--ds-text-disabled);
     cursor: not-allowed;
+  }
+}
+
+// Between the click and the answer: a spinner beside the label.
+.button-busy {
+  gap: 10px;
+
+  &::before {
+    content: "";
+    flex: none;
+    inline-size: 14px;
+    block-size: 14px;
+    border: 2px solid rgb(255 255 255 / 0.45);
+    border-block-start-color: #fff;
+    border-radius: 50%;
+    animation: ds-auth-spin 0.7s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 2.4s;
+    }
+  }
+}
+
+@keyframes ds-auth-spin {
+  to {
+    rotate: 360deg;
   }
 }
 
@@ -463,6 +517,7 @@
   color: var(--ds-text-primary);
 
   &:hover {
+    border-color: var(--ds-text-disabled);
     background: var(--ds-bg-subtle);
   }
 }
@@ -484,20 +539,99 @@
   }
 }
 
+// Open sign-up: one row under the form, the question on the left and the
+// way in on the right, so it reads as the second action of the screen.
 .signup {
-  margin: 16px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 8px 0 0;
+  padding: 10px 10px 10px 16px;
+  border-radius: var(--ds-radius-card);
+  background: var(--ds-bg-subtle);
   color: var(--ds-text-body);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+.signup-text {
+  color: var(--ds-text-body);
+}
+
+.signup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 32px;
+  padding: 0 12px 0 14px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-button);
+  background: var(--ds-bg-panel);
+  color: var(--ds-accent-default);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  svg {
+    inline-size: 14px;
+    block-size: 14px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    border-color: var(--ds-accent-default);
+    color: var(--ds-accent-text-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+    outline-offset: 2px;
+  }
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
   font-size: 0.875rem;
 }
 
 .alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   padding: 12px 14px;
   border-radius: var(--ds-radius-md);
   background: var(--ds-status-danger-bg);
   color: var(--ds-status-danger-text);
   font-size: 0.8125rem;
+  font-weight: 500;
   line-height: 1.4;
   margin-block-end: 16px;
+
+  // "!" in a ring, so the message is not carried by colour alone.
+  &::before {
+    content: "!";
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: 16px;
+    block-size: 16px;
+    margin-block-start: 1px;
+    border: 1.5px solid currentcolor;
+    border-radius: 50%;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+  }
 }
 
 .note {
@@ -541,6 +675,15 @@
 .state-icon-danger {
   background: var(--ds-status-danger-bg);
   color: var(--ds-status-danger-text);
+}
+
+.state-icon-accent {
+  background: var(--ds-accent-subtle);
+  color: var(--ds-accent-default);
+
+  svg {
+    stroke-linejoin: round;
+  }
 }
 
 // --- Modal

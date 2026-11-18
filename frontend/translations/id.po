@@ -229,7 +229,7 @@ msgstr "(saat ini)"
 
 #: src/app/main/ui/viewer/share_link.cljs:208, src/app/main/ui/viewer/share_link.cljs:215
 msgid "common.share-link.destroy-link"
-msgstr "Hancurkan tautan"
+msgstr "Hapus tautan"
 
 #: src/app/main/ui/viewer/share_link.cljs:222
 msgid "common.share-link.get-link"
@@ -258,7 +258,7 @@ msgstr "Dapat menginspeksi kode"
 
 #: src/app/main/ui/viewer/share_link.cljs:194
 msgid "common.share-link.permissions-hint"
-msgstr "Siapapun yang memiliki tautan dapat mengakses"
+msgstr "Siapa pun yang punya tautan bisa melihat"
 
 #: src/app/main/ui/viewer/share_link.cljs:242
 msgid "common.share-link.permissions-pages"
@@ -274,11 +274,11 @@ msgstr "Hanya anggota tim"
 
 #: src/app/main/ui/viewer/share_link.cljs:172
 msgid "common.share-link.title"
-msgstr "Bagikan prototipe"
+msgstr "Bagikan desain ini"
 
 #: src/app/main/ui/viewer/share_link.cljs:270
 msgid "common.share-link.view-all"
-msgstr "Pilih Semua"
+msgstr "Pilih semua"
 
 #: src/app/main/ui/workspace/libraries.cljs:344
 msgid "common.unpublish"
@@ -8177,3 +8177,17 @@ msgstr "Tambah ke Draf"
 
 msgid "ds.shell.files.removed"
 msgstr "Dihapus permanen"
+
+# Design Studio (P3-B) auth and viewer polish
+
+msgid "ds.viewer.login.tagline"
+msgstr "Masuk untuk inspect, berkomentar, atau mengedit desain ini."
+
+msgid "ds.recovery.sent.again"
+msgstr "Pakai email lain"
+
+msgid "ds.viewer.open-editor"
+msgstr "Buka di editor"
+
+msgid "ds.viewer.inspect.image-fill"
+msgstr "Isi gambar"

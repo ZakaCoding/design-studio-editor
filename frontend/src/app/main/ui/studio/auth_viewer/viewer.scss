@@ -1,0 +1,1172 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio viewer polish (P3-B, 18 Nov; board F1 · 11). Same rules as
+// the dashboard's `polish.scss`: upstream stylesheets and markup stay as
+// they are; every rule lives under `body.ds-viewer` (set by
+// `studio.auth-viewer.scope` while the viewer is mounted, together with
+// Penpot's light theme) and matches upstream elements by their CSS-module
+// class token.
+//
+// 1. Theme and type: Penpot's variables point at `ds/light`; no Work Sans.
+// 2. Header islands: soft controls, zoom, Share, Sign in.
+// 3. Menus: pages, zoom, interactions, flows, comments.
+// 4. Canvas: board, pager, empty page.
+// 5. Thumbnails strip.
+// 6. Inspect.
+// 7. Comments.
+// 8. Share dialog.
+// 9. Toasts and the loader.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(body.ds-viewer)";
+
+// Elements without a class take the font of their own rule in Penpot's
+// base stylesheet (`button`, `input`, …), not their parent's.
+$text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, textarea, div";
+
+@function -v($name) {
+  @return ws.on("main_ui_viewer__#{$name}");
+}
+
+@function -h($name) {
+  @return ws.on("main_ui_viewer_header__#{$name}");
+}
+
+@function -i($name) {
+  @return ws.on("main_ui_viewer_interactions__#{$name}");
+}
+
+@function -c($name) {
+  @return ws.on("main_ui_viewer_comments__#{$name}");
+}
+
+@function -t($name) {
+  @return ws.on("main_ui_viewer_thumbnails__#{$name}");
+}
+
+@function -s($name) {
+  @return ws.on("main_ui_viewer_share_link__#{$name}");
+}
+
+@function -n($name) {
+  @return ws.on("main_ui_viewer_inspect__#{$name}");
+}
+
+// A class that several upstream modules define for themselves.
+@function -any($name) {
+  @return '[class*="__#{$name}"]';
+}
+
+@mixin -menu {
+  padding: 6px;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  background: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
+  color: ds.token("text-body");
+}
+
+@mixin -menu-item {
+  @include ds.type("control");
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-block-size: 34px;
+  block-size: auto;
+  padding: 0 10px;
+  border: 0;
+  border-radius: ds.token("radius-control");
+  background: none;
+  color: ds.token("text-body");
+  cursor: pointer;
+
+  &:hover {
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+}
+
+@mixin -soft-pill {
+  @include ds.type("control");
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-8");
+  block-size: 36px;
+  min-block-size: 36px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-semibold");
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: ds.token("border-default");
+    color: ds.token("text-primary");
+  }
+}
+
+@mixin -black-pill {
+  @include -soft-pill;
+
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: ds.token("text-body");
+    color: ds.token("text-on-accent");
+  }
+}
+
+@mixin -danger-pill {
+  @include -soft-pill;
+
+  background: ds.token("status-danger-text");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, #{ds.token("status-danger-text")} 86%, #000);
+    color: ds.token("text-on-accent");
+  }
+}
+
+// A round white control floating over the canvas (pager, reset).
+@mixin -float-control {
+  display: grid;
+  place-items: center;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-control");
+  color: ds.token("text-secondary");
+
+  svg {
+    stroke: currentcolor;
+  }
+
+  &:hover {
+    background: ds.token("bg-panel");
+    border-color: ds.token("border-strong");
+    color: ds.token("text-primary");
+  }
+}
+
+// --- 1. Theme and type
+
+#{$scope} {
+  --color-background-primary: #{ds.token("bg-panel")};
+  --color-background-secondary: #{ds.token("bg-subtle")};
+  --color-background-tertiary: #{ds.token("bg-subtle")};
+  --color-background-quaternary: #{ds.token("border-default")};
+  --color-background-default: #{ds.token("bg-panel")};
+  --color-background-disabled: #{ds.token("bg-subtle")};
+  --color-foreground-primary: #{ds.token("text-primary")};
+  --color-foreground-secondary: #{ds.token("text-secondary")};
+  --color-foreground-disabled: #{ds.token("text-disabled")};
+  --color-icon-default: #{ds.token("text-secondary")};
+  --color-accent-primary: #{ds.token("accent-default")};
+  --color-accent-primary-muted: #{ds.token("accent-subtle")};
+  --color-accent-secondary: #{ds.token("accent-default")};
+  --color-accent-tertiary: #{ds.token("accent-hover")};
+  --color-accent-tertiary-muted: #{ds.token("accent-subtle")};
+  --color-accent-select: #{ds.token("accent-subtle")};
+  --color-accent-success: #{ds.token("status-success")};
+  --color-background-success: #{ds.token("status-success-bg")};
+  --color-accent-warning: #{ds.token("status-warning")};
+  --color-background-warning: #{ds.token("status-warning-bg")};
+  --color-accent-error: #{ds.token("status-danger-text")};
+  --color-foreground-error: #{ds.token("status-danger-text")};
+  --color-background-error: #{ds.token("status-danger-bg")};
+  --color-accent-info: #{ds.token("accent-default")};
+  --color-background-info: #{ds.token("accent-subtle")};
+  --color-overlay-default: #{ds.token("overlay-scrim")};
+  --color-shadow-dark: color-mix(in srgb, #{ds.token("text-primary")} 14%, transparent);
+  --overlay-color: #{ds.token("overlay-scrim")};
+  --viewer-background-color: #{ds.token("bg-canvas")};
+
+  [id="viewer-layout"],
+  [id="modal"],
+  [id="portal-container-modal"],
+  #{ws.on("main_ui_modal__modal-wrapper")} {
+    :is(
+      [class*="main_ui_viewer"],
+      [class*="main_ui_inspect_"],
+      [class*="main_ui_comments__"],
+      [class*="main_ui_ds_"],
+      [class*="main_ui_components_"],
+      [class*="main_ui_notifications_"]
+    ),
+    :is(#{$text-tags}):not(
+      [class*="main_ui_studio_"],
+      [class*="main_ui_studio_"] *,
+      pre,
+      code,
+      pre *,
+      svg *
+    ) {
+      font-family: ds.token("font-text");
+      letter-spacing: 0;
+    }
+  }
+}
+
+// --- 2. Header islands
+
+#{$scope} {
+  // The controls inside the right island: a soft field with a caret.
+  #{-i("view-options")},
+  #{-c("view-options")} {
+    @include ds.type("control");
+
+    gap: 6px;
+    block-size: 32px;
+    padding: 0 10px 0 12px;
+    border-radius: ds.token("radius-control");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+
+    &:hover {
+      background: ds.token("border-default");
+    }
+  }
+
+  #{-i("dropdown-title")},
+  #{-c("dropdown-title")} {
+    @include ds.type("control");
+
+    color: ds.token("text-primary");
+  }
+
+  #{-i("icon-dropdown")} svg,
+  #{-c("icon-dropdown")} svg,
+  #{-i("icon")} svg {
+    stroke: ds.token("text-secondary");
+  }
+
+  // Zoom: the percentage and a caret, as on the board.
+  #{-h("zoom-widget")} {
+    gap: 6px;
+    block-size: 32px;
+    min-inline-size: 0;
+    padding: 0 10px;
+    border-radius: ds.token("radius-control");
+
+    &:hover,
+    &#{-h("selected")} {
+      background: ds.token("bg-subtle");
+    }
+
+    > #{-h("label")} {
+      @include ds.type("value");
+
+      color: ds.token("text-primary");
+    }
+
+    > #{-h("label")}::after {
+      content: "";
+      display: inline-block;
+      inline-size: 6px;
+      block-size: 6px;
+      margin: 0 2px 3px 9px;
+      border: solid ds.token("text-secondary");
+      border-width: 0 1.5px 1.5px 0;
+      rotate: 45deg;
+    }
+  }
+
+  // "Open in the editor" and full screen: quiet icon buttons.
+  #{-h("edit-btn")},
+  #{-h("fullscreen-btn")} {
+    inline-size: 32px;
+    block-size: 32px;
+    border-radius: ds.token("radius-control");
+    cursor: pointer;
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+
+    &:hover {
+      background: ds.token("bg-subtle");
+
+      svg {
+        stroke: ds.token("text-primary");
+      }
+    }
+  }
+
+  #{-h("fullscreen-btn")}#{-h("selected")} {
+    background: ds.token("bg-selected");
+
+    svg {
+      stroke: ds.token("accent-default");
+    }
+  }
+
+  #{-h("share-btn")},
+  #{-h("go-log-btn")} {
+    @include -black-pill;
+
+    block-size: 32px;
+    min-block-size: 32px;
+    min-inline-size: 0;
+    margin-inline-start: 4px;
+    padding: 0 16px;
+    border: 0;
+    font-size: ds.token("size-13");
+  }
+
+  #{-h("options-zone")} {
+    gap: 4px;
+    padding-inline: 8px;
+  }
+
+  // Left island: file, board, counter.
+  #{-h("breadcrumb")},
+  #{-h("current-frame")} {
+    gap: 4px;
+    block-size: 32px;
+    align-items: center;
+    border-radius: ds.token("radius-control");
+  }
+
+  #{-h("breadcrumb")} {
+    padding-inline: 6px 4px;
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  #{-h("sitemap-text")} {
+    gap: 8px;
+  }
+
+  #{-h("current-frame")} {
+    padding-inline: 12px 4px;
+    border-radius: 0;
+
+    &:hover #{-h("frame-name")} {
+      color: ds.token("accent-default");
+    }
+  }
+
+  #{-h("frame-count")} {
+    @include ds.type("value");
+
+    color: ds.token("text-secondary");
+    font-size: ds.token("size-11");
+    white-space: nowrap;
+  }
+
+  #{-h("icon")} svg {
+    stroke: ds.token("text-secondary");
+  }
+
+  #{-h("mode-zone-btn")} {
+    min-inline-size: 84px;
+    border-radius: ds.token("radius-md");
+
+    &:hover:not(#{-h("selected")}) {
+      background: ds.token("bg-subtle");
+    }
+  }
+}
+
+// --- 3. Menus
+
+#{$scope} {
+  #{-h("dropdown-sitemap")},
+  #{-h("dropdown")},
+  #{-i("dropdown")},
+  #{-c("dropdown")} {
+    @include -menu;
+
+    inset-block-start: 54px;
+    inline-size: 248px;
+    margin: 0;
+    list-style: none;
+  }
+
+  #{-h("dropdown-sitemap")} {
+    inset-inline-start: -8px;
+  }
+
+  #{-h("dropdown")},
+  #{-i("dropdown")},
+  #{-c("dropdown")} {
+    inset-inline-end: 0;
+  }
+
+  #{-h("dropdown-element")},
+  #{-i("dropdown-element")},
+  #{-c("dropdown-element")},
+  #{-h("zoom-option")} {
+    @include -menu-item;
+
+    justify-content: space-between;
+
+    #{-any("label")} {
+      @include ds.type("control");
+
+      color: inherit;
+    }
+
+    &:hover #{-any("label")} {
+      color: inherit;
+    }
+  }
+
+  #{-h("dropdown-element")}#{-h("selected")},
+  #{-i("dropdown-element")}#{-i("selected")},
+  #{-c("dropdown-element")}#{-c("selected")} {
+    background: none;
+    color: ds.token("text-primary");
+    font-weight: ds.token("weight-semibold");
+
+    #{-any("label")} {
+      color: ds.token("text-primary");
+      font-weight: ds.token("weight-semibold");
+    }
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+
+    svg {
+      stroke: ds.token("accent-default");
+    }
+  }
+
+  #{-c("separator")} {
+    block-size: 1px;
+    margin: 6px 4px;
+    background: ds.token("border-default");
+  }
+
+  // Zoom menu: − 100% + and Reset on the first row.
+  #{-h("basic-zoom-bar")} {
+    align-items: center;
+    padding: 2px 2px 6px;
+    margin-block-end: 6px;
+    border-block-end: 1px solid ds.token("border-default");
+  }
+
+  #{-h("zoom-btns")} {
+    align-items: center;
+    gap: 2px;
+  }
+
+  #{-h("zoom-btn")} {
+    display: grid;
+    place-items: center;
+    inline-size: 30px;
+    block-size: 30px;
+    border: 0;
+    border-radius: ds.token("radius-control");
+    background: none;
+    cursor: pointer;
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+
+    &:hover {
+      background: ds.token("bg-subtle");
+
+      svg {
+        stroke: ds.token("text-primary");
+      }
+    }
+  }
+
+  #{-h("zoom-text")} {
+    @include ds.type("value");
+
+    min-inline-size: 52px;
+    color: ds.token("text-primary");
+  }
+
+  #{-h("reset-btn")} {
+    @include ds.type("control");
+
+    block-size: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: ds.token("radius-button");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+    cursor: pointer;
+
+    &:hover {
+      background: ds.token("border-default");
+      color: ds.token("text-primary");
+    }
+  }
+
+  #{-h("shortcuts")} {
+    display: inline-flex;
+    gap: 4px;
+  }
+
+  #{-h("shortcut-key")} {
+    @include ds.type("value");
+
+    display: grid;
+    place-items: center;
+    min-inline-size: 22px;
+    block-size: 22px;
+    padding: 0 6px;
+    border: 1px solid ds.token("border-default");
+    border-radius: 6px;
+    background: ds.token("bg-subtle");
+    color: ds.token("text-secondary");
+    font-size: ds.token("size-11");
+  }
+
+  #{-h("zoom-option")}:hover #{-h("shortcut-key")} {
+    color: ds.token("text-secondary");
+  }
+}
+
+// --- 4. Canvas
+
+#{$scope} {
+  #{-v("viewer-layout")},
+  #{-v("inspect-layout")},
+  #{-v("viewer-content")} {
+    background: ds.token("bg-canvas");
+  }
+
+  // Pager: round white controls at the sides, a pill with the counter.
+  #{-v("viewer-go-prev")},
+  #{-v("viewer-go-next")} {
+    @include -float-control;
+
+    inset-inline-end: 16px;
+    inset-block-start: calc(50vh - 20px);
+    inline-size: 40px;
+    block-size: 40px;
+    cursor: pointer;
+  }
+
+  #{-v("viewer-go-prev")} {
+    inset-inline: 16px auto;
+  }
+
+  #{-v("viewer-bottom")} {
+    inset-block-end: 16px;
+    block-size: 36px;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  #{-v("reset-button")} {
+    @include -float-control;
+
+    inline-size: 36px;
+    block-size: 36px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  #{-v("counter")} {
+    @include ds.type("value");
+
+    inline-size: auto;
+    min-inline-size: 64px;
+    block-size: 36px;
+    padding: 0 14px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-button");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-control");
+    color: ds.token("text-body");
+    white-space: nowrap;
+  }
+
+  // The counter's row has an empty third cell to centre it.
+  #{-v("viewer-bottom")} > span:last-child {
+    inline-size: 36px;
+  }
+
+  #{-v("empty-state")} {
+    @include ds.type("body-lg");
+
+    color: ds.token("text-secondary");
+  }
+
+  // The scrim behind the open strip covers the whole window (it stopped
+  // under the header, which stays above it and usable).
+  #{-v("thumbnails-close")} {
+    position: fixed;
+    inset: 0;
+    background: ds.token("overlay-scrim");
+  }
+}
+
+// --- 5. Thumbnails strip
+
+#{$scope} {
+  #{-t("viewer-thumbnails")} {
+    align-self: start;
+    margin: 16px 12px 0;
+    padding-block-end: 8px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-panel");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-panel");
+  }
+
+  #{-t("viewer-thumbnails")}#{-t("expanded")} {
+    margin-block-end: 12px;
+    overflow: auto;
+  }
+
+  #{-t("thumbnails-summary")} {
+    block-size: 32px;
+    margin: 12px 12px 0 20px;
+  }
+
+  #{-t("counter")} {
+    @include ds.type("panel-title");
+
+    color: ds.token("text-primary");
+  }
+
+  #{-t("actions")} {
+    inline-size: auto;
+    gap: 2px;
+  }
+
+  #{-t("expand-btn")},
+  #{-t("close-btn")} {
+    display: grid;
+    place-items: center;
+    inline-size: 32px;
+    block-size: 32px;
+    border: 0;
+    border-radius: ds.token("radius-control");
+    background: none;
+    cursor: pointer;
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+
+    &:hover {
+      background: ds.token("bg-subtle");
+
+      svg {
+        stroke: ds.token("text-primary");
+      }
+    }
+  }
+
+  #{-t("thumbnails-list")},
+  #{-t("thumbnails-list-expanded")} {
+    padding: 0 8px 4px;
+  }
+
+  #{-t("thumbnail-item")} {
+    gap: 8px;
+    padding: 10px;
+    border-radius: ds.token("radius-card");
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  #{-t("thumbnail-preview")} {
+    inline-size: 120px;
+    block-size: 120px;
+    min-block-size: 120px;
+    padding: 6px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+
+    &:hover {
+      border: 1px solid ds.token("border-strong");
+      border-radius: ds.token("radius-md");
+    }
+  }
+
+  #{-t("thumbnail-preview")}#{-t("selected")} {
+    border-color: ds.token("accent-default");
+    border-radius: ds.token("radius-md");
+    background: ds.token("accent-subtle");
+    box-shadow: 0 0 0 1px ds.token("accent-default");
+  }
+
+  #{-t("thumbnail-info")} {
+    @include ds.type("control");
+
+    max-inline-size: 120px;
+    padding: 0;
+    color: ds.token("text-body");
+  }
+
+  #{-t("left-scroll-handler")},
+  #{-t("right-scroll-handler")} {
+    @include -float-control;
+
+    inline-size: 32px;
+    block-size: 32px;
+    margin: auto 4px;
+  }
+}
+
+// --- 6. Inspect
+
+#{$scope} {
+  // The pager keeps clear of the Inspect panel (it sat under it).
+  #{-v("inspect-layout")} #{-v("viewer-go-next")} {
+    inset-inline-end: calc(320px + 28px);
+  }
+
+  #{-v("inspect-layout")} #{-v("viewer-bottom")} {
+    inline-size: calc(100% - 320px - 24px);
+  }
+}
+
+#{$scope} {
+  // Layers: the tree fits its panel (it was 16 px wider and cut).
+  #{-n("layers-panel")} {
+    padding: 6px;
+
+    > aside {
+      inline-size: 100%;
+      min-inline-size: 0;
+      background: none;
+    }
+
+    #{-any("settings-bar-inside")},
+    #{-any("element-list")} {
+      inline-size: 100%;
+      min-inline-size: 0;
+    }
+
+    #{ws.on("main_ui_workspace_sidebar_layer_item__layer-row")} {
+      inline-size: 100%;
+      border-radius: ds.token("radius-control");
+    }
+
+    #{ws.on("main_ui_workspace_sidebar_layer_name__element-name")} {
+      @include ds.type("control");
+
+      color: ds.token("text-body");
+    }
+
+    #{ws.on("main_ui_workspace_sidebar_layer_item__selected")} {
+      background: ds.token("bg-selected");
+
+      #{ws.on("main_ui_workspace_sidebar_layer_name__element-name")} {
+        color: ds.token("accent-text-strong");
+      }
+    }
+  }
+
+  // "All properties": Penpot's own property list, in sentence case.
+  [data-testid="ds-viewer-inspect"] :is([class*="main_ui_inspect_"], [class*="main_ui_ds_"]) {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+}
+
+// --- 7. Comments
+
+#{$scope} {
+  // The list of comments is a floating panel like Inspect (it was a
+  // full-height column that ran under the header).
+  #{-c("comments-sidebar")} {
+    inset-block: 76px 12px;
+    inset-inline-end: 12px;
+    inline-size: 320px;
+    block-size: auto;
+    overflow: hidden auto;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-panel");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-panel");
+  }
+
+  #{ws.on("main_ui_workspace_comments__comments-section")} {
+    background: none;
+  }
+
+  #{ws.on("main_ui_workspace_comments__comments-title")} {
+    margin: 12px 12px 4px 20px;
+    padding: 0;
+    background: none;
+
+    #{ws.on("main_ui_ds_product_panel_title__panel-title-text")} {
+      @include ds.type("panel-title");
+
+      color: ds.token("text-primary");
+      text-align: start;
+      text-transform: none;
+    }
+  }
+
+  #{ws.on("main_ui_workspace_comments__mode-dropdown-wrapper")} {
+    inline-size: calc(100% - 32px);
+    block-size: 36px;
+    margin: 8px 16px;
+    padding: 0 8px 0 12px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-panel");
+  }
+
+  #{ws.on("main_ui_workspace_comments__mode-label")} {
+    @include ds.type("control");
+
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_comments__cover")} {
+    margin: 0 8px;
+    padding: 12px;
+    border-radius: ds.token("radius-card");
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  #{ws.on("main_ui_comments__location-text")},
+  #{ws.on("main_ui_comments__author-timeago")},
+  #{ws.on("main_ui_comments__replies-total")} {
+    color: ds.token("text-secondary");
+    font-size: ds.token("size-11");
+  }
+
+  #{ws.on("main_ui_comments__author-fullname")} {
+    color: ds.token("text-primary");
+    font-weight: ds.token("weight-semibold");
+  }
+
+  #{ws.on("main_ui_comments__comment-text")} {
+    color: ds.token("text-body");
+    line-height: 1.5;
+  }
+
+  // The open thread.
+  #{ws.on("main_ui_comments__floating-thread-wrapper")} {
+    padding: 12px 14px 14px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-panel");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+  }
+
+  #{ws.on("main_ui_comments__floating-thread-header-left")} {
+    @include ds.type("panel-title");
+
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_comments__grayed-text")} {
+    color: ds.token("text-secondary");
+    font-weight: ds.token("weight-regular");
+  }
+
+  #{ws.on("main_ui_comments__comment-input")} {
+    min-block-size: 40px;
+    padding: 10px 12px;
+    border: 1px solid ds.token("border-strong");
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-panel");
+    color: ds.token("text-primary");
+
+    &:focus,
+    &:focus-within {
+      border-color: ds.token("accent-default");
+      outline: 0;
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+  }
+
+  #{ws.on("main_ui_comments__form-buttons-wrapper")} {
+    gap: 8px;
+
+    #{ws.on("main_ui_ds_buttons_button__button")} {
+      @include -soft-pill;
+
+      block-size: 32px;
+      min-block-size: 32px;
+      padding: 0 14px;
+      font-size: ds.token("size-12");
+    }
+
+    #{ws.on("main_ui_ds_buttons_button__button-primary")} {
+      @include -black-pill;
+
+      block-size: 32px;
+      min-block-size: 32px;
+      padding: 0 14px;
+      font-size: ds.token("size-12");
+
+      &:disabled {
+        background: ds.token("border-strong");
+        color: ds.token("text-on-accent");
+        cursor: default;
+      }
+    }
+  }
+
+  #{ws.on("main_ui_comments__dropdown-menu")} {
+    @include -menu;
+  }
+
+  #{ws.on("main_ui_comments__dropdown-menu-option")} {
+    @include -menu-item;
+  }
+}
+
+// --- 8. Share dialog
+
+#{$scope} {
+  #{-s("share-modal")} {
+    inset-block-start: 68px;
+    inset-inline: auto 12px;
+    inline-size: min(440px, calc(100vw - 24px));
+  }
+
+  #{-s("share-link-dialog")} {
+    inline-size: 100%;
+    max-inline-size: none;
+    padding: 20px 24px 24px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-panel");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+    color: ds.token("text-body");
+  }
+
+  #{-s("share-link-header")} {
+    margin-block-end: 16px;
+  }
+
+  #{-s("share-link-title")} {
+    @include ds.type("title");
+
+    font-family: ds.token("font-display");
+    color: ds.token("text-primary");
+    text-transform: none;
+  }
+
+  #{-s("modal-close-button")} {
+    inset-block-start: 14px;
+    inset-inline-end: 14px;
+    display: grid;
+    place-items: center;
+    inline-size: 32px;
+    block-size: 32px;
+    border-radius: ds.token("radius-control");
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+
+    &:hover {
+      background: ds.token("bg-subtle");
+
+      svg {
+        stroke: ds.token("text-primary");
+      }
+    }
+  }
+
+  #{-s("modal-content")} {
+    gap: 16px;
+    font-size: ds.token("size-13");
+  }
+
+  #{-s("hint-wrapper")} {
+    align-items: center;
+    gap: 12px;
+    min-block-size: 36px;
+  }
+
+  #{-s("hint")},
+  #{-s("description")},
+  #{-s("subtitle")} {
+    color: ds.token("text-secondary");
+    font-size: ds.token("size-13");
+    line-height: 1.45;
+  }
+
+  #{-s("description")} {
+    margin-block-end: 12px;
+    color: ds.token("text-body");
+  }
+
+  #{-s("button-active")} {
+    @include -black-pill;
+  }
+
+  #{-s("button-cancel")} {
+    @include -soft-pill;
+  }
+
+  #{-s("button-danger")} {
+    @include -danger-pill;
+  }
+
+  #{-s("actions")} {
+    gap: 8px;
+  }
+
+  // The link and its copy button: one DS field.
+  #{-s("custon-input-wrapper")} {
+    block-size: 40px;
+    border: 1px solid ds.token("border-strong");
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-panel");
+    overflow: hidden;
+
+    &:focus-within {
+      border-color: ds.token("accent-default");
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+  }
+
+  #{-s("input-text")} {
+    @include ds.type("value");
+
+    block-size: 100%;
+    padding-inline: 12px 4px;
+    border: 0;
+    background: none;
+    color: ds.token("text-primary");
+
+    &:focus {
+      border: 0;
+    }
+  }
+
+  #{-s("copy-button")} {
+    inline-size: 38px;
+    block-size: 38px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    justify-content: center;
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+
+    &:hover {
+      background: ds.token("bg-subtle");
+
+      svg {
+        stroke: ds.token("text-primary");
+      }
+    }
+  }
+
+  #{-s("permissions-section")} {
+    gap: 4px;
+    padding-block-start: 12px;
+    border-block-start: 1px solid ds.token("border-default");
+  }
+
+  #{-s("manage-permissions")} {
+    @include ds.type("control");
+
+    block-size: 32px;
+    color: ds.token("text-primary");
+    font-weight: ds.token("weight-semibold");
+    text-transform: none;
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+  }
+
+  #{-s("subtitle")} {
+    inline-size: 128px;
+    block-size: 36px;
+  }
+
+  #{-s("items")},
+  #{-s("select-all-label")},
+  #{-s("checkbox-wrapper")} label {
+    color: ds.token("text-primary");
+    font-size: ds.token("size-13");
+  }
+
+  #{-s("select-all-row")},
+  #{-s("pages-selection")} li {
+    block-size: 36px;
+    border-block-end-color: ds.token("border-default");
+  }
+
+  #{-s("count-pages")},
+  #{-s("current-tag")} {
+    color: ds.token("text-secondary");
+    font-size: ds.token("size-12");
+  }
+
+  #{-s("checkbox-wrapper")} label > span {
+    border: 1px solid ds.token("border-strong");
+    border-radius: 4px;
+    background: ds.token("bg-panel");
+  }
+
+  #{-s("checkbox-wrapper")} label > span[class~="checked"] {
+    border-color: ds.token("accent-default");
+    background: ds.token("accent-default");
+
+    svg {
+      stroke: ds.token("text-on-accent");
+    }
+  }
+
+  #{-s("access-mode")},
+  #{-s("inspect-mode")} {
+    margin-block-start: 4px;
+  }
+
+  #{-s("who-comment-select")},
+  #{-s("who-inspect-select")} {
+    block-size: 36px;
+    padding-inline: 12px 10px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-panel");
+    color: ds.token("text-primary");
+    font-size: ds.token("size-13");
+
+    &:hover {
+      border-color: ds.token("border-strong");
+    }
+  }
+
+  #{ws.on("main_ui_components_select__custom-select-dropdown")} {
+    @include -menu;
+  }
+
+  #{ws.on("main_ui_components_select__checked-element")} {
+    @include -menu-item;
+
+    justify-content: space-between;
+  }
+}

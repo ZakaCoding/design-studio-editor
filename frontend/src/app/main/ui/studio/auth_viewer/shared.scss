@@ -1,0 +1,71 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio auth and viewer polish (P3-B): what Penpot draws over both
+// (the toast, the page loader). Rules live under `body.ds-auth` and
+// `body.ds-viewer`, set by `studio.auth-viewer.scope`.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(body.ds-auth), :global(body.ds-viewer)";
+$pill: "main_ui_ds_notifications_shared_notification_pill";
+
+// --- Toast: the DS toast look (white card, the level in the icon).
+
+#{$scope} {
+  #{ws.on("main_ui_ds_notifications_toast__toast")} {
+    inset-block-start: 20px;
+    inset-inline-end: 20px;
+    max-inline-size: min(420px, calc(100vw - 40px));
+    font-family: ds.token("font-text");
+  }
+
+  #{ws.on("#{$pill}__notification-pill")}#{ws.on("#{$pill}__type-toast")} {
+    padding: 12px 40px 12px 14px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-card");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("#{$pill}__error-message")} {
+    color: ds.token("text-primary");
+    font-family: ds.token("font-text");
+    font-size: ds.token("size-13");
+    font-weight: ds.token("weight-medium");
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+
+  #{ws.on("#{$pill}__level-info")} {
+    --notification-icon-color: #{ds.token("accent-default")};
+  }
+
+  #{ws.on("#{$pill}__level-success")} {
+    --notification-icon-color: #{ds.token("status-success")};
+  }
+
+  #{ws.on("#{$pill}__level-warning")} {
+    --notification-icon-color: #{ds.token("status-warning")};
+  }
+
+  #{ws.on("#{$pill}__level-error")} {
+    --notification-icon-color: #{ds.token("status-danger-text")};
+  }
+
+  #{ws.on("main_ui_ds_notifications_toast__close-button")} {
+    inset-block-start: 14px;
+    inset-inline-end: 14px;
+    color: ds.token("text-secondary");
+    cursor: pointer;
+
+    &:hover {
+      color: ds.token("text-primary");
+    }
+  }
+}
