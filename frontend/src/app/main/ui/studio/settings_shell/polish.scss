@@ -687,6 +687,10 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // header were invisible.
   [data-ds-settings="head"] h1 {
     margin: 0;
+    font-family: ds.token("font-display");
+    font-size: 1.875rem;
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.2;
     color: ds.token("text-primary");
   }
 
@@ -901,6 +905,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       text-transform: none;
     }
 
+    #{-any("field-label")} {
+      display: block;
+      margin-block-end: ds.token("space-8");
+    }
+
     hr {
       display: block;
       block-size: 1px;
@@ -939,7 +948,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     text-transform: none;
   }
 
-  #{ws.on("main_ui_settings_shortcuts__page-title")} {
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-page")} #{ws.on("main_ui_settings_shortcuts__page-title")} {
     @include ds.type("display");
 
     margin: 0 0 6px;
@@ -1131,11 +1140,40 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     text-transform: none;
   }
 
-  // Delete account: the warning is a calm note, not an upstream banner.
-  #{ws.on("main_ui_settings_delete_account__modal-container")} {
-    #{-any("warning-notice")} {
-      margin: 0;
+  // The note of a dialog ("You'll lose all your projects", "We'll send
+  // you an email"): a DS note, no outline.
+  #{-any("modal-container")} #{ws.on("main_ui_notifications_context_notification__context-notification")} {
+    gap: ds.token("space-8");
+    margin: 0;
+    padding: 10px ds.token("space-12");
+    border: 0;
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-body");
+
+    #{ws.on("main_ui_notifications_context_notification__context-text")} {
+      font-size: ds.token("size-13");
+      line-height: 1.5;
+      color: inherit;
     }
+
+    #{ws.on("main_ui_notifications_context_notification__icon")} {
+      color: ds.token("text-secondary");
+      stroke: currentcolor;
+    }
+  }
+
+  #{-any("modal-container")} #{ws.on("main_ui_notifications_context_notification__warning")} {
+    background: ds.token("status-warning-bg");
+    color: ds.token("status-warning-text");
+
+    #{ws.on("main_ui_notifications_context_notification__icon")} {
+      color: ds.token("status-warning");
+    }
+  }
+
+  #{ws.on("main_ui_settings_delete_account__modal-container")} #{-any("warning-notice")} {
+    margin: 0;
   }
 }
 

@@ -485,7 +485,12 @@
        [:div {:class (stl/css :outline-lines :outline-nav) :aria-hidden true}
         [:div {:class (stl/css :outline-line)}]
         [:div {:class (stl/css :outline-line-short)}]
-        [:div {:class (stl/css :outline-line)}]]]])
+        [:div {:class (stl/css :outline-line)}]]]]
+
+     ;; Signed out, the route has no page yet: a plain light ground (it
+     ;; was the dark page background).
+     :else
+     [:div {:class (stl/css :outline-plain)}])
 
    children])
 
