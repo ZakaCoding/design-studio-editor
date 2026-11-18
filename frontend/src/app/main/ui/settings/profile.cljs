@@ -66,7 +66,8 @@
       [:& fm/input
        {:type "text"
         :name :fullname
-        :label (tr "dashboard.your-name")}]]
+        ;; Design Studio (P3-A): our own labels, "Name" and "Email"
+        :label (tr "ds.settings.profile.name")}]]
 
      [:div {:class (stl/css :fields-row)
             :on-click (when-not open? on-show-change-email)}
@@ -74,7 +75,7 @@
        {:type "email"
         :name :email
         :disabled true
-        :label (tr "dashboard.your-email")}]
+        :label (tr "ds.settings.profile.email")}]
 
       [:div {:class (stl/css :options)}
        (if open?

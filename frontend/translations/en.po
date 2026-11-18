@@ -11468,6 +11468,12 @@ msgstr "Removed for good"
 msgid "ds.settings.profile.subtitle"
 msgstr "Your name, photo and email."
 
+msgid "ds.settings.profile.name"
+msgstr "Name"
+
+msgid "ds.settings.profile.email"
+msgstr "Email"
+
 msgid "ds.settings.photo.title"
 msgstr "Profile photo"
 
@@ -11497,6 +11503,9 @@ msgstr "Choose what we tell you about, here and by email."
 
 msgid "ds.plans.current"
 msgstr "Your plan"
+
+msgid "ds.access.ask"
+msgstr "Request access"
 
 msgid "ds.feedback.email-text"
 msgstr "Write to us by email and we answer as soon as we can."

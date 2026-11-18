@@ -8182,6 +8182,12 @@ msgstr "Dihapus permanen"
 msgid "ds.settings.profile.subtitle"
 msgstr "Nama, foto, dan email kamu."
 
+msgid "ds.settings.profile.name"
+msgstr "Nama"
+
+msgid "ds.settings.profile.email"
+msgstr "Email"
+
 msgid "ds.settings.photo.title"
 msgstr "Foto profil"
 
@@ -8211,6 +8217,9 @@ msgstr "Pilih kabar yang kami kirim, di sini dan lewat email."
 
 msgid "ds.plans.current"
 msgstr "Paket kamu"
+
+msgid "ds.access.ask"
+msgstr "Minta akses"
 
 msgid "ds.feedback.email-text"
 msgstr "Tulis ke kami lewat email, kami balas secepatnya."

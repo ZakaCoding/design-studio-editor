@@ -234,7 +234,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // The member row: the dashboard's foot.
   #{$sidebar} #{ws.on("main_ui_dashboard_sidebar__profile-section")} {
     flex: none;
-    padding: 12px 20px 14px;
+    padding: 10px 24px 22px;
   }
 }
 
@@ -244,10 +244,20 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   padding: 0 $gutter;
   scrollbar-width: thin;
 
-  > section {
+  // A page is a section around its column; AI access and Plans are the
+  // column themselves (a flex column).
+  > section:not(
+      #{ws.on("main_ui_settings_integrations__integrations")},
+      #{ws.on("main_ui_studio_plans__plans")}
+    ) {
     display: block;
     inline-size: 100%;
     margin: 0;
+  }
+
+  // AI access keeps its own column (a flex column, 32 px between blocks).
+  #{ws.on("main_ui_settings_integrations__integrations")} [data-ds-settings="head"] {
+    margin-block-end: 0;
   }
 
   // One column for every page.
@@ -327,7 +337,15 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     inline-size: 100%;
   }
 
-  input:not([type="checkbox"], [type="radio"], [type="file"], [type="submit"], [type="button"]),
+  input:not(
+    [type="checkbox"],
+    [type="radio"],
+    [type="file"],
+    [type="submit"],
+    [type="button"],
+    [class*="search_bar"],
+    [class*="main_ui_studio_"]
+  ),
   textarea {
     @include -field-box;
     @include ds.motion((border-color, box-shadow));
@@ -664,6 +682,28 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     flex: none;
   }
 
+  // Upstream paints every <h1> and <p> of a form page in its own colours
+  // (`.form-container p` is the page background): our notes and the page
+  // header were invisible.
+  [data-ds-settings="head"] h1 {
+    margin: 0;
+    color: ds.token("text-primary");
+  }
+
+  [data-ds-settings="head"] p {
+    margin: 0;
+    font-size: ds.token("size-14");
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_studio_settings_notes__email-note")} {
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_studio_settings_notes__note")} {
+    color: ds.token("text-body");
+  }
+
   // Under the email field: how to change it.
   #{ws.on("main_ui_settings_profile__options")} {
     display: block;
@@ -870,7 +910,35 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
   }
 
-  // Shortcuts.
+  // Shortcuts (behind a flag): the search box and the tabs.
+  #{ws.on("main_ui_components_search_bar__search-input-wrapper")} {
+    box-sizing: border-box;
+    block-size: 40px;
+    padding: 0 ds.token("space-12");
+    border: 1px solid ds.token("border-strong");
+    border-radius: ds.token("radius-control");
+    background: ds.token("bg-panel");
+
+    &:focus-within {
+      border-color: ds.token("accent-default");
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+  }
+
+  #{ws.on("main_ui_components_search_bar__search-input")} {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: ds.token("size-14");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-text")},
+  [class*="main_ui_shortcuts__"] span,
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-page")} button {
+    text-transform: none;
+  }
+
   #{ws.on("main_ui_settings_shortcuts__page-title")} {
     @include ds.type("display");
 
@@ -970,6 +1038,48 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       border-color: ds.token("accent-default");
       box-shadow: 0 0 0 1px ds.token("accent-default");
     }
+  }
+
+  // The MCP key and token windows: their title is a text component.
+  #{ws.on("main_ui_settings_integrations__modal-form")} > h2 {
+    margin: 0;
+    padding-inline-end: ds.token("space-32");
+    font-size: ds.token("size-16");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_settings_integrations__modal-form")} {
+    gap: ds.token("space-16");
+  }
+
+  // A field of a dialog and the error under it.
+  #{-any("modal-container")} #{-any("fields-row")} {
+    block-size: auto;
+    margin-block-end: ds.token("space-16");
+  }
+
+  #{-any("modal-container")} #{ws.on("main_ui_components_forms__input-wrapper")} {
+    align-items: stretch;
+  }
+
+  #{-any("modal-container")} #{ws.on("main_ui_components_forms__error")} {
+    position: static;
+    margin: 6px 0 0;
+    font-size: ds.token("size-12");
+    line-height: 1.4;
+    color: ds.token("status-danger-text");
+  }
+
+  // The question of a confirm dialog: text, not a heading.
+  #{-any("modal-msg")} {
+    margin: 0;
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-regular");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
   }
 
   #{-any("modal-close-btn")},
