@@ -888,6 +888,15 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     font-size: ds.token("size-13");
   }
 
+  // P4-B: the question of a confirm dialog, as in Settings.
+  #{-any("modal-container")} #{-any("modal-msg")} {
+    margin: 0;
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-regular");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+  }
+
   #{-any("modal-close-btn")},
   #{-any("modal-close-button")} {
     border-radius: ds.token("radius-control");

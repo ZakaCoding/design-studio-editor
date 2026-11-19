@@ -34,6 +34,12 @@ $app: ":global(body.ds-chrome), :global(body.ds-dash)";
 $pill: "main_ui_ds_notifications_shared_notification_pill";
 $button: "main_ui_ds_buttons_button";
 
+// Elements without a class take the font of their own rule in Penpot's
+// base stylesheet, not their parent's.
+$text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, textarea, div";
+$not-studio: '[class*="main_ui_studio_"], [class*="main_ui_studio_"] *, svg *';
+$submit: ':is(button[type="submit"], input[type="submit"])';
+
 // A class that upstream defines in several modules.
 @function -any($name) {
   @return '[class*="__#{$name}"]';
@@ -263,12 +269,10 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     box-shadow: ds.token("elevation-popover");
     font-family: ds.token("font-text");
     color: ds.token("text-body");
+    gap: ds.token("space-12");
+    min-block-size: 0;
 
-    :is(h1, h2, h3, h4, p, span, a, li, label, button, input, select, textarea, div):not(
-        [class*="main_ui_studio_"],
-        [class*="main_ui_studio_"] *,
-        svg *
-      ) {
+    :is(#{$text-tags}):not(#{$not-studio}) {
       font-family: ds.token("font-text");
       letter-spacing: 0;
     }
@@ -278,8 +282,9 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     @include -dialog-title;
   }
 
+  // The container's 12 px gap is the only space under the title.
   :is(#{$dialog}) #{-any("modal-header")} {
-    margin-block-end: ds.token("space-12");
+    margin-block-end: 0;
   }
 
   :is(#{$dialog}) :is(#{-any("modal-msg")}, #{-any("modal-scd-msg")}, #{-any("modal-subtitle")}) {
@@ -288,7 +293,18 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     margin: 0;
   }
 
+  // The question of a confirm dialog (as in the Settings dialogs).
   :is(#{$dialog}) #{-any("modal-msg")} {
+    font-size: ds.token("size-14");
+    color: ds.token("text-body");
+  }
+
+  :is(#{$dialog}) #{ws.on("main_ui_delete_shared__element-list")} {
+    margin: 0;
+    padding-inline-start: 0;
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    line-height: 1.5;
     color: ds.token("text-body");
   }
 
@@ -314,7 +330,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     align-items: center;
     justify-content: flex-end;
     gap: ds.token("space-8");
-    margin-block-start: ds.token("space-16");
+    margin-block-start: ds.token("space-8");
     padding: 0;
   }
 
@@ -331,7 +347,8 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     @include -black-pill;
   }
 
-  :is(#{$dialog}) :is(#{-any("accept-btn")}, #{-any("accept-button")}):is([class~="danger"], #{-any("danger")}) {
+  :is(#{$dialog})
+    :is(#{-any("accept-btn")}, #{-any("accept-button")}):is([class~="danger"], #{-any("danger")}) {
     @include -danger-pill;
   }
 
@@ -340,25 +357,20 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     @include -danger-pill;
   }
 
-  :is(#{$dialog}) input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"], [type="file"]) {
-    box-sizing: border-box;
-    block-size: ds.dense("control");
-    padding-inline: ds.token("space-12");
-    border: 1px solid ds.token("border-strong");
-    border-radius: ds.token("radius-control");
-    background: ds.token("bg-panel");
-    color: ds.token("text-primary");
-    font-size: ds.dense("body-size");
-
-    &:focus {
-      border-color: ds.token("accent-default");
-      box-shadow: 0 0 0 1px ds.token("accent-default");
-      outline: none;
-    }
+  // A notice inside a dialog ("Assets that have already been used…").
+  :is(#{$dialog}) #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")} {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
   }
 
-  // A notice inside a dialog ("Assets that have already been used…").
-  :is(#{$dialog}) #{ws.on("main_ui_notifications_context_notification__context-notification")} {
+  :is(#{$dialog})
+    :is(
+      #{ws.on("main_ui_notifications_context_notification__context-notification")},
+      #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")}
+        #{ws.on("#{$pill}__notification-pill")}
+    ) {
     gap: ds.token("space-8");
     margin: 0;
     padding: 10px ds.token("space-12");
@@ -375,8 +387,10 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 // Export (one or many layers): the board's rows stay; title 1rem, 32 px
 // pills, cancel soft.
 #{$editor} {
-  #{ws.on("main_ui_exports_assets__modal-container")} #{ws.on("main_ui_exports_assets__modal-title")},
-  #{ws.on("main_ui_exports_files__modal-container")} #{ws.on("main_ui_exports_files__modal-title")} {
+  :is(#{$dialog})#{ws.on("main_ui_exports_assets__modal-container")}
+    #{ws.on("main_ui_exports_assets__modal-title")},
+  :is(#{$dialog})#{ws.on("main_ui_exports_files__modal-container")}
+    #{ws.on("main_ui_exports_files__modal-title")} {
     @include -dialog-title;
   }
 
@@ -410,7 +424,8 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     gap: 2px;
   }
 
-  #{ws.on("main_ui_exports_files__export-option")} :is(#{ws.on("main_ui_exports_files__modal-subtitle")}, h3) {
+  #{ws.on("main_ui_exports_files__export-option")}
+    :is(#{ws.on("main_ui_exports_files__modal-subtitle")}, h3) {
     margin: 0;
     font-family: ds.token("font-text");
     font-size: ds.dense("body-size");
@@ -442,7 +457,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // Libraries: DS dialog, title case tabs, the section titles as panel labels.
-#{$editor} #{ws.on("main_ui_workspace_libraries__modal-dialog")} {
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_libraries__modal-dialog")} {
   inline-size: min(712px, calc(100vw - 48px));
 
   #{ws.on("main_ui_workspace_libraries__modal-title")} {
@@ -465,11 +480,12 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     letter-spacing: 0;
   }
 
+  // "Libraries in this file", "Shared libraries": dialog section labels.
   #{ws.on("main_ui_components_title_bar__title-only")} {
-    @include ds.type("label");
+    @include ds.dense-label;
+    @include -sentence-case;
 
     margin: 0;
-    color: ds.token("text-secondary");
   }
 
   #{ws.on("main_ui_workspace_libraries__section-list-item")},
@@ -481,7 +497,11 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     border: 1px solid ds.token("border-default");
   }
 
-  :is(#{ws.on("main_ui_workspace_libraries__item-title")}, #{ws.on("main_ui_workspace_libraries__item-name")}, #{ws.on("main_ui_workspace_libraries__sample-library-item-name")}) {
+  :is(
+    #{ws.on("main_ui_workspace_libraries__item-title")},
+    #{ws.on("main_ui_workspace_libraries__item-name")},
+    #{ws.on("main_ui_workspace_libraries__sample-library-item-name")}
+  ) {
     font-family: ds.token("font-text");
     font-size: ds.dense("body-size");
     font-weight: ds.token("weight-semibold");
@@ -489,20 +509,27 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     color: ds.token("text-primary");
   }
 
-  :is(#{ws.on("main_ui_workspace_libraries__element-count")}, #{ws.on("main_ui_workspace_libraries__sample-libraries-info")}, #{ws.on("main_ui_workspace_libraries__section-list-empty")}) {
+  :is(
+    #{ws.on("main_ui_workspace_libraries__element-count")},
+    #{ws.on("main_ui_workspace_libraries__sample-libraries-info")},
+    #{ws.on("main_ui_workspace_libraries__section-list-empty")}
+  ) {
     font-family: ds.token("font-text");
     font-size: ds.dense("meta-size");
     letter-spacing: 0;
     color: ds.token("text-secondary");
   }
 
-  :is(#{ws.on("main_ui_workspace_libraries__sample-library-button")}, #{ws.on("main_ui_workspace_libraries__item-update")}) {
+  :is(
+    #{ws.on("main_ui_workspace_libraries__sample-library-button")},
+    #{ws.on("main_ui_workspace_libraries__item-update")}
+  ) {
     min-inline-size: 0;
   }
 }
 
 // Plugins manager.
-#{$editor} #{ws.on("main_ui_workspace_plugins__modal-dialog")} {
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_plugins__modal-dialog")} {
   #{ws.on("main_ui_workspace_plugins__modal-title")} {
     @include -dialog-title;
 
@@ -511,18 +538,17 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 
   #{ws.on("main_ui_workspace_plugins__top-bar")} {
     gap: ds.token("space-8");
-    padding-block-end: ds.token("space-16");
-    border-block-end: 1px solid ds.token("border-default");
   }
 
   #{ws.on("main_ui_workspace_plugins__primary-button")} {
     @include -black-pill;
-
-    block-size: ds.dense("control");
-    min-block-size: ds.dense("control");
   }
 
-  :is(#{ws.on("main_ui_workspace_plugins__plugins-empty-text")}, #{ws.on("main_ui_workspace_plugins__plugin-summary")}, #{ws.on("main_ui_workspace_plugins__modal-paragraph")}) {
+  :is(
+    #{ws.on("main_ui_workspace_plugins__plugins-empty-text")},
+    #{ws.on("main_ui_workspace_plugins__plugin-summary")},
+    #{ws.on("main_ui_workspace_plugins__modal-paragraph")}
+  ) {
     font-family: ds.token("font-text");
     font-size: ds.dense("body-size");
     letter-spacing: 0;
@@ -554,7 +580,11 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // The other plugin windows (permissions, try out): the same footer pills.
-#{$editor} :is(#{ws.on("main_ui_workspace_plugins__plugin-permissions")}, #{ws.on("main_ui_workspace_plugins__plugin-try-out")}) {
+#{$editor}
+  :is(#{$dialog}):is(
+    #{ws.on("main_ui_workspace_plugins__plugin-permissions")},
+    #{ws.on("main_ui_workspace_plugins__plugin-try-out")}
+  ) {
   #{ws.on("main_ui_workspace_plugins__modal-title")} {
     @include -dialog-title;
     @include -sentence-case;
@@ -572,14 +602,17 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // WebGL unavailable: the DS dialog, the guide link in the accent colour.
-#{$editor} #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-dialog")} {
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-dialog")} {
   inline-size: min(560px, calc(100vw - 48px));
 
   #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-header")} {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row-reverse;
+    padding-inline-end: ds.token("space-32");
+  }
+
+  #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-close-btn")} {
+    position: absolute;
+    inset-block-start: 14px;
+    inset-inline-end: 14px;
   }
 
   #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-content")} {
@@ -608,7 +641,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // Share in the editor: upstream's invite dialog, as on the dashboard (P2).
-#{$editor} #{ws.on("main_ui_dashboard_team__modal-team-container")} {
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_dashboard_team__modal-team-container")} {
   inline-size: 400px;
 
   h2,
@@ -625,7 +658,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     margin: 0 0 ds.token("space-8");
   }
 
-  :is(button[type="submit"], input[type="submit"]) {
+  #{$submit} {
     @include -black-pill;
   }
 }
@@ -760,6 +793,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 
   #{ws.on("main_ui_inspect_right_sidebar__empty-button")} {
     inline-size: auto;
+    margin-inline: auto;
   }
 
   #{ws.on("main_ui_workspace_sidebar_assets__add-library-button")} {
