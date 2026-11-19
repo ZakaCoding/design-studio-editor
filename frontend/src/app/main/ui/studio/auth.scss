@@ -109,11 +109,14 @@
   }
 }
 
+// P3D (density): the form and the legal lines are one block, optically
+// centred (1fr above, 2fr below), so the free space does not pile up under
+// the form while the visual panel fills the height.
 .pane {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(24px, 1fr) auto auto minmax(24px, 2fr);
   min-block-size: 100%;
-  padding: 40px 48px 36px;
+  padding: 40px 48px 32px;
 
   @media (width <= 600px) {
     padding: 24px 20px;
@@ -202,18 +205,22 @@
 }
 
 .content {
-  place-self: center center;
+  justify-self: center;
   inline-size: 100%;
+  grid-row: 3;
   max-inline-size: 400px;
-  padding-block: 40px;
 }
 
 .legal {
+  grid-row: 4;
   justify-self: center;
   inline-size: 100%;
   max-inline-size: 400px;
   display: grid;
-  gap: 6px;
+  gap: 4px;
+  margin-block-start: 24px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--ds-border-default);
 }
 
 .legal-text {
@@ -252,20 +259,20 @@
 
 .page {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .title {
   margin: 0;
   color: var(--ds-text-primary);
   font-family: var(--ds-font-display);
-  font-size: 2.125rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.8px;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
 
   @media (width <= 600px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -279,29 +286,30 @@
   text-wrap: balance;
 }
 
+// 6 px under the title (the page gap is 20).
 .subtitle {
-  margin: -6px 0 12px;
+  margin: -14px 0 0;
   color: var(--ds-text-secondary);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   line-height: 1.4;
 }
 
 .body {
-  margin: 0 0 12px;
+  margin: -8px 0 0;
   color: var(--ds-text-body);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
 .form {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   margin: 0;
 }
 
 .field {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .field-head {
@@ -322,7 +330,7 @@
 .control {
   display: flex;
   align-items: center;
-  block-size: 44px;
+  block-size: 40px;
   border: 1px solid var(--ds-border-strong);
   border-radius: var(--ds-radius-md);
   background: var(--ds-bg-panel);
@@ -383,8 +391,8 @@
   display: grid;
   place-items: center;
   flex: none;
-  inline-size: 36px;
-  block-size: 36px;
+  inline-size: 32px;
+  block-size: 32px;
   margin-inline-end: 4px;
   padding: 0;
   border: 0;
@@ -447,7 +455,7 @@
   align-items: center;
   justify-content: center;
   inline-size: 100%;
-  min-block-size: 44px;
+  min-block-size: 40px;
   margin: 0;
   padding: 8px 20px;
   border: 1px solid transparent;
@@ -466,7 +474,7 @@
 }
 
 .button-primary {
-  margin-block-start: 6px;
+  margin-block-start: 4px;
   background: var(--ds-accent-default);
   color: var(--ds-text-on-accent);
 
@@ -530,7 +538,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-block: 14px;
+  margin-block: 12px;
   color: var(--ds-text-secondary);
   font-size: 0.75rem;
 
@@ -551,8 +559,8 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 16px;
-  margin: 8px 0 0;
-  padding: 10px 10px 10px 16px;
+  margin: 0;
+  padding: 6px 6px 6px 14px;
   border-radius: var(--ds-radius-card);
   background: var(--ds-bg-subtle);
   color: var(--ds-text-body);
@@ -612,14 +620,14 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border-radius: var(--ds-radius-md);
   background: var(--ds-status-danger-bg);
   color: var(--ds-status-danger-text);
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.4;
-  margin-block-end: 16px;
+  margin-block-end: 12px;
 
   // "!" in a ring, so the message is not carried by colour alone.
   &::before {
@@ -640,7 +648,7 @@
 
 .note {
   margin: 0;
-  padding: 14px 16px;
+  padding: 10px 14px;
   border-radius: var(--ds-radius-card);
   background: var(--ds-bg-subtle);
   color: var(--ds-text-body);
@@ -655,20 +663,20 @@
 
 .actions {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .state-icon {
   display: grid;
   place-items: center;
-  inline-size: 56px;
-  block-size: 56px;
+  inline-size: 44px;
+  block-size: 44px;
   border-radius: 50%;
-  margin-block-end: 8px;
+  margin-block-end: -4px;
 
   svg {
-    inline-size: 24px;
-    block-size: 24px;
+    inline-size: 20px;
+    block-size: 20px;
     fill: none;
     stroke: currentcolor;
     stroke-width: 1.8;
@@ -699,7 +707,7 @@
   inline-size: min(480px, calc(100% - 32px));
   max-block-size: calc(100% - 32px);
   overflow: auto;
-  padding: 36px 40px 32px;
+  padding: 28px 32px 24px;
   border-radius: var(--ds-radius-xl);
   background: var(--ds-bg-panel);
   box-shadow: var(--ds-shadow-float);
@@ -709,13 +717,13 @@
   }
 
   .title {
-    font-size: 1.625rem;
+    font-size: 1.5rem;
     letter-spacing: -0.5px;
   }
 }
 
 .modal-logo {
-  margin-block-end: 24px;
+  margin-block-end: 20px;
 }
 
 .modal-close {

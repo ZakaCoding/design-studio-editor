@@ -11527,3 +11527,234 @@ msgstr "Image fill"
 
 msgid "ds.auth.login.rate-limited"
 msgstr "Too many sign-in attempts. Wait a few minutes, then try again."
+
+# Design Studio (P3D-A) settings and error pages, dense
+
+msgid "ds.settings.account.title"
+msgstr "Account"
+
+msgid "ds.settings.account.plan"
+msgstr "Plan"
+
+msgid "ds.settings.account.renews"
+msgstr "Renews"
+
+msgid "ds.settings.account.credits"
+msgstr "Craft credits"
+
+msgid "ds.settings.account.storage"
+msgstr "Storage"
+
+msgid "ds.settings.account.storage-value"
+msgstr "%s of %s"
+
+msgid "ds.settings.account.apps"
+msgstr "Connected AI"
+
+msgid "ds.settings.account.apps-more"
+msgstr "+%s more"
+
+msgid "ds.settings.account.since"
+msgstr "Member since"
+
+msgid "ds.settings.account.contact"
+msgstr "Contact"
+
+msgid "ds.settings.password.rules"
+msgstr "Password rules"
+
+msgid "ds.settings.password.rule.length"
+msgstr "8 characters or more"
+
+msgid "ds.settings.password.rule.upper"
+msgstr "An uppercase letter"
+
+msgid "ds.settings.password.rule.lower"
+msgstr "A lowercase letter"
+
+msgid "ds.settings.password.rule.number"
+msgstr "A number"
+
+msgid "ds.settings.password.rule.symbol"
+msgstr "A symbol"
+
+msgid "ds.settings.notifications.event"
+msgstr "Event"
+
+msgid "ds.settings.notifications.in-app"
+msgstr "In-app"
+
+msgid "ds.settings.notifications.email"
+msgstr "Email"
+
+msgid "ds.settings.notifications.no-setting"
+msgstr "No setting for this channel"
+
+msgid "ds.settings.options.language-hint"
+msgstr "The language of menus and messages."
+
+msgid "ds.settings.options.theme-hint"
+msgstr "Light, dark or as your system."
+
+msgid "ds.plans.compare"
+msgstr "Compare plans"
+
+msgid "ds.plans.row.editor"
+msgstr "Editor + MCP"
+
+msgid "ds.plans.row.craft"
+msgstr "Craft (AI design partner)"
+
+msgid "ds.plans.row.price"
+msgstr "Price"
+
+msgid "ds.plans.row.status"
+msgstr "Status"
+
+msgid "ds.plans.credits-cycle"
+msgstr "%s every billing cycle"
+
+msgid "ds.plans.credits-once"
+msgstr "%s once, then your own AI key"
+
+msgid "ds.plans.credits-none"
+msgstr "Craft comes with the Monthly plan"
+
+msgid "ds.plans.once"
+msgstr "one payment"
+
+msgid "ds.plans.included"
+msgstr "Included"
+
+msgid "ds.plans.not-included"
+msgstr "Not included"
+
+msgid "ds.feedback.subtitle"
+msgstr "Tell us about an issue, an idea or a question. We answer as soon as we can."
+
+msgid "ds.feedback.link"
+msgstr "Link"
+
+msgid "ds.feedback.link-hint"
+msgstr "Optional: the file or project it is about."
+
+msgid "ds.error.details"
+msgstr "Error details"
+
+msgid "ds.error.copy"
+msgstr "Copy"
+
+msgid "ds.error.copied"
+msgstr "Copied"
+
+msgid "ds.error.what-to-do"
+msgstr "What you can do"
+
+msgid "ds.error.still-stuck"
+msgstr "Still stuck? Write to"
+
+msgid "ds.error.404.label"
+msgstr "Page not found"
+
+msgid "ds.error.404.tip-link"
+msgstr "Check the link: it may have a typo or be out of date."
+
+msgid "ds.error.404.tip-access"
+msgstr "If someone shared it with you, ask them to share it again."
+
+msgid "ds.error.404.tip-home"
+msgstr "Open Home to find your recent files."
+
+msgid "ds.error.500.label"
+msgstr "Server error"
+
+msgid "ds.error.500.tip-retry"
+msgstr "Retry: most errors are gone on the second try."
+
+msgid "ds.error.500.tip-reload"
+msgstr "If it comes back, reload the page."
+
+msgid "ds.error.500.tip-report"
+msgstr "Still there? Copy the error details and send them to us."
+
+msgid "ds.error.unavailable.label"
+msgstr "Not reachable"
+
+msgid "ds.error.unavailable.tip-wait"
+msgstr "Wait a minute, then retry."
+
+msgid "ds.error.unavailable.tip-connection"
+msgstr "Check that you are online."
+
+msgid "ds.error.unavailable.tip-write"
+msgstr "If it lasts more than a few minutes, write to us."
+
+msgid "ds.error.invite.label"
+msgstr "Invalid link"
+
+msgid "ds.error.invite.tip-email"
+msgstr "Sign in with the email address the invitation was sent to."
+
+msgid "ds.error.invite.tip-ask"
+msgstr "Ask the team owner to send you a new invitation."
+
+msgid "ds.error.invite.tip-home"
+msgstr "Open Home to see the teams you are already in."
+
+msgid "ds.error.webgl.label"
+msgstr "Display problem"
+
+msgid "ds.error.webgl.tip-reload"
+msgstr "Reload the page to start the canvas again."
+
+msgid "ds.error.webgl.tip-tabs"
+msgstr "Close other tabs that use a lot of graphics."
+# Design Studio (P3D-B: dense Inspect)
+
+msgid "ds.viewer.inspect.rotation"
+msgstr "Rotation"
+
+msgid "ds.viewer.inspect.radius"
+msgstr "Radius"
+
+msgid "ds.viewer.inspect.fill"
+msgstr "Fill"
+
+msgid "ds.viewer.inspect.stroke"
+msgstr "Stroke"
+
+msgid "ds.viewer.inspect.shadow"
+msgstr "Shadow"
+
+msgid "ds.viewer.inspect.inner-shadow"
+msgstr "Inner shadow"
+
+msgid "ds.viewer.inspect.font"
+msgstr "Font"
+
+msgid "ds.viewer.inspect.font-size"
+msgstr "Size"
+
+msgid "ds.viewer.inspect.font-weight"
+msgstr "Weight"
+
+msgid "ds.viewer.inspect.line-height"
+msgstr "Line height"
+
+msgid "ds.viewer.inspect.padding"
+msgstr "Padding"
+
+msgid "ds.viewer.inspect.opacity"
+msgstr "Opacity"
+
+msgid "ds.viewer.inspect.gradient.linear"
+msgstr "Linear gradient"
+
+msgid "ds.viewer.inspect.gradient.radial"
+msgstr "Radial gradient"
+
+msgid "ds.viewer.inspect.show-all"
+msgstr "Show all %s lines"
+
+msgid "ds.viewer.inspect.show-less"
+msgstr "Show less"

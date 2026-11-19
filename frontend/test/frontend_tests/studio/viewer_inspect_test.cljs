@@ -44,6 +44,34 @@
   (t/is (= {:type :png :scale 2 :suffix ""} (vi/parse-export "png-2")))
   (t/is (= {:type :svg :scale 1 :suffix ""} (vi/parse-export "svg-1"))))
 
+(t/deftest dense-style-rows
+  (t/is (= [{:hex "#C8743A" :token "brand.cta"} {:hex "#FFFFFF" :opacity "50%"}
+            {:gradient "radial"} {:image true}]
+           (vi/fill-rows {:fills [{:fill-color "#c8743a" :fill-opacity 1}
+                                  {:fill-color "#ffffff" :fill-opacity 0.5}
+                                  {:fill-color-gradient {:type :radial}}
+                                  {:fill-image {:id "x"}}]
+                          :applied-tokens {:fill "brand.cta"}})))
+  (t/is (= [{:hex "#15151A" :width "2" :alignment "inner"}]
+           (vi/stroke-rows {:strokes [{:stroke-color "#15151a" :stroke-width 2
+                                       :stroke-alignment :inner :stroke-opacity 1}]})))
+  (t/is (= [{:inner? false :hex "#000000" :opacity "20%" :values "0 4 12 0"}]
+           (vi/shadow-rows {:shadow [{:style :drop-shadow :offset-x 0 :offset-y 4 :blur 12 :spread 0
+                                      :color {:color "#000000" :opacity 0.2}}
+                                     {:style :inner-shadow :hidden true}]})))
+  (t/is (= {:family "Geist" :size "14" :weight "600" :line-height "18.2"}
+           (vi/font-rows {:font-family "Geist" :font-weight "600"
+                          :font-size "14" :line-height "1.3"})))
+  (t/is (nil? (vi/font-rows nil))))
+
+(t/deftest rotation-and-radius
+  (t/is (nil? (vi/rotation-text {:rotation 0})))
+  (t/is (nil? (vi/rotation-text {:rotation 360})))
+  (t/is (= "15°" (vi/rotation-text {:rotation 15})))
+  (t/is (= "8" (vi/radius-text {:r1 8 :r2 8 :r3 8 :r4 8})))
+  (t/is (= "8 8 0 0" (vi/radius-text {:r1 8 :r2 8 :r3 0 :r4 0})))
+  (t/is (nil? (vi/radius-text {:r1 0 :r2 0 :r3 0 :r4 0}))))
+
 (t/deftest ai-access-helpers
   (t/is (= "C" (ai/app-initial "claude")))
   (t/is (= "?" (ai/app-initial nil)))

@@ -20,7 +20,7 @@
    [app.main.ui.ds.foundations.typography :as t]
    [app.main.ui.ds.foundations.typography.heading :refer [heading*]]
    [app.main.ui.ds.foundations.typography.text :refer [text*]]
-   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head* card* row*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.theme :as theme]
@@ -55,35 +55,40 @@
         form    (fm/use-form :schema schema:options-form
                              :initial initial)]
 
-    [:& fm/form {:class (stl/css :options-form)
-                 :on-submit on-submit
-                 :form form}
+    ;; Design Studio seam (STUDIO-SEAMS.md, P3D): one card, a row per
+    ;; select, the button in the card's foot. Same form and test ids.
+    [:> card* {}
+     [:& fm/form {:class (stl/css :options-form)
+                  :on-submit on-submit
+                  :form form}
 
-     [:h3 (tr "labels.language")]
+      [:> row* {:label (tr "labels.language")
+                :hint (tr "ds.settings.options.language-hint")}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/select {:options (into [{:label "Auto (browser)" :value ""}]
+                                      i18n/supported-locales)
+                       :label (tr "dashboard.select-ui-language")
+                       :default ""
+                       :name :lang
+                       :data-testid "setting-lang"}]]]
 
-     [:div {:class (stl/css :fields-row)}
-      [:& fm/select {:options (into [{:label "Auto (browser)" :value ""}]
-                                    i18n/supported-locales)
-                     :label (tr "dashboard.select-ui-language")
-                     :default ""
-                     :name :lang
-                     :data-testid "setting-lang"}]]
+      [:> row* {:label (tr "dashboard.theme-change")
+                :hint (tr "ds.settings.options.theme-hint")}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/select {:label (tr "dashboard.select-ui-theme")
+                       :name :theme
+                       :default theme/default
+                       :options [{:label (tr "dashboard.select-ui-theme.dark") :value "dark"}
+                                 {:label (tr "dashboard.select-ui-theme.light") :value "light"}
+                                 {:label (tr "dashboard.select-ui-theme.system") :value "system"}]
+                       :data-testid "setting-theme"}]]]
 
-     [:h3 (tr "dashboard.theme-change")]
-     [:div {:class (stl/css :fields-row)}
-      [:& fm/select {:label (tr "dashboard.select-ui-theme")
-                     :name :theme
-                     :default theme/default
-                     :options [{:label (tr "dashboard.select-ui-theme.dark") :value "dark"}
-                               {:label (tr "dashboard.select-ui-theme.light") :value "light"}
-                               {:label (tr "dashboard.select-ui-theme.system") :value "system"}]
-                     :data-testid "setting-theme"}]]
-
-     [:> fm/submit-button*
-      {:label (tr "dashboard.update-settings")
-       :disabled (= (:data @form) (:initial @form))
-       :data-testid "submit-lang-change"
-       :class (stl/css :btn-primary)}]]))
+      [:div {:data-ds-settings "foot"}
+       [:> fm/submit-button*
+        {:label (tr "dashboard.update-settings")
+         :disabled (= (:data @form) (:initial @form))
+         :data-testid "submit-lang-change"
+         :class (stl/css :btn-primary)}]]]]))
 
 (defn ^:private go-settings-feedback
   [event]

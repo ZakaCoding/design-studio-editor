@@ -23,6 +23,7 @@
 
 @use "studio/ds" as ds;
 @use "studio/workspace" as ws;
+@use "ds/mixins.scss" as dsm;
 
 $scope: ":global(body.ds-viewer)";
 
@@ -372,7 +373,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     @include ds.type("value");
 
     color: ds.token("text-secondary");
-    font-size: ds.token("size-11");
+    font-size: ds.token("size-12");
+    text-transform: none;
     white-space: nowrap;
   }
 
@@ -814,6 +816,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     text-transform: none;
     letter-spacing: 0;
   }
+
+  // … and its rows 28 px high, as ours (P3D).
+  [data-testid="ds-viewer-inspect"] [class*="_row__property-row"] {
+    --button-min-block-size: 28px;
+  }
 }
 
 // --- 7. Comments
@@ -822,7 +829,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // The list of comments is a floating panel like Inspect (it was a
   // full-height column that ran under the header).
   #{-c("comments-sidebar")} {
-    inset-block: 76px 12px;
+    inset-block: 64px 12px;
     inset-inline-end: 12px;
     inline-size: 320px;
     block-size: auto;
@@ -877,11 +884,92 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
   }
 
+  // P3D (density): one compact row per thread in the list (56 px, 74 px for
+  // a two-line comment): avatar, author, time and place on the first line;
+  // up to two lines of the comment and the replies under it.
+  #{-c("comments-sidebar")} #{ws.on("main_ui_comments__cover")} {
+    display: grid;
+    grid-template-columns: 28px minmax(0, max-content) minmax(0, 1fr) auto;
+    grid-template-areas:
+      "avatar who where where"
+      "avatar text text replies";
+    align-content: center;
+    gap: 2px 8px;
+    min-block-size: 56px;
+    margin: 0 6px;
+    padding: 8px 10px;
+    border-block-end: 0;
+    border-radius: ds.token("radius-md");
+
+    #{ws.on("main_ui_comments__author")},
+    #{ws.on("main_ui_comments__location")} {
+      display: contents;
+    }
+
+    #{ws.on("main_ui_comments__avatar")} {
+      grid-area: avatar;
+      align-self: center;
+      inline-size: 28px;
+      block-size: 28px;
+    }
+
+    #{ws.on("main_ui_comments__author-identity")} {
+      grid-area: who;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      min-inline-size: 0;
+    }
+
+    #{ws.on("main_ui_comments__author-fullname")} {
+      flex: 0 1 auto;
+      font-size: ds.token("size-12");
+      line-height: 16px;
+    }
+
+    #{ws.on("main_ui_comments__author-timeago")} {
+      flex: none;
+      font-size: ds.token("size-12");
+      line-height: 16px;
+    }
+
+    #{ws.on("main_ui_comments__location-text")} {
+      grid-area: where;
+      font-size: ds.token("size-12");
+      line-height: 16px;
+      text-align: end;
+    }
+
+    // Up to two lines of the comment, so the row still says what it is about.
+    #{ws.on("main_ui_comments__item")} {
+      grid-area: text;
+
+      @include dsm.two-line-text-ellipsis;
+
+      font-size: ds.token("size-12");
+      line-height: 18px;
+      white-space: normal;
+    }
+
+    #{ws.on("main_ui_comments__replies")} {
+      grid-area: replies;
+      gap: 6px;
+      justify-self: end;
+      white-space: nowrap;
+    }
+
+    #{ws.on("main_ui_comments__replies-total")},
+    #{ws.on("main_ui_comments__replies-unread")} {
+      font-size: ds.token("size-12");
+      line-height: 18px;
+    }
+  }
+
   #{ws.on("main_ui_comments__location-text")},
   #{ws.on("main_ui_comments__author-timeago")},
   #{ws.on("main_ui_comments__replies-total")} {
     color: ds.token("text-secondary");
-    font-size: ds.token("size-11");
+    font-size: ds.token("size-12");
   }
 
   #{ws.on("main_ui_comments__author-fullname")} {
@@ -896,7 +984,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   // The open thread.
   #{ws.on("main_ui_comments__floating-thread-wrapper")} {
-    padding: 12px 14px 14px;
+    gap: 8px;
+    padding: 8px 12px 12px;
     border: 1px solid ds.token("border-default");
     border-radius: ds.token("radius-panel");
     background: ds.token("bg-panel");
@@ -914,9 +1003,19 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     font-weight: ds.token("weight-regular");
   }
 
+  // P3D: a compact composer (36 px field, the buttons right under it).
+  #{ws.on("main_ui_comments__floating-thread-main")} {
+    gap: 12px;
+    padding-block-end: 8px;
+  }
+
+  #{ws.on("main_ui_comments__form-buttons-wrapper")} {
+    margin-block-start: 0;
+  }
+
   #{ws.on("main_ui_comments__comment-input")} {
-    min-block-size: 40px;
-    padding: 10px 12px;
+    min-block-size: 36px;
+    padding: 8px 10px;
     border: 1px solid ds.token("border-strong");
     border-radius: ds.token("radius-md");
     background: ds.token("bg-panel");
@@ -970,8 +1069,9 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 // --- 8. Share dialog
 
 #{$scope} {
+  // P3D (density): 20 px padding, a 1rem title, 44 px setting rows.
   #{-s("share-modal")} {
-    inset-block-start: 68px;
+    inset-block-start: 60px;
     inset-inline: auto 12px;
     inline-size: min(440px, calc(100vw - 24px));
   }
@@ -979,7 +1079,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   #{-s("share-link-dialog")} {
     inline-size: 100%;
     max-inline-size: none;
-    padding: 20px 24px 24px;
+    padding: 20px;
     border: 1px solid ds.token("border-default");
     border-radius: ds.token("radius-panel");
     background: ds.token("bg-panel");
@@ -988,14 +1088,16 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   #{-s("share-link-header")} {
-    margin-block-end: 16px;
+    block-size: auto;
+    margin-block-end: 12px;
   }
 
   #{-s("share-link-title")} {
-    @include ds.type("title");
-
-    font-family: ds.token("font-display");
     color: ds.token("text-primary");
+    font-family: ds.token("font-text");
+    font-size: 1rem;
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
     text-transform: none;
   }
 
@@ -1022,14 +1124,14 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   #{-s("modal-content")} {
-    gap: 16px;
+    gap: 12px;
     font-size: ds.token("size-13");
   }
 
   #{-s("hint-wrapper")} {
     align-items: center;
     gap: 12px;
-    min-block-size: 36px;
+    min-block-size: 32px;
   }
 
   #{-s("hint")},
@@ -1047,14 +1149,26 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{-s("button-active")} {
     @include -black-pill;
+
+    block-size: 32px;
+    min-block-size: 32px;
+    padding: 0 14px;
   }
 
   #{-s("button-cancel")} {
     @include -soft-pill;
+
+    block-size: 32px;
+    min-block-size: 32px;
+    padding: 0 14px;
   }
 
   #{-s("button-danger")} {
     @include -danger-pill;
+
+    block-size: 32px;
+    min-block-size: 32px;
+    padding: 0 14px;
   }
 
   #{-s("actions")} {
@@ -1063,7 +1177,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   // The link and its copy button: one DS field.
   #{-s("custon-input-wrapper")} {
-    block-size: 40px;
+    block-size: 36px;
     border: 1px solid ds.token("border-strong");
     border-radius: ds.token("radius-md");
     background: ds.token("bg-panel");
@@ -1090,8 +1204,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   #{-s("copy-button")} {
-    inline-size: 38px;
-    block-size: 38px;
+    inline-size: 34px;
+    block-size: 34px;
     border: 0;
     border-radius: 0;
     background: none;
@@ -1111,8 +1225,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 
   #{-s("permissions-section")} {
-    gap: 4px;
-    padding-block-start: 12px;
+    gap: 0;
+    padding-block-start: 8px;
     border-block-start: 1px solid ds.token("border-default");
   }
 
@@ -1131,8 +1245,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{-s("subtitle")} {
     flex: none;
-    inline-size: 150px;
-    min-block-size: 36px;
+    inline-size: 132px;
+    min-block-size: 32px;
     block-size: auto;
     padding-inline-end: 12px;
   }
@@ -1146,7 +1260,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{-s("select-all-row")},
   #{-s("pages-selection")} li {
-    block-size: 36px;
+    block-size: 32px;
     border-block-end-color: ds.token("border-default");
   }
 
@@ -1173,7 +1287,9 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{-s("access-mode")},
   #{-s("inspect-mode")} {
-    margin-block-start: 4px;
+    align-items: center;
+    min-block-size: 44px;
+    margin-block-start: 0;
   }
 
   #{-s("who-comment-select")},

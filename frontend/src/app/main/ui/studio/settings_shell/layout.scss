@@ -1,0 +1,296 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Settings frame (P3D): the page column and the sticky Account panel.
+// Below 1180 px the panel is a one-line strip over the page.
+
+@use "studio/ds" as ds;
+
+$panel: 280px;
+
+.layout {
+  @include ds.root;
+
+  display: grid;
+  grid-template-columns: minmax(0, 720px) $panel;
+  grid-template-areas: "main side";
+  align-items: start;
+  gap: ds.token("space-24");
+  inline-size: 100%;
+  max-inline-size: calc(720px + #{$panel} + 24px + 2 * #{ds.dense("page-pad-x")});
+  padding: ds.dense("page-pad-top") ds.dense("page-pad-x") 48px;
+  font-family: ds.token("font-text");
+}
+
+.main {
+  grid-area: main;
+  min-inline-size: 0;
+}
+
+.side {
+  grid-area: side;
+  position: sticky;
+  inset-block-start: ds.dense("page-pad-top");
+  min-inline-size: 0;
+}
+
+// --- The panel
+
+.panel {
+  @include ds.dense-card;
+
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 12px;
+  color: ds.token("text-body");
+}
+
+.panel-label {
+  @include ds.dense-label;
+
+  margin-block-end: 10px;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px ds.token("space-8");
+  min-inline-size: 0;
+}
+
+.fact-plan {
+  padding-block-end: 2px;
+}
+
+.plan-name {
+  font-family: ds.token("font-display");
+  font-size: 1.125rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  color: ds.token("text-primary");
+}
+
+.plan-price {
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-medium");
+  color: ds.token("text-secondary");
+  white-space: nowrap;
+}
+
+.fact-key {
+  font-size: ds.dense("meta-size");
+  line-height: 1.4;
+  color: ds.token("text-secondary");
+}
+
+.fact-value {
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.4;
+  color: ds.token("text-primary");
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+}
+
+// Nothing known yet but the profile: no gap above the first block.
+.facts:empty {
+  display: none;
+}
+
+.facts:empty + .more > :first-child {
+  margin-block-start: 0;
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
+.block {
+  padding-block: 10px;
+  border-block-start: 1px solid ds.token("border-default");
+
+  &:first-child {
+    margin-block-start: 12px;
+  }
+}
+
+.block-label {
+  @include ds.dense-label;
+
+  margin-block-end: 6px;
+}
+
+.apps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-block-size: 24px;
+  min-inline-size: 0;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: 20px;
+  block-size: 20px;
+  border-radius: 50%;
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+  font-size: 0.6875rem;
+  font-weight: ds.token("weight-bold");
+}
+
+.avatar-claude {
+  background: #6ea8ff;
+  color: ds.token("text-primary");
+}
+
+.avatar-codex {
+  background: #7fd8b0;
+  color: ds.token("text-primary");
+}
+
+.app-name {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-medium");
+  color: ds.token("text-primary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-access {
+  flex: none;
+  font-size: ds.dense("meta-size");
+  color: ds.token("text-secondary");
+}
+
+.more-apps {
+  @include ds.control-reset;
+  @include ds.focusable(2px);
+
+  margin-block-start: 4px;
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-medium");
+  color: ds.token("accent-default");
+  cursor: pointer;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  padding-block-start: 10px;
+  border-block-start: 1px solid ds.token("border-default");
+}
+
+.link {
+  @include ds.control-reset;
+  @include ds.focusable(2px);
+
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.6;
+  color: ds.token("accent-default");
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+// --- Under 1180 px: the panel is a strip over the page, the facts in one
+// row (plan · renews · credits · storage).
+
+@media (width < 1180px) {
+  .layout {
+    grid-template-columns: minmax(0, 720px);
+    grid-template-areas:
+      "side"
+      "main";
+    gap: ds.token("space-16");
+    max-inline-size: calc(720px + 2 * #{ds.dense("page-pad-x")});
+  }
+
+  .side {
+    position: static;
+  }
+
+  .panel {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 16px;
+  }
+
+  .panel-label,
+  .more {
+    display: none;
+  }
+
+  .facts {
+    flex-direction: row;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: 20px;
+    min-inline-size: 0;
+  }
+
+  .fact {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .fact-meter {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: 4px 6px;
+    flex: 1 1 140px;
+    min-inline-size: 0;
+
+    > [role="img"] {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+@media (width <= 1100px) {
+  .layout {
+    padding-inline: ds.token("space-24");
+  }
+}
+
+@media (width <= 760px) {
+  .facts {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+}
