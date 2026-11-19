@@ -464,7 +464,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     @include -dialog-title;
     @include -sentence-case;
 
-    margin-block-end: ds.token("space-16");
+    margin-block-end: ds.token("space-4");
   }
 
   #{ws.on("main_ui_ds_layout_tab_switcher__tab")} {
@@ -827,7 +827,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     border: 0;
     border-radius: ds.token("radius-sm");
     background: ds.token("bg-inverse");
-    box-shadow: ds.token("elevation-popover");
+    box-shadow: none;
     color: ds.token("text-on-accent");
     font-family: ds.token("font-text");
     font-size: ds.token("size-12");
