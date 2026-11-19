@@ -11637,3 +11637,75 @@ msgstr "Link"
 
 msgid "ds.feedback.link-hint"
 msgstr "Optional: the file or project it is about."
+
+msgid "ds.error.details"
+msgstr "Error details"
+
+msgid "ds.error.copy"
+msgstr "Copy"
+
+msgid "ds.error.copied"
+msgstr "Copied"
+
+msgid "ds.error.what-to-do"
+msgstr "What you can do"
+
+msgid "ds.error.still-stuck"
+msgstr "Still stuck? Write to"
+
+msgid "ds.error.404.label"
+msgstr "Page not found"
+
+msgid "ds.error.404.tip-link"
+msgstr "Check the link: it may have a typo or be out of date."
+
+msgid "ds.error.404.tip-access"
+msgstr "If someone shared it with you, ask them to share it again."
+
+msgid "ds.error.404.tip-home"
+msgstr "Open Home to find your recent files."
+
+msgid "ds.error.500.label"
+msgstr "Server error"
+
+msgid "ds.error.500.tip-retry"
+msgstr "Retry: most errors are gone on the second try."
+
+msgid "ds.error.500.tip-reload"
+msgstr "If it comes back, reload the page."
+
+msgid "ds.error.500.tip-report"
+msgstr "Still there? Copy the error details and send them to us."
+
+msgid "ds.error.unavailable.label"
+msgstr "Not reachable"
+
+msgid "ds.error.unavailable.tip-wait"
+msgstr "Wait a minute, then retry."
+
+msgid "ds.error.unavailable.tip-connection"
+msgstr "Check that you are online."
+
+msgid "ds.error.unavailable.tip-write"
+msgstr "If it lasts more than a few minutes, write to us."
+
+msgid "ds.error.invite.label"
+msgstr "Invalid link"
+
+msgid "ds.error.invite.tip-email"
+msgstr "Sign in with the email address the invitation was sent to."
+
+msgid "ds.error.invite.tip-ask"
+msgstr "Ask the team owner to send you a new invitation."
+
+msgid "ds.error.invite.tip-home"
+msgstr "Open Home to see the teams you are already in."
+
+msgid "ds.error.webgl.label"
+msgstr "Display problem"
+
+msgid "ds.error.webgl.tip-reload"
+msgstr "Reload the page to start the canvas again."
+
+msgid "ds.error.webgl.tip-tabs"
+msgstr "Close other tabs that use a lot of graphics."

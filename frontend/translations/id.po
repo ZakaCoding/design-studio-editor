@@ -8351,3 +8351,75 @@ msgstr "Tautan"
 
 msgid "ds.feedback.link-hint"
 msgstr "Opsional: file atau proyek yang dimaksud."
+
+msgid "ds.error.details"
+msgstr "Detail galat"
+
+msgid "ds.error.copy"
+msgstr "Salin"
+
+msgid "ds.error.copied"
+msgstr "Tersalin"
+
+msgid "ds.error.what-to-do"
+msgstr "Yang bisa kamu lakukan"
+
+msgid "ds.error.still-stuck"
+msgstr "Masih buntu? Tulis ke"
+
+msgid "ds.error.404.label"
+msgstr "Halaman tidak ditemukan"
+
+msgid "ds.error.404.tip-link"
+msgstr "Periksa tautannya: mungkin salah ketik atau sudah lama."
+
+msgid "ds.error.404.tip-access"
+msgstr "Kalau dibagikan orang lain, minta mereka membagikannya lagi."
+
+msgid "ds.error.404.tip-home"
+msgstr "Buka Beranda untuk menemukan file terbarumu."
+
+msgid "ds.error.500.label"
+msgstr "Galat server"
+
+msgid "ds.error.500.tip-retry"
+msgstr "Coba lagi: kebanyakan galat hilang di percobaan kedua."
+
+msgid "ds.error.500.tip-reload"
+msgstr "Kalau muncul lagi, muat ulang halaman."
+
+msgid "ds.error.500.tip-report"
+msgstr "Masih ada? Salin detail galat dan kirim ke kami."
+
+msgid "ds.error.unavailable.label"
+msgstr "Tidak terjangkau"
+
+msgid "ds.error.unavailable.tip-wait"
+msgstr "Tunggu sebentar, lalu coba lagi."
+
+msgid "ds.error.unavailable.tip-connection"
+msgstr "Pastikan kamu tersambung ke internet."
+
+msgid "ds.error.unavailable.tip-write"
+msgstr "Kalau berlangsung lebih dari beberapa menit, tulis ke kami."
+
+msgid "ds.error.invite.label"
+msgstr "Tautan tidak valid"
+
+msgid "ds.error.invite.tip-email"
+msgstr "Masuk dengan email yang menerima undangan."
+
+msgid "ds.error.invite.tip-ask"
+msgstr "Minta pemilik tim mengirim undangan baru."
+
+msgid "ds.error.invite.tip-home"
+msgstr "Buka Beranda untuk melihat tim yang sudah kamu ikuti."
+
+msgid "ds.error.webgl.label"
+msgstr "Masalah tampilan"
+
+msgid "ds.error.webgl.tip-reload"
+msgstr "Muat ulang halaman untuk menyalakan kanvas lagi."
+
+msgid "ds.error.webgl.tip-tabs"
+msgstr "Tutup tab lain yang berat grafisnya."

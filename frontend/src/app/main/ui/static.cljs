@@ -40,8 +40,10 @@
 (def TimeoutError rxjs/TimeoutError)
 
 (mf/defc error-container*
-  "Design Studio seam (STUDIO-SEAMS.md): the page is `studio.error-page/error-shell*`."
-  [{:keys [children code primary-home? actions]}]
+  "Design Studio seam (STUDIO-SEAMS.md): the page is `studio.error-page/error-shell*`
+  (P3D: also its status `label`, the `tips`, secondary buttons `more` and,
+  for server errors, the error details)."
+  [{:keys [children code label primary-home? actions more tips details? extra]}]
   (let [profile     (mf/deref refs/profile)
         profile-id  (:id profile)
         on-nav-root (mf/use-fn
@@ -52,9 +54,14 @@
                                     :team-id (:default-team-id profile)))
                          (st/emit! (rt/nav-root)))))]
     [:> error-shell* {:code code
+                      :label label
                       :on-home on-nav-root
                       :primary-home? primary-home?
-                      :actions actions}
+                      :actions actions
+                      :more more
+                      :tips tips
+                      :details? details?
+                      :extra extra}
      children]))
 
 (mf/defc invalid-token
@@ -65,7 +72,21 @@
   ;;
   ;; The branches use `tr` with literal keys (instead of `(tr key-var)`)
   ;; so the i18n usage scanner can statically track every key.
-  [:> error-container* {:primary-home? true}
+  ;; Design Studio (P3D): a status pill and what the member can do.
+  [:> error-container* {:primary-home? true
+                        :label (tr "ds.error.invite.label")
+                        :tips (cond
+                                (= reason :email-mismatch)
+                                [(tr "ds.error.invite.tip-email")
+                                 (tr "ds.error.invite.tip-ask")]
+
+                                (= reason :token-expired)
+                                [(tr "ds.error.invite.tip-ask")
+                                 (tr "ds.error.invite.tip-home")]
+
+                                :else
+                                [(tr "ds.error.invite.tip-ask")
+                                 (tr "ds.error.invite.tip-home")])}
    (case reason
      :email-mismatch
      [:*
@@ -300,7 +321,12 @@
 
 (mf/defc not-found*
   []
-  [:> error-container* {:code "404" :primary-home? true}
+  [:> error-container* {:code "404"
+                        :label (tr "ds.error.404.label")
+                        :primary-home? true
+                        :tips [(tr "ds.error.404.tip-link")
+                               (tr "ds.error.404.tip-access")
+                               (tr "ds.error.404.tip-home")]}
    [:div {:class (stl/css :main-message)} (tr "ds.error.404.title")]
    [:div {:class (stl/css :desc-message)} (tr "ds.error.404.text")]])
 
@@ -310,6 +336,11 @@
         (mf/use-fn
          (fn [] (st/emit! (rt/assign-exception nil))))]
     [:> error-container* {:code "502"
+                          :label (tr "ds.error.unavailable.label")
+                          :details? true
+                          :tips [(tr "ds.error.unavailable.tip-wait")
+                                 (tr "ds.error.unavailable.tip-connection")
+                                 (tr "ds.error.unavailable.tip-write")]
                           :actions (mf/html
                                     [:> sbtn/button* {:variant "primary" :on-click handle-retry}
                                      (tr "labels.retry")])}
@@ -320,6 +351,11 @@
   []
   (let [on-click (mf/use-fn #(st/emit! (rt/assign-exception nil)))]
     [:> error-container* {:code "503"
+                          :label (tr "ds.error.unavailable.label")
+                          :details? true
+                          :tips [(tr "ds.error.unavailable.tip-wait")
+                                 (tr "ds.error.unavailable.tip-connection")
+                                 (tr "ds.error.unavailable.tip-write")]
                           :actions (mf/html
                                     [:> sbtn/button* {:variant "primary" :on-click on-click}
                                      (tr "labels.retry")])}
@@ -360,7 +396,10 @@
 (mf/defc webgl-context-lost*
   []
   (let [on-reload (mf/use-fn #(js/location.reload))]
-    [:> error-container* {:actions (mf/html
+    [:> error-container* {:label (tr "ds.error.webgl.label")
+                          :tips [(tr "ds.error.webgl.tip-reload")
+                                 (tr "ds.error.webgl.tip-tabs")]
+                          :actions (mf/html
                                     [:> sbtn/button* {:variant "primary" :on-click on-reload}
                                      (tr "labels.reload-page")])}
      [:div {:class (stl/css :main-message)} (tr "errors.webgl-context-lost.main-message")]
@@ -400,26 +439,34 @@
           (fn []
             (wapi/revoke-uri uri)))))
 
+    ;; Design Studio (P3D): Retry first, then home, then support; the
+    ;; things to try and the error details (with the report download).
     [:> error-container* {:code "500"
+                          :label (tr "ds.error.500.label")
+                          :details? true
+                          :tips [(tr "ds.error.500.tip-retry")
+                                 (tr "ds.error.500.tip-reload")
+                                 (tr "ds.error.500.tip-report")]
+                          :extra (when (some? report)
+                                   (mf/html
+                                    [:a {:class (stl/css :download-link) :on-click on-download}
+                                     (tr "labels.download" "report.txt")]))
                           :actions (mf/html
-                                    [:*
-                                     [:> sbtn/button* {:variant "secondary"
-                                                       :type "button"
-                                                       :class (stl/css :support-btn)
-                                                       :on-click support-contact-click}
-                                      (tr "labels.contact-support")]
-                                     [:> sbtn/button* {:variant "primary"
-                                                       :type "button"
-                                                       :class (stl/css :retry-btn)
-                                                       :on-click on-reset}
-                                      (tr "labels.retry")]])}
+                                    [:> sbtn/button* {:variant "primary"
+                                                      :type "button"
+                                                      :class (stl/css :retry-btn)
+                                                      :on-click on-reset}
+                                     (tr "labels.retry")])
+                          :more (mf/html
+                                 [:> sbtn/button* {:variant "secondary"
+                                                   :type "button"
+                                                   :class (stl/css :support-btn)
+                                                   :on-click support-contact-click}
+                                  (tr "labels.contact-support")])}
      [:div {:class (stl/css :main-message)} (tr "ds.error.500.title")]
 
      [:div {:class (stl/css :desc-message)}
-      [:p {:class (stl/css :desc-text)} (tr "ds.error.500.text")]]
-
-     (when (some? report)
-       [:a {:class (stl/css :download-link) :on-click on-download} (tr "labels.download" "report.txt")])]))
+      [:p {:class (stl/css :desc-text)} (tr "ds.error.500.text")]]]))
 
 (defn- load-info
   "Load exception page info"

@@ -345,7 +345,9 @@
   flex-direction: column;
   align-content: stretch;
   gap: var(--ds-space-8);
-  padding: var(--ds-space-24);
+
+  // P3D: the dense dialog (20 px, 1rem title, 32 px pills).
+  padding: px2rem(20);
   color: var(--ds-text-secondary);
   font-family: var(--ds-font-text);
   -webkit-font-smoothing: antialiased;
@@ -354,8 +356,8 @@
 
 .modal-close {
   position: absolute;
-  inset-block-start: var(--ds-space-16);
-  inset-inline-end: var(--ds-space-16);
+  inset-block-start: var(--ds-space-12);
+  inset-inline-end: var(--ds-space-12);
   display: grid;
   place-items: center;
   inline-size: $sz-32;
@@ -412,7 +414,7 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--ds-space-8);
-  margin-block-start: var(--ds-space-16);
+  margin-block-start: var(--ds-space-12);
 }
 
 .cancel-button,
@@ -420,9 +422,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  block-size: px2rem(36);
+  block-size: px2rem(32);
   margin: 0;
-  padding: 0 px2rem(18);
+  padding: 0 px2rem(14);
   border: 0;
   border-radius: var(--ds-radius-button);
   font-family: var(--ds-font-text);
