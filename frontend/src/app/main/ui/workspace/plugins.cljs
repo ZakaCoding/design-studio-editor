@@ -22,6 +22,7 @@
    [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
    [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.brand :as brand]
    [app.plugins.register :as preg]
    [app.util.avatars :as avatars]
    [app.util.dom :as dom]
@@ -208,7 +209,8 @@
          [:div {:class (stl/css-case :info true :error error?)}
           (tr "workspace.plugins.error.manifest")])
 
-       (when-not (empty? plugins-state)
+       ;; Design Studio (P4-A): Penpot hub link, hidden (STUDIO-SEAMS.md)
+       (when (and brand/penpot-community? (not (empty? plugins-state)))
          [:> i18n/tr-html*
           {:class (stl/css :discover)
            :on-click #(st/emit! (ev/event {::ev/name "open-plugins-list"}))
@@ -220,11 +222,13 @@
          [:div {:class (stl/css :plugins-empty)}
           [:div {:class (stl/css :plugins-empty-logo)} deprecated-icon/puzzle]
           [:div {:class (stl/css :plugins-empty-text)} (tr "workspace.plugins.empty-plugins")]
-          [:a {:class (stl/css :plugins-link)
-               :href cfg/plugins-list-uri
-               :target "_blank"
-               :on-click #(st/emit! (ev/event {::ev/name "open-plugins-list"}))}
-           (tr "workspace.plugins.plugin-list-link") deprecated-icon/external-link]]
+          ;; Design Studio (P4-A): Penpot hub link, hidden (STUDIO-SEAMS.md)
+          (when brand/penpot-community?
+            [:a {:class (stl/css :plugins-link)
+                 :href cfg/plugins-list-uri
+                 :target "_blank"
+                 :on-click #(st/emit! (ev/event {::ev/name "open-plugins-list"}))}
+             (tr "workspace.plugins.plugin-list-link") deprecated-icon/external-link])]
 
          [:*
           [:> title-bar* {:collapsable false
