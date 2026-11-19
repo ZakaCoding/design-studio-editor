@@ -1311,7 +1311,9 @@
         ;; its floating submenu, so the submenu survives the gap
         ;; between them while the pointer travels across.
         hovering?*     (mf/use-ref false)
-        version        (brand/version-label)
+        ;; Design Studio (P4-A): no version chip next to "About Design Studio"
+        ;; (no room for it); the version is in the About dialog.
+        version        nil
 
         close-sub-menu
         (mf/use-fn

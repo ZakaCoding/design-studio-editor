@@ -26,8 +26,8 @@
   "Newest first. `:date` is the day it went live (WIB); the entry without
   a date is what comes next. Each `:items` holds 2–4 short lines."
   [{:id "next"
-    :title {:en "Coming next: the new editor"
-            :id "Segera hadir: editor baru"}
+    :title {:en "The new editor"
+            :id "Editor baru"}
     :items {:en ["The editor is being rebuilt around Design Studio: calmer panels, the tools at the bottom and Craft next to your canvas."
                  "Your design files stay as they are and keep working."]
             :id ["Editor sedang dibangun ulang untuk Design Studio: panel yang lebih tenang, alat di bawah, dan Craft di samping kanvas."
