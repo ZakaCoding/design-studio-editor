@@ -1,0 +1,87 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio release notes (P4-A): the DS dialog at the P3D dialog
+// values (padding 20, title 1rem, 32 px pills), one card per release.
+
+@use "studio/ds" as ds;
+@use "studio/brand-dialog" as bd;
+
+.dialog {
+  @include bd.dense-dialog;
+}
+
+.pill-black {
+  @include bd.pill-black;
+}
+
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note {
+  @include ds.dense-card;
+
+  padding: ds.dense("card-pad-y") ds.dense("card-pad-x");
+}
+
+.note-next {
+  border-style: dashed;
+  border-color: ds.token("border-strong");
+  background: ds.token("bg-subtle");
+}
+
+.note-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-block-end: ds.token("space-4");
+}
+
+.note-date {
+  @include ds.dense-label;
+}
+
+.note-tag {
+  @include ds.dense-label;
+
+  color: ds.token("accent-text-strong");
+}
+
+.note-title {
+  margin: 0;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.35;
+  color: ds.token("text-primary");
+}
+
+.note-items {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-4");
+  margin: 0;
+  padding-inline-start: ds.token("space-16");
+  list-style: disc outside;
+}
+
+.note-item {
+  display: list-item;
+  list-style: disc outside;
+  font-size: ds.dense("body-size");
+  line-height: 1.45;
+  color: ds.token("text-body");
+
+  &::marker {
+    color: ds.token("text-secondary");
+  }
+}

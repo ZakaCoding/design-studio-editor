@@ -1,0 +1,869 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio global consistency (P4-B, 19 Nov): the upstream surfaces
+// areas 1–3 did not reach, brought to the look and the density scale of the
+// approved pages. Same rules as the other polish sheets: upstream
+// stylesheets and markup stay untouched, every rule lives under a Design
+// Studio <body> scope and matches upstream elements by their CSS-module
+// class token.
+//
+// Scopes: `body.ds-chrome` (the editor), `body.ds-dash` (dashboard and
+// Settings). Auth and the viewer keep `auth_viewer/*.scss`.
+//
+// 1. Toasts: one DS toast for every level (the look of `auth_viewer/
+//    shared.scss`), placed where it covers no header action.
+// 2. Upstream buttons in the editor: DS pills, sentence case.
+// 3. Dialogs in the editor: the P3D dialog (radius 16, padding 20, title
+//    1rem, 32 px pills, footer on the right).
+// 4. The editor's own dialogs: export, libraries, plugins, WebGL, invite,
+//    restore version.
+// 5. Panels: panel titles, versions, tokens, assets, inspect, small
+//    buttons that were UPPERCASE.
+// 6. Menus and tooltips: the DS menu and the DS tooltip everywhere.
+// 7. The file loader.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$editor: ":global(body.ds-chrome)";
+$app: ":global(body.ds-chrome), :global(body.ds-dash)";
+$pill: "main_ui_ds_notifications_shared_notification_pill";
+$button: "main_ui_ds_buttons_button";
+
+// Elements without a class take the font of their own rule in Penpot's
+// base stylesheet, not their parent's.
+$text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, textarea, div";
+$not-studio: '[class*="main_ui_studio_"], [class*="main_ui_studio_"] *, svg *';
+$submit: ':is(button[type="submit"], input[type="submit"])';
+
+// A class that upstream defines in several modules.
+@function -any($name) {
+  @return '[class*="__#{$name}"]';
+}
+
+// A dialog root of upstream (not a Studio one).
+$dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("modal-dialog")}:not([class*="main_ui_studio_"]), #{ws.on("main_ui_dashboard_team__modal-team-container")}';
+
+// --- Pills (the 32 px pills of the P3D dialogs)
+
+@mixin -pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-8");
+  inline-size: auto;
+  block-size: ds.dense("button-sm");
+  min-block-size: ds.dense("button-sm");
+  margin: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: ds.token("radius-button");
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:focus-visible {
+    @include ds.focus-ring;
+  }
+}
+
+@mixin -soft-pill {
+  @include -pill;
+
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+
+  &:hover:not(:disabled) {
+    background: ds.token("border-default");
+    color: ds.token("text-primary");
+  }
+}
+
+@mixin -black-pill {
+  @include -pill;
+
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: ds.token("text-body");
+    color: ds.token("text-on-accent");
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    background: ds.token("border-strong");
+    color: ds.token("text-on-accent");
+    opacity: 1;
+    cursor: default;
+  }
+}
+
+@mixin -danger-pill {
+  @include -pill;
+
+  background: ds.token("status-danger-text");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: ds.token("danger-solid-hover");
+    color: ds.token("text-on-accent");
+  }
+}
+
+@mixin -ghost-pill {
+  @include -pill;
+
+  background: transparent;
+  color: ds.token("text-secondary");
+
+  &:hover:not(:disabled) {
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+}
+
+// Upstream strings that are written in capitals ("LIBRARIES"): shown in
+// sentence case without touching the string.
+@mixin -sentence-case {
+  display: inline-block;
+  text-transform: lowercase;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+@mixin -dialog-title {
+  margin: 0;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("dialog-title-size");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  color: ds.token("text-primary");
+}
+
+@mixin -dialog-text {
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  color: ds.token("text-secondary");
+}
+
+// --- 1. Toasts
+
+#{$app} {
+  // The toast look of `auth_viewer/shared.scss`.
+  #{ws.on("main_ui_ds_notifications_toast__toast")} {
+    inset-block-start: 16px;
+    inset-inline: 50% auto;
+    max-inline-size: min(440px, calc(100vw - 32px));
+    font-family: ds.token("font-text");
+    transform: translateX(-50%);
+  }
+
+  #{ws.on("#{$pill}__notification-pill")}#{ws.on("#{$pill}__type-toast")} {
+    padding: 10px 40px 10px 14px;
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-card");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("#{$pill}__error-message")} {
+    color: ds.token("text-primary");
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-medium");
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+
+  #{ws.on("#{$pill}__level-info")} {
+    --notification-icon-color: #{ds.token("accent-default")};
+  }
+
+  #{ws.on("#{$pill}__level-success")} {
+    --notification-icon-color: #{ds.token("status-success")};
+  }
+
+  #{ws.on("#{$pill}__level-warning")} {
+    --notification-icon-color: #{ds.token("status-warning")};
+  }
+
+  #{ws.on("#{$pill}__level-error")} {
+    --notification-icon-color: #{ds.token("status-danger-text")};
+  }
+
+  #{ws.on("main_ui_ds_notifications_toast__close-button")} {
+    inset-block-start: 12px;
+    inset-inline-end: 12px;
+    color: ds.token("text-secondary");
+    cursor: pointer;
+
+    &:hover {
+      color: ds.token("text-primary");
+    }
+  }
+}
+
+// The editor: the toast sits over the canvas, between the two panels,
+// under the rulers.
+#{$editor} #{ws.on("main_ui_ds_notifications_toast__toast")} {
+  inset-block-start: 28px;
+}
+
+// --- 2. Upstream buttons in the editor
+
+#{$editor} #{ws.on("#{$button}__button")}:not([class*="main_ui_studio_"]) {
+  @include -pill;
+
+  &#{ws.on("#{$button}__button-primary")} {
+    @include -black-pill;
+  }
+
+  &#{ws.on("#{$button}__button-secondary")} {
+    @include -soft-pill;
+  }
+
+  &#{ws.on("#{$button}__button-destructive")} {
+    @include -danger-pill;
+  }
+
+  &#{ws.on("#{$button}__button-ghost")} {
+    @include -ghost-pill;
+  }
+}
+
+// --- 3. Dialogs in the editor
+
+#{$editor} {
+  #{-any("modal-overlay")}:not([class*="main_ui_studio_"]) {
+    background: ds.token("overlay-scrim");
+  }
+
+  :is(#{$dialog}) {
+    @include ds.root;
+
+    padding: ds.dense("dialog-pad");
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-panel");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+    font-family: ds.token("font-text");
+    color: ds.token("text-body");
+    gap: ds.token("space-12");
+    min-block-size: 0;
+
+    :is(#{$text-tags}):not(#{$not-studio}) {
+      font-family: ds.token("font-text");
+      letter-spacing: 0;
+    }
+  }
+
+  :is(#{$dialog}) :is(#{-any("modal-title")}, #{-any("modal-header")} > h2, #{-any("modal-header")} > h1) {
+    @include -dialog-title;
+  }
+
+  // The container's 12 px gap is the only space under the title.
+  :is(#{$dialog}) #{-any("modal-header")} {
+    margin-block-end: 0;
+  }
+
+  :is(#{$dialog}) :is(#{-any("modal-msg")}, #{-any("modal-scd-msg")}, #{-any("modal-subtitle")}) {
+    @include -dialog-text;
+
+    margin: 0;
+  }
+
+  // The question of a confirm dialog (as in the Settings dialogs).
+  :is(#{$dialog}) #{-any("modal-msg")} {
+    font-size: ds.token("size-14");
+    color: ds.token("text-body");
+  }
+
+  :is(#{$dialog}) #{ws.on("main_ui_delete_shared__element-list")} {
+    margin: 0;
+    padding-inline-start: 0;
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    line-height: 1.5;
+    color: ds.token("text-body");
+  }
+
+  :is(#{$dialog}) #{-any("modal-content")} {
+    @include -dialog-text;
+
+    gap: ds.token("space-8");
+  }
+
+  :is(#{$dialog}) :is(#{-any("modal-close-btn")}, #{-any("close-btn")}) {
+    border-radius: ds.token("radius-control");
+    color: ds.token("text-secondary");
+
+    &:hover {
+      background: ds.token("bg-subtle");
+      color: ds.token("text-primary");
+    }
+  }
+
+  // Footer on the right, 8 px between the pills.
+  :is(#{$dialog}) :is(#{-any("modal-footer")}, #{-any("action-buttons")}) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: ds.token("space-8");
+    margin-block-start: ds.token("space-8");
+    padding: 0;
+  }
+
+  :is(#{$dialog}) #{-any("modal-footer")} #{-any("action-buttons")} {
+    margin: 0;
+  }
+
+  // Upstream's own button classes of the older dialogs.
+  :is(#{$dialog}) :is(#{-any("cancel-button")}, #{-any("cancel-btn")}) {
+    @include -soft-pill;
+  }
+
+  :is(#{$dialog}) :is(#{-any("accept-btn")}, #{-any("accept-button")}, #{-any("primary-button")}) {
+    @include -black-pill;
+  }
+
+  :is(#{$dialog})
+    :is(#{-any("accept-btn")}, #{-any("accept-button")}):is([class~="danger"], #{-any("danger")}) {
+    @include -danger-pill;
+  }
+
+  // Unpublish: the one destructive accept of `delete_shared`.
+  #{ws.on("main_ui_delete_shared__modal-container")} #{ws.on("main_ui_delete_shared__accept-btn")} {
+    @include -danger-pill;
+  }
+
+  // A notice inside a dialog ("Assets that have already been used…").
+  :is(#{$dialog}) #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")} {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  :is(#{$dialog})
+    :is(
+      #{ws.on("main_ui_notifications_context_notification__context-notification")},
+      #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")}
+        #{ws.on("#{$pill}__notification-pill")}
+    ) {
+    gap: ds.token("space-8");
+    margin: 0;
+    padding: 10px ds.token("space-12");
+    border: 0;
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-body");
+    font-size: ds.dense("body-size");
+  }
+}
+
+// --- 4. The editor's own dialogs
+
+// Export (one or many layers): the board's rows stay; title 1rem, 32 px
+// pills, cancel soft.
+#{$editor} {
+  :is(#{$dialog})#{ws.on("main_ui_exports_assets__modal-container")}
+    #{ws.on("main_ui_exports_assets__modal-title")},
+  :is(#{$dialog})#{ws.on("main_ui_exports_files__modal-container")}
+    #{ws.on("main_ui_exports_files__modal-title")} {
+    @include -dialog-title;
+  }
+
+  #{ws.on("main_ui_exports_assets__modal-container")} {
+    padding: ds.dense("dialog-pad");
+  }
+
+  #{ws.on("main_ui_exports_assets__modal-container")} #{ws.on("main_ui_exports_assets__accept-btn")},
+  #{ws.on("main_ui_exports_files__modal-container")} #{ws.on("main_ui_exports_files__accept-btn")} {
+    @include -black-pill;
+
+    min-inline-size: 0;
+  }
+
+  #{ws.on("main_ui_exports_assets__modal-container")} #{ws.on("main_ui_exports_assets__cancel-button")},
+  #{ws.on("main_ui_exports_files__modal-container")} #{ws.on("main_ui_exports_files__cancel-button")} {
+    @include -soft-pill;
+  }
+}
+
+// Download design file: the three options read as choices, not as caps.
+#{$app} #{ws.on("main_ui_exports_files__modal-container")} {
+  #{ws.on("main_ui_exports_files__export-option")} {
+    gap: ds.token("space-4") ds.token("space-8");
+    margin-block-end: ds.token("space-12");
+    font-family: ds.token("font-text");
+    text-transform: none;
+  }
+
+  #{ws.on("main_ui_exports_files__option-content")} {
+    gap: 2px;
+  }
+
+  #{ws.on("main_ui_exports_files__export-option")}
+    :is(#{ws.on("main_ui_exports_files__modal-subtitle")}, h3) {
+    margin: 0;
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.35;
+    letter-spacing: 0;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_exports_files__export-option")} :is(#{ws.on("main_ui_exports_files__modal-msg")}, p) {
+    margin: 0;
+    font-family: ds.token("font-text");
+    font-size: ds.dense("meta-size");
+    font-weight: ds.token("weight-regular");
+    line-height: 1.45;
+    letter-spacing: 0;
+    text-transform: none;
+    color: ds.token("text-secondary");
+  }
+
+  > #{ws.on("main_ui_exports_files__modal-content")} > :is(p, #{ws.on("main_ui_exports_files__modal-msg")}) {
+    margin: 0 0 ds.token("space-12");
+    font-size: ds.dense("body-size");
+    line-height: 1.5;
+    text-transform: none;
+    color: ds.token("text-body");
+  }
+}
+
+// Libraries: DS dialog, title case tabs, the section titles as panel labels.
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_libraries__modal-dialog")} {
+  inline-size: min(712px, calc(100vw - 48px));
+
+  #{ws.on("main_ui_workspace_libraries__modal-title")} {
+    @include -dialog-title;
+    @include -sentence-case;
+
+    margin-block-end: ds.token("space-4");
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab")} {
+    border-radius: ds.token("radius-control");
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-text")} {
+    @include -sentence-case;
+
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-medium");
+    letter-spacing: 0;
+  }
+
+  // "Libraries in this file", "Shared libraries": dialog section labels.
+  #{ws.on("main_ui_components_title_bar__title-only")} {
+    @include ds.dense-label;
+    @include -sentence-case;
+
+    margin: 0;
+  }
+
+  #{ws.on("main_ui_workspace_libraries__section-list-item")},
+  #{ws.on("main_ui_workspace_libraries__sample-library-item")} {
+    border-radius: ds.token("radius-control");
+  }
+
+  #{ws.on("main_ui_workspace_libraries__section-list-item")} {
+    border: 1px solid ds.token("border-default");
+  }
+
+  :is(
+    #{ws.on("main_ui_workspace_libraries__item-title")},
+    #{ws.on("main_ui_workspace_libraries__item-name")},
+    #{ws.on("main_ui_workspace_libraries__sample-library-item-name")}
+  ) {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-semibold");
+    letter-spacing: 0;
+    color: ds.token("text-primary");
+  }
+
+  :is(
+    #{ws.on("main_ui_workspace_libraries__element-count")},
+    #{ws.on("main_ui_workspace_libraries__sample-libraries-info")},
+    #{ws.on("main_ui_workspace_libraries__section-list-empty")}
+  ) {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("meta-size");
+    letter-spacing: 0;
+    color: ds.token("text-secondary");
+  }
+
+  :is(
+    #{ws.on("main_ui_workspace_libraries__sample-library-button")},
+    #{ws.on("main_ui_workspace_libraries__item-update")}
+  ) {
+    min-inline-size: 0;
+  }
+}
+
+// Plugins manager.
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_plugins__modal-dialog")} {
+  #{ws.on("main_ui_workspace_plugins__modal-title")} {
+    @include -dialog-title;
+
+    margin-block-end: ds.token("space-16");
+  }
+
+  #{ws.on("main_ui_workspace_plugins__top-bar")} {
+    gap: ds.token("space-8");
+  }
+
+  #{ws.on("main_ui_workspace_plugins__primary-button")} {
+    @include -black-pill;
+  }
+
+  :is(
+    #{ws.on("main_ui_workspace_plugins__plugins-empty-text")},
+    #{ws.on("main_ui_workspace_plugins__plugin-summary")},
+    #{ws.on("main_ui_workspace_plugins__modal-paragraph")}
+  ) {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    letter-spacing: 0;
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_workspace_plugins__plugins-empty-logo")} {
+    border-radius: ds.token("radius-card");
+    background: ds.token("bg-subtle");
+  }
+
+  #{ws.on("main_ui_workspace_plugins__plugins-link")} {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-medium");
+    letter-spacing: 0;
+    color: ds.token("accent-default");
+  }
+
+  #{ws.on("main_ui_workspace_plugins__plugin-title")} {
+    font-family: ds.token("font-text");
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_workspace_plugins__open-button")} {
+    @include -soft-pill;
+  }
+}
+
+// The other plugin windows (permissions, try out): the same footer pills.
+#{$editor}
+  :is(#{$dialog}):is(
+    #{ws.on("main_ui_workspace_plugins__plugin-permissions")},
+    #{ws.on("main_ui_workspace_plugins__plugin-try-out")}
+  ) {
+  #{ws.on("main_ui_workspace_plugins__modal-title")} {
+    @include -dialog-title;
+    @include -sentence-case;
+  }
+
+  #{ws.on("main_ui_workspace_plugins__cancel-button")} {
+    @include -soft-pill;
+    @include -sentence-case;
+  }
+
+  #{ws.on("main_ui_workspace_plugins__primary-button")} {
+    @include -black-pill;
+    @include -sentence-case;
+  }
+}
+
+// WebGL unavailable: the DS dialog, the guide link in the accent colour.
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-dialog")} {
+  inline-size: min(560px, calc(100vw - 48px));
+
+  #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-header")} {
+    padding-inline-end: ds.token("space-32");
+  }
+
+  #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-close-btn")} {
+    position: absolute;
+    inset-block-start: 14px;
+    inset-inline-end: 14px;
+  }
+
+  #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-content")} {
+    display: flex;
+    flex-direction: column;
+    gap: ds.token("space-12");
+
+    p {
+      margin: 0;
+      font-size: ds.dense("body-size");
+      line-height: 1.5;
+      color: ds.token("text-body");
+    }
+  }
+
+  #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-divider")} {
+    margin: 0;
+    border: 0;
+    border-block-start: 1px solid ds.token("border-default");
+  }
+
+  #{ws.on("main_ui_workspace_webgl_unavailable_modal__link")} {
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("accent-default");
+  }
+}
+
+// Share in the editor: upstream's invite dialog, as on the dashboard (P2).
+#{$editor} :is(#{$dialog})#{ws.on("main_ui_dashboard_team__modal-team-container")} {
+  inline-size: 400px;
+
+  h2,
+  #{ws.on("main_ui_dashboard_team__modal-title")} {
+    @include -dialog-title;
+
+    margin-block-end: ds.token("space-8");
+  }
+
+  p,
+  #{ws.on("main_ui_dashboard_team__role-title")} {
+    @include -dialog-text;
+
+    margin: 0 0 ds.token("space-8");
+  }
+
+  #{$submit} {
+    @include -black-pill;
+  }
+}
+
+// Restore a version: the question over the canvas, DS card and pills.
+#{$editor} #{ws.on("main_ui_ds_notifications_actionable__notification")} {
+  gap: ds.token("space-12");
+  padding: 8px 8px 8px ds.token("space-16");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  background: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
+
+  #{ws.on("main_ui_ds_notifications_actionable__notification-message")} {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-medium");
+    letter-spacing: 0;
+    color: ds.token("text-primary");
+  }
+}
+
+// --- 5. Panels
+
+#{$editor} {
+  // Panel titles of the right column (keyboard shortcuts, comments): a
+  // sentence-case title on the panel, not a caps label in a grey bar.
+  #{ws.on("main_ui_ds_product_panel_title__panel-title")} {
+    block-size: 36px;
+    min-block-size: 36px;
+    padding-inline: ds.token("space-8") ds.token("space-4");
+    border-radius: ds.token("radius-control");
+    background: transparent;
+  }
+
+  #{ws.on("main_ui_ds_product_panel_title__panel-title-text")} {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-semibold");
+    letter-spacing: 0;
+    text-align: start;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  // Version history.
+  #{ws.on("main_ui_workspace_sidebar_versions__version-save-version")} {
+    @include ds.type("label");
+
+    align-items: center;
+    padding: ds.token("space-12") ds.token("space-8") ds.token("space-8") ds.token("space-12");
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_versions__version-options-dropdown")} {
+    padding: ds.token("space-4");
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-lg");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_versions__menu-option")} {
+    @include ds.type("control");
+
+    display: flex;
+    align-items: center;
+    min-block-size: 32px;
+    padding: 0 10px;
+    border-radius: ds.token("radius-control");
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-primary");
+
+    &:hover,
+    &:focus-visible {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  // The "versions are kept for 7 days" note: a quiet DS note.
+  #{ws.on("main_ui_ds_product_cta__cta")} {
+    border-radius: ds.token("radius-card");
+    background: ds.token("bg-subtle");
+  }
+
+  #{ws.on("main_ui_ds_product_cta__placeholder-title")},
+  #{ws.on("main_ui_ds_product_cta__cta-title")} {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-semibold");
+    letter-spacing: 0;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_ds_product_cta__cta-message")} {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("meta-size");
+    letter-spacing: 0;
+    color: ds.token("text-secondary");
+  }
+
+  // Tokens: "Themes" and "Tokens" as the panel's labels (as "Pages").
+  #{ws.on("main_ui_workspace_tokens_themes__themes-header")},
+  #{ws.on("main_ui_workspace_tokens_management__sets-header")} {
+    @include ds.type("label");
+
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_workspace_tokens_sidebar__import-export-button")} {
+    @include -soft-pill;
+
+    box-shadow: none;
+  }
+
+  // Small buttons that were UPPERCASE: "Manage library", "More colors",
+  // "Export 1 element", "Save color style", inspect's "More info".
+  :is(
+    #{ws.on("main_ui_workspace_sidebar_assets__libraries-button")},
+    #{ws.on("main_ui_workspace_sidebar_assets__add-library-button")},
+    #{ws.on("main_ui_workspace_sidebar_options_menus_color_selection__more-colors-btn")},
+    #{ws.on("main_ui_workspace_sidebar_options_menus_exports__export-btn")},
+    #{ws.on("main_ui_inspect_right_sidebar__empty-button")},
+    #{ws.on("main_ui_inspect_exports__export-btn")}
+  ) {
+    @include -soft-pill;
+
+    inline-size: 100%;
+    border: 0;
+  }
+
+  #{ws.on("main_ui_inspect_right_sidebar__empty-button")} {
+    inline-size: auto;
+    margin-inline: auto;
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_assets__add-library-button")} {
+    @include -black-pill;
+
+    inline-size: 100%;
+  }
+
+  #{ws.on("main_ui_workspace_colorpicker__accept-color")} {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: ds.token("weight-semibold");
+  }
+
+  // Inspect (view only): "Done" is the black pill of the top bar.
+  #{ws.on("main_ui_workspace_viewport_top_bar__done-btn")} {
+    @include -black-pill;
+  }
+
+  #{ws.on("main_ui_workspace_viewport_top_bar__viewport-actions-container")} {
+    border-radius: ds.token("radius-card");
+  }
+}
+
+// --- 6. Menus and tooltips
+
+// Upstream's tooltip: the DS tooltip (dark, 12 px), as Studio's own.
+#{$app} {
+  #{ws.on("main_ui_ds_tooltip_tooltip__tooltip-content")} {
+    padding: 6px ds.token("space-8");
+    border: 0;
+    border-radius: ds.token("radius-sm");
+    background: ds.token("bg-inverse");
+    box-shadow: none;
+    color: ds.token("text-on-accent");
+    font-family: ds.token("font-text");
+    font-size: ds.token("size-12");
+    font-weight: ds.token("weight-medium");
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
+  #{ws.on("main_ui_ds_tooltip_tooltip__tooltip-arrow")} {
+    border: 0;
+    background: ds.token("bg-inverse");
+  }
+}
+
+// --- 7. The file loader (before the editor mounts)
+
+:global(body) #{ws.on("main_ui_ds_product_loader__wrapper")} {
+  :is(#{ws.on("main_ui_ds_product_loader__tip-title")}, #{ws.on("main_ui_ds_product_loader__tip-message")}) {
+    font-family: ds.token("font-text");
+    letter-spacing: 0;
+  }
+
+  #{ws.on("main_ui_ds_product_loader__tip-title")} {
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_ds_product_loader__tip-message")} {
+    font-size: ds.dense("body-size");
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_ds_product_loader__tips-container")} {
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-panel");
+    background: ds.token("bg-panel");
+  }
+}

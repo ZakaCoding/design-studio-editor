@@ -45,6 +45,7 @@
    [app.main.ui.releases.v2-7]
    [app.main.ui.releases.v2-8]
    [app.main.ui.releases.v2-9]
+   [app.main.ui.studio.release-notes :refer [release-notes-dialog*]]
    [app.util.object :as obj]
    [app.util.timers :as tm]
    [rumext.v2 :as mf]))
@@ -100,11 +101,10 @@
    ::mf/register modal/components
    ::mf/register-as :release-notes}
   [props]
-  (let [versions (methods rc/render-release-notes)
-        version  (obj/get props "version")]
-    (when (contains? versions version)
-      [:div.relnotes
-       [:> release-notes* props]])))
+  ;; Design Studio seam (STUDIO-SEAMS.md): our own release notes instead of
+  ;; Penpot's slides, wherever this modal opens (menus, Settings, the popup
+  ;; after an upgrade). `release-notes*` stays below, unused.
+  [:> release-notes-dialog* {:version (obj/get props "version")}])
 
 (defmethod rc/render-release-notes "0.0"
   [params]

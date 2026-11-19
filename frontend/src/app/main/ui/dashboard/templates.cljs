@@ -17,6 +17,7 @@
    [app.main.refs :as refs]
    [app.main.store :as st]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.brand :as brand]
    [app.util.dom :as dom]
    [app.util.dom.normalize-wheel :as nw]
    [app.util.i18n :refer [tr]]
@@ -276,11 +277,13 @@
           :is-visible true
           :collapsed collapsed}])
 
-      [:> card-item-link*
-       {:is-visible true
-        :collapsed collapsed
-        :section section
-        :total total}]]
+      ;; Design Studio (P4-A): Penpot's libraries and templates site, hidden (STUDIO-SEAMS.md)
+      (when brand/penpot-community?
+        [:> card-item-link*
+         {:is-visible true
+          :collapsed collapsed
+          :section section
+          :total total}])]
 
      (when (:left @can-move)
        [:button {:class (stl/css :move-button :move-left)
