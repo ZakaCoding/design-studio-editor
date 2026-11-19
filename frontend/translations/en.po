@@ -11527,3 +11527,53 @@ msgstr "Image fill"
 
 msgid "ds.auth.login.rate-limited"
 msgstr "Too many sign-in attempts. Wait a few minutes, then try again."
+
+# Design Studio (P3D-B: dense Inspect)
+
+msgid "ds.viewer.inspect.rotation"
+msgstr "Rotation"
+
+msgid "ds.viewer.inspect.radius"
+msgstr "Radius"
+
+msgid "ds.viewer.inspect.fill"
+msgstr "Fill"
+
+msgid "ds.viewer.inspect.stroke"
+msgstr "Stroke"
+
+msgid "ds.viewer.inspect.shadow"
+msgstr "Shadow"
+
+msgid "ds.viewer.inspect.inner-shadow"
+msgstr "Inner shadow"
+
+msgid "ds.viewer.inspect.font"
+msgstr "Font"
+
+msgid "ds.viewer.inspect.font-size"
+msgstr "Size"
+
+msgid "ds.viewer.inspect.font-weight"
+msgstr "Weight"
+
+msgid "ds.viewer.inspect.line-height"
+msgstr "Line height"
+
+msgid "ds.viewer.inspect.padding"
+msgstr "Padding"
+
+msgid "ds.viewer.inspect.opacity"
+msgstr "Opacity"
+
+msgid "ds.viewer.inspect.gradient.linear"
+msgstr "Linear gradient"
+
+msgid "ds.viewer.inspect.gradient.radial"
+msgstr "Radial gradient"
+
+msgid "ds.viewer.inspect.show-all"
+msgstr "Show all %s lines"
+
+msgid "ds.viewer.inspect.show-less"
+msgstr "Show less"

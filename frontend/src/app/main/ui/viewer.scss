@@ -13,7 +13,7 @@
   height: 100vh;
   display: grid;
   background: ds.token("bg-canvas");
-  grid-template-rows: deprecated.$s-60 auto;
+  grid-template-rows: deprecated.$s-52 auto;
   grid-template-columns: 1fr;
   user-select: none;
 }
@@ -46,7 +46,7 @@
 
   display: grid;
   background: ds.token("bg-canvas");
-  grid-template-rows: deprecated.$s-60 auto;
+  grid-template-rows: deprecated.$s-52 auto;
   grid-template-columns: 1fr;
   height: 100vh;
   margin-top: 0;
@@ -74,7 +74,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  height: calc(100vh - deprecated.$s-60);
+  height: calc(100vh - deprecated.$s-52);
   overflow: auto;
 }
 
