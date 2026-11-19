@@ -13,9 +13,11 @@
   user-select: text;
 }
 
+// P3D (density): 12 × 16 px sections, sentence-case labels, 28 px rows,
+// so a layer's whole spec fits the panel at 900 px tall.
 .head {
   flex: none;
-  padding: 18px ds.token("space-20") 16px;
+  padding: ds.token("space-12") ds.token("space-16");
   border-block-end: 1px solid ds.token("border-default");
 }
 
@@ -23,7 +25,8 @@
   @include ds.type("panel-title");
 
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
   color: ds.token("text-primary");
   overflow: hidden;
   text-overflow: ellipsis;
@@ -31,9 +34,9 @@
 }
 
 .sub {
-  @include ds.type("body");
-
-  margin: ds.token("space-4") 0 0;
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
   color: ds.token("text-secondary");
   overflow: hidden;
   text-overflow: ellipsis;
@@ -47,7 +50,7 @@
 }
 
 .section {
-  padding: ds.token("space-16") ds.token("space-20");
+  padding: ds.token("space-12") ds.token("space-16");
   border-block-end: 1px solid ds.token("border-default");
 
   &:last-child {
@@ -56,52 +59,92 @@
 }
 
 .label {
-  @include ds.type("label");
-
-  margin: 0 0 ds.token("space-12");
-  font-size: 0.625rem;
-  font-weight: 500;
+  margin: 0 0 ds.token("space-4");
+  font-family: var(--ds-font-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
   color: ds.token("text-secondary");
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
-// Size and position
+// Label, then the control on the same line (Export).
+.section-row {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-12");
+
+  > .label {
+    flex: none;
+    margin: 0;
+  }
+}
+
+// Size and position: W H X Y on one line, rotation and radius under it.
 .geometry {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: ds.token("space-8");
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: ds.token("space-8");
   margin: 0;
 }
 
 .geometry-cell {
   display: flex;
-  align-items: baseline;
-  gap: ds.token("space-8");
+  align-items: center;
+  gap: 6px;
+  min-block-size: 28px;
+  min-inline-size: 0;
+}
+
+.geometry-wide {
+  grid-column: span 2;
 }
 
 .geometry-key {
-  @include ds.type("label");
-
+  flex: none;
+  font-size: 0.75rem;
+  line-height: 1;
   color: ds.token("text-secondary");
 }
 
 .geometry-value {
   margin: 0;
-  font: 500 12px/1.2 var(--ds-font-text);
+  overflow: hidden;
+  font: 500 0.75rem/1 var(--ds-font-mono);
   color: ds.token("text-primary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-// Style
+// Style: a 28 px row per fill, stroke, shadow and type value.
 .style {
-  display: flex;
-  flex-direction: column;
-  gap: ds.token("space-8");
+  display: grid;
+  margin: 0;
 }
 
-.fill {
+.style-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: center;
+  min-block-size: 28px;
+}
+
+.style-key {
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.style-value {
   display: flex;
   align-items: center;
   gap: ds.token("space-8");
+  min-inline-size: 0;
+  margin: 0;
 }
 
 .swatch {
@@ -120,33 +163,51 @@
     #{ds.token("bg-subtle")};
 }
 
-.fill-name {
-  @include ds.type("control");
-
-  flex: 1;
+.value-main {
+  flex: 0 1 auto;
   min-inline-size: 0;
   overflow: hidden;
+  font: 500 0.75rem/1.2 var(--ds-font-mono);
+  color: ds.token("text-primary");
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.fill-hex {
-  @include ds.type("label");
-
-  color: ds.token("text-secondary");
-  text-transform: none;
+// A font name reads better in the text face.
+.value-text {
+  font-family: var(--ds-font-text);
+  font-size: 0.8125rem;
 }
 
-.mono {
-  margin: 0;
-  font: 500 12px/1.4 var(--ds-font-text);
+.value-meta {
+  flex: none;
+  font: 400 0.75rem/1.2 var(--ds-font-mono);
+  color: ds.token("text-secondary");
+  white-space: nowrap;
+}
+
+.value-pair {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-inline-start: auto;
+  white-space: nowrap;
+}
+
+.value-key {
+  font-size: 0.75rem;
+  color: ds.token("text-secondary");
+}
+
+.value-num {
+  font: 500 0.75rem/1.2 var(--ds-font-mono);
   color: ds.token("text-primary");
 }
 
 .muted {
-  @include ds.type("body");
-
   margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
   color: ds.token("text-secondary");
 }
 
@@ -155,7 +216,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block-end: ds.token("space-12");
+  margin-block-end: ds.token("space-8");
 
   .label {
     margin: 0;
@@ -174,10 +235,11 @@
   @include ds.focusable;
   @include ds.type("label");
 
-  padding: 4px 10px;
+  padding: 2px 10px;
   border-radius: 6px;
   color: ds.token("text-secondary");
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  text-transform: none;
 }
 
 .segment-on {
@@ -194,12 +256,34 @@
 
 .code-pre {
   margin: 0;
-  max-block-size: 132px;
-  padding: ds.token("space-12") ds.token("space-16");
+  max-block-size: 360px;
+  padding: 10px ds.token("space-12");
   overflow: auto;
   color: #e9e9ef;
-  font: 400 11px/1.55 var(--ds-font-mono);
+  font: 400 0.6875rem/17px var(--ds-font-mono);
   white-space: pre;
+}
+
+// Eight lines, then "Show all".
+.code-pre-short {
+  max-block-size: calc(8 * 17px + 20px);
+  overflow-y: hidden;
+}
+
+.code-more {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  display: block;
+  min-block-size: 28px;
+  margin-inline-start: auto;
+  color: ds.token("accent-default");
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &:hover {
+    color: ds.token("accent-text-strong");
+  }
 }
 
 .code-copy {
@@ -226,6 +310,8 @@
 // Export
 .export {
   display: flex;
+  flex: 1;
+  min-inline-size: 0;
   gap: ds.token("space-8");
 }
 
@@ -259,60 +345,67 @@
   font-weight: 600;
 }
 
-// Handoff
+// Handoff: one line and the button.
 .handoff {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: ds.token("space-8");
-  padding: 14px;
+  padding: 10px ds.token("space-12") ds.token("space-12");
   background: ds.token("accent-subtle");
   border-radius: ds.token("radius-card");
 }
 
 .handoff-title {
-  @include ds.type("control");
-
   display: flex;
   align-items: center;
   gap: ds.token("space-8");
+  min-inline-size: 0;
   margin: 0;
   color: ds.token("accent-text-strong");
+  font-size: 0.8125rem;
   font-weight: 600;
+  line-height: 20px;
 }
 
-.handoff-text {
-  @include ds.type("body");
-
-  margin: 0;
-  color: ds.token("accent-text-strong");
+.handoff-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .handoff-button {
   @include ds.control-reset;
   @include ds.focusable;
-  @include ds.type("control");
 
-  block-size: 36px;
-  font-size: 0.75rem;
-  margin-block-start: ds.token("space-4");
+  block-size: 32px;
   border-radius: ds.token("radius-pill");
   background: ds.token("accent-default");
   color: ds.token("text-on-accent");
+  font-size: 0.75rem;
   font-weight: 600;
   text-align: center;
+
+  &:hover {
+    background: ds.token("accent-text-strong");
+  }
 }
 
 // All properties (the upstream panels)
 .more {
   @include ds.control-reset;
   @include ds.focusable;
-  @include ds.type("label");
 
+  min-block-size: 28px;
   color: ds.token("text-secondary");
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: none;
+
+  &:hover {
+    color: ds.token("text-primary");
+  }
 }
 
 .more-body {
-  margin-block-start: ds.token("space-12");
-  margin-inline: calc(-1 * #{ds.token("space-20")});
+  margin-block-start: ds.token("space-8");
+  margin-inline: calc(-1 * #{ds.token("space-16")});
 }

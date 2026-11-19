@@ -822,7 +822,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // The list of comments is a floating panel like Inspect (it was a
   // full-height column that ran under the header).
   #{-c("comments-sidebar")} {
-    inset-block: 76px 12px;
+    inset-block: 64px 12px;
     inset-inline-end: 12px;
     inline-size: 320px;
     block-size: auto;

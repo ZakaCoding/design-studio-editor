@@ -35,7 +35,7 @@
 
 .sidebar-container {
   position: absolute;
-  inset-block: deprecated.$s-76 deprecated.$s-12;
+  inset-block: deprecated.$s-64 deprecated.$s-12;
   inset-inline-end: deprecated.$s-12;
   width: 320px;
   overflow: hidden;
@@ -72,7 +72,7 @@
   @include ds.type("control");
 
   position: absolute;
-  inset-block-start: deprecated.$s-76;
+  inset-block-start: deprecated.$s-64;
   inset-inline-start: deprecated.$s-12;
   block-size: deprecated.$s-36;
   padding-inline: deprecated.$s-16;
@@ -92,7 +92,7 @@
 
 .layers-panel {
   position: absolute;
-  inset-block: calc(deprecated.$s-76 + deprecated.$s-48) deprecated.$s-12;
+  inset-block: calc(deprecated.$s-64 + deprecated.$s-44) deprecated.$s-12;
   inset-inline-start: deprecated.$s-12;
   inline-size: 240px;
   overflow: auto;

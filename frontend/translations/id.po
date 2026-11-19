@@ -8241,3 +8241,53 @@ msgstr "Isi gambar"
 
 msgid "ds.auth.login.rate-limited"
 msgstr "Terlalu banyak percobaan masuk. Tunggu beberapa menit, lalu coba lagi."
+
+# Design Studio (P3D-B: dense Inspect)
+
+msgid "ds.viewer.inspect.rotation"
+msgstr "Rotasi"
+
+msgid "ds.viewer.inspect.radius"
+msgstr "Radius"
+
+msgid "ds.viewer.inspect.fill"
+msgstr "Isi"
+
+msgid "ds.viewer.inspect.stroke"
+msgstr "Garis"
+
+msgid "ds.viewer.inspect.shadow"
+msgstr "Bayangan"
+
+msgid "ds.viewer.inspect.inner-shadow"
+msgstr "Bayangan dalam"
+
+msgid "ds.viewer.inspect.font"
+msgstr "Font"
+
+msgid "ds.viewer.inspect.font-size"
+msgstr "Ukuran"
+
+msgid "ds.viewer.inspect.font-weight"
+msgstr "Tebal"
+
+msgid "ds.viewer.inspect.line-height"
+msgstr "Tinggi baris"
+
+msgid "ds.viewer.inspect.padding"
+msgstr "Padding"
+
+msgid "ds.viewer.inspect.opacity"
+msgstr "Opasitas"
+
+msgid "ds.viewer.inspect.gradient.linear"
+msgstr "Gradasi linear"
+
+msgid "ds.viewer.inspect.gradient.radial"
+msgstr "Gradasi radial"
+
+msgid "ds.viewer.inspect.show-all"
+msgstr "Tampilkan semua %s baris"
+
+msgid "ds.viewer.inspect.show-less"
+msgstr "Tampilkan lebih sedikit"

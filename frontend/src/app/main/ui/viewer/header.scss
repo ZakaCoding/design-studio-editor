@@ -17,7 +17,7 @@
   grid-template-columns: 1fr auto 1fr;
   justify-content: space-between;
   align-items: center;
-  height: deprecated.$s-60;
+  height: deprecated.$s-52;
   width: 100vw;
   padding: deprecated.$s-12;
   transition: transform 400ms ease 300ms;
@@ -30,8 +30,9 @@
   }
 }
 
+// P3D (density): islands 40 px high (were 48), same content.
 %island {
-  block-size: deprecated.$s-48;
+  block-size: deprecated.$s-40;
   padding-inline: deprecated.$s-16;
   background: ds.token("bg-panel");
   border: 1px solid ds.token("border-default");
@@ -130,7 +131,7 @@
   @extend %menu-dropdown;
 
   left: 0;
-  top: calc(deprecated.$s-2 + deprecated.$s-48);
+  top: calc(deprecated.$s-2 + deprecated.$s-40);
   width: deprecated.$s-272;
   padding: deprecated.$s-6;
 }
@@ -320,7 +321,7 @@
   border-radius: ds.token("radius-card");
   box-shadow: ds.token("elevation-popover");
   right: deprecated.$s-2;
-  top: calc(deprecated.$s-2 + deprecated.$s-48);
+  top: calc(deprecated.$s-2 + deprecated.$s-40);
   width: deprecated.$s-272;
 }
 
