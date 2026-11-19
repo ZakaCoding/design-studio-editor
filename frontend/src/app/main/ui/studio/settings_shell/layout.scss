@@ -108,6 +108,17 @@ $panel: 280px;
   flex-direction: column;
 }
 
+// Nothing known yet but the profile: no gap above the first block.
+.facts:empty {
+  display: none;
+}
+
+.facts:empty + .more > :first-child {
+  margin-block-start: 0;
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
 .block {
   padding-block: 10px;
   border-block-start: 1px solid ds.token("border-default");

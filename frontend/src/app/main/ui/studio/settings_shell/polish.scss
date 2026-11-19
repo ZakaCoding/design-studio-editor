@@ -489,8 +489,9 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   #{ws.on("main_ui_components_select__custom-select-dropdown")} {
     inset-block-start: calc(100% + 6px);
-    inset-inline: 0;
-    inline-size: 100%;
+    inset-inline: auto 0;
+    inline-size: max-content;
+    min-inline-size: 100%;
     max-block-size: 280px;
     margin: 0;
     padding: ds.token("space-4");
@@ -903,9 +904,23 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       margin-block-end: ds.dense("card-pad-y");
     }
 
+    // Penpot's MCP and token blocks at the dense sizes, sentence case.
+    * {
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
     h2,
     h3 {
       margin-block-start: 0;
+      font-size: 0.875rem;
+      font-weight: ds.token("weight-semibold");
+      line-height: 1.35;
+    }
+
+    p {
+      font-size: ds.dense("body-size");
+      line-height: 1.5;
     }
 
     #{ws.on("main_ui_ds_buttons_button__button-primary")} {
