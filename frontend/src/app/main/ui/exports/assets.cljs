@@ -178,8 +178,9 @@
     (tr "dashboard.export-shapes.no-elements")]
    [:p {:class (stl/css :modal-scd-msg)} (tr "dashboard.export-shapes.how-to")]
    [:a {:target "_blank"
+        :rel "noopener noreferrer"
         :class (stl/css :modal-link)
-        :href "https://help.penpot.app/user-guide/exporting/ "}
+        :href "https://help.penpot.app/user-guide/exporting/"}
     (tr "dashboard.export-shapes.how-to-link")]])
 
 (mf/defc export-shapes-dialog

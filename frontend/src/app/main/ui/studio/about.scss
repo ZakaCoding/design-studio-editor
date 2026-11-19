@@ -1,0 +1,87 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// "About Design Studio" (P4-A): the DS dialog at the P3D values.
+
+@use "studio/ds" as ds;
+@use "studio/brand-dialog" as bd;
+
+.dialog {
+  @include bd.dense-dialog;
+}
+
+.pill-black {
+  @include bd.pill-black;
+}
+
+.pill-soft {
+  @include bd.pill-soft;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-12");
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ds.token("space-8");
+  padding: ds.dense("card-pad-y") ds.dense("card-pad-x") ds.token("space-16");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.dense("card-radius");
+  background: ds.token("bg-subtle");
+}
+
+.version {
+  margin: 0;
+  font-family: ds.token("font-mono");
+  font-size: ds.dense("meta-size");
+  line-height: 1.4;
+  color: ds.token("text-body");
+}
+
+.tagline {
+  margin: 0;
+  font-size: ds.dense("body-size");
+  line-height: 1.45;
+  color: ds.token("text-primary");
+}
+
+.engine {
+  margin: 0;
+  font-size: ds.dense("meta-size");
+  line-height: 1.45;
+  color: ds.token("text-secondary");
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ds.token("space-8");
+  padding-block-start: ds.token("space-12");
+  border-block-start: 1px solid ds.token("border-default");
+  font-size: ds.dense("meta-size");
+}
+
+.dot {
+  color: ds.token("text-secondary");
+}
+
+.link {
+  @include ds.focusable;
+
+  border-radius: ds.token("radius-xs");
+  color: ds.token("accent-text-strong");
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

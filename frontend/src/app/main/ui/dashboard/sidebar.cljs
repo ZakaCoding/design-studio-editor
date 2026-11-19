@@ -43,6 +43,8 @@
    [app.main.ui.hooks :as hooks :refer [use-focus-timer-ref]]
    [app.main.ui.icons :as deprecated-icon]
    [app.main.ui.nitrate.nitrate-form]
+   [app.main.ui.studio.about :as ds-about]
+   [app.main.ui.studio.brand :as brand]
    [app.util.dom :as dom]
    [app.util.dom.dnd :as dnd]
    [app.util.i18n :as i18n :refer [tr]]
@@ -1194,22 +1196,26 @@
                         :on-pointer-leave on-pointer-leave}
 
      [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://help.penpot.app"
+                              :data-url brand/engine-guide-uri
                               :on-click handle-click-url
                               :data-eventname "explore-help-center-click"}
       (tr "labels.help-center")]
 
-     [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://penpot.app/learning-center"
-                              :on-click handle-click-url
-                              :data-eventname "explore-learning-center-click"}
-      (tr "labels.learning-center")]
+     ;; Design Studio (P4-A): Penpot link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :submenu-item)
+                                :data-url "https://penpot.app/learning-center"
+                                :on-click handle-click-url
+                                :data-eventname "explore-learning-center-click"}
+        (tr "labels.learning-center")])
 
-     [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://penpot.app/penpothub"
-                              :on-click handle-click-url
-                              :data-eventname "explore-penpot-hub-click"}
-      (tr "labels.penpot-hub")]
+     ;; Design Studio (P4-A): Penpot link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :submenu-item)
+                                :data-url "https://penpot.app/penpothub"
+                                :on-click handle-click-url
+                                :data-eventname "explore-penpot-hub-click"}
+        (tr "labels.penpot-hub")])
 
      (when (contains? cf/flags :user-feedback)
        [:> dropdown-menu-item* {:class (stl/css :submenu-item)
@@ -1281,14 +1287,14 @@
                               :on-click show-release-notes}
       (tr "labels.version-notes" (:base version))]
 
+     ;; Design Studio (P4-A): our About dialog instead of Penpot's changelog (STUDIO-SEAMS.md)
      [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://github.com/penpot/penpot/blob/develop/CHANGES.md"
-                              :on-click handle-click-url
-                              :data-eventname "explore-changelog-click"}
-      (tr "labels.penpot-changelog")]
+                              :on-click ds-about/show!
+                              :data-testid "ds-about-open"}
+      (tr "ds.about.version-licence")]
 
      [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://penpot.app/terms"
+                              :data-url (brand/terms-of-service-uri)
                               :on-click handle-click-url
                               :data-eventname "explore-terms-service-click"}
       (tr "auth.terms-of-service")]]))
@@ -1305,7 +1311,7 @@
         ;; its floating submenu, so the submenu survives the gap
         ;; between them while the pointer travels across.
         hovering?*     (mf/use-ref false)
-        version        (:base cf/version)
+        version        (brand/version-label)
 
         close-sub-menu
         (mf/use-fn
@@ -1451,17 +1457,19 @@
         [:span {:class (stl/css :item-name)} (tr "labels.help-learning")]
         [:> icon* {:icon-id i/arrow :class (stl/css :open-arrow)}]]
 
-       [:> dropdown-menu-item* {:class (stl/css-case :profile-dropdown-item true)
-                                :on-click    on-menu-click
-                                :on-key-down (fn [event]
-                                               (when (kbd/enter? event)
-                                                 (on-menu-click event)))
-                                :on-pointer-enter on-menu-pointer-enter
-                                :on-pointer-leave on-menu-pointer-leave
-                                :data-testid "community-contributions"
-                                :id          "community-contributions"}
-        [:span {:class (stl/css :item-name)} (tr "labels.community-contributions")]
-        [:> icon* {:icon-id i/arrow :class (stl/css :open-arrow)}]]
+       ;; Design Studio (P4-A): Penpot community and GitHub, hidden (STUDIO-SEAMS.md)
+       (when brand/penpot-community?
+         [:> dropdown-menu-item* {:class (stl/css-case :profile-dropdown-item true)
+                                  :on-click    on-menu-click
+                                  :on-key-down (fn [event]
+                                                 (when (kbd/enter? event)
+                                                   (on-menu-click event)))
+                                  :on-pointer-enter on-menu-pointer-enter
+                                  :on-pointer-leave on-menu-pointer-leave
+                                  :data-testid "community-contributions"
+                                  :id          "community-contributions"}
+          [:span {:class (stl/css :item-name)} (tr "labels.community-contributions")]
+          [:> icon* {:icon-id i/arrow :class (stl/css :open-arrow)}]])
 
        [:> dropdown-menu-item* {:class (stl/css-case :profile-dropdown-item true)
                                 :on-click    on-menu-click
