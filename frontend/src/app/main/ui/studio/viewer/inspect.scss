@@ -313,8 +313,15 @@
 .export {
   display: flex;
   flex: 1;
+  align-items: center;
   min-inline-size: 0;
   gap: ds.token("space-8");
+
+  // Penpot's base stylesheet puts a margin under form controls.
+  > select,
+  > button {
+    margin: 0;
+  }
 }
 
 .export-select {
