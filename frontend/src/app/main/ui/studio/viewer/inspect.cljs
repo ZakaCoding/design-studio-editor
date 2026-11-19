@@ -313,7 +313,8 @@
   [{:keys [hex image]}]
   [:span {:class (stl/css-case :swatch true
                                :swatch-image (true? image))
-          :style (when (some? hex) {:background-color hex})}])
+          ;; A literal map: rumext turns it into a style object.
+          :style {:background-color hex}}])
 
 ;; P3D (density): one 28 px row per fill, stroke, shadow and type value, a
 ;; label on the left, so the whole style of a layer reads at once.

@@ -815,6 +815,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     text-transform: none;
     letter-spacing: 0;
   }
+
+  // … and its rows 28 px high, as ours (P3D).
+  [data-testid="ds-viewer-inspect"] [class*="_row__property-row"] {
+    --button-min-block-size: 28px;
+  }
 }
 
 // --- 7. Comments
