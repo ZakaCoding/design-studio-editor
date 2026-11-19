@@ -23,6 +23,7 @@
 
 @use "studio/ds" as ds;
 @use "studio/workspace" as ws;
+@use "ds/mixins.scss" as dsm;
 
 $scope: ":global(body.ds-viewer)";
 
@@ -883,9 +884,9 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
   }
 
-  // P3D (density): one 56 px row per thread in the list: avatar, author,
-  // time and number on the first line; the first line of the comment and
-  // the replies under it.
+  // P3D (density): one compact row per thread in the list (56 px, 74 px for
+  // a two-line comment): avatar, author, time and place on the first line;
+  // up to two lines of the comment and the replies under it.
   #{-c("comments-sidebar")} #{ws.on("main_ui_comments__cover")} {
     display: grid;
     grid-template-columns: 28px minmax(0, max-content) minmax(0, 1fr) auto;
@@ -939,13 +940,15 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       text-align: end;
     }
 
+    // Up to two lines of the comment, so the row still says what it is about.
     #{ws.on("main_ui_comments__item")} {
       grid-area: text;
-      overflow: hidden;
+
+      @include dsm.two-line-text-ellipsis;
+
       font-size: ds.token("size-12");
       line-height: 18px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      white-space: normal;
     }
 
     #{ws.on("main_ui_comments__replies")} {

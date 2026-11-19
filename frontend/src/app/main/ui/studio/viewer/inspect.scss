@@ -266,10 +266,15 @@
   white-space: pre;
 }
 
-// Eight lines, then "Show all".
+// Eight lines, then "Show all". The bottom space is a transparent border,
+// not padding: overflow clips at the padding edge, so a ninth line no
+// longer peeks out under the eighth.
 .code-pre-short {
+  box-sizing: border-box;
   max-block-size: calc(8 * 17px + 20px);
+  padding-block-end: 0;
   overflow-y: hidden;
+  border-block-end: 10px solid transparent;
 }
 
 .code-more {

@@ -109,12 +109,12 @@
   }
 }
 
-// P3D (density): the form starts high (its title ≈ 140 px from the top
-// at 900 px tall) and the legal lines follow it, not the bottom edge.
+// P3D (density): the form and the legal lines are one block, optically
+// centred (1fr above, 2fr below), so the free space does not pile up under
+// the form while the visual panel fills the height.
 .pane {
   display: grid;
-  grid-template-rows: auto auto auto 1fr;
-  align-content: start;
+  grid-template-rows: auto minmax(24px, 1fr) auto auto minmax(24px, 2fr);
   min-block-size: 100%;
   padding: 40px 48px 32px;
 
@@ -207,11 +207,12 @@
 .content {
   justify-self: center;
   inline-size: 100%;
+  grid-row: 3;
   max-inline-size: 400px;
-  padding-block: clamp(24px, 7.5vh, 68px) 0;
 }
 
 .legal {
+  grid-row: 4;
   justify-self: center;
   inline-size: 100%;
   max-inline-size: 400px;
