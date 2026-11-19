@@ -791,7 +791,21 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     }
 
     [data-ds-settings="col"]:first-child {
-      inline-size: 200px;
+      inline-size: 168px;
+    }
+
+    // The two channel cells: 8 px apart, so the selects show whole labels.
+    td {
+      padding-inline: 8px;
+    }
+
+    [data-ds-settings="col"]:not(:first-child) {
+      padding-inline: 8px;
+    }
+
+    td:last-child,
+    [data-ds-settings="col"]:last-child {
+      padding-inline-end: ds.dense("card-pad-x");
     }
 
     [data-ds-settings="event"] {
@@ -898,6 +912,10 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
     > :not(summary) {
       margin-inline: ds.dense("card-pad-x");
+    }
+
+    > summary + * {
+      margin-block-start: ds.token("space-16");
     }
 
     > :last-child:not(summary) {
