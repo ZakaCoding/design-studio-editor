@@ -95,6 +95,14 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   }
 }
 
+// P3D: the small pill (32 px) of dialogs (P4-B: dialogs of every area).
+@mixin -small {
+  block-size: ds.dense("button-sm");
+  min-block-size: ds.dense("button-sm");
+  padding: 0 14px;
+  font-size: ds.dense("body-size");
+}
+
 // --- 1. Type
 
 #{$scope} {
@@ -840,13 +848,15 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     border-radius: ds.token("radius-xl");
     background: ds.token("bg-panel");
     box-shadow: ds.token("elevation-popover");
-    padding: ds.token("space-24");
+
+    // P4-B: the P3D dialog (padding 20), as in Settings and the editor.
+    padding: ds.dense("dialog-pad");
   }
 
   #{-any("modal-title")},
   #{ws.on("main_ui_dashboard_team__modal-team-container")} h2 {
     font-family: ds.token("font-text");
-    font-size: ds.token("size-16");
+    font-size: ds.dense("dialog-title-size");
     font-weight: ds.token("weight-semibold");
     line-height: 1.3;
     letter-spacing: 0;
@@ -859,11 +869,15 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     line-height: 1.5;
     color: ds.token("text-secondary");
 
+    // P4-B: field labels in sentence case, as in the Settings dialogs (they
+    // were the mono caps of the panels).
     label,
     #{-any("modal-label")} {
-      @include ds.type("label");
-
-      color: ds.token("text-secondary");
+      font-size: ds.token("size-13");
+      font-weight: ds.token("weight-medium");
+      line-height: 1.4;
+      text-transform: none;
+      color: ds.token("text-primary");
     }
   }
 
@@ -891,16 +905,19 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   #{-any("modal-container")} :is(#{-any("cancel-button")}, #{-any("cancel-btn")}),
   #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-secondary")} {
     @include -soft-pill;
+    @include -small;
   }
 
   #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")}, #{-any("primary-button")}),
   #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-primary")},
   #{ws.on("main_ui_dashboard_team__modal-team-container")} :is(button[type="submit"], input[type="submit"]) {
     @include -black-pill;
+    @include -small;
   }
 
   #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")})#{-any("danger")},
   #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-destructive")} {
     @include -danger-pill;
+    @include -small;
   }
 }
