@@ -136,6 +136,7 @@ upstream issue or PR when the change is a fix we also propose; otherwise `-`.
 | `frontend/src/app/main/ui/workspace/libraries.cljs` | P4-A: the link to Penpot's libraries and templates site in the empty libraries dialog is behind `studio.brand/penpot-community?` (false) | - | P4-A |
 | `frontend/src/app/main/ui/dashboard/templates.cljs` | P4-A: the "Libraries & templates" card that links to Penpot's site is behind `studio.brand/penpot-community?` (false) | - | P4-A |
 | `frontend/src/app/main/ui/workspace/sidebar/versions.cljs` | P4-A: the version-limit note names hello@zakacoding.dev instead of support@penpot.app | - | P4-A |
+| `frontend/src/app/main/ui/workspace/plugins.cljs` | P4-A: the plugins manager's links to Penpot's plugin hub ("Discover more plugins", "Plugins List") are behind `studio.brand/penpot-community?` (false) | - | P4-A |
 <!-- seams:end -->
 
 ## Mount points (F3)
