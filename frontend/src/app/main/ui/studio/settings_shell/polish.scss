@@ -151,9 +151,11 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     font-family: ds.token("font-text");
     -webkit-font-smoothing: antialiased;
 
+    // P3D: the Settings frame, cards and rows (`settings_shell`) hold
+    // upstream controls, so only other Studio parts keep their own fonts.
     :is(#{$text-tags}):not(
       [class*="main_ui_studio_"],
-      [class*="main_ui_studio_"] *,
+      [class*="main_ui_studio_"]:not([class*="main_ui_studio_settings_shell_"]) *,
       [data-ds-dash="settings-title"]
     ) {
       font-family: ds.token("font-text");
@@ -724,7 +726,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   // The rules of a new password: a two-column checklist under the field.
   [data-ds-settings="rules"] {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, max-content));
+    grid-template-columns: repeat(3, minmax(0, max-content));
     gap: 2px 20px;
     margin: 8px 0 0;
     padding: 0;
@@ -767,6 +769,7 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
 
   [data-ds-settings="matrix"] {
     inline-size: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: ds.dense("body-size");
 
@@ -800,8 +803,8 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
       border-block-end: 0;
     }
 
-    td {
-      inline-size: calc((100% - 200px) / 2);
+    #{ws.on("main_ui_components_select__custom-select")} {
+      inline-size: 100%;
     }
   }
 
@@ -814,9 +817,16 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
   #{ws.on("main_ui_settings_options__webgl-container")} {
     @include ds.dense-card;
 
+    box-sizing: border-box;
     gap: ds.token("space-8");
+    inline-size: 100%;
+    max-inline-size: none;
     margin: 0;
-    padding: ds.dense("card-pad-y") ds.dense("card-pad-x");
+    padding: 14px ds.dense("card-pad-x");
+
+    * {
+      text-transform: none;
+    }
 
     h2,
     h3 {
@@ -851,16 +861,34 @@ $text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, texta
     max-inline-size: none;
     margin: 0;
     padding: 0;
+    border-block-start: 1px solid ds.token("border-default");
 
     > summary {
       display: flex;
       align-items: center;
+      gap: ds.token("space-8");
       min-block-size: 44px;
+      margin: 0;
       padding: 0 ds.dense("card-pad-x");
       font-size: ds.dense("body-size");
       font-weight: ds.token("weight-semibold");
       color: ds.token("text-primary");
       cursor: pointer;
+    }
+
+    // The disclosure mark (the flex summary has no marker of its own).
+    > summary::before {
+      content: "";
+      inline-size: 6px;
+      block-size: 6px;
+      border-block-end: 1.5px solid currentcolor;
+      border-inline-end: 1.5px solid currentcolor;
+      transform: rotate(-45deg);
+      transition: transform 120ms ease;
+    }
+
+    &[open] > summary::before {
+      transform: rotate(45deg);
     }
 
     &[open] > summary {

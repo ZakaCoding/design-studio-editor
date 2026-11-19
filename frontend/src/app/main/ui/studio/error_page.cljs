@@ -93,7 +93,10 @@
      [:div {:class (stl/css :card)}
       (when (or (some? code) (some? label))
         [:p {:class (stl/css :status)}
-         (when (some? code) [:span {:class (stl/css :code)} code])
+         (when (some? code)
+           [:span {:class (stl/css-case :code true
+                                        :code-server (= "5" (subs code 0 1)))}
+            code])
          (when (some? label) [:span {:class (stl/css :label)} label])])
 
       [:div {:class (stl/css :content)} children]

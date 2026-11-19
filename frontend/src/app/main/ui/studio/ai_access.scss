@@ -301,6 +301,11 @@
   overflow-wrap: anywhere;
 }
 
+// Craft: one row; the label is one word, the text takes the room.
+.craft .craft-row {
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+}
+
 // Craft: one row.
 .craft-icon {
   flex: none;

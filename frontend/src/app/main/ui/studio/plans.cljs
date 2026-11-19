@@ -140,8 +140,10 @@
        [:th {:scope "row" :class (stl/css :th-row)} (tr "ds.settings.account.credits")]
        (for [plan plans]
          [:td {:key (name (:id plan)) :class (stl/css-case :col-current (= current (name (:id plan))))}
-          (or (credits-text plans-state (:id plan))
-              [:> yes* {:on? false}])])]
+          ;; `if`, not `or`: rumext compiles hiccup in `if` branches only.
+          (if-let [text (credits-text plans-state (:id plan))]
+            text
+            [:> yes* {:on? false}])])]
       [:tr
        [:th {:scope "row" :class (stl/css :th-row)} (tr "ds.plans.row.price")]
        (for [plan plans]

@@ -232,6 +232,7 @@
         on-plans (mf/use-fn #(st/emit! (rt/nav :settings-subscription)))]
     [:> card* {:class (stl/css :craft) :test-id "ds-ai-craft"}
      [:> row* {:label (tr "ds.ai.craft.title")
+               :class (stl/css :craft-row)
                :action (mf/html
                         [:button {:class (stl/css :craft-link) :type "button" :on-click on-plans}
                          (if (and (some? ratio) (some? plan))
@@ -344,7 +345,7 @@
 
       (some? copy)
       [:> sds/card* {:class (stl/css :card)
-                     :padding "lg"
+                     :padding "md"
                      :data-testid "ds-ai-access"
                      :data-status (name status)}
        [:div {:class (stl/css :head)}
