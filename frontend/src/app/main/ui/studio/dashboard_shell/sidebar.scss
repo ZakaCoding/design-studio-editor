@@ -19,7 +19,11 @@
   block-size: 100vh;
   background: ds.token("bg-subtle");
   padding: 0 ds.token("space-16");
-  overflow: hidden;
+
+  // P4-A: visible, so the member menu's submenus (Help, About Design
+  // Studio), which open to the right of the sidebar, are not clipped. The
+  // project list keeps its own scroll.
+  overflow: visible;
 }
 
 // Logo: mark 28 px at 24 / 24, wordmark Inter 15.
