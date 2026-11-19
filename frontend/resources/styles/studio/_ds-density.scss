@@ -86,11 +86,12 @@ $dense: (
   background: tokens.token("bg-panel");
 }
 
-// A settings row: label (and its hint) left, the control right of it, an
-// optional action at the end; 1 px between rows.
+// A settings row: label (and its hint) left, the control right of it; 1 px
+// between rows. A row with an action at its end adds a third column
+// (`dense-row-with-action`).
 @mixin dense-row {
   display: grid;
-  grid-template-columns: dense("row-label") minmax(0, 1fr) auto;
+  grid-template-columns: dense("row-label") minmax(0, 1fr);
   align-items: center;
   column-gap: tokens.token("space-16");
   min-block-size: dense("row-min");
@@ -99,6 +100,10 @@ $dense: (
   & + & {
     border-block-start: 1px solid tokens.token("border-default");
   }
+}
+
+@mixin dense-row-with-action {
+  grid-template-columns: dense("row-label") minmax(0, 1fr) auto;
 }
 
 @mixin dense-row-label {

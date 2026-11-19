@@ -17,11 +17,13 @@
   @include ds.dense-page-head;
 }
 
-.title {
+// `.head .title`: upstream form pages paint their h1 and p in their own
+// colours (`.form-container h1`, one class and a tag).
+.head .title {
   @include ds.dense-page-title;
 }
 
-.subtitle {
+.head .subtitle {
   @include ds.dense-page-subtitle;
 }
 
@@ -146,6 +148,14 @@
   @include ds.dense-row;
 }
 
+.srow-with-action {
+  @include ds.dense-row-with-action;
+}
+
+.srow-wide {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
 .srow-text {
   min-inline-size: 0;
 }
@@ -178,7 +188,8 @@
 
 // Narrow: the label over its control.
 @media (width <= 760px) {
-  .srow {
+  .srow,
+  .srow-with-action {
     grid-template-columns: minmax(0, 1fr) auto;
     row-gap: ds.token("space-8");
   }

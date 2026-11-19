@@ -83,9 +83,13 @@
   "One row of a card: `label` and its `hint` on the left, the control
   (`children`) right of them, an optional `action` at the end. `for` ties
   the label to an input id; the input keeps its own (hidden) label as its
-  accessible name, so this one is not read twice."
-  [{:keys [label hint for action class test-id children]}]
-  [:div {:class (dm/str (stl/css :srow) (when class (dm/str " " class)))
+  accessible name, so this one is not read twice. `is-wide`: no control,
+  the text takes the row up to the action (e.g. Delete account)."
+  [{:keys [label hint for action is-wide class test-id children]}]
+  [:div {:class (dm/str (stl/css-case :srow true
+                                      :srow-with-action (some? action)
+                                      :srow-wide is-wide)
+                        (when class (dm/str " " class)))
          :data-ds-settings "row"
          :data-testid test-id}
    [:div {:class (stl/css :srow-text)}
@@ -94,6 +98,7 @@
       [:p {:class (stl/css :srow-label)} label])
     (when (some? hint)
       [:p {:class (stl/css :srow-hint)} hint])]
-   [:div {:class (stl/css :srow-control)} children]
+   (when (some? children)
+     [:div {:class (stl/css :srow-control)} children])
    (when (some? action)
      [:div {:class (stl/css :srow-action)} action])])

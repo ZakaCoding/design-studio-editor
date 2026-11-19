@@ -102,13 +102,14 @@
     [:> card* {:tone "danger"}
      [:> row* {:label (tr "ds.settings.delete.title")
                :hint (tr "ds.settings.delete.text")
-               :class (stl/css :delete-row)}
-      [:a {:on-click on-show-delete-account
-           :role "button"
-           :tab-index 0
-           :data-ds-settings "danger-button"
-           :data-testid "remove-acount-btn"}
-       (tr "ds.settings.delete.action")]]]))
+               :is-wide true
+               :action (mf/html
+                        [:a {:on-click on-show-delete-account
+                             :role "button"
+                             :tab-index 0
+                             :data-ds-settings "danger-button"
+                             :data-testid "remove-acount-btn"}
+                         (tr "ds.settings.delete.action")])}]]))
 
 ;; --- Profile Photo Form
 
