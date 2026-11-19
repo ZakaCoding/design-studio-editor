@@ -7,9 +7,12 @@
 (ns app.main.ui.studio.settings-shell.page
   "What every Settings page shares (P3-A): the scope of `polish.scss` on
   <body>, the page header (title + one line under it) and the sidebar row
-  with its line icon, the look of the dashboard sidebar."
+  with its line icon, the look of the dashboard sidebar. P3D: the dense
+  parts of a page, a section card, its rows (label left, control right)
+  and its foot."
   (:require-macros [app.main.style :as stl])
   (:require
+   [app.common.data.macros :as dm]
    [rumext.v2 :as mf]))
 
 (defn use-scope
@@ -50,3 +53,52 @@
         :data-testid test-id}
    [:> icon {:size "m" :class (stl/css :row-icon)}]
    [:span {:class (stl/css :row-label)} label]])
+
+;; --- Dense page parts (P3D, 19 Nov)
+
+(mf/defc card*
+  "A section of a Settings page: the DS card around its rows. `title` and
+  `subtitle` (optional) head the card, `action` sits right of them, `foot`
+  is the card's foot (Save etc., right aligned), `tone` \"danger\" for the
+  delete card."
+  [{:keys [title subtitle action foot tone class test-id children]}]
+  [:section {:class (dm/str (stl/css-case :card true
+                                          :card-danger (= tone "danger"))
+                            (when class (dm/str " " class)))
+             :data-ds-settings "card"
+             :data-testid test-id}
+   (when (or (some? title) (some? action))
+     [:header {:class (stl/css :card-head)}
+      [:div {:class (stl/css :card-head-text)}
+       (when (some? title)
+         [:h2 {:class (stl/css :card-title)} title])
+       (when (some? subtitle)
+         [:p {:class (stl/css :card-subtitle)} subtitle])]
+      action])
+   children
+   (when (some? foot)
+     [:footer {:class (stl/css :card-foot)} foot])])
+
+(mf/defc row*
+  "One row of a card: `label` and its `hint` on the left, the control
+  (`children`) right of them, an optional `action` at the end. `for` ties
+  the label to an input id; the input keeps its own (hidden) label as its
+  accessible name, so this one is not read twice. `is-wide`: no control,
+  the text takes the row up to the action (e.g. Delete account)."
+  [{:keys [label hint for action is-wide class test-id children]}]
+  [:div {:class (dm/str (stl/css-case :srow true
+                                      :srow-with-action (some? action)
+                                      :srow-wide is-wide)
+                        (when class (dm/str " " class)))
+         :data-ds-settings "row"
+         :data-testid test-id}
+   [:div {:class (stl/css :srow-text)}
+    (if (some? for)
+      [:label {:class (stl/css :srow-label) :for for :aria-hidden "true"} label]
+      [:p {:class (stl/css :srow-label)} label])
+    (when (some? hint)
+      [:p {:class (stl/css :srow-hint)} hint])]
+   (when (some? children)
+     [:div {:class (stl/css :srow-control)} children])
+   (when (some? action)
+     [:div {:class (stl/css :srow-action)} action])])

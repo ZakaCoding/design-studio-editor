@@ -16,6 +16,7 @@
    [app.main.repo :as rp]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
+   [app.main.ui.studio.settings-shell.page :refer [page-head* card* row*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.timers :as tm]
@@ -93,65 +94,71 @@
                   (rx/subs! on-succes on-error)))))]
 
 
+    ;; Design Studio seam (STUDIO-SEAMS.md, P3D): the page header of every
+    ;; Settings page, the fields as rows of one card (Send in its foot),
+    ;; the other way to reach us as a second card. Same form and handlers.
     [:& fm/form {:class (stl/css :feedback-form)
                  :on-submit on-submit
                  :form form}
 
-     ;; --- Feedback section
-     [:h2 {:class (stl/css :field-title :feedback-title)
-           :id "feedback-section-title"} (tr "feedback.title-contact-us")]
-     [:p {:class (stl/css :field-text :feedback-title)} (tr "feedback.subtitle")]
+     [:> page-head* {:id "feedback-section-title"
+                     :title (tr "feedback.title-contact-us")
+                     :subtitle (tr "ds.feedback.subtitle")}]
 
-     [:div {:class (stl/css :fields-row)}
-      [:& fm/input {:label (tr "feedback.subject")
-                    :name :subject
-                    :show-success? true}]]
+     [:> card* {}
+      [:> row* {:label (tr "feedback.subject") :for "subject"}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/input {:label (tr "feedback.subject")
+                      :name :subject
+                      :show-success? true}]]]
 
-     [:div {:class (stl/css :fields-row)}
-      [:label {:class (stl/css :field-label)} (tr "feedback.type")]
-      [:& fm/select {:label (tr "feedback.type")
-                     :name :type
-                     :options [{:label (tr "feedback.type.idea") :value "idea"}
-                               {:label (tr "feedback.type.issue") :value "issue"}
-                               {:label (tr "feedback.type.doubt") :value "doubt"}]}]]
+      [:> row* {:label (tr "feedback.type")}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/select {:label (tr "feedback.type")
+                       :name :type
+                       :options [{:label (tr "feedback.type.idea") :value "idea"}
+                                 {:label (tr "feedback.type.issue") :value "issue"}
+                                 {:label (tr "feedback.type.doubt") :value "doubt"}]}]]]
 
-     [:div {:class (stl/css :fields-row :description)}
-      [:& fm/textarea
-       {:class (stl/css :feedback-description)
-        :label (tr "feedback.description")
-        :name :content
-        :placeholder (tr "feedback.description-placeholder")
-        :rows 5}]]
+      [:> row* {:label (tr "feedback.description")}
+       [:div {:class (stl/css :fields-row :description)}
+        [:& fm/textarea
+         {:class (stl/css :feedback-description)
+          :label (tr "feedback.description")
+          :name :content
+          :placeholder (tr "feedback.description-placeholder")
+          :rows 4}]]]
 
-     [:div {:class (stl/css :fields-row)}
-      [:p {:class (stl/css :field-text)} (tr "feedback.penpot.link")]
-      [:& fm/input {:label ""
-                    :name :error-href
-                    ;; Design Studio (P3-A): our own address as the example
-                    :placeholder (str (.-origin js/location) "/")
-                    :show-success? true}]
+      [:> row* {:label (tr "ds.feedback.link")
+                :hint (tr "ds.feedback.link-hint")
+                :for "error-href"
+                :action (when report
+                          (mf/html
+                           [:a {:class (stl/css :link :download-button) :on-click on-download}
+                            (tr "labels.download" "report.txt")]))}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/input {:label (tr "ds.feedback.link")
+                      :name :error-href
+                      ;; Design Studio (P3-A): our own address as the example
+                      :placeholder (str (.-origin js/location) "/")
+                      :show-success? true}]]]
 
-      (when report
-        [:a {:class (stl/css :link :download-button) :on-click on-download}
-         (tr "labels.download" "report.txt")])]
-
-     [:> fm/submit-button*
-      {:label (if @loading (tr "labels.sending") (tr "labels.send"))
-       :class (stl/css :feedback-button-link)
-       :disabled @loading}]
-
-     [:hr]
-
-     [:h2 {:class (stl/css :feedback-title)} (tr "feedback.other-ways-contact")]
-
+      [:div {:data-ds-settings "foot"}
+       [:> fm/submit-button*
+        {:label (if @loading (tr "labels.sending") (tr "labels.send"))
+         :class (stl/css :feedback-button-link)
+         :disabled @loading}]]]
 
      ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the other way to reach
      ;; us is our own mail address; upstream listed Penpot's community
      ;; forum and its X account, which do not answer for Design Studio.
-     [:a {:class (stl/css :link)
-          :href "mailto:hello@zakacoding.dev"}
-      "hello@zakacoding.dev"]
-     [:p {:class (stl/css :field-text)} (tr "ds.feedback.email-text")]]))
+     [:> card* {}
+      [:> row* {:label (tr "feedback.other-ways-contact")}
+       [:p {:class (stl/css :field-text)}
+        [:a {:class (stl/css :link)
+             :href "mailto:hello@zakacoding.dev"}
+         "hello@zakacoding.dev"]
+        " · " (tr "ds.feedback.email-text")]]]]))
 
 (mf/defc feedback-page*
   [{:keys [error-report-id] :as props}]

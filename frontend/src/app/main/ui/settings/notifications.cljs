@@ -12,7 +12,7 @@
    [app.main.data.profile :as dp]
    [app.main.store :as st]
    [app.main.ui.components.forms :as fm]
-   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head* card*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -45,48 +45,56 @@
     (mf/with-effect []
       (dom/set-html-title (tr "title.settings.notifications")))
 
+    ;; Design Studio seam (STUDIO-SEAMS.md, P3D): one table card, the
+    ;; events as rows and the channels (In-app, Email) as columns; each
+    ;; cell is a select with the options and values of the radios it
+    ;; replaces. Same form, schema, save call and test id.
     [:section {:class (stl/css :notifications-page)}
      [:& fm/form {:class (stl/css :notifications-form)
                   :on-submit on-submit
                   :form form}
       [:div {:class (stl/css :form-container)}
-       ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the page header of
-       ;; every Settings page.
        [:> page-head* {:title (tr "labels.notifications")
                        :subtitle (tr "ds.settings.notifications.subtitle")}]
-       [:h3 (tr "dashboard.settings.notifications.dashboard.title")]
-       [:h4 (tr "dashboard.settings.notifications.dashboard-comments.title")]
-       [:div {:class (stl/css :fields-row)}
-        [:& fm/radio-buttons
-         {:options [{:label (tr "dashboard.settings.notifications.dashboard-comments.all") :value "all"}
-                    {:label (tr "dashboard.settings.notifications.dashboard-comments.partial") :value "partial"}
-                    {:label (tr "dashboard.settings.notifications.dashboard-comments.none") :value "none"}]
-          :name :dashboard-comments
-          :class (stl/css :radio-btns)}]]
-
-       [:h3 (tr "dashboard.settings.notifications.email.title")]
-       [:h4 (tr "dashboard.settings.notifications.email-comments.title")]
-       [:div {:class (stl/css :fields-row)}
-        [:& fm/radio-buttons
-         {:options [{:label (tr "dashboard.settings.notifications.email-comments.all") :value "all"}
-                    {:label (tr "dashboard.settings.notifications.email-comments.partial") :value "partial"}
-                    {:label (tr "dashboard.settings.notifications.email-comments.none") :value "none"}]
-          :name :email-comments
-          :class (stl/css :radio-btns)}]]
-
-       [:h4 (tr "dashboard.settings.notifications.email-invites.title")]
-       [:div {:class (stl/css :fields-row)}
-        [:& fm/radio-buttons
-         {:options [{:label (tr "dashboard.settings.notifications.email-invites.all") :value "all"}
-                    ;; This type of notifications doesnt't exist yet
-                    ;; {:label "Only invites and requests that my response" :value "partial"}
-                    {:label (tr "dashboard.settings.notifications.email-invites.none") :value "none"}]
-          :name :email-invites
-          :class (stl/css :radio-btns)}]]
-
-       [:> fm/submit-button*
-        {:label (tr "dashboard.settings.notifications.submit")
-         :disabled (= (:data @form) (:initial @form))
-         :data-testid "submit-settings"
-         :class (stl/css :update-btn)}]]]]))
-
+       [:> card* {}
+        [:table {:data-ds-settings "matrix"}
+         [:thead
+          [:tr
+           [:th {:scope "col" :data-ds-settings "col"} (tr "ds.settings.notifications.event")]
+           [:th {:scope "col" :data-ds-settings "col"} (tr "ds.settings.notifications.in-app")]
+           [:th {:scope "col" :data-ds-settings "col"} (tr "ds.settings.notifications.email")]]]
+         [:tbody
+          [:tr
+           [:th {:scope "row" :data-ds-settings "event"}
+            (tr "dashboard.settings.notifications.dashboard-comments.title")]
+           [:td {:data-testid "ds-notify-dashboard-comments"}
+            [:& fm/select
+             {:options [{:label (tr "dashboard.settings.notifications.dashboard-comments.all") :value "all"}
+                        {:label (tr "dashboard.settings.notifications.dashboard-comments.partial") :value "partial"}
+                        {:label (tr "dashboard.settings.notifications.dashboard-comments.none") :value "none"}]
+              :name :dashboard-comments}]]
+           [:td {:data-testid "ds-notify-email-comments"}
+            [:& fm/select
+             {:options [{:label (tr "dashboard.settings.notifications.email-comments.all") :value "all"}
+                        {:label (tr "dashboard.settings.notifications.email-comments.partial") :value "partial"}
+                        {:label (tr "dashboard.settings.notifications.email-comments.none") :value "none"}]
+              :name :email-comments}]]]
+          [:tr
+           [:th {:scope "row" :data-ds-settings "event"}
+            (tr "dashboard.settings.notifications.email-invites.title")]
+           ;; No in-app setting for invites today.
+           [:td {:data-ds-settings "none"}
+            [:span {:aria-label (tr "ds.settings.notifications.no-setting")} "—"]]
+           [:td {:data-testid "ds-notify-email-invites"}
+            [:& fm/select
+             {:options [{:label (tr "dashboard.settings.notifications.email-invites.all") :value "all"}
+                        ;; This type of notifications doesnt't exist yet
+                        ;; {:label "Only invites and requests that my response" :value "partial"}
+                        {:label (tr "dashboard.settings.notifications.email-invites.none") :value "none"}]
+              :name :email-invites}]]]]]
+        [:div {:data-ds-settings "foot"}
+         [:> fm/submit-button*
+          {:label (tr "dashboard.settings.notifications.submit")
+           :disabled (= (:data @form) (:initial @form))
+           :data-testid "submit-settings"
+           :class (stl/css :update-btn)}]]]]]]))
