@@ -7,8 +7,6 @@
   display: flex;
   flex-direction: column;
   gap: ds.token("space-12");
-  max-inline-size: 760px;
-  margin-block-end: ds.token("space-24");
 }
 
 .head {
@@ -33,36 +31,29 @@
 }
 
 .connect {
-  max-inline-size: 760px;
-  margin-block-end: ds.token("space-24");
+  inline-size: 100%;
 }
 
-// The connected state (board F1 · 10).
+// The connected state (board F1 · 10; P3D: cards 16 px apart).
 .connected {
   display: flex;
   flex-direction: column;
-  gap: ds.token("space-32");
-  max-inline-size: 760px;
-}
-
-.section-title {
-  @include ds.type("panel-title");
-
-  margin: 0 0 14px;
-  font-size: 0.9375rem;
-  color: ds.token("text-primary");
+  gap: ds.dense("section-gap");
 }
 
 // Switch card
+// P3D: at most 64 px, the switch on the right.
 .switch-card {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: ds.token("space-16");
-  padding: 22px ds.token("space-24");
+  box-sizing: border-box;
+  min-block-size: 64px;
+  padding: 12px ds.dense("card-pad-x");
   background: ds.token("status-success-bg");
   border: 1px solid ds.token("status-success-border");
-  border-radius: ds.token("radius-xl");
+  border-radius: ds.dense("card-radius");
 }
 
 .switch-card-off {
@@ -73,34 +64,29 @@
 .switch-text {
   display: flex;
   flex-direction: column;
-  gap: ds.token("space-8");
+  gap: 2px;
+  min-inline-size: 0;
 }
 
 .switch-title {
-  @include ds.type("panel-title");
-
   margin: 0;
-  font-size: 0.9375rem;
+  font-family: ds.token("font-text");
+  font-size: 0.875rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.3;
   color: ds.token("text-primary");
 }
 
 .switch-state {
-  @include ds.type("body");
-
-  font-size: 0.8125rem;
   margin: 0;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("meta-size");
+  line-height: 1.4;
   color: ds.token("status-success-text");
 }
 
 .switch-card-off .switch-state {
   color: ds.token("text-secondary");
-}
-
-.switch-note {
-  @include ds.type("body");
-
-  margin: 0;
-  color: ds.token("text-body");
 }
 
 .problem {
@@ -148,11 +134,16 @@
   inset-inline-start: 18px;
 }
 
-// Apps
+// Apps: 48 px rows of one card.
+.apps footer {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
 .app-list {
   display: flex;
   flex-direction: column;
-  gap: ds.token("space-12");
   margin: 0;
   padding: 0;
   list-style: none;
@@ -162,11 +153,12 @@
   display: flex;
   align-items: center;
   gap: ds.token("space-12");
-  padding: 0 ds.token("space-20");
-  min-block-size: 64px;
-  background: ds.token("bg-panel");
-  border: 1px solid ds.token("border-strong");
-  border-radius: ds.token("radius-card");
+  min-block-size: 48px;
+  padding: 6px ds.dense("card-pad-x");
+
+  & + & {
+    border-block-start: 1px solid ds.token("border-default");
+  }
 }
 
 .avatar {
@@ -199,29 +191,35 @@
 }
 
 .app-name {
-  @include ds.type("control-lg");
-
   margin: 0;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.35;
   color: ds.token("text-primary");
 }
 
 .app-meta {
-  @include ds.type("body");
-
   margin: 0;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("meta-size");
+  line-height: 1.4;
   color: ds.token("text-secondary");
 }
 
+// What the app may do: a quiet tag (changing it is done in Studio).
 .access {
-  @include ds.type("control");
-
   flex: none;
-  min-inline-size: 140px;
-  padding: ds.token("space-8") ds.token("space-12");
-  border-radius: ds.token("radius-md");
+  display: inline-flex;
+  align-items: center;
+  block-size: 24px;
+  padding: 0 10px;
+  border-radius: ds.token("radius-button");
   background: ds.token("bg-subtle");
-  color: ds.token("text-primary");
-  font-size: 0.75rem;
+  color: ds.token("text-body");
+  font-family: ds.token("font-text");
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-medium");
 }
 
 .revoke {
@@ -230,18 +228,23 @@
   @include ds.type("control");
 
   flex: none;
-  padding: ds.token("space-8") ds.token("space-12");
+  block-size: ds.dense("button-sm");
+  padding: 0 10px;
   color: ds.token("status-danger-text");
+  font-size: ds.dense("body-size");
   font-weight: 600;
   cursor: pointer;
-  border-radius: ds.token("radius-sm");
+  border-radius: ds.token("radius-button");
+
+  &:hover {
+    background: ds.token("status-danger-bg");
+  }
 }
 
 .add {
   display: flex;
   flex-direction: column;
-  gap: ds.token("space-12");
-  margin-block-start: ds.token("space-8");
+  gap: ds.token("space-8");
 }
 
 .add-button {
@@ -252,9 +255,10 @@
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: ds.token("space-8");
-  block-size: 40px;
-  padding-inline: ds.token("space-20");
+  gap: 6px;
+  block-size: ds.dense("button-sm");
+  padding-inline: 12px;
+  font-size: ds.dense("body-size");
   border: 1px solid ds.token("border-strong");
   border-radius: ds.token("radius-pill");
   color: ds.token("text-primary");
@@ -266,7 +270,7 @@
   display: flex;
   flex-direction: column;
   gap: ds.token("space-8");
-  padding: ds.token("space-16");
+  padding: ds.token("space-12");
   background: ds.token("bg-subtle");
   border-radius: ds.token("radius-card");
 }
@@ -297,46 +301,26 @@
   overflow-wrap: anywhere;
 }
 
-// Craft
-.craft-card {
-  display: flex;
-  align-items: flex-start;
-  gap: ds.token("space-12");
-  padding: 22px ds.token("space-24");
-  background: ds.token("accent-subtle");
-  border-radius: ds.token("radius-xl");
-  color: ds.token("accent-text-strong");
-}
-
+// Craft: one row.
 .craft-icon {
   flex: none;
-  inline-size: 20px;
-  block-size: 20px;
-  margin-block-start: 1px;
+  inline-size: 16px;
+  block-size: 16px;
   color: ds.token("accent-default");
 }
 
-.craft-body {
-  flex: 1;
+.craft-text {
   min-inline-size: 0;
-  display: flex;
-  flex-direction: column;
-  gap: ds.token("space-4");
-}
-
-.craft-left {
-  @include ds.type("control-lg");
-
   margin: 0;
-  color: ds.token("accent-text-strong");
-  font-weight: 600;
-}
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  line-height: 1.4;
+  color: ds.token("text-secondary");
 
-.craft-plan {
-  @include ds.type("body");
-
-  margin: 0;
-  color: ds.token("accent-text-strong");
+  strong {
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("text-primary");
+  }
 }
 
 .craft-link {
@@ -345,54 +329,42 @@
   @include ds.type("control");
 
   flex: none;
+  font-size: ds.dense("body-size");
   color: ds.token("accent-default");
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.bar {
-  inline-size: min(100%, 540px);
-  block-size: 6px;
-  margin-block-start: ds.token("space-12");
-  border-radius: 3px;
-  background: #d9d9f5;
-  overflow: hidden;
-}
-
-.bar-fill {
-  display: block;
-  block-size: 100%;
-  background: ds.token("accent-default");
-  border-radius: ds.token("radius-pill");
-}
-
-// Privacy note
+// Privacy note: one line.
 .privacy {
   display: flex;
-  gap: ds.token("space-12");
+  gap: ds.token("space-8");
   align-items: center;
-  padding: 0 ds.token("space-20");
-  min-block-size: 64px;
+  min-block-size: 40px;
+  padding: 8px ds.dense("card-pad-x");
   background: ds.token("bg-subtle");
   border-radius: ds.token("radius-card");
 }
 
 .privacy-icon {
   flex: none;
+  inline-size: 16px;
+  block-size: 16px;
   color: ds.token("text-secondary");
-  margin-block-start: 2px;
 }
 
 .privacy-text {
-  @include ds.type("body");
-
   margin: 0;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("meta-size");
+  line-height: 1.45;
   color: ds.token("text-body");
 }
 
 .privacy-link {
-  @include ds.type("body");
-
+  font-weight: ds.token("weight-semibold");
   color: ds.token("accent-default");
   text-decoration: none;
+  white-space: nowrap;
 }

@@ -21,6 +21,8 @@
    [app.main.ui.studio.dashboard.connect-card :as cc]
    [app.main.ui.studio.dashboard.rules :as rules]
    [app.main.ui.studio.ds :as sds]
+   [app.main.ui.studio.settings-shell.account :as acc]
+   [app.main.ui.studio.settings-shell.page :refer [card* row*]]
    [app.main.ui.studio.shell-state :as ss]
    [app.util.clipboard :as clipboard]
    [app.util.i18n :as i18n :refer [tr]]
@@ -129,6 +131,9 @@
    [:path {:d "M8 11V8a4 4 0 0 1 8 0v3"}]])
 
 (mf/defc switch-card*
+  "P3D: one 64 px card, the title and one line of state left, the switch
+  right; what turning it off does is the switch's tooltip (and the
+  confirm dialog says it again)."
   {::mf/private true}
   [{:keys [on? busy? problem on-toggle]}]
   [:section {:class (stl/css-case :switch-card true :switch-card-off (not on?))
@@ -138,8 +143,6 @@
     [:h2 {:class (stl/css :switch-title)} (tr "ds.ai.switch.title")]
     [:p {:class (stl/css :switch-state)}
      (if on? (tr "ds.ai.switch.on") (tr "ds.ai.switch.off"))]
-    [:p {:class (stl/css :switch-note)}
-     (if on? (tr "ds.ai.switch.on-note") (tr "ds.ai.switch.off-note"))]
     (when (some? problem)
       [:p {:class (stl/css :problem) :role "alert"}
        (tr "ds.connect.error.failed")])]
@@ -148,6 +151,7 @@
              :role "switch"
              :aria-checked (if on? "true" "false")
              :aria-label (tr "ds.ai.switch.title")
+             :title (if on? (tr "ds.ai.switch.on-note") (tr "ds.ai.switch.off-note"))
              :disabled busy?
              :data-testid "ds-ai-switch"
              :on-click on-toggle}
@@ -218,6 +222,7 @@
           (if @copied* (tr "ds.connect.copied") (tr "ds.connect.copy"))]]])]))
 
 (mf/defc craft-card*
+  "P3D: Craft in one row (the Account panel already shows the meter)."
   {::mf/private true}
   [{:keys [member]}]
   (let [credits (:credits member)
@@ -225,42 +230,34 @@
         plan    (plan-name (:plan member))
         renews  (short-date (:renewsAt member))
         on-plans (mf/use-fn #(st/emit! (rt/nav :settings-subscription)))]
-    [:section {:class (stl/css :craft) :data-testid "ds-ai-craft"}
-     [:h2 {:class (stl/css :section-title)} (tr "ds.ai.craft.title")]
-     (if (and (some? ratio) (some? plan))
-       [:div {:class (stl/css :craft-card)}
-        [:> sparkle-icon* {:class (stl/css :craft-icon)}]
-        [:div {:class (stl/css :craft-body)}
-         [:p {:class (stl/css :craft-left)}
-          (tr "ds.ai.craft.left" (:left credits) (:total credits))]
-         [:p {:class (stl/css :craft-plan)}
+    [:> card* {:class (stl/css :craft) :test-id "ds-ai-craft"}
+     [:> row* {:label (tr "ds.ai.craft.title")
+               :action (mf/html
+                        [:button {:class (stl/css :craft-link) :type "button" :on-click on-plans}
+                         (if (and (some? ratio) (some? plan))
+                           (tr "ds.ai.craft.link")
+                           (tr "ds.ai.craft.see"))
+                         " →"])}
+      [:> sparkle-icon* {:class (stl/css :craft-icon)}]
+      (if (and (some? ratio) (some? plan))
+        [:p {:class (stl/css :craft-text)}
+         [:strong (tr "ds.ai.craft.left" (acc/format-number (:left credits)) (acc/format-number (:total credits)))]
+         [:span " · "
           (if (some? renews)
             (tr "ds.ai.craft.plan-renews" plan renews)
-            (tr "ds.ai.craft.plan" plan))]
-         [:div {:class (stl/css :bar)
-                :role "progressbar"
-                :aria-valuemin 0
-                :aria-valuemax (:total credits)
-                :aria-valuenow (:left credits)}
-          [:span {:class (stl/css :bar-fill)
-                  :style {:inline-size (str (js/Math.round (* 100 ratio)) "%")}}]]]
-        [:button {:class (stl/css :craft-link) :type "button" :on-click on-plans}
-         (tr "ds.ai.craft.link") " →"]]
-       [:div {:class (stl/css :craft-card)}
-        [:> sparkle-icon* {:class (stl/css :craft-icon)}]
-        [:div {:class (stl/css :craft-body)}
-         [:p {:class (stl/css :craft-left)} (tr "ds.ai.craft.free")]
-         [:p {:class (stl/css :craft-plan)} (tr "ds.ai.craft.free-text")]]
-        [:button {:class (stl/css :craft-link) :type "button" :on-click on-plans}
-         (tr "ds.ai.craft.see") " →"]])]))
+            (tr "ds.ai.craft.plan" plan))]]
+        [:p {:class (stl/css :craft-text)}
+         [:strong (tr "ds.ai.craft.free")]
+         [:span " · " (tr "ds.ai.craft.free-text")]])]]))
 
 (mf/defc privacy-note*
+  "P3D: one line."
   {::mf/private true}
   []
   [:aside {:class (stl/css :privacy)}
    [:> lock-icon* {:class (stl/css :privacy-icon)}]
-   [:div
-    [:p {:class (stl/css :privacy-text)} (tr "ds.ai.privacy")]
+   [:p {:class (stl/css :privacy-text)}
+    (tr "ds.ai.privacy") " "
     [:a {:class (stl/css :privacy-link) :href manage-uri}
      (tr "ds.ai.privacy.history") " →"]]])
 
@@ -318,12 +315,14 @@
                        :problem (deref problem*)
                        :on-toggle on-toggle}]
      (when on?
-       [:section {:class (stl/css :apps)}
-        [:h2 {:class (stl/css :section-title)} (tr "ds.ai.apps.title")]
+       ;; P3D: the apps are 48 px rows of one card, "Connect another app"
+       ;; in its foot.
+       [:> card* {:title (tr "ds.ai.apps.title")
+                  :class (stl/css :apps)
+                  :foot (mf/html [:> add-app* {}])}
         [:ul {:class (stl/css :app-list)}
          (for [[idx app] (d/enumerate apps)]
-           [:> app-row* {:key idx :app app :on-revoke on-revoke}])]
-        [:> add-app* {}]])
+           [:> app-row* {:key idx :app app :on-revoke on-revoke}])]])
      (when (true? (:craft state))
        [:> craft-card* {:member (:member state)}])
      [:> privacy-note* {}]]))

@@ -8241,3 +8241,113 @@ msgstr "Isi gambar"
 
 msgid "ds.auth.login.rate-limited"
 msgstr "Terlalu banyak percobaan masuk. Tunggu beberapa menit, lalu coba lagi."
+
+# Design Studio (P3D-A) settings and error pages, dense
+
+msgid "ds.settings.account.title"
+msgstr "Akun"
+
+msgid "ds.settings.account.plan"
+msgstr "Paket"
+
+msgid "ds.settings.account.renews"
+msgstr "Diperbarui"
+
+msgid "ds.settings.account.credits"
+msgstr "Kredit Craft"
+
+msgid "ds.settings.account.storage"
+msgstr "Penyimpanan"
+
+msgid "ds.settings.account.storage-value"
+msgstr "%s dari %s"
+
+msgid "ds.settings.account.apps"
+msgstr "AI tersambung"
+
+msgid "ds.settings.account.apps-more"
+msgstr "+%s lainnya"
+
+msgid "ds.settings.account.since"
+msgstr "Anggota sejak"
+
+msgid "ds.settings.account.contact"
+msgstr "Kontak"
+
+msgid "ds.settings.password.rules"
+msgstr "Aturan kata sandi"
+
+msgid "ds.settings.password.rule.length"
+msgstr "Minimal 8 karakter"
+
+msgid "ds.settings.password.rule.upper"
+msgstr "Satu huruf besar"
+
+msgid "ds.settings.password.rule.lower"
+msgstr "Satu huruf kecil"
+
+msgid "ds.settings.password.rule.number"
+msgstr "Satu angka"
+
+msgid "ds.settings.password.rule.symbol"
+msgstr "Satu simbol"
+
+msgid "ds.settings.notifications.event"
+msgstr "Kejadian"
+
+msgid "ds.settings.notifications.in-app"
+msgstr "Di aplikasi"
+
+msgid "ds.settings.notifications.email"
+msgstr "Email"
+
+msgid "ds.settings.notifications.no-setting"
+msgstr "Tidak ada pengaturan untuk saluran ini"
+
+msgid "ds.settings.options.language-hint"
+msgstr "Bahasa menu dan pesan."
+
+msgid "ds.settings.options.theme-hint"
+msgstr "Terang, gelap, atau ikut sistem."
+
+msgid "ds.plans.compare"
+msgstr "Bandingkan paket"
+
+msgid "ds.plans.row.editor"
+msgstr "Editor + MCP"
+
+msgid "ds.plans.row.craft"
+msgstr "Craft (partner desain AI)"
+
+msgid "ds.plans.row.price"
+msgstr "Harga"
+
+msgid "ds.plans.row.status"
+msgstr "Status"
+
+msgid "ds.plans.credits-cycle"
+msgstr "%s setiap siklus tagihan"
+
+msgid "ds.plans.credits-once"
+msgstr "%s sekali, lalu kunci AI sendiri"
+
+msgid "ds.plans.credits-none"
+msgstr "Craft ada di paket Monthly"
+
+msgid "ds.plans.once"
+msgstr "sekali bayar"
+
+msgid "ds.plans.included"
+msgstr "Termasuk"
+
+msgid "ds.plans.not-included"
+msgstr "Tidak termasuk"
+
+msgid "ds.feedback.subtitle"
+msgstr "Ceritakan masalah, ide, atau pertanyaanmu. Kami balas secepatnya."
+
+msgid "ds.feedback.link"
+msgstr "Tautan"
+
+msgid "ds.feedback.link-hint"
+msgstr "Opsional: file atau proyek yang dimaksud."

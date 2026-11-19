@@ -77,6 +77,7 @@
    [frontend-tests.studio.dashboard-shell-rules-test]
    [frontend-tests.studio.mcp-cadence-test]
    [frontend-tests.studio.refusal-test]
+   [frontend-tests.studio.settings-account-test]
    [frontend-tests.studio.shell-state-test]
    [frontend-tests.studio.token-suggestions-test]
    [frontend-tests.studio.viewer-inspect-test]
@@ -197,6 +198,7 @@
    'frontend-tests.studio.dashboard-shell-rules-test
    'frontend-tests.studio.mcp-cadence-test
    'frontend-tests.studio.refusal-test
+   'frontend-tests.studio.settings-account-test
    'frontend-tests.studio.shell-state-test
    'frontend-tests.studio.token-suggestions-test
    'frontend-tests.studio.viewer-inspect-test
