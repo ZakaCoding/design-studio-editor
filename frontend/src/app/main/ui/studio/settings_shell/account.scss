@@ -1,0 +1,34 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// The meter of the Account panel and the Plans page (credits left,
+// storage used).
+
+@use "studio/ds" as ds;
+
+.meter {
+  display: block;
+  flex: 1 0 100%;
+  block-size: 6px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-subtle");
+  overflow: hidden;
+}
+
+.meter-fill {
+  display: block;
+  block-size: 100%;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-default");
+}
+
+.meter-storage {
+  background: ds.token("border-default");
+
+  .meter-fill {
+    background: ds.token("text-placeholder");
+  }
+}

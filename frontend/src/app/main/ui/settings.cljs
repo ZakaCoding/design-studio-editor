@@ -24,6 +24,7 @@
    [app.main.ui.settings.shortcuts :refer [shortcuts-page*]]
    [app.main.ui.settings.sidebar :refer [sidebar*]]
    [app.main.ui.settings.subscription :refer [subscription-page*]]
+   [app.main.ui.studio.settings-shell.layout :refer [layout*]]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
 
@@ -57,32 +58,35 @@
       [:div {:class (stl/css :dashboard-content)}
        [:> header*]
        [:div {:class (stl/css :dashboard-container)}
-        (case section
-          :settings-profile
-          [:> profile-page*]
+        ;; Design Studio seam (STUDIO-SEAMS.md, P3D): every page sits in
+        ;; the Settings frame, its column and the Account panel.
+        [:> layout* {}
+         (case section
+           :settings-profile
+           [:> profile-page*]
 
-          :settings-feedback
-          [:> feedback-page* {:type type
-                              :error-report-id error-report-id
-                              :error-href error-href}]
+           :settings-feedback
+           [:> feedback-page* {:type type
+                               :error-report-id error-report-id
+                               :error-href error-href}]
 
-          :settings-password
-          [:> password-page*]
+           :settings-password
+           [:> password-page*]
 
-          :settings-options
-          [:> options-page*]
+           :settings-options
+           [:> options-page*]
 
-          :settings-subscription
-          [:> subscription-page* {:profile profile}]
+           :settings-subscription
+           [:> subscription-page* {:profile profile}]
 
-          :settings-integrations
-          [:> integrations-page*]
+           :settings-integrations
+           [:> integrations-page*]
 
-          :settings-notifications
-          [:> notifications-page* {:profile profile}]
+           :settings-notifications
+           [:> notifications-page* {:profile profile}]
 
-          :settings-shortcuts
-          [:> shortcuts-page* {:profile profile}])]]]]))
+           :settings-shortcuts
+           [:> shortcuts-page* {:profile profile}])]]]]]))
 
 (mf/defc settings-page*
   {::mf/lazy-load true}

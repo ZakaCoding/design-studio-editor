@@ -14,7 +14,7 @@
    [app.main.ui.components.forms :as fm]
    [app.main.ui.studio.guard :refer [guard*]]
    [app.main.ui.studio.settings-notes :refer [password-note*]]
-   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head* card* row*]]
    [app.main.ui.studio.shell-state :as ds-state]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
@@ -73,6 +73,31 @@
     (fn [{:keys [password-1 password-2]}]
       (= password-1 password-2))]])
 
+(def ^:private password-rules
+  "The rules of a new password (the backend's policy, as the first-steps
+  dialog states it), for the checklist under the field."
+  [["ds.settings.password.rule.length"    #(>= (count %) 8)]
+   ["ds.settings.password.rule.upper"     #(boolean (re-find #"[A-Z]" %))]
+   ["ds.settings.password.rule.lower"     #(boolean (re-find #"[a-z]" %))]
+   ["ds.settings.password.rule.number"    #(boolean (re-find #"[0-9]" %))]
+   ["ds.settings.password.rule.symbol"    #(boolean (re-find #"[^A-Za-z0-9]" %))]])
+
+(mf/defc password-rules*
+  "Design Studio (P3D): a compact checklist of the rules, ticked while
+  the member types. Display only; the backend still decides."
+  {::mf/private true}
+  [{:keys [value]}]
+  (let [value (or value "")]
+    [:ul {:data-ds-settings "rules"
+          :aria-label (tr "ds.settings.password.rules")}
+     (for [[key ok?] password-rules]
+       (let [met? (and (seq value) (ok? value))]
+         [:li {:key key
+               :data-ds-settings "rule"
+               :data-met (if met? "true" "false")}
+          [:span {:data-ds-settings "rule-mark" :aria-hidden "true"}]
+          (tr key)]))]))
+
 (mf/defc password-form*
   []
   (let [initial (mf/with-memo []
@@ -82,34 +107,43 @@
         form    (fm/use-form :schema schema:password-form
                              :initial initial)]
 
-    [:& fm/form {:class (stl/css :password-form)
-                 :on-submit on-submit
-                 :form form}
-     [:div {:class (stl/css :fields-row)}
-      [:& fm/input
-       {:type "password"
-        :name :password-old
-        :auto-focus? true
-        :label (tr "labels.old-password")}]]
+    ;; Design Studio seam (STUDIO-SEAMS.md, P3D): one card, the three
+    ;; fields as rows, the rules under the new password, the button in
+    ;; the card's foot. Same form, fields, ids and test ids.
+    [:> card* {}
+     [:& fm/form {:class (stl/css :password-form)
+                  :on-submit on-submit
+                  :form form}
+      [:> row* {:label (tr "labels.old-password") :for "password-old"}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/input
+         {:type "password"
+          :name :password-old
+          :auto-focus? true
+          :label (tr "labels.old-password")}]]]
 
-     [:div {:class (stl/css :fields-row)}
-      [:& fm/input
-       {:type "password"
-        :name :password-1
-        :show-success? true
-        :label (tr "labels.new-password")}]]
+      [:> row* {:label (tr "labels.new-password") :for "password-1"}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/input
+         {:type "password"
+          :name :password-1
+          :show-success? true
+          :label (tr "labels.new-password")}]
+        [:> password-rules* {:value (get-in @form [:data :password-1])}]]]
 
-     [:div {:class (stl/css :fields-row)}
-      [:& fm/input
-       {:type "password"
-        :name :password-2
-        :show-success? true
-        :label (tr "labels.confirm-password")}]]
+      [:> row* {:label (tr "labels.confirm-password") :for "password-2"}
+       [:div {:class (stl/css :fields-row)}
+        [:& fm/input
+         {:type "password"
+          :name :password-2
+          :show-success? true
+          :label (tr "labels.confirm-password")}]]]
 
-     [:> fm/submit-button*
-      {:label (tr "dashboard.password-change")
-       :data-testid "submit-password"
-       :class (stl/css :update-btn)}]]))
+      [:div {:data-ds-settings "foot"}
+       [:> fm/submit-button*
+        {:label (tr "dashboard.password-change")
+         :data-testid "submit-password"
+         :class (stl/css :update-btn)}]]]]))
 
 ;; --- Password Page
 
