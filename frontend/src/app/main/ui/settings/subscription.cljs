@@ -20,6 +20,7 @@
    [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*]]
    [app.main.ui.nitrate.nitrate-activation-success-modal]
    [app.main.ui.notifications.badge :refer [badge-notification]]
+   [app.main.ui.studio.plans :refer [plans-page*]]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr c]]
    [beicon.v2.core :as rx]
@@ -404,7 +405,13 @@
            :value (tr "labels.close")
            :on-click handle-close-dialog}]]]]]]))
 
+;; Design Studio (WP4): Settings > Plans renders our plan summary. Penpot's own
+;; subscription page stays below, unused, so the upstream diff stays small.
 (mf/defc subscription-page*
+  [_]
+  [:> plans-page*])
+
+(mf/defc penpot-subscription-page*
   [{:keys [profile]}]
   (let [route           (mf/deref refs/route)
         authenticated?  (da/is-authenticated? profile)

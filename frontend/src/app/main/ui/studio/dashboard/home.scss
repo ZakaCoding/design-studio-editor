@@ -1,0 +1,308 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Content of the dashboard home (F1 · 03, 03c, 12): a column 1112 px wide
+// on the boards, between the greeting and the end of the page.
+
+@use "studio/ds" as ds;
+
+.home {
+  @include ds.root;
+
+  // Plain block flow: the blocks keep their distance with margins, which
+  // collapse with those of the shell's "File terbaru" section between
+  // them (32 px above it, 40 px under it).
+  display: block;
+  min-width: 0;
+  color: ds.token("text-body");
+
+  // Outside the dashboard shell (a build without it) the home is its own
+  // light sheet inside Penpot's dashboard: two grid rows, scrolling itself.
+  grid-row: 1 / span 2;
+  min-height: 0;
+  padding: 26px 40px 40px;
+  overflow-y: auto;
+  background: ds.token("bg-panel");
+}
+
+// Inside the shell (`body.ds-dash`) the page gives the padding, the
+// background and the scrolling.
+:global(body.ds-dash) .home {
+  grid-row: auto;
+  min-height: auto;
+  padding: 0;
+  overflow: visible;
+  background: none;
+}
+
+.section {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+// 32 px between blocks (F1 · 12: cards 280 → "File kamu" 312).
+.section + .section {
+  margin-block-start: ds.token("space-32");
+}
+
+// F1 · 12: the first heading is 8 px lower than the hero of F1 · 03.
+.home > .section:first-child {
+  margin-block-start: ds.token("space-8");
+}
+
+.section-title {
+  margin: 0;
+  color: ds.token("text-primary");
+  font-family: ds.token("font-display");
+  font-size: ds.token("size-18");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+// 40 px under the hero or the files (F1 · 03: 612 → 652).
+.connect {
+  margin-block-start: 40px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+// F1 · 12: 36 px under the empty box (616 → 652).
+.connect-first {
+  margin-block-start: 36px;
+}
+
+// F1 · 03c: the templates row is 20 px under the status bar (708 → 728).
+.after-connect {
+  margin-block-start: ds.token("space-20");
+
+  &:empty {
+    display: none;
+  }
+}
+
+// --- Start cards (F1 · 12: 268 × 132, 16 px apart; the Craft card 260)
+
+.starts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 268fr)) minmax(0, 260fr);
+  gap: ds.token("space-16");
+}
+
+.start {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion(background-color);
+
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  min-height: 132px;
+  padding: ds.token("space-20") ds.token("space-20") 10px;
+  border-radius: 18px;
+  background: ds.token("bg-subtle");
+  text-align: start;
+
+  &:hover {
+    background: ds.token("border-default");
+  }
+}
+
+.start-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ds.token("radius-md");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+}
+
+.start-title {
+  margin-block-start: 14px;
+  color: ds.token("text-primary");
+  font-family: ds.token("font-text");
+  font-size: 0.9375rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.start-text {
+  margin-block-start: 6px;
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  line-height: 1.2;
+}
+
+.promo {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  min-height: 132px;
+  padding: 18px ds.token("space-20") ds.token("space-12");
+  border-radius: 18px;
+  background: ds.token("craft-default");
+  color: ds.token("text-on-accent");
+}
+
+.promo-title {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  font-family: ds.token("font-display");
+  font-size: 1.0625rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.promo-text {
+  margin-block-start: ds.token("space-12");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  line-height: 1.45;
+}
+
+.promo-cta {
+  @include ds.control-reset;
+  @include ds.focusable(3px);
+
+  height: 28px;
+  min-width: 112px;
+  margin-block-start: ds.token("space-8");
+  padding: 0 ds.token("space-20");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-panel");
+  color: ds.token("accent-text-strong");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  white-space: nowrap;
+
+  &:focus-visible {
+    outline-color: ds.token("bg-panel");
+  }
+}
+
+// --- Empty "File kamu" (F1 · 12: 1112 × 268, dashed)
+
+.empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-12");
+  min-height: 268px;
+
+  // The board sets the group a little above and right of the centre
+  // (art from 348 px of 1112, title 62 px under the top edge).
+  padding: ds.token("space-32") ds.token("space-24") 62px;
+  border: 1.5px dashed ds.token("border-strong");
+  border-radius: 20px;
+}
+
+.empty-art {
+  position: relative;
+  flex: none;
+  width: 152px;
+  height: 92px;
+}
+
+.empty-sheet {
+  position: absolute;
+  width: 92px;
+  height: 70px;
+  border: 2px solid ds.token("bg-panel");
+  border-radius: ds.token("radius-md");
+  box-shadow: 0 4px 12px color-mix(in srgb, ds.token("bg-inverse") 8%, transparent);
+}
+
+// The three sheets of the board, fanned.
+.empty-sheet-sky {
+  inset-block-start: 14px;
+  inset-inline-start: 0;
+  background: #d6e4ff;
+  transform: rotate(-6deg);
+}
+
+.empty-sheet-yellow {
+  inset-block-start: 4px;
+  inset-inline-start: 30px;
+  background: #ffeab8;
+  transform: rotate(4deg);
+}
+
+.empty-sheet-mint {
+  inset-block-start: 16px;
+  inset-inline-start: 58px;
+  background: #d3f1e4;
+  transform: rotate(10deg);
+}
+
+.empty-body {
+  display: grid;
+  justify-items: start;
+  width: 360px;
+  max-width: 100%;
+}
+
+@media (width >= 1100px) {
+  .empty-art {
+    margin-inline-start: 108px;
+  }
+}
+
+.empty-title {
+  padding: 0;
+  margin: 0;
+  color: ds.token("text-primary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-16");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.empty-text {
+  margin: 7px 0 0;
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-13");
+  line-height: 1.2;
+}
+
+.empty-cta {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  height: 36px;
+  min-width: 150px;
+  margin-block-start: ds.token("space-20");
+  padding: 0 ds.token("space-20");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-13");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (width <= 1100px) {
+  .starts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 600px) {
+  .starts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

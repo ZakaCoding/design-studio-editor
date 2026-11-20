@@ -43,6 +43,8 @@
    [app.main.ui.hooks :as hooks :refer [use-focus-timer-ref]]
    [app.main.ui.icons :as deprecated-icon]
    [app.main.ui.nitrate.nitrate-form]
+   [app.main.ui.studio.about :as ds-about]
+   [app.main.ui.studio.brand :as brand]
    [app.util.dom :as dom]
    [app.util.dom.dnd :as dnd]
    [app.util.i18n :as i18n :refer [tr]]
@@ -86,9 +88,6 @@
 (def ^:private exit-icon
   (deprecated-icon/icon-xref :exit (stl/css :exit-icon)))
 
-(def ^:private add-organization-icon
-  (deprecated-icon/icon-xref :add (stl/css :add-organization-icon)))
-
 (def ^:private arrow-up-right-icon
   (deprecated-icon/icon-xref :arrow-up-right (stl/css :arrow-up-right-icon)))
 
@@ -103,8 +102,9 @@
                    (ts/schedule
                     #(dom/focus-and-untabbable! (dom/get-element element-id)))))
 
+;; Design Studio seam (STUDIO-SEAMS.md): public, the Design Studio sidebar
+;; (`studio.dashboard-shell.sidebar`) lists the projects with it.
 (mf/defc sidebar-project*
-  {::mf/private true}
   [{:keys [item is-selected]}]
   (let [dstate           (mf/deref refs/dashboard-local)
         selected-files   (:selected-files dstate)
@@ -320,7 +320,7 @@
                              (uuid/parse))]
              (st/emit! (dcm/go-to-dashboard-recent :team-id team-id)))))
 
-        on-create-organization-click
+        _on-create-organization-click
         (mf/use-fn
          (mf/deps account-age-days profile subscription-type team-count)
          (fn []
@@ -392,19 +392,17 @@
         (when (= (:default-team-id organization-item) (:default-team-id organization))
           tick-icon)])
 
+     ;; Design Studio: no "create organization" (commercial surface off).
      [:hr {:role "separator" :class (stl/css :team-separator)}]
-     [:> dropdown-menu-item* {:on-click    on-create-organization-click
-                              :class       (stl/css :organization-dropdown-item :action)}
-      [:span {:class (stl/css :icon-wrapper)} add-organization-icon]
-      [:span {:class (stl/css :team-text)} (tr "dashboard.create-new-organization")]]
      (when is-valid-license?
        [:> dropdown-menu-item* {:on-click    on-go-to-cc-click
                                 :class       (stl/css :organization-dropdown-item :action)}
         [:span {:class (stl/css :icon-wrapper)} arrow-up-right-icon]
         [:span {:class (stl/css :team-text)} (tr "dashboard.go-to-admin-console")]])]))
 
+;; Design Studio seam (STUDIO-SEAMS.md): public, the Design Studio team
+;; switcher (`studio.dashboard-shell.team-switch`) shows it in its menu.
 (mf/defc teams-selector-dropdown*
-  {::mf/private true}
   [{:keys [team profile teams] :rest props}]
   (let [default-team-id (or (->> teams
                                  vals
@@ -475,8 +473,9 @@
       [:span {:class (stl/css :icon-wrapper)} add-icon]
       [:span {:class (stl/css :team-text)} (tr "dashboard.create-new-team")]]]))
 
+;; Design Studio seam (STUDIO-SEAMS.md): public, the Design Studio team
+;; switcher (`studio.dashboard-shell.team-switch`) shows it in its menu.
 (mf/defc team-options-dropdown*
-  {::mf/private true}
   [{:keys [team profile] :rest props}]
   (let [go-members     #(st/emit! (dcm/go-to-dashboard-members))
         go-invitations #(st/emit! (dcm/go-to-dashboard-invitations))
@@ -798,7 +797,7 @@
         close-organizations-menu
         (mf/use-fn #(reset! show-organizations-menu* false))
 
-        on-create-organization-click
+        _on-create-organization-click
         (mf/use-fn
          (mf/deps account-age-days profile subscription-type team-count)
          (fn []
@@ -882,11 +881,8 @@
       [:div {:class (stl/css :selected-organization)}
        [:span {:class (stl/css :organization-penpot-icon)}
         [:> raw-svg* {:id penpot-logo-icon}]]
-       "Penpot"
-       [:> button* {:variant "ghost"
-                    :type "button"
-                    :class (stl/css :create-organization)
-                    :on-click on-create-organization-click} (tr "dashboard.plus-create-new-organization")]])))
+       ;; Design Studio: product name instead of the default organisation name, no create button.
+       "Design Studio"])))
 
 (mf/defc sidebar-team-switch*
   [{:keys [team profile]}]
@@ -1200,22 +1196,26 @@
                         :on-pointer-leave on-pointer-leave}
 
      [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://help.penpot.app"
+                              :data-url brand/engine-guide-uri
                               :on-click handle-click-url
                               :data-eventname "explore-help-center-click"}
       (tr "labels.help-center")]
 
-     [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://penpot.app/learning-center"
-                              :on-click handle-click-url
-                              :data-eventname "explore-learning-center-click"}
-      (tr "labels.learning-center")]
+     ;; Design Studio (P4-A): Penpot link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :submenu-item)
+                                :data-url "https://penpot.app/learning-center"
+                                :on-click handle-click-url
+                                :data-eventname "explore-learning-center-click"}
+        (tr "labels.learning-center")])
 
-     [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://penpot.app/penpothub"
-                              :on-click handle-click-url
-                              :data-eventname "explore-penpot-hub-click"}
-      (tr "labels.penpot-hub")]
+     ;; Design Studio (P4-A): Penpot link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :submenu-item)
+                                :data-url "https://penpot.app/penpothub"
+                                :on-click handle-click-url
+                                :data-eventname "explore-penpot-hub-click"}
+        (tr "labels.penpot-hub")])
 
      (when (contains? cf/flags :user-feedback)
        [:> dropdown-menu-item* {:class (stl/css :submenu-item)
@@ -1287,14 +1287,14 @@
                               :on-click show-release-notes}
       (tr "labels.version-notes" (:base version))]
 
+     ;; Design Studio (P4-A): our About dialog instead of Penpot's changelog (STUDIO-SEAMS.md)
      [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://github.com/penpot/penpot/blob/develop/CHANGES.md"
-                              :on-click handle-click-url
-                              :data-eventname "explore-changelog-click"}
-      (tr "labels.penpot-changelog")]
+                              :on-click ds-about/show!
+                              :data-testid "ds-about-open"}
+      (tr "ds.about.version-licence")]
 
      [:> dropdown-menu-item* {:class (stl/css :submenu-item)
-                              :data-url "https://penpot.app/terms"
+                              :data-url (brand/terms-of-service-uri)
                               :on-click handle-click-url
                               :data-eventname "explore-terms-service-click"}
       (tr "auth.terms-of-service")]]))
@@ -1311,7 +1311,9 @@
         ;; its floating submenu, so the submenu survives the gap
         ;; between them while the pointer travels across.
         hovering?*     (mf/use-ref false)
-        version        (:base cf/version)
+        ;; Design Studio (P4-A): no version chip next to "About Design Studio"
+        ;; (no room for it); the version is in the About dialog.
+        version        nil
 
         close-sub-menu
         (mf/use-fn
@@ -1457,17 +1459,19 @@
         [:span {:class (stl/css :item-name)} (tr "labels.help-learning")]
         [:> icon* {:icon-id i/arrow :class (stl/css :open-arrow)}]]
 
-       [:> dropdown-menu-item* {:class (stl/css-case :profile-dropdown-item true)
-                                :on-click    on-menu-click
-                                :on-key-down (fn [event]
-                                               (when (kbd/enter? event)
-                                                 (on-menu-click event)))
-                                :on-pointer-enter on-menu-pointer-enter
-                                :on-pointer-leave on-menu-pointer-leave
-                                :data-testid "community-contributions"
-                                :id          "community-contributions"}
-        [:span {:class (stl/css :item-name)} (tr "labels.community-contributions")]
-        [:> icon* {:icon-id i/arrow :class (stl/css :open-arrow)}]]
+       ;; Design Studio (P4-A): Penpot community and GitHub, hidden (STUDIO-SEAMS.md)
+       (when brand/penpot-community?
+         [:> dropdown-menu-item* {:class (stl/css-case :profile-dropdown-item true)
+                                  :on-click    on-menu-click
+                                  :on-key-down (fn [event]
+                                                 (when (kbd/enter? event)
+                                                   (on-menu-click event)))
+                                  :on-pointer-enter on-menu-pointer-enter
+                                  :on-pointer-leave on-menu-pointer-leave
+                                  :data-testid "community-contributions"
+                                  :id          "community-contributions"}
+          [:span {:class (stl/css :item-name)} (tr "labels.community-contributions")]
+          [:> icon* {:icon-id i/arrow :class (stl/css :open-arrow)}]])
 
        [:> dropdown-menu-item* {:class (stl/css-case :profile-dropdown-item true)
                                 :on-click    on-menu-click

@@ -29,7 +29,13 @@
     type
     "professional"))
 
+;; Design Studio: commercial surface off, renders nothing (STUDIO-SEAMS.md).
 (mf/defc cta-power-up*
+  [_]
+  nil)
+
+(mf/defc cta-power-up-upstream*
+  {::mf/private true}
   [{:keys [top-title top-description bottom-description bottom-button bottom-button-href has-dropdown is-highlighted]}]
   (let [show-data* (mf/use-state false)
         show-data (deref show-data*)
@@ -119,7 +125,13 @@
           :has-dropdown false
           :is-highlighted false}]))))
 
+;; Design Studio: commercial surface off, renders nothing (STUDIO-SEAMS.md).
 (mf/defc nitrate-sidebar*
+  [_]
+  nil)
+
+(mf/defc nitrate-sidebar-upstream*
+  {::mf/private true}
   [{:keys [profile teams]}]
   (let [nitrate?              (dnt/is-valid-license? profile)
         nitrate-license       (:subscription profile)
@@ -245,7 +257,13 @@
                       :on-click handle-open-renew-modal}
           (tr "subscription.dashboard.banner.renew")]]])]))
 
+;; Design Studio: commercial surface off, renders nothing (STUDIO-SEAMS.md).
 (mf/defc nitrate-current-plan*
+  [_]
+  nil)
+
+(mf/defc nitrate-current-plan-upstream*
+  {::mf/private true}
   [{:keys [profile]}]
   (let [nitrate?              (dnt/is-valid-license? profile)
         nitrate-license       (:subscription profile)
@@ -337,7 +355,13 @@
      :class (stl/css :cta-message)
      :content (tr "subscription.dashboard.unlimited-members-extra-editors-cta-text")}]])
 
+;; Design Studio: commercial surface off, renders nothing (STUDIO-SEAMS.md).
 (mf/defc dashboard-cta*
+  [_]
+  nil)
+
+(mf/defc dashboard-cta-upstream*
+  {::mf/private true}
   [{:keys [profile]}]
   (let [subscription          (-> profile :props :subscription)
         subscription-type     (get-subscription-type subscription)

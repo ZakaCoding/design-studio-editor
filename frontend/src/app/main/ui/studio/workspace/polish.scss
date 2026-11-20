@@ -1,0 +1,205 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio editor polish (P1, 16 Nov): the parts of the panels that
+// were not tidy yet after F3. Same rules as `chrome.scss`: upstream
+// stylesheets and markup stay untouched, every rule lives under
+// `body.ds-chrome` and matches upstream elements by their exact CSS-module
+// class token.
+//
+// 1. Section headers: one style and one left edge in both panels (small
+//    mono caps); a section that folds shows its chevron after the label.
+// 2. Pages: the list is as tall as its pages (up to the height the member
+//    dragged it to, then it scrolls); rows and layer rows are one rounded
+//    highlight, without the darker squares upstream paints in them.
+// 3. Inspector: a hairline between the sections (F1 · 01) and checkboxes
+//    in the DS style.
+// 4. The main menu's tooltip stays away while the menu is open.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(#{ws.$scope})";
+$panels: '[id="left-sidebar-aside"], [id="right-sidebar-aside"]';
+
+// Left edge of the labels and of the rows' content, from the panel's edge.
+$row-inset: 8px;
+$label-start: 16px;
+
+// --- 1. Section headers
+
+#{$scope} :is(#{$panels}) {
+  // A section that folds: label first, the chevron after it, quiet until
+  // the header is hovered.
+  #{ws.on("main_ui_components_title_bar__icon-text-btn")} {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: ds.token("space-4");
+    padding-inline-start: 0;
+  }
+
+  #{ws.on("main_ui_components_title_bar__icon-text-btn")} #{ws.on("main_ui_components_title_bar__icon")} {
+    flex: none;
+    opacity: 0.6;
+  }
+
+  #{ws.on("main_ui_components_title_bar__icon-text-btn")}:hover
+    #{ws.on("main_ui_components_title_bar__icon")} {
+    opacity: 1;
+  }
+
+  #{ws.on("main_ui_components_title_bar__title")} {
+    flex: none;
+  }
+
+  #{ws.on("main_ui_components_title_bar__title-only")} {
+    --title-bar-title-margin: 0;
+  }
+}
+
+// Inspector: every section label starts where the text inside the fields
+// starts (the fields' edge + 8 px).
+#{$scope} [id="right-sidebar-aside"] {
+  #{ws.on("main_ui_components_title_bar__title-wrapper")} {
+    margin-inline-start: 8px;
+  }
+
+  // The bars of these sections start 2 px further in.
+  #{ws.on("main_ui_components_title_bar__title-only")} {
+    margin-inline-start: 6px;
+  }
+}
+
+// Left panel: "Pages" and "Layers" share the left edge of the rows' icons.
+#{$scope} [id="left-sidebar-aside"] {
+  #{ws.on("main_ui_workspace_sidebar_sitemap__sitemap-title")} {
+    margin-block: ds.token("space-8") ds.token("space-4");
+    padding-inline: $label-start ds.token("space-8");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_layers__tool-window-bar")} {
+    margin-inline: $label-start ds.token("space-8");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_layers__tool-window-bar-title")} {
+    margin-block-end: ds.token("space-4");
+  }
+}
+
+// --- 2. Pages and layer rows
+
+#{$scope} [id="left-sidebar-aside"] {
+  // As tall as its pages, never taller than the height the member dragged
+  // it to (upstream's `--height`); past that it scrolls.
+  #{ws.on("main_ui_workspace_sidebar_sitemap__sitemap")} {
+    block-size: auto;
+    max-block-size: var(--height, 200px);
+    min-block-size: 0;
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_sitemap__sitemap-content")} {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    padding-block-end: ds.token("space-4");
+  }
+
+  // The line between Pages and Layers: one hairline.
+  #{ws.on("main_ui_workspace_sidebar__layers-tab-resize-handle")} {
+    margin-inline: $row-inset;
+    border-block-end-width: 1px;
+    border-block-end-color: ds.token("border-default");
+  }
+
+  // Page rows: one rounded highlight, inset from the panel's edges.
+  #{ws.on("main_ui_workspace_sidebar_sitemap__page-item")} {
+    box-sizing: border-box;
+    padding-inline: $row-inset;
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_sitemap__page-item")}
+    #{ws.on("main_ui_workspace_sidebar_sitemap__page-item-body")} {
+    border-radius: ds.token("radius-control");
+    box-shadow: none;
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_sitemap__page-item-icon")} {
+    padding-inline-start: 4px;
+  }
+
+  // Layer rows: the same, and the parts inside a row paint nothing of
+  // their own (upstream gives the arrow and the eye and lock buttons of
+  // a selected or hovered row a darker square).
+  #{ws.on("main_ui_workspace_sidebar_layer_item__layer-row")} {
+    box-sizing: border-box;
+    inline-size: calc(100% - 2 * #{$row-inset});
+    margin-inline: $row-inset;
+    border-radius: ds.token("radius-control");
+    box-shadow: none;
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_layer_item__layer-row")}
+    :is(
+      #{ws.on("main_ui_workspace_sidebar_layer_item__toggle-content", "main_ui_workspace_sidebar_layer_item__toggle-element", "main_ui_workspace_sidebar_layer_item__block-element")}
+    ) {
+    --layer-row-action-btn-background: transparent;
+
+    background-color: transparent;
+  }
+
+  // The eye and lock buttons: round hover target, no square.
+  #{ws.on("main_ui_workspace_sidebar_layer_item__toggle-element", "main_ui_workspace_sidebar_layer_item__block-element")} {
+    border-radius: ds.token("radius-xs");
+  }
+
+  #{ws.on("main_ui_workspace_sidebar_layer_item__element-actions")} {
+    padding-inline-end: ds.token("space-4");
+  }
+}
+
+// --- 3. Inspector: sections and checkboxes
+
+// A hairline between the sections, as on F1 · 01 (the sections of the
+// Design tab are the direct children of its options).
+#{$scope} [id="right-sidebar-aside"] #{ws.on("main_ui_workspace_sidebar_options__element-options")} > * + * {
+  padding-block-start: ds.token("space-4");
+  border-block-start: 1px solid ds.token("border-default");
+}
+
+// Checkboxes ("Fix when scrolling", "Show in exports", …)
+
+#{$scope} :is(#{$panels}) [class*="__check-mark"] {
+  box-sizing: border-box;
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  margin-inline-end: ds.token("space-8");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-xs");
+  background-color: ds.token("bg-panel");
+
+  svg {
+    inline-size: 12px;
+    block-size: 12px;
+    stroke: ds.token("text-on-accent");
+  }
+}
+
+#{$scope} :is(#{$panels}) [class*="__check-mark"][class*="__checked"] {
+  border-color: ds.token("accent-default");
+  background-color: ds.token("accent-default");
+}
+
+// --- 4. Main menu
+
+// Upstream's main menu button keeps its "Main menu" tooltip while the menu
+// is open, over the menu's first items.
+#{$scope}:has(
+    :is(#{ws.on("main_ui_studio_workspace_header__file-menu", "main_ui_studio_workspace_rail__rail-menu")})
+      [aria-pressed="true"]
+  )
+  #{ws.on("main_ui_ds_tooltip_tooltip__tooltip")} {
+  display: none;
+}

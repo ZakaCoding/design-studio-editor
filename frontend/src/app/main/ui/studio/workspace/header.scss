@@ -1,0 +1,337 @@
+// Headers of the workspace panels (F1 · 01) and their parts, which the
+// canvas focus islands (F1 · 02) reuse. See header.cljs.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(#{ws.$scope})";
+
+// The chevron of the boards (14 px grid), as a mask over upstream's menu
+// button. A data URI because the button and its icon are upstream's.
+$chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.2 5.6 7 8.4l2.8-2.8'/%3E%3C/svg%3E");
+
+// --- Left header
+
+.left-header {
+  @include ds.root;
+
+  // Upstream's main menu places itself from this width (44 px less): under
+  // the file name, where its chevron is.
+  --left-sidebar-width: 96px;
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  box-sizing: border-box;
+  block-size: 59px;
+  padding-inline: 14px 9px;
+  border-block-end: 1px solid ds.token("border-default");
+}
+
+.logo {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  flex: none;
+  display: flex;
+  border-radius: ds.token("radius-control");
+  cursor: pointer;
+}
+
+.titles {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-inline-size: 0;
+  padding-inline-start: 2px;
+}
+
+.project {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.truncate;
+
+  max-inline-size: 100%;
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.2;
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    color: ds.token("text-primary");
+  }
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.file-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+}
+
+.file-label {
+  @include ds.type("panel-title");
+  @include ds.truncate;
+
+  color: ds.token("text-primary");
+  line-height: 1.2;
+}
+
+.file-input {
+  @include ds.type("panel-title");
+
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0 ds.token("space-4");
+  border: 0;
+  border-radius: ds.token("radius-xs");
+  background-color: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  line-height: 1.2;
+  outline: ds.token("focus-ring-width") solid ds.token("focus-ring-color");
+}
+
+// The save state. While everything is saved the dot is not shown, as on
+// the boards; it appears while a change waits or a save fails.
+.status {
+  flex: none;
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: ds.token("radius-pill");
+  background-color: ds.token("status-warning");
+}
+
+.status-saved {
+  display: none;
+}
+
+.status-error {
+  background-color: ds.token("status-danger-text");
+}
+
+.file-menu {
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+
+// Upstream's main menu button, drawn as the chevron after the file name.
+#{$scope} .file-menu button[aria-pressed] {
+  position: relative;
+  inline-size: 18px;
+  min-inline-size: 0;
+  block-size: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: ds.token("radius-xs");
+  background-color: transparent;
+
+  > svg {
+    display: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background-color: ds.token("text-secondary");
+    mask: $chevron center / 14px 14px no-repeat;
+  }
+
+  &:hover,
+  &[aria-pressed="true"] {
+    background-color: ds.token("bg-subtle");
+  }
+}
+
+.shared {
+  flex: none;
+  display: flex;
+  color: ds.token("text-secondary");
+}
+
+.icon-action {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, color));
+
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 28px;
+  block-size: 28px;
+  border-radius: ds.token("radius-control");
+  color: ds.token("text-secondary");
+  cursor: pointer;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+}
+
+// --- Right header
+
+.right-header {
+  @include ds.root;
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  box-sizing: border-box;
+  min-inline-size: 0;
+  block-size: 57px;
+  padding-inline: 14px;
+  border-block-end: 1px solid ds.token("border-default");
+}
+
+.users {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+
+// Upstream's presence list: 24 px avatars with a white ring that overlap
+// by 6 px, starting at the edge of the header.
+#{$scope} .users {
+  --user-count-foreground-color: #{ds.token("bg-panel")};
+  --user-list-inline-margin: -6px;
+
+  #{ws.on("main_ui_workspace_presence__active-users")} {
+    padding: 0;
+  }
+
+  #{ws.on("main_ui_workspace_presence__active-users-list")} {
+    padding-inline-start: 6px;
+  }
+}
+
+// Takes the free room in a panel header; in an island, which is as wide as
+// its content, it only trims the gap before "Share" to the board's 12 px.
+.spacer {
+  flex: 1 0 4px;
+  margin-inline: -4px;
+}
+
+.mcp {
+  position: relative;
+  flex: none;
+  display: flex;
+}
+
+.mcp-pill {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color));
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  block-size: 24px;
+  padding-inline: 10px 12px;
+  border-radius: ds.token("radius-pill");
+  background-color: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  cursor: pointer;
+
+  &:hover,
+  &[aria-expanded="true"] {
+    background-color: ds.token("border-default");
+  }
+}
+
+.mcp-dot {
+  flex: none;
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: ds.token("radius-pill");
+  background-color: ds.token("text-disabled");
+}
+
+.mcp-dot-on {
+  background-color: ds.token("status-success");
+}
+
+.mcp-menu {
+  position: absolute;
+  z-index: ds.token("z-popover");
+  inset-block-start: calc(100% + 6px);
+  inset-inline-start: 0;
+  min-inline-size: max-content;
+  margin: 0;
+  padding: ds.token("space-4");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-md");
+  background-color: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
+  list-style: none;
+}
+
+.mcp-info,
+.mcp-item {
+  @include ds.type("body");
+
+  padding: 6px ds.token("space-12");
+  border-radius: ds.token("radius-control");
+  white-space: nowrap;
+}
+
+.mcp-info {
+  color: ds.token("text-secondary");
+}
+
+.mcp-item {
+  color: ds.token("text-primary");
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background-color: ds.token("bg-subtle");
+    outline: none;
+  }
+}
+
+.share {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color));
+
+  flex: none;
+  display: flex;
+  align-items: center;
+  block-size: 28px;
+  padding-inline: 15px;
+  border-radius: ds.token("radius-button");
+  background-color: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ds.token("text-body");
+  }
+}

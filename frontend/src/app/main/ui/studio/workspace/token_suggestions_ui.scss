@@ -1,0 +1,125 @@
+// Design Studio token suggestions row in the colour picker (F1 · 13).
+
+@use "studio/ds" as ds;
+
+.suggestions {
+  @include ds.root;
+
+  display: grid;
+  gap: ds.token("space-4");
+  margin-block: ds.token("space-8");
+  padding: ds.token("space-8");
+  background: ds.token("bg-subtle");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-control");
+}
+
+.title {
+  @include ds.type("label");
+
+  color: ds.token("text-secondary");
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: ds.token("space-4");
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  @include ds.type("body");
+  @include ds.focusable;
+  @include ds.motion((background-color, border-color));
+
+  display: inline-flex;
+  align-items: center;
+  gap: ds.token("space-4");
+  max-inline-size: 100%;
+  min-block-size: ds.token("control-height-sm");
+  padding: 0 ds.token("space-8") 0 ds.token("space-4");
+  color: ds.token("text-body");
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-button");
+  cursor: pointer;
+
+  &:hover {
+    background: ds.token("bg-selected");
+    border-color: ds.token("accent-default");
+  }
+}
+
+.swatch {
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  border: 1px solid ds.token("border-strong");
+  border-radius: 50%;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.exact {
+  @include ds.type("label");
+
+  color: ds.token("status-success-text");
+}
+
+// Exact match (F1 · 13): "Same as brand.cta [Use]" and a note.
+.match {
+  @include ds.root;
+
+  display: grid;
+  gap: ds.token("space-4");
+  margin-block: ds.token("space-8");
+  padding: ds.token("space-12");
+  background: ds.token("bg-selected");
+  border-radius: ds.token("radius-card");
+}
+
+.match-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-8");
+}
+
+.match-title {
+  @include ds.type("control");
+
+  overflow: hidden;
+  color: ds.token("accent-text-strong");
+  font-weight: ds.token("weight-semibold");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-use {
+  @include ds.control-reset;
+  @include ds.type("control");
+  @include ds.focusable;
+
+  flex: none;
+  padding: 3px ds.token("space-12");
+  color: ds.token("text-on-accent");
+  background: ds.token("accent-default");
+  border-radius: ds.token("radius-button");
+
+  &:hover {
+    background: ds.token("accent-hover");
+  }
+}
+
+.match-note {
+  @include ds.type("body");
+
+  margin: 0;
+  color: ds.token("text-secondary");
+}

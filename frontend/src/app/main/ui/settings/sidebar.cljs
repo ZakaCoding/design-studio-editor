@@ -15,16 +15,13 @@
    [app.main.router :as rt]
    [app.main.store :as st]
    [app.main.ui.dashboard.sidebar :refer [profile-section*]]
-   [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard-shell.scope :as ds-scope]
+   [app.main.ui.studio.settings-shell.icons :as ds-icons]
+   [app.main.ui.studio.settings-shell.page :as ds-page]
+   [app.main.ui.studio.shell-state :as ds-state]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
    [rumext.v2 :as mf]))
-
-(def ^:private arrow-icon
-  (deprecated-icon/icon-xref :arrow (stl/css :arrow-icon)))
-
-(def ^:private feedback-icon
-  (deprecated-icon/icon-xref :feedback (stl/css :feedback-icon)))
 
 ;; FIXME: move to common
 (def ^:private go-settings-profile
@@ -70,6 +67,7 @@
         integrations?  (= section :settings-integrations)
         notifications? (= section :settings-notifications)
         shortcuts?     (= section :settings-shortcuts)
+        shell          (ds-state/use-state)
         team-id        (or (dtm/get-last-team-id)
                            (:default-team-id profile))
 
@@ -82,74 +80,96 @@
      [:div {:class (stl/css :sidebar-content-section)}
       [:button {:class (stl/css :back-to-dashboard)
                 :on-click go-dashboard}
-       arrow-icon
-       [:span {:class (stl/css :back-text)} (tr "labels.dashboard")]]]
+       ;; Design Studio seam (STUDIO-SEAMS.md): "‹ Home" (F1 · 10)
+       [:> ds-icons/back* {:size "m"}]
+       [:span {:class (stl/css :back-text)} (tr "ds.shell.nav.home")]]]
 
      [:hr {:class (stl/css :sidebar-separator)}]
 
+     ;; Design Studio seam (STUDIO-SEAMS.md): the sidebar title of F1 · 10
+     [:h2 {:data-ds-dash "settings-title"} (tr "ds.shell.settings.title")]
+
+     ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the rows are the
+     ;; dashboard sidebar's (a line icon, the raised current row); the
+     ;; pages, the handlers and upstream's test ids are unchanged.
      [:nav {:class (stl/css :sidebar-content-section)
             :aria-label (tr "labels.settings")}
       [:ul {:class (stl/css :sidebar-nav-settings)}
-       [:li {:class (stl/css-case :current profile?
-                                  :settings-item true)
-             :on-click go-settings-profile}
-        [:span {:class (stl/css :element-title)} (tr "labels.profile")]]
+       [:> ds-page/nav-row* {:label (tr "labels.profile")
+                             :icon ds-icons/user*
+                             :is-current profile?
+                             :on-click go-settings-profile
+                             :test-id "ds-settings-nav-profile"}]
 
-       [:li {:class (stl/css-case :current password?
-                                  :settings-item true)
-             :on-click go-settings-password}
-        [:span {:class (stl/css :element-title)} (tr "labels.password")]]
+       [:> ds-page/nav-row* {:label (if (and shell (ds-state/backup? shell))
+                                      (tr "ds.settings.password-side")
+                                      (tr "labels.password"))
+                             :icon ds-icons/lock*
+                             :is-current password?
+                             :on-click go-settings-password
+                             :test-id "ds-settings-nav-password"}]
 
-       [:li {:class (stl/css-case :current notifications?
-                                  :settings-item true)
-             :on-click go-settings-notifications}
-        [:span {:class (stl/css :element-title)} (tr "labels.notifications")]]
+       [:> ds-page/nav-row* {:label (tr "labels.notifications")
+                             :icon ds-icons/bell*
+                             :is-current notifications?
+                             :on-click go-settings-notifications
+                             :test-id "ds-settings-nav-notifications"}]
 
        (when (contains? cf/flags :custom-shortcuts)
-         [:li {:class (stl/css-case :current shortcuts?
-                                    :settings-item true)
-               :on-click go-settings-shortcuts}
-          [:span {:class (stl/css :element-title)} (tr "label.shortcuts")]])
+         [:> ds-page/nav-row* {:label (tr "label.shortcuts")
+                               :icon ds-icons/keyboard*
+                               :is-current shortcuts?
+                               :on-click go-settings-shortcuts
+                               :test-id "ds-settings-nav-shortcuts"}])
 
-       [:li {:class (stl/css-case :current options?
-                                  :settings-item true)
-             :on-click go-settings-options
-             :data-testid "settings-profile"}
-        [:span {:class (stl/css :element-title)} (tr "labels.settings")]]
+       [:> ds-page/nav-row* {:label (tr "ds.settings.options-side")
+                             :icon ds-icons/globe*
+                             :is-current options?
+                             :on-click go-settings-options
+                             :test-id "settings-profile"}]
 
        (when (or (contains? cf/flags :subscriptions)
                  (contains? cf/flags :admin-console))
-         [:li {:class (stl/css-case :current subscription?
-                                    :settings-item true)
-               :on-click go-settings-subscription
-               :data-testid "settings-subscription"}
-          [:span {:class (stl/css :element-title)} (tr "subscription.labels")]])
+         [:> ds-page/nav-row* {:label (tr "ds.plans.side")
+                               :icon ds-icons/card*
+                               :is-current subscription?
+                               :on-click go-settings-subscription
+                               :test-id "settings-subscription"}])
 
        (when (or (contains? cf/flags :access-tokens)
                  (contains? cf/flags :mcp))
-         [:li {:class (stl/css-case :current integrations?
-                                    :settings-item true)
-               :on-click go-settings-integrations
-               :data-testid "settings-integrations"}
-          [:span {:class (stl/css :element-title)} (tr "labels.integrations")]])
+         [:> ds-page/nav-row* {:label (tr "ds.settings.ai-access-side")
+                               :icon ds-icons/plug*
+                               :is-current integrations?
+                               :on-click go-settings-integrations
+                               :test-id "settings-integrations"}])
 
-       [:hr {:class (stl/css :sidebar-separator)}]
+       [:hr {:class (stl/css :sidebar-separator)
+             :data-ds-settings "nav-rule"}]
 
-       [:li {:on-click show-release-notes :data-testid "release-notes"
-             :class (stl/css :settings-item)}
-        [:span {:class (stl/css :element-title)} (tr "labels.release-notes")]]
+       [:> ds-page/nav-row* {:label (tr "labels.release-notes")
+                             :icon ds-icons/notes*
+                             :is-current false
+                             :on-click show-release-notes
+                             :test-id "release-notes"}]
 
        (when (contains? cf/flags :user-feedback)
-         [:li {:class (stl/css-case :current feedback?
-                                    :settings-item true)
-               :on-click go-settings-feedback}
-          feedback-icon
-          [:span {:class (stl/css :element-title)} (tr "labels.contact-us")]])]]]))
+         [:> ds-page/nav-row* {:label (tr "labels.contact-us")
+                               :icon ds-icons/message*
+                               :is-current feedback?
+                               :on-click go-settings-feedback
+                               :test-id "ds-settings-nav-feedback"}])]]]))
 
 (mf/defc sidebar*
   {::mf/wrap [mf/memo]}
   [{:keys [profile section]}]
-  [:aside {:class (stl/css :dashboard-sidebar :settings)}
+  ;; Design Studio seam (STUDIO-SEAMS.md): the light Design Studio chrome
+  ;; (scope of `studio/dashboard_shell/chrome.scss`) while Settings is open;
+  ;; P3-A: and the scope of `studio/settings_shell/polish.scss`
+  (ds-scope/use-scope)
+  (ds-page/use-scope)
+  [:aside {:class (stl/css :dashboard-sidebar :settings)
+           :data-ds-settings "sidebar"}
    [:> sidebar-content* {:profile profile
                          :section section}]
    [:> profile-section* {:profile profile}]])

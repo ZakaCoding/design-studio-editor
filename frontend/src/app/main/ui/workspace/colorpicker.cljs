@@ -26,12 +26,14 @@
    [app.main.refs :as refs]
    [app.main.store :as st]
    [app.main.ui.components.file-uploader :refer [file-uploader]]
-   [app.main.ui.components.radio-buttons :refer [radio-buttons radio-button]]
    [app.main.ui.components.select :refer [select]]
    [app.main.ui.ds.foundations.assets.icon :as i]
    [app.main.ui.ds.layout.tab-switcher :refer [tab-switcher*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.guard :refer [guard*]]
+   [app.main.ui.studio.workspace.components :refer [picker-tabs*]]
+   [app.main.ui.studio.workspace.token-suggestions-ui :refer [token-suggestions*]]
    [app.main.ui.workspace.colorpicker.color-inputs :refer [color-inputs*]]
    [app.main.ui.workspace.colorpicker.color-tokens :refer [token-section*]]
    [app.main.ui.workspace.colorpicker.gradients :refer [gradients*]]
@@ -419,17 +421,12 @@
              :on-change handle-change-mode}]])
 
         (when (and (= origin :sidebar) show-tokens? token-color)
-          [:& radio-buttons {:selected color-style
-                             :on-change toggle-token-color
-                             :name "color-style"}
-           [:& radio-button {:icon i/swatches
-                             :value :direct-color
-                             :title (tr "labels.color")
-                             :id "opt-color"}]
-           [:& radio-button {:icon i/tokens
-                             :value :token-color
-                             :title (tr "workspace.colorpicker.color-tokens")
-                             :id "opt-token-color"}]])]
+          ;; Design Studio seam (STUDIO-SEAMS.md): G4 Color / Token switch (F1 · 13)
+          [:> guard* {}
+           [:> picker-tabs* {:selected color-style
+                             :on-change (fn [value _]
+                                          (when (not= value color-style)
+                                            (toggle-token-color)))}]])]
 
        (when (and (not= selected-mode :image)
                   (= color-style :direct-color))
@@ -538,6 +535,14 @@
               :on-mode-change #(reset! hsb-mode* %)
               :color current-color
               :on-change handle-change-color}]
+
+            ;; Design Studio seam (STUDIO-SEAMS.md): F3-C token suggestions row
+            (when (and show-tokens? (= origin :sidebar) (seq combined-tokens))
+              [:> guard* {}
+               [:> token-suggestions* {:combined-tokens combined-tokens
+                                       :hex (:hex current-color)
+                                       :applied-token applied-token
+                                       :on-token-change on-token-change}]])
 
             [:> libraries*
              {:state state

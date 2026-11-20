@@ -94,12 +94,29 @@
   border-radius: 0 $br-8 $br-8 0;
 }
 
+// Design Studio (F1 · 10; P3-A): the column of every Settings page (the
+// page header is `studio.settings-shell.page/page-head*`).
 .integrations {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  margin: $sz-88 auto $sz-120 auto;
+  display: flex;
+  flex-direction: column;
+  margin: 40px 0 $sz-64;
   gap: $sz-32;
-  inline-size: $sz-500;
+  inline-size: 100%;
+  max-inline-size: 760px;
+}
+
+// Design Studio (F1 · 10): the folded Penpot keys.
+
+.ds-advanced {
+  padding-block-start: var(--sp-l);
+  border-block-start: $b-1 solid var(--ds-border-default);
+}
+
+.ds-advanced-summary {
+  margin-block-end: $sz-24;
+  color: var(--ds-text-secondary);
+  font: 500 13px/1.4 var(--ds-font-text);
+  cursor: pointer;
 }
 
 .access-tokens-section {

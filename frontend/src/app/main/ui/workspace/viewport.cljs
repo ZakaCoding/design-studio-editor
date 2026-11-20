@@ -7,6 +7,7 @@
 (ns app.main.ui.workspace.viewport
   (:require-macros [app.main.style :as stl])
   (:require
+   ["../studio/touch.js" :as ds-touch]
    [app.common.data :as d]
    [app.common.data.macros :as dm]
    [app.common.files.helpers :as cfh]
@@ -757,6 +758,9 @@
 
 (mf/defc viewport*
   [{:keys [file page] :as props}]
+  ;; Design Studio: iPad touch navigation (STUDIO-SEAMS.md). Starts once.
+  (mf/with-effect []
+    (ds-touch/start))
   (let [vern         (get file :vern)
         page-id      (get page :id)
         render-wasm? (features/use-feature "render-wasm/v1")]

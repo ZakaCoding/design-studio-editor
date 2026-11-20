@@ -188,7 +188,11 @@
        :on-fullscreen toggle-fullscreen}]
 
      (when (:in-team permissions)
+       ;; Design Studio (P3-B): the pencil says what it does.
        [:span {:on-click go-to-workspace
+               :title (tr "ds.viewer.open-editor")
+               :role "button"
+               :aria-label (tr "ds.viewer.open-editor")
                :class (stl/css :edit-btn)}
         deprecated-icon/curve])
 
@@ -203,13 +207,17 @@
                  :class (stl/css :share-btn)}
         (tr "labels.share")])
 
+     ;; Design Studio (P3-B): "Sign in", the word of our sign-in screens
+     ;; (sign-up is a link inside that dialog).
      (when-not (:is-logged permissions)
        [:span {:on-click open-login-dialog
-               :class (stl/css :go-log-btn)} (tr "labels.log-or-sign")])]))
+               :role "button"
+               :class (stl/css :go-log-btn)} (tr "ds.signin.submit")])]))
 
 (mf/defc header-sitemap
-  [{:keys [project file page frame toggle-thumbnails] :as props}]
+  [{:keys [project file page frame index toggle-thumbnails] :as props}]
   (let [project-name   (:name project)
+        total          (count (:frames page))
         file-name      (:name file)
         page-name      (:name page)
         page-id        (:id page)
@@ -234,14 +242,13 @@
 
     [:div {:class (stl/css :sitemap-zone)
            :title (tr "viewer.header.sitemap")}
-     [:span {:class (stl/css :project-name)} project-name]
      [:div {:class (stl/css :sitemap-text)}
       [:div {:class (stl/css :breadcrumb)
+             :title (dm/str project-name " / " file-name " / " page-name)
              :on-click open-dropdown}
        [:span  {:class (stl/css :breadcrumb-text)}
-        (dm/str file-name " / " page-name)]
+        file-name]
        [:span {:class (stl/css :icon)} deprecated-icon/arrow]
-       [:span "/"]
        [:& dropdown {:show @show-dropdown?
                      :on-close close-dropdown}
         [:ul {:class (stl/css :dropdown-sitemap)}
@@ -259,7 +266,10 @@
              :id "current-frame"
              :on-click toggle-thumbnails}
        [:span {:class (stl/css :frame-name)} frame-name]
-       [:span {:class (stl/css :icon)} deprecated-icon/arrow]]]]))
+       [:span {:class (stl/css :icon)} deprecated-icon/arrow]]
+      (when (and (some? index) (pos? total))
+        [:span {:class (stl/css :frame-count)}
+         (dm/str (inc index) "/" total)])]]))
 
 (def ^:private penpot-logo-icon
   (deprecated-icon/icon-xref :penpot-logo-icon (stl/css :logo-icon)))
@@ -330,16 +340,7 @@
                 :class (stl/css-case :mode-zone-btn true
                                      :selected (= section :interactions))
                 :title (tr "viewer.header.interactions-section" (sc/get-tooltip :open-interactions))}
-       deprecated-icon/play]
-
-      (when (or (:in-team permissions)
-                (= (:who-comment permissions) "all"))
-        [:button {:on-click navigate
-                  :data-value "comments"
-                  :class (stl/css-case :mode-zone-btn true
-                                       :selected (= section :comments))
-                  :title (tr "viewer.header.comments-section" (sc/get-tooltip :open-comments))}
-         deprecated-icon/comments])
+       (tr "ds.viewer.view")]
 
       (when (or (:in-team permissions)
                 (and (= (:type permissions) :share-link)
@@ -348,7 +349,16 @@
                   :class (stl/css-case :mode-zone-btn true
                                        :selected (= section :inspect))
                   :title (tr "viewer.header.inspect-section" (sc/get-tooltip :open-inspect))}
-         deprecated-icon/code])]
+         (tr "ds.viewer.inspect")])
+
+      (when (or (:in-team permissions)
+                (= (:who-comment permissions) "all"))
+        [:button {:on-click navigate
+                  :data-value "comments"
+                  :class (stl/css-case :mode-zone-btn true
+                                       :selected (= section :comments))
+                  :title (tr "viewer.header.comments-section" (sc/get-tooltip :open-comments))}
+         (tr "ds.viewer.comments")])]
 
      [:& header-options {:section section
                          :permissions permissions

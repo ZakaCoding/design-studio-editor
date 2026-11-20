@@ -111,6 +111,9 @@
     [:div {:class (stl/css-case :grid-item-thumbnail true
                                 :is-deleted can-restore)
            :style {:background-color bg-color}
+           ;; Design Studio seam (STUDIO-SEAMS.md): a file never edited
+           ;; (revision 0) shows the empty-sheet placeholder of the DS card.
+           :data-ds-empty (when (= 0 revn) "true")
            :ref container}
      (when visible?
        (if thumbnail-id
@@ -522,7 +525,7 @@
          menu-element]]])))
 
 (mf/defc grid*
-  [{:keys [files project origin limit create-fn can-edit selected-files can-restore layout]}]
+  [{:keys [files project origin limit create-fn can-edit selected-files can-restore layout children]}]
   (let [dragging?  (mf/use-state false)
         list?      (= layout :list)
         project-id (get project :id)
@@ -625,7 +628,11 @@
                                     :origin origin
                                     :project-id project-id
                                     :team-id team-id
-                                    :on-finish-import on-finish-import}])]))
+                                    :on-finish-import on-finish-import}])
+
+     ;; Design Studio seam (STUDIO-SEAMS.md): the "+ File baru" tile of
+     ;; F1 · 14, after the last card
+     children]))
 
 (mf/defc line-grid-row*
   {::mf/private true}

@@ -1,0 +1,21 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// The Templates page. The cards are upstream's; `chrome.scss` lays them
+// out as a grid inside `[data-ds-dash="templates"]`.
+
+@use "studio/ds" as ds;
+
+.templates {
+  min-inline-size: 0;
+}
+
+.templates-empty {
+  @include ds.type("body-lg");
+
+  color: ds.token("text-secondary");
+  margin: 0;
+}

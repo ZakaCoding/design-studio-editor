@@ -1,0 +1,187 @@
+// The floating toolbar (F1 · 01, 02, 05). See toolbar.cljs.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(#{ws.$scope})";
+
+// Distance from the bottom of the canvas area (board: the bar ends 20 px
+// above the window edge).
+$bottom: 20px;
+$tool-size: 36px;
+
+.toolbar {
+  @include ds.root;
+  @include ws.island(ds.token("radius-card"));
+
+  position: absolute;
+  inset-block-end: $bottom;
+  inset-inline-start: 50%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  box-sizing: border-box;
+  block-size: 48px;
+
+  // 6 px to the first tool, border included.
+  padding-inline: 5px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tool {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, color));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: $tool-size;
+  block-size: $tool-size;
+  border-radius: ds.token("radius-md");
+  color: ds.token("text-primary");
+  cursor: pointer;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+  }
+
+  &[aria-pressed="true"] {
+    background-color: ds.token("bg-inverse");
+    color: ds.token("text-on-accent");
+  }
+}
+
+// --- Flyout of a tool group (line and arrow, curve)
+
+.group {
+  position: relative;
+  display: flex;
+}
+
+.flyout {
+  @include ws.island(ds.token("radius-card"));
+
+  // 10 px over the bar (the tool sits 6 px inside it).
+  position: absolute;
+  inset-block-end: calc(100% + 16px);
+  inset-inline-start: 50%;
+  display: flex;
+  gap: 2px;
+  padding: 5px;
+  transform: translateX(-50%);
+  visibility: hidden;
+  opacity: 0;
+
+  // Stays a moment after the pointer left, so it can be reached.
+  transition:
+    opacity ds.token("motion-fast") linear 0.2s,
+    visibility 0s linear 0.32s;
+
+  // Bridges the gap to the button below it.
+  &::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    block-size: 18px;
+  }
+}
+
+.group:hover .flyout,
+.group:focus-within .flyout {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0.35s, 0.35s;
+}
+
+// --- Zoom (upstream's widget) and the divider before it
+
+.divider {
+  flex: none;
+  inline-size: 1px;
+  block-size: 20px;
+  margin-inline-start: 6px;
+  background-color: ds.token("border-default");
+}
+
+.zoom {
+  position: relative;
+  display: flex;
+  align-items: center;
+  block-size: $tool-size;
+  padding-inline: 9px 4px;
+}
+
+.zoom-chevron {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 4px;
+  margin-block-start: -6px;
+  color: ds.token("text-secondary");
+  pointer-events: none;
+}
+
+#{$scope} .zoom {
+  #{ws.on("main_ui_workspace_right_header__zoom-widget")} {
+    inline-size: auto;
+    max-inline-size: none;
+    block-size: $tool-size;
+
+    // Room for the chevron, which is not part of upstream's widget.
+    padding-inline: 0 19px;
+    border-radius: ds.token("radius-md");
+  }
+
+  #{ws.on("main_ui_workspace_right_header__label")} {
+    @include ds.type("value");
+
+    display: flex;
+    align-items: center;
+    padding: 0;
+    color: ds.token("text-primary");
+  }
+
+  // The menu opens over the bar instead of under the header, 10 px over
+  // it like the tools' flyouts.
+  #{ws.on("main_ui_workspace_right_header__dropdown")} {
+    inset-block: auto calc(100% + 16px);
+    inset-inline: auto 0;
+  }
+}
+
+// Craft docked in a window under 1320 px leaves the canvas area narrower
+// than the bar and its margins: the bar gets compact (32 px tools, no
+// gaps) so it keeps a gap to Layers and to Craft.
+@media (width < 1320px) {
+  :global(html[data-ds-craft-open="dock"]) {
+    .toolbar,
+    .tools {
+      gap: 0;
+    }
+
+    .toolbar {
+      padding-inline: 3px;
+    }
+
+    .tool {
+      inline-size: 32px;
+      block-size: 32px;
+    }
+
+    .divider {
+      margin-inline-start: 4px;
+    }
+
+    .zoom {
+      padding-inline: 6px 2px;
+    }
+  }
+}

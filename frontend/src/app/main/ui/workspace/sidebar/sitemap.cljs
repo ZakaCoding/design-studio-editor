@@ -205,6 +205,8 @@
                                  :selected selected?
                                  :dnd-over-top (= (:over dprops) :top)
                                  :dnd-over-bot (= (:over dprops) :bot))
+            ;; Design Studio seam (STUDIO-SEAMS.md): stable hook for the current page's name (read by Studio's ds-craft.js)
+            :data-ds-page-name (when (and (= id current-page-id) (not is-separator?)) name)
             :ref dref}
        [:div {:class (stl/css-case :page-item-body true
                                    :separator is-separator?

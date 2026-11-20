@@ -1,0 +1,1268 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio settings polish (P3-A, 18 Nov). The rules of the dashboard
+// polish (`dashboard_shell/polish.scss`), for Settings: upstream
+// stylesheets stay untouched; every rule lives under
+// `body.ds-dash.ds-settings` (the Settings pages and the dialogs opened
+// from them; `settings-shell.page/use-scope` sets the class) and matches
+// upstream elements by their CSS-module class token.
+//
+// 1. Type: no upstream font (Work Sans) left in Settings.
+// 2. Sidebar: the dashboard's (248 px, the same rows and member row).
+// 3. Page: the frame of `layout.scss`, cards 16 px apart (P3D).
+// 4. Form controls: DS inputs, selects, radios, buttons.
+// 5. Cards (P3D): forms in cards, card feet, the Profile and Password rows.
+// 6. Other pages: notifications table, language and theme, AI access (advanced
+//    keys), feedback, shortcuts.
+// 7. Menus and dialogs opened from Settings.
+// 8. 1280 px and narrower.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(body.ds-dash.ds-settings)";
+$root: ws.on("main_ui_settings__dashboard");
+$container: ws.on("main_ui_settings__dashboard-container");
+$sidebar: '[data-ds-settings="sidebar"]';
+
+// The dashboard's measures.
+$sidebar-size: 248px;
+$text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, textarea, summary, div";
+
+// A class that upstream defines in several modules
+// (`main_ui_settings_profile__form-container`, `…_password__…`).
+@function -any($name) {
+  @return '[class*="__#{$name}"]';
+}
+
+@mixin -soft-pill {
+  @include ds.type("control");
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-8");
+  inline-size: auto;
+  block-size: 36px;
+  min-block-size: 36px;
+  margin: 0;
+  padding: 0 18px;
+  border: 0;
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-semibold");
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: ds.token("border-default");
+    color: ds.token("text-primary");
+  }
+
+  &:focus-visible {
+    @include ds.focus-ring;
+  }
+}
+
+@mixin -black-pill {
+  @include -soft-pill;
+
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: ds.token("text-body");
+    color: ds.token("text-on-accent");
+  }
+
+  &:disabled {
+    background: ds.token("border-strong");
+    color: ds.token("text-on-accent");
+    opacity: 1;
+    cursor: default;
+  }
+}
+
+@mixin -danger-pill {
+  @include -soft-pill;
+
+  background: ds.token("status-danger-text");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, #{ds.token("status-danger-text")} 86%, #000);
+    color: ds.token("text-on-accent");
+  }
+
+  &:disabled {
+    background: ds.token("border-strong");
+    color: ds.token("text-on-accent");
+    opacity: 1;
+    cursor: default;
+  }
+}
+
+// The DS field box (`studio/ds/field.scss`), on an upstream input; P3D:
+// 36 px high.
+@mixin -field-box {
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: ds.dense("control");
+  min-block-size: ds.dense("control");
+  margin: 0;
+  padding: 0 ds.token("space-12");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-control");
+  outline: 0;
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.4;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+// P3D: the small pill (32 px) of rows, card feet and dialogs.
+@mixin -small {
+  block-size: ds.dense("button-sm");
+  min-block-size: ds.dense("button-sm");
+  padding: 0 14px;
+  font-size: ds.dense("body-size");
+}
+
+// --- 1. Type
+
+#{$scope} {
+  #{$root},
+  #{ws.on("main_ui_components_context_menu_a11y__context-menu-items")},
+  [id="portal-container-modal"],
+  [id="modal"],
+  #{-any("modal-overlay")} {
+    font-family: ds.token("font-text");
+    -webkit-font-smoothing: antialiased;
+
+    // P3D: the Settings frame, cards and rows (`settings_shell`) hold
+    // upstream controls, so only other Studio parts keep their own fonts.
+    :is(#{$text-tags}):not(
+      [class*="main_ui_studio_"],
+      [class*="main_ui_studio_"]:not([class*="main_ui_studio_settings_shell_"]) *,
+      [data-ds-dash="settings-title"]
+    ) {
+      font-family: ds.token("font-text");
+      letter-spacing: 0;
+    }
+  }
+}
+
+// --- 2. Sidebar
+
+#{$scope} {
+  #{$root} {
+    grid-template-columns: $sidebar-size minmax(0, 1fr);
+  }
+
+  #{$sidebar} {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  #{ws.on("main_ui_settings_sidebar__sidebar-content")} {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    padding: 0 ds.token("space-16");
+    overflow: hidden auto;
+    scrollbar-width: thin;
+  }
+
+  // "‹ Home": a quiet row, the height of the nav rows.
+  #{ws.on("main_ui_settings_sidebar__back-to-dashboard")} {
+    @include ds.type("body-lg");
+
+    gap: 6px;
+    block-size: 32px;
+    margin-block-start: 22px;
+    margin-inline-start: -2px;
+    padding: 0 10px 0 6px;
+    line-height: 1.2;
+    color: ds.token("text-secondary");
+
+    svg {
+      flex: none;
+      color: inherit;
+    }
+
+    &:hover {
+      background: color-mix(in srgb, #{ds.token("bg-panel")} 60%, transparent);
+      color: ds.token("text-primary");
+    }
+  }
+
+  // "Settings": the dashboard's title type, at the size of a sidebar.
+  [data-ds-dash="settings-title"] {
+    @include ds.type("display");
+
+    margin: 14px 0 20px;
+    padding-inline: 8px;
+    font-size: 1.375rem;
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.2;
+    letter-spacing: 0;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_settings_sidebar__sidebar-nav-settings")} {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // The rule between the pages and "Release notes".
+  [data-ds-settings="nav-rule"] {
+    display: block;
+    block-size: 1px;
+    margin: 6px 12px;
+    border: 0;
+    background: ds.token("border-default");
+  }
+
+  // The member row: the dashboard's foot.
+  #{$sidebar} #{ws.on("main_ui_dashboard_sidebar__profile-section")} {
+    flex: none;
+    padding: 10px 24px 22px;
+  }
+}
+
+// --- 3. Page (P3D: the frame of `settings_shell/layout` pads the page
+// and holds the column; the pages only stack their cards, 16 px apart)
+
+#{$scope} #{$container} {
+  padding: 0;
+  scrollbar-width: thin;
+
+  > [data-ds-settings="layout"] > div > section,
+  #{-any("form-container")},
+  #{ws.on("main_ui_settings_integrations__integrations")},
+  #{ws.on("main_ui_studio_plans__plans")},
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-content")} {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: ds.dense("section-gap");
+    inline-size: 100%;
+    max-inline-size: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  // The header is the first item: its own 24 px below, not the gap.
+  [data-ds-settings="head"] {
+    margin-block-end: calc(#{ds.dense("page-head-after")} - #{ds.dense("section-gap")});
+  }
+
+  form {
+    inline-size: 100%;
+    max-inline-size: none;
+  }
+
+  a:not([class*="main_ui_studio_"], [role="button"]) {
+    color: ds.token("accent-default");
+  }
+}
+
+// --- 4. Form controls
+
+#{$scope} #{$container} {
+  #{-any("fields-row")} {
+    inline-size: 100%;
+    max-inline-size: none;
+    margin: 0;
+  }
+
+  // P3D: in a row the label is the row's (left); the control's own label
+  // stays for screen readers only.
+  [data-ds-settings="row"] {
+    #{ws.on("main_ui_components_forms__input-with-label-form")} {
+      display: block;
+      font-size: 0;
+      line-height: 0;
+
+      #{ws.on("main_ui_components_forms__input-and-icon")} {
+        font-size: ds.dense("body-size");
+        line-height: 1.4;
+      }
+    }
+
+    #{ws.on("main_ui_components_forms__textarea-label")} {
+      @include ds.visually-hidden;
+    }
+  }
+
+  #{ws.on("main_ui_components_forms__input-wrapper")} {
+    align-items: stretch;
+    inline-size: 100%;
+  }
+
+  // The label over its control: sentence case.
+  #{ws.on("main_ui_components_forms__input-with-label-form")},
+  #{ws.on("main_ui_components_forms__textarea-label")},
+  #{-any("field-label")} {
+    gap: ds.token("space-8");
+    margin: 0;
+    font-size: ds.token("size-13");
+    font-weight: ds.token("weight-medium");
+    line-height: 1.4;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_components_forms__input-and-icon")} {
+    inline-size: 100%;
+  }
+
+  input:not(
+    [type="checkbox"],
+    [type="radio"],
+    [type="file"],
+    [type="submit"],
+    [type="button"],
+    [class*="search_bar"],
+    [class*="main_ui_studio_"]
+  ),
+  textarea {
+    @include -field-box;
+    @include ds.motion((border-color, box-shadow));
+
+    &::placeholder {
+      color: ds.token("text-placeholder");
+      opacity: 1;
+    }
+
+    &:hover:not(:disabled) {
+      border-color: ds.token("text-disabled");
+    }
+
+    &:focus,
+    &:focus-visible {
+      border-color: ds.token("accent-default");
+      outline: 0;
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+
+    &:disabled {
+      background: ds.token("bg-subtle");
+      border-color: ds.token("border-default");
+      color: ds.token("text-secondary");
+      -webkit-text-fill-color: ds.token("text-secondary");
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    block-size: auto;
+    min-block-size: 120px;
+    padding: 10px ds.token("space-12");
+    resize: vertical;
+  }
+
+  #{ws.on("main_ui_components_forms__valid")} input,
+  #{ws.on("main_ui_components_forms__valid")} input:hover {
+    border-color: ds.token("status-success");
+  }
+
+  #{ws.on("main_ui_components_forms__invalid")} input,
+  #{ws.on("main_ui_components_forms__invalid")} input:hover {
+    border-color: ds.token("status-danger-text");
+  }
+
+  #{ws.on("main_ui_components_forms__invalid")} input:focus {
+    box-shadow: 0 0 0 1px ds.token("status-danger-text");
+  }
+
+  // Show / hide password, the valid and invalid marks: inside the box.
+  #{ws.on("main_ui_components_forms__help-icon")},
+  #{ws.on("main_ui_components_forms__valid-icon")},
+  #{ws.on("main_ui_components_forms__invalid-icon")} {
+    inset-block: auto 0;
+    display: grid;
+    place-items: center;
+    block-size: ds.dense("control");
+    inline-size: 36px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+
+    svg {
+      inline-size: 16px;
+      block-size: 16px;
+    }
+  }
+
+  #{ws.on("main_ui_components_forms__help-icon")} svg {
+    fill: ds.token("text-secondary");
+    stroke: none;
+  }
+
+  #{ws.on("main_ui_components_forms__valid-icon")} svg {
+    fill: none;
+    stroke: ds.token("status-success");
+  }
+
+  #{ws.on("main_ui_components_forms__invalid-icon")} svg {
+    fill: none;
+    stroke: ds.token("status-danger-text");
+  }
+
+  #{ws.on("main_ui_components_forms__error")} {
+    margin: 6px 0 0;
+    font-size: ds.token("size-12");
+    line-height: 1.4;
+    color: ds.token("status-danger-text");
+  }
+
+  #{ws.on("main_ui_components_forms__hint")} {
+    margin: 6px 0 0;
+    font-size: ds.token("size-12");
+    line-height: 1.4;
+    color: ds.token("text-secondary");
+  }
+
+  // Select: the same box.
+  #{ws.on("main_ui_components_forms__select-wrapper")} {
+    inline-size: 100%;
+  }
+
+  #{ws.on("main_ui_components_select__custom-select")} {
+    @include -field-box;
+    @include ds.motion((border-color, box-shadow));
+
+    display: flex;
+    align-items: center;
+    gap: ds.token("space-8");
+    cursor: pointer;
+
+    &:hover {
+      border-color: ds.token("text-disabled");
+      background: ds.token("bg-panel");
+    }
+
+    &:has(*:focus-visible),
+    &:focus-within {
+      border-color: ds.token("accent-default");
+      outline: 0;
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+  }
+
+  #{ws.on("main_ui_components_select__current-label")} {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: ds.dense("body-size");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_components_select__dropdown-button")} {
+    flex: none;
+    margin-inline-start: auto;
+  }
+
+  #{ws.on("main_ui_components_select__dropdown-button")} svg {
+    stroke: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_components_select__custom-select-dropdown")} {
+    inset-block-start: calc(100% + 6px);
+    inset-inline: auto 0;
+    inline-size: max-content;
+    min-inline-size: 100%;
+    max-block-size: 280px;
+    margin: 0;
+    padding: ds.token("space-4");
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-lg");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+    scrollbar-width: thin;
+  }
+
+  #{ws.on("main_ui_components_select__checked-element")} {
+    min-block-size: 32px;
+    padding: 0 10px;
+    border-radius: ds.token("radius-control");
+    color: ds.token("text-primary");
+
+    &:hover,
+    &:focus-visible {
+      background: ds.token("bg-subtle");
+      color: ds.token("text-primary");
+    }
+
+    #{ws.on("main_ui_components_select__label")} {
+      font-size: ds.token("size-13");
+      color: ds.token("text-primary");
+    }
+
+    #{ws.on("main_ui_components_select__check-icon")} svg {
+      stroke: ds.token("accent-default");
+    }
+  }
+
+  #{ws.on("main_ui_components_select__checked-element")}#{ws.on("main_ui_components_select__is-selected")} {
+    background: ds.token("bg-subtle");
+    font-weight: ds.token("weight-medium");
+  }
+
+  // Radios.
+  #{ws.on("main_ui_components_forms__custom-radio")} {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  #{ws.on("main_ui_components_forms__radio-label")} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-block-size: 32px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: ds.token("radius-control");
+    background: none;
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-regular");
+    line-height: 1.4;
+    text-transform: none;
+    color: ds.token("text-body");
+    cursor: pointer;
+
+    &:has(:focus-visible) {
+      @include ds.focus-ring;
+    }
+  }
+
+  #{ws.on("main_ui_components_forms__radio-icon")} {
+    @include ds.motion((border-color, background-color));
+
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: 16px;
+    block-size: 16px;
+    margin: 0;
+    border: 1.5px solid ds.token("border-strong");
+    border-radius: 50%;
+    background: ds.token("bg-panel");
+
+    &[class~="checked"] {
+      border-color: ds.token("accent-default");
+      background: ds.token("accent-default");
+    }
+  }
+
+  #{ws.on("main_ui_components_forms__radio-label")}:hover
+    #{ws.on("main_ui_components_forms__radio-icon")}:not([class~="checked"]) {
+    border-color: ds.token("text-disabled");
+  }
+
+  #{ws.on("main_ui_components_forms__radio-dot")} {
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 50%;
+    background: ds.token("bg-panel");
+  }
+
+  // The button of a form: the black pill, as wide as its label; P3D:
+  // 32 px, in the foot of its card.
+  button[type="submit"] {
+    @include -black-pill;
+    @include -small;
+
+    align-self: flex-start;
+    margin: 0;
+
+    span {
+      color: inherit;
+      font: inherit;
+      text-transform: none;
+    }
+  }
+}
+
+// --- 5. Cards of the upstream pages (P3D): forms inside a card, the
+// foot of a card, the Profile rows
+
+#{$scope} #{$container} {
+  // A form inside a card: no gap of its own, its rows touch.
+  [data-ds-settings="card"] form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+  }
+
+  // Rows that follow each other across two forms (photo, then name).
+  [data-ds-settings="photo"] + form > [data-ds-settings="row"]:first-child {
+    border-block-start: 1px solid ds.token("border-default");
+  }
+
+  // The foot of a card (Save etc.): `ds.dense-card-foot`.
+  [data-ds-settings="foot"] {
+    @include ds.dense-card-foot;
+  }
+
+  // Profile photo: a 40 px avatar and "Change photo".
+  [data-ds-settings="photo"] {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    margin: 0;
+
+    img {
+      margin: 0;
+    }
+  }
+
+  #{ws.on("main_ui_settings_profile__image-change-field")} {
+    flex: none;
+    inline-size: 40px;
+    block-size: 40px;
+    margin: 0;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      inline-size: 40px;
+      block-size: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  #{ws.on("main_ui_settings_profile__update-overlay")} {
+    inline-size: 40px;
+    block-size: 40px;
+    border-radius: 50%;
+    font-size: 0.625rem;
+    font-weight: ds.token("weight-semibold");
+    text-transform: none;
+  }
+
+  #{ws.on("main_ui_settings_profile__delete-overlay")} {
+    inset: auto -2px -2px auto;
+    inline-size: 18px;
+    block-size: 18px;
+  }
+
+  [data-ds-settings="photo-button"],
+  [data-ds-settings="row-button"] {
+    @include -soft-pill;
+    @include -small;
+
+    flex: none;
+  }
+
+  // Email: the address as text, how to change it under it.
+  [data-ds-settings="email"] {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    text-align: start;
+  }
+
+  [data-ds-settings="email-value"] {
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-medium");
+    line-height: 1.4;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_studio_settings_notes__email-note")} {
+    font-size: ds.dense("meta-size");
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_settings_profile__change-email")} a {
+    text-decoration: none;
+  }
+
+  // Delete account: one row, the red pill on the right.
+  [data-ds-settings="danger-button"] {
+    @include -danger-pill;
+    @include -small;
+
+    flex: none;
+    text-decoration: none;
+  }
+
+  // What the password is: a quiet one-line note over the card.
+  #{ws.on("main_ui_studio_settings_notes__note")} {
+    max-inline-size: none;
+    margin: 0;
+    padding: 8px ds.dense("card-pad-x");
+    border-radius: ds.token("radius-card");
+    font-size: ds.dense("meta-size");
+    line-height: 1.5;
+    color: ds.token("text-body");
+  }
+
+  // The rules of a new password: a two-column checklist under the field.
+  [data-ds-settings="rules"] {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, max-content));
+    gap: 2px 20px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-ds-settings="rule"] {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: ds.dense("meta-size");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+
+    &[data-met="true"] {
+      color: ds.token("status-success-text");
+    }
+  }
+
+  [data-ds-settings="rule-mark"] {
+    flex: none;
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 50%;
+    background: ds.token("border-strong");
+  }
+
+  [data-ds-settings="rule"][data-met="true"] [data-ds-settings="rule-mark"] {
+    background: ds.token("status-success");
+  }
+}
+
+// --- 6. Other pages
+
+#{$scope} #{$container} {
+  // Notifications: an event × channel table.
+  #{ws.on("main_ui_settings_notifications__notifications-form")} {
+    inline-size: 100%;
+  }
+
+  [data-ds-settings="matrix"] {
+    inline-size: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: ds.dense("body-size");
+
+    th,
+    td {
+      padding: 10px ds.dense("card-pad-x");
+      border-block-end: 1px solid ds.token("border-default");
+      text-align: start;
+      vertical-align: middle;
+    }
+
+    [data-ds-settings="col"] {
+      padding-block: 10px;
+      font-size: ds.dense("label-size");
+      font-weight: ds.token("weight-semibold");
+      line-height: 1.3;
+      color: ds.token("text-secondary");
+    }
+
+    [data-ds-settings="col"]:first-child {
+      inline-size: 168px;
+    }
+
+    // The two channel cells: 8 px apart, so the selects show whole labels.
+    td {
+      padding-inline: 8px;
+    }
+
+    [data-ds-settings="col"]:not(:first-child) {
+      padding-inline: 8px;
+    }
+
+    td:last-child,
+    [data-ds-settings="col"]:last-child {
+      padding-inline-end: ds.dense("card-pad-x");
+    }
+
+    [data-ds-settings="event"] {
+      font-weight: ds.token("weight-semibold");
+      line-height: 1.35;
+      color: ds.token("text-primary");
+    }
+
+    tr:last-child > :not([data-ds-settings="col"]) {
+      border-block-end: 0;
+    }
+
+    #{ws.on("main_ui_components_select__custom-select")} {
+      inline-size: 100%;
+    }
+  }
+
+  [data-ds-settings="none"] span {
+    color: ds.token("text-disabled");
+  }
+
+  // Language and theme: the renderer switch block (behind a flag) as a
+  // card under the form.
+  #{ws.on("main_ui_settings_options__webgl-container")} {
+    @include ds.dense-card;
+
+    box-sizing: border-box;
+    gap: ds.token("space-8");
+    inline-size: 100%;
+    max-inline-size: none;
+    margin: 0;
+    padding: 14px ds.dense("card-pad-x");
+
+    * {
+      text-transform: none;
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+
+    h3 {
+      font-size: ds.dense("body-size");
+      font-weight: ds.token("weight-semibold");
+    }
+
+    p {
+      margin: 0;
+      font-size: ds.dense("body-size");
+      line-height: 1.5;
+      color: ds.token("text-secondary");
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: ds.token("space-8");
+    }
+  }
+
+  // AI access: the folded Penpot keys, a card under the others.
+  #{ws.on("main_ui_settings_integrations__ds-advanced")} {
+    @include ds.dense-card;
+
+    max-inline-size: none;
+    margin: 0;
+    padding: 0;
+    border-block-start: 1px solid ds.token("border-default");
+
+    > summary {
+      display: flex;
+      align-items: center;
+      gap: ds.token("space-8");
+      min-block-size: 44px;
+      margin: 0;
+      padding: 0 ds.dense("card-pad-x");
+      font-size: ds.dense("body-size");
+      font-weight: ds.token("weight-semibold");
+      color: ds.token("text-primary");
+      cursor: pointer;
+    }
+
+    // The disclosure mark (the flex summary has no marker of its own).
+    > summary::before {
+      content: "";
+      inline-size: 6px;
+      block-size: 6px;
+      border-block-end: 1.5px solid currentcolor;
+      border-inline-end: 1.5px solid currentcolor;
+      transform: rotate(-45deg);
+      transition: transform 120ms ease;
+    }
+
+    &[open] > summary::before {
+      transform: rotate(45deg);
+    }
+
+    &[open] > summary {
+      border-block-end: 1px solid ds.token("border-default");
+    }
+
+    > :not(summary) {
+      margin-inline: ds.dense("card-pad-x");
+    }
+
+    > summary + * {
+      margin-block-start: ds.token("space-16");
+    }
+
+    > :last-child:not(summary) {
+      margin-block-end: ds.dense("card-pad-y");
+    }
+
+    // Penpot's MCP and token blocks at the dense sizes, sentence case.
+    * {
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    h2,
+    h3 {
+      margin-block-start: 0;
+      font-size: 0.875rem;
+      font-weight: ds.token("weight-semibold");
+      line-height: 1.35;
+    }
+
+    p {
+      font-size: ds.dense("body-size");
+      line-height: 1.5;
+    }
+
+    #{ws.on("main_ui_ds_buttons_button__button-primary")} {
+      @include -black-pill;
+      @include -small;
+    }
+
+    #{ws.on("main_ui_ds_buttons_button__button-secondary")} {
+      @include -soft-pill;
+      @include -small;
+    }
+  }
+
+  // Contact us: the header, one card of rows, a card for the mail address.
+  #{ws.on("main_ui_settings_feedback__feedback-form")} {
+    display: flex;
+    flex-direction: column;
+    gap: ds.dense("section-gap");
+
+    textarea {
+      min-block-size: 88px;
+    }
+
+    #{-any("field-text")} {
+      max-inline-size: none;
+      margin: 0;
+      font-size: ds.dense("body-size");
+      line-height: 1.5;
+      color: ds.token("text-secondary");
+    }
+
+    a {
+      font-size: ds.dense("body-size");
+      font-weight: ds.token("weight-semibold");
+      text-transform: none;
+    }
+  }
+
+  // Shortcuts (behind a flag): the dashboard's header type, the search
+  // box and tabs at the dense sizes, the groups as one card.
+  #{ws.on("main_ui_components_search_bar__search-input-wrapper")} {
+    box-sizing: border-box;
+    block-size: ds.dense("control");
+    padding: 0 ds.token("space-12");
+    border: 1px solid ds.token("border-strong");
+    border-radius: ds.token("radius-control");
+    background: ds.token("bg-panel");
+
+    &:focus-within {
+      border-color: ds.token("accent-default");
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+  }
+
+  #{ws.on("main_ui_components_search_bar__search-input")} {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: ds.dense("body-size");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_ds_layout_tab_switcher__tab-text")},
+  [class*="main_ui_shortcuts__"] span,
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-page")} button {
+    text-transform: none;
+  }
+
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-page")} {
+    inline-size: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-page")} #{ws.on("main_ui_settings_shortcuts__page-title")} {
+    @include ds.dense-page-title;
+  }
+
+  #{ws.on("main_ui_settings_shortcuts__shortcuts-description")} {
+    @include ds.dense-page-subtitle;
+
+    margin-block-end: calc(#{ds.dense("page-head-after")} - #{ds.dense("section-gap")});
+  }
+}
+
+// --- 7. Menus and dialogs
+
+#{$scope} {
+  #{ws.on("main_ui_components_context_menu_a11y__context-menu-items")},
+  #{ws.on("main_ui_dashboard_sidebar__profile-dropdown")} {
+    padding: ds.token("space-4");
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-lg");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+  }
+
+  #{ws.on("main_ui_components_context_menu_a11y__context-menu-action")} {
+    @include ds.type("control");
+
+    display: flex;
+    align-items: center;
+    min-block-size: 32px;
+    padding: 0 10px;
+    border-radius: ds.token("radius-control");
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-primary");
+
+    &:hover,
+    &:focus-visible {
+      background: ds.token("bg-subtle");
+      color: ds.token("text-primary");
+    }
+  }
+
+  #{ws.on("main_ui_components_context_menu_a11y__separator")} {
+    block-size: 1px;
+    margin: ds.token("space-4") 6px;
+    border: 0;
+    background: ds.token("border-default");
+  }
+}
+
+// Dialogs: the card of the dashboard's (radius 16, DS shadow),
+// sentence-case title, soft / black / red pills.
+#{$scope} {
+  #{-any("modal-overlay")} {
+    background: ds.token("overlay-scrim");
+  }
+
+  #{-any("modal-container")} {
+    @include ds.root;
+
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-xl");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+    padding: ds.dense("dialog-pad");
+  }
+
+  #{-any("modal-title")} {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("dialog-title-size");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{-any("modal-content")} {
+    font-size: ds.token("size-13");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+
+    label,
+    #{-any("modal-label")} {
+      font-size: ds.token("size-13");
+      font-weight: ds.token("weight-medium");
+      line-height: 1.4;
+      text-transform: none;
+      color: ds.token("text-primary");
+    }
+  }
+
+  #{-any("modal-container")} input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"]) {
+    @include -field-box;
+
+    &:focus {
+      border-color: ds.token("accent-default");
+      box-shadow: 0 0 0 1px ds.token("accent-default");
+    }
+  }
+
+  // The MCP key and token windows: their title is a text component.
+  #{ws.on("main_ui_settings_integrations__modal-form")} > h2 {
+    margin: 0;
+    padding-inline-end: ds.token("space-32");
+    font-size: ds.token("size-16");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_settings_integrations__modal-form")} {
+    gap: ds.token("space-16");
+  }
+
+  // A field of a dialog and the error under it.
+  #{-any("modal-container")} #{-any("fields-row")} {
+    block-size: auto;
+    margin-block-end: ds.token("space-16");
+  }
+
+  #{-any("modal-container")} #{ws.on("main_ui_components_forms__input-wrapper")} {
+    align-items: stretch;
+  }
+
+  #{-any("modal-container")} #{ws.on("main_ui_components_forms__error")} {
+    position: static;
+    margin: 6px 0 0;
+    font-size: ds.token("size-12");
+    line-height: 1.4;
+    color: ds.token("status-danger-text");
+  }
+
+  // The question of a confirm dialog: text, not a heading.
+  #{-any("modal-msg")} {
+    margin: 0;
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-regular");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+  }
+
+  #{-any("modal-close-btn")},
+  #{-any("modal-close-button")} {
+    border-radius: ds.token("radius-control");
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  #{-any("action-buttons")} {
+    gap: ds.token("space-8");
+  }
+
+  #{-any("modal-container")} :is(#{-any("cancel-button")}, #{-any("cancel-btn")}),
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-secondary")} {
+    @include -soft-pill;
+    @include -small;
+  }
+
+  #{-any("modal-container")}
+    :is(
+      #{-any("accept-btn")},
+      #{-any("accept-button")},
+      #{-any("primary-button")},
+      button[type="submit"],
+      input[type="submit"]
+    ),
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-primary")} {
+    @include -black-pill;
+    @include -small;
+  }
+
+  #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")})#{-any("danger")},
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-destructive")},
+  #{ws.on("main_ui_settings_delete_account__modal-container")} #{-any("accept-button")} {
+    @include -danger-pill;
+    @include -small;
+  }
+
+  // Release notes: the picture fills its side of the card.
+  [class*="main_ui_releases_"]#{-any("modal-container")} {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  [class*="main_ui_releases_"]#{-any("version-tag")} {
+    border-radius: ds.token("radius-button");
+    font-size: ds.token("size-11");
+    font-weight: ds.token("weight-semibold");
+    text-transform: none;
+  }
+
+  // The note of a dialog ("You'll lose all your projects", "We'll send
+  // you an email"): a DS note, no outline.
+  #{-any("modal-container")} #{ws.on("main_ui_notifications_context_notification__context-notification")} {
+    gap: ds.token("space-8");
+    margin: 0;
+    padding: 10px ds.token("space-12");
+    border: 0;
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-body");
+
+    #{ws.on("main_ui_notifications_context_notification__context-text")} {
+      font-size: ds.token("size-13");
+      line-height: 1.5;
+      color: inherit;
+    }
+
+    #{ws.on("main_ui_notifications_context_notification__icon")} {
+      color: ds.token("text-secondary");
+      stroke: currentcolor;
+    }
+  }
+
+  #{-any("modal-container")} #{ws.on("main_ui_notifications_context_notification__warning")} {
+    background: ds.token("status-warning-bg");
+    color: ds.token("status-warning-text");
+
+    #{ws.on("main_ui_notifications_context_notification__icon")} {
+      color: ds.token("status-warning");
+    }
+  }
+
+  #{ws.on("main_ui_settings_delete_account__modal-container")} #{-any("warning-notice")} {
+    margin: 0;
+  }
+
+  // The same note in the MCP key and token windows (another upstream
+  // component).
+  #{-any("modal-container")}
+    #{ws.on("main_ui_ds_notifications_shared_notification_pill__notification-pill")} {
+    padding: 10px ds.token("space-12");
+    border: 0;
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+    color: ds.token("text-body");
+
+    #{ws.on("main_ui_ds_notifications_shared_notification_pill__icon")} {
+      color: ds.token("text-secondary");
+    }
+  }
+}
+
+// --- 8. 1280 px and narrower (the frame itself narrows in `layout.scss`)
+
+@media (width <= 760px) {
+  #{$scope} #{$root} {
+    grid-template-columns: 208px minmax(0, 1fr);
+  }
+}

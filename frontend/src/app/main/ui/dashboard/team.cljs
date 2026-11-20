@@ -139,7 +139,10 @@
        [:li {:class (when settings-section? (stl/css :active))}
         [:a {:on-click on-nav-settings} (tr "labels.settings")]]]]
      [:div {:class (stl/css :dashboard-buttons)}
-      (when (and (or invitations-section? members-section?) (not-empty invitations))
+      ;; Design Studio seam (STUDIO-SEAMS.md): the members page always has
+      ;; "Invite people" (upstream showed it only once a team had
+      ;; invitations); the invitations page keeps it in its empty state.
+      (when (or members-section? (and invitations-section? (not-empty invitations)))
         (let [invite-button (mf/html
                              [:> button* {:class (stl/css :invite-button)
                                           :variant "secondary"

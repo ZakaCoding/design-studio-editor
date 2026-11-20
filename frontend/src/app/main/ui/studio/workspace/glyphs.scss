@@ -1,0 +1,13 @@
+// Icons of the workspace chrome. See glyphs.cljs.
+
+.glyph {
+  flex: none;
+  display: block;
+  fill: none;
+  stroke: currentcolor;
+
+  // The boards draw every chrome icon with this stroke on a 20 px grid.
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

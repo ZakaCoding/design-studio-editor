@@ -1,0 +1,200 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Settings (P3-A): the page header and the sidebar row. The row is the
+// dashboard's (`dashboard_shell/sidebar.scss`, `.nav-item`).
+
+@use "studio/ds" as ds;
+
+// --- Page header: the dashboard title, one line under it.
+
+// P3D: the dense page header of `ds.dense-page-head` (1.5rem title, one
+// 0.8125rem line 4 px under it, 24 px to the content).
+.head {
+  @include ds.dense-page-head;
+}
+
+// `.head .title`: upstream form pages paint their h1 and p in their own
+// colours (`.form-container h1`, one class and a tag).
+.head .title {
+  @include ds.dense-page-title;
+}
+
+.head .subtitle {
+  @include ds.dense-page-subtitle;
+}
+
+// --- Sidebar row
+
+.row {
+  @include ds.type("body-lg");
+  @include ds.focusable(-2px);
+  @include ds.motion((background-color, color));
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  inline-size: 100%;
+  block-size: 32px;
+  margin: 0;
+  padding-inline: 12px;
+  border-radius: ds.token("radius-control");
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: ds.token("text-primary");
+    background: color-mix(in srgb, ds.token("bg-panel") 60%, transparent);
+
+    .row-icon {
+      color: ds.token("text-primary");
+    }
+  }
+}
+
+.row-icon {
+  @include ds.motion(color);
+
+  flex: none;
+  color: ds.token("text-secondary");
+}
+
+.row-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-current {
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-semibold");
+  box-shadow: ds.token("elevation-control");
+
+  &:hover {
+    background: ds.token("bg-panel");
+  }
+
+  .row-icon,
+  &:hover .row-icon {
+    color: ds.token("accent-default");
+  }
+}
+
+// --- Dense page parts (P3D): a card, its rows, its foot.
+
+.card {
+  @include ds.root;
+  @include ds.dense-card;
+
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  font-family: ds.token("font-text");
+}
+
+.card-danger {
+  border-color: color-mix(in srgb, #{ds.token("status-danger-text")} 22%, #{ds.token("border-default")});
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-12");
+  min-block-size: 44px;
+  padding: ds.dense("card-pad-y") ds.dense("card-pad-x");
+  border-block-end: 1px solid ds.token("border-default");
+}
+
+.card-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+// The text of a card is nested under `.card`: upstream pages paint every
+// h2 and p of their form column (`.form-container p`, one class and a tag).
+.card .card-title {
+  display: block;
+  margin: 0;
+  font-family: ds.token("font-text");
+  font-size: 0.875rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  color: ds.token("text-primary");
+}
+
+.card .card-subtitle {
+  margin: 0;
+  font-size: ds.dense("meta-size");
+  line-height: 1.4;
+  color: ds.token("text-secondary");
+}
+
+.card-foot {
+  @include ds.dense-card-foot;
+}
+
+.srow {
+  @include ds.dense-row;
+}
+
+.srow-with-action {
+  @include ds.dense-row-with-action;
+}
+
+.srow-wide {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.srow-text {
+  min-inline-size: 0;
+}
+
+.card .srow-label {
+  @include ds.dense-row-label;
+
+  display: block;
+  text-transform: none;
+}
+
+.card .srow-hint {
+  @include ds.dense-row-hint;
+}
+
+.srow-control {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-inline-size: 0;
+  font-size: ds.dense("body-size");
+  color: ds.token("text-body");
+}
+
+.srow-action {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+}
+
+// Narrow: the label over its control.
+@media (width <= 760px) {
+  .srow,
+  .srow-with-action {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: ds.token("space-8");
+  }
+
+  .srow-text {
+    grid-column: 1 / -1;
+  }
+}

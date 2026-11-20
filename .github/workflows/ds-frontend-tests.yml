@@ -1,0 +1,62 @@
+name: "DS: frontend tests"
+
+# Runs upstream's frontend checks for the checked-out commit, the way upstream's
+# "CI: Frontend" does (tests-frontend.yml, disabled in this fork because it
+# needs Kaleidos' own runner): cljfmt, clj-kondo, the SCSS checks and the
+# ClojureScript unit tests (`frontend/scripts/test`, which builds the render
+# WASM first). Our own tests live in frontend/test/frontend_tests/studio/ and
+# are registered in the same runner. GitHub-hosted runner only.
+
+on:
+  push:
+    branches:
+      - 'ds/**'
+    paths:
+      - 'frontend/**'
+      - 'common/**'
+      - 'render-wasm/**'
+      - '.github/workflows/ds-frontend-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ds-frontend-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    name: Lint and unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    container:
+      # Same pinned devenv image as ds-frontend-image.yml (DEVENV_IMAGE);
+      # re-pin both together on every rebase onto a new upstream tag.
+      image: penpotapp/devenv@sha256:f1f3571504f344c60d683de12e9f606e8576d557e6a4f574fb5db3a6f452f430
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Lint (cljfmt, clj-kondo, SCSS format)
+        working-directory: ./frontend
+        run: |
+          set -euo pipefail
+          pnpm install
+          pnpm run check-fmt:clj
+          pnpm run check-fmt:scss
+          pnpm run lint:clj
+
+      - name: Studio JS tests (touch layer)
+        run: node --test frontend/src/app/main/ui/studio/touch.test.mjs
+
+      - name: Unit tests (builds the render WASM, lints SCSS, runs the CLJS suite)
+        working-directory: ./frontend
+        run: ./scripts/test

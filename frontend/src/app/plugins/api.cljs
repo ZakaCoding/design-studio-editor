@@ -46,6 +46,7 @@
    [app.plugins.local-storage :as local-storage]
    [app.plugins.page :as page]
    [app.plugins.parser :as parser]
+   [app.plugins.persistence-guard :as pguard]
    [app.plugins.reflow :as wrfp]
    [app.plugins.register :as r]
    [app.plugins.shape :as shape]
@@ -87,6 +88,13 @@
   (obj/reify {:name "PenpotContext"}
     ;; Private properties
     :$plugin {:enumerable false :get (fn [] plugin-id)}
+
+    ;; Hook for the plugins runtime: it reports every permission it checks
+    ;; on its side, because several API calls (e.g. `createRectangle`) are
+    ;; only checked there. See `app.plugins.persistence-guard`.
+    :$checkPersistence
+    {:enumerable false
+     :get (fn [] (fn [permission] (pguard/note-write! plugin-id permission)))}
 
     ;; Public properties
     :version

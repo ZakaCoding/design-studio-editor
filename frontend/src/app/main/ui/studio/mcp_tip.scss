@@ -1,0 +1,171 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Workspace MCP tip: a compact DS card at the bottom of the canvas, above
+// the row of the floating toolbar and the Craft pill. Right of the canvas,
+// in line with the Craft pill; left of the canvas while Craft is open
+// (`.toast-left`). `mcp_tip.cljs` places it (`--ds-offset`).
+
+@use "studio/ds" as ds;
+
+.toast {
+  @include ds.root;
+
+  position: fixed;
+
+  // Over the canvas, under the workspace chrome (`z-panel`): the toolbar's
+  // menus, the quick prompt and the panels are never covered by the tip.
+  z-index: 99;
+
+  // 20 px (toolbar and Craft pill) + their 48 px + a 12 px gap; the same
+  // `lift` as `mcp_tip.cljs`.
+  inset-block-end: 80px;
+  inset-inline-end: var(--ds-offset, 16px);
+  inline-size: min(300px, calc(100vw - 32px));
+  padding: ds.token("space-12") ds.token("space-12") ds.token("space-12") ds.token("space-16");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  background-color: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity ds.token("motion-base") ds.token("ease-out"),
+    transform ds.token("motion-slow") ds.token("ease-out");
+}
+
+.toast-in {
+  opacity: 1;
+  transform: none;
+}
+
+.toast-left {
+  inset-inline: var(--ds-offset, 16px) auto;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+}
+
+// The MCP plug on an accent chip.
+.mark {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: ds.token("radius-control");
+  background-color: ds.token("accent-subtle");
+  color: ds.token("accent-default");
+
+  svg {
+    inline-size: 16px;
+    block-size: 16px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.title {
+  @include ds.type("panel-title");
+
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.close {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, color));
+
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: ds.token("radius-control");
+  color: ds.token("text-secondary");
+  cursor: pointer;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+
+  svg {
+    inline-size: 16px;
+    block-size: 16px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+}
+
+.text {
+  margin: ds.token("space-8") ds.token("space-4") 0 0;
+  color: ds.token("text-secondary");
+  font-size: ds.token("size-12");
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  margin-block-start: ds.token("space-12");
+}
+
+.cta {
+  flex: none;
+}
+
+// "Remind me tomorrow": a quiet text button.
+.later {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, color));
+
+  block-size: 28px;
+  padding-inline: ds.token("space-8");
+  border-radius: ds.token("radius-control");
+  color: ds.token("text-secondary");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-medium");
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+}
+
+// Reduced motion: no transition.
+.still {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
+}
+
+@media (width <= 720px) {
+  .toast {
+    inset-inline: auto 16px;
+  }
+}

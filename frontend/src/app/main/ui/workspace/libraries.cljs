@@ -39,6 +39,7 @@
    [app.main.ui.ds.product.empty-state :refer [empty-state*]]
    [app.main.ui.hooks :as h]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.brand :as brand]
    [app.main.ui.workspace.tokens.import-from-library]
    [app.util.color :as uc]
    [app.util.dom :as dom]
@@ -424,10 +425,13 @@
              [:*
               [:div {:class (stl/css :sample-libraries-info)}
                (tr "workspace.libraries.empty.no-libraries")
-               [:a {:target "_blank"
-                    :class (stl/css :sample-libraries-link)
-                    :href "https://penpot.app/libraries-templates"}
-                (tr "workspace.libraries.empty.some-templates")]]
+               ;; Design Studio (P4-A): Penpot's templates site, hidden (STUDIO-SEAMS.md)
+               (when brand/penpot-community?
+                 [:a {:target "_blank"
+                      :rel "noopener noreferrer"
+                      :class (stl/css :sample-libraries-link)
+                      :href "https://penpot.app/libraries-templates"}
+                  (tr "workspace.libraries.empty.some-templates")])]
               [:div {:class (stl/css :sample-libraries-container)}
                (tr "workspace.libraries.empty.add-some")
                (for [library sample-libraries]

@@ -5,6 +5,7 @@
 // Copyright (c) KALEIDOS INC Sucursal en España SL
 
 @use "refactor/common-refactor.scss" as deprecated;
+@use "studio/ds" as ds;
 
 .inspect-svg-wrapper {
   @include deprecated.flex-center;
@@ -27,12 +28,26 @@
   overflow: auto;
 }
 
+// F1 · 11: the panel floats over the canvas, 12 px from the edges.
+.inspect-svg-wrapper {
+  padding-inline-end: calc(320px + deprecated.$s-24);
+}
+
 .sidebar-container {
-  position: relative;
-  align-self: flex-start;
-  width: var(--right-sidebar-width);
-  background-color: var(--panel-background-color);
-  border-top: deprecated.$s-1 solid var(--search-bar-input-border-color);
+  position: absolute;
+  inset-block: deprecated.$s-64 deprecated.$s-12;
+  inset-inline-end: deprecated.$s-12;
+  width: 320px;
+  overflow: hidden;
+  background-color: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-panel");
+  box-shadow: ds.token("elevation-panel");
+  z-index: deprecated.$z-index-2;
+
+  > aside {
+    block-size: 100%;
+  }
 }
 
 .not-expand {
@@ -50,4 +65,40 @@
   height: 100%;
   z-index: deprecated.$z-index-10;
   cursor: ew-resize;
+}
+
+// The layer list stays a Penpot function: a floating card, off by default.
+.layers-toggle {
+  @include ds.type("control");
+
+  position: absolute;
+  inset-block-start: deprecated.$s-64;
+  inset-inline-start: deprecated.$s-12;
+  block-size: deprecated.$s-36;
+  padding-inline: deprecated.$s-16;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  box-shadow: ds.token("elevation-control");
+  cursor: pointer;
+  z-index: deprecated.$z-index-2;
+}
+
+.layers-toggle-on {
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+}
+
+.layers-panel {
+  position: absolute;
+  inset-block: calc(deprecated.$s-64 + deprecated.$s-44) deprecated.$s-12;
+  inset-inline-start: deprecated.$s-12;
+  inline-size: 240px;
+  overflow: auto;
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-panel");
+  box-shadow: ds.token("elevation-panel");
+  z-index: deprecated.$z-index-2;
 }

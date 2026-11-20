@@ -31,6 +31,9 @@
    [app.main.ui.ds.notifications.shared.notification-pill :refer [notification-pill*]]
    [app.main.ui.ds.tooltip :refer [tooltip*]]
    [app.main.ui.forms :as fc]
+   [app.main.ui.studio.ai-access :refer [ai-access-card*]]
+   [app.main.ui.studio.guard :refer [guard*]]
+   [app.main.ui.studio.settings-shell.page :refer [page-head*]]
    [app.util.clipboard :as clipboard]
    [app.util.dom :as dom]
    [app.util.forms :as fm]
@@ -65,6 +68,7 @@
    [:div {:class (stl/css :input-copy-button-wrapper)}
     [:> icon-button* {:variant "secondary"
                       :class (stl/css :input-copy-button)
+                      :data-testid "ds-input-copy"
                       :aria-label (tr "integrations.copy-to-clipboard")
                       :on-click on-copy-to-clipboard
                       :icon i/clipboard}]]])
@@ -235,7 +239,8 @@
            (st/emit! (ntf/success (tr "integrations.notification.success.created")))))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
+     [:div {:class (stl/css :modal-container)
+            :data-testid "ds-integrations-modal"}
       [:div {:class (stl/css :modal-close-button)}
        [:> icon-button* {:variant "ghost"
                          :aria-label (tr "labels.close")
@@ -275,7 +280,8 @@
            (reset! created? true)))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
+     [:div {:class (stl/css :modal-container)
+            :data-testid "ds-integrations-modal"}
       [:div {:class (stl/css :modal-close-button)}
        [:> icon-button* {:variant "ghost"
                          :aria-label (tr "labels.close")
@@ -317,7 +323,8 @@
            (reset! created? true)))]
 
     [:div {:class (stl/css :modal-overlay)}
-     [:div {:class (stl/css :modal-container)}
+     [:div {:class (stl/css :modal-container)
+            :data-testid "ds-integrations-modal"}
       [:div {:class (stl/css :modal-close-button)}
        [:> icon-button* {:variant "ghost"
                          :aria-label (tr "labels.close")
@@ -512,7 +519,8 @@
                       :class (stl/css :color-primary)}
             (tr "integrations.mcp-server.status.expired.1")]]])
 
-       [:div {:class (stl/css :mcp-server-switch)}
+       [:div {:class (stl/css :mcp-server-switch)
+              :data-testid "ds-mcp-switch"}
         [:> switch* {:label (if show-enabled?
                               (tr "integrations.mcp-server.status.enabled")
                               (tr "integrations.mcp-server.status.disabled"))
@@ -642,18 +650,29 @@
 
     [:section {:class (stl/css :integrations)
                :aria-labelledby "integrations-section-title"}
-     [:> heading* {:level 2
-                   :typography t/title-large
-                   :class (stl/css :color-primary)
-                   :id "integrations-section-title"}
-      (tr "integrations.title")]
+     ;; Design Studio seam (STUDIO-SEAMS.md, P3-A): the page header of
+     ;; every Settings page.
+     [:> page-head* {:id "integrations-section-title"
+                     :title (tr "ds.ai.page.title")
+                     :subtitle (tr "ds.ai.page.subtitle")}]
 
-     (when ^boolean mcp-enabled?
-       [:> mcp-server-section* props])
+     [:> guard* {}
+      [:> ai-access-card* {}]]
 
-     (when (and ^boolean mcp-enabled?
-                ^boolean access-tokens-enabled?)
-       [:hr {:class (stl/css :separator)}])
+     ;; Penpot's own keys and tokens stay, behind one line, for people who
+     ;; use them; the board has no place for them in the main flow.
+     (when (or ^boolean mcp-enabled?
+               ^boolean access-tokens-enabled?)
+       [:details {:class (stl/css :ds-advanced)}
+        [:summary {:class (stl/css :ds-advanced-summary)}
+         (tr "ds.ai.advanced")]
 
-     (when ^boolean access-tokens-enabled?
-       [:> access-tokens-section* props])]))
+        (when ^boolean mcp-enabled?
+          [:> mcp-server-section* props])
+
+        (when (and ^boolean mcp-enabled?
+                   ^boolean access-tokens-enabled?)
+          [:hr {:class (stl/css :separator)}])
+
+        (when ^boolean access-tokens-enabled?
+          [:> access-tokens-section* props])])]))

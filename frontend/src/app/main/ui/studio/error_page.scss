@@ -1,0 +1,320 @@
+// Design Studio full-page errors (404, 500, 502/503, invalid link). P3D:
+// one card of at most 560 px, high and left under the logo, with a status
+// pill, the cause, what to try, the actions and (server errors) the error
+// details. The message comes from `static.cljs` with its own classes; it is
+// matched here by its exact CSS-module token, inside `.card`.
+
+@use "studio/ds" as ds;
+
+.page {
+  @include ds.root;
+
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  inline-size: 100%;
+  min-block-size: 100%;
+  font-family: ds.token("font-text");
+  background: ds.token("bg-subtle");
+}
+
+// Logo, card and credit share one left edge.
+.frame {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 1040px;
+  min-block-size: 100%;
+  margin-inline: auto;
+  padding-inline: ds.token("space-32");
+}
+
+.top {
+  display: flex;
+  padding-block: ds.token("space-24");
+}
+
+.brand {
+  @include ds.control-reset;
+  @include ds.focusable(4px);
+
+  display: inline-flex;
+  border-radius: ds.token("radius-sm");
+}
+
+// The card's top sits about 120 px from the top of the page.
+.main {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: flex-start;
+  padding-block: 40px ds.token("space-32");
+}
+
+.card {
+  @include ds.dense-card;
+
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-16");
+  inline-size: min(100%, 560px);
+  padding: ds.token("space-24") ds.token("space-24") 0;
+  box-shadow: ds.token("elevation-control");
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  margin: 0;
+}
+
+.code {
+  display: inline-flex;
+  align-items: center;
+  block-size: 22px;
+  padding: 0 ds.token("space-8");
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-panel");
+  box-shadow: inset 0 0 0 1px ds.token("border-strong");
+  font-family: ds.token("font-mono");
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-body");
+}
+
+// A server error (5xx): the danger tone.
+.code-server {
+  background: ds.token("status-danger-bg");
+  box-shadow: none;
+  color: ds.token("status-danger-text");
+}
+
+.label {
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-secondary");
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-block-start: -4px;
+
+  // The title type of the dashboard (Funnel Display, semibold).
+  [class~="main_ui_static__main-message"] {
+    @include ds.dense-page-title;
+
+    text-wrap: balance;
+  }
+
+  [class~="main_ui_static__desc-message"],
+  [class~="main_ui_static__desc-text"] {
+    margin: 0;
+    font-family: ds.token("font-text");
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+  }
+
+  [class~="main_ui_static__sign-info"],
+  [class~="main_ui_static__buttons-container"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ds.token("space-8");
+  }
+}
+
+.tips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tips-title {
+  @include ds.dense-label;
+}
+
+.tips-list li::marker {
+  color: ds.token("text-disabled");
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: disc;
+  font-size: ds.dense("body-size");
+  line-height: 1.5;
+  color: ds.token("text-body");
+}
+
+// One row: the main action first. The pills of the dashboard: black for
+// the main action, soft for the others.
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: ds.token("space-8");
+}
+
+// `.card .actions`: one class more than the DS button's own variant rules,
+// whatever the order of the two stylesheets in the bundle.
+.card .actions {
+  [class~="main_ui_studio_ds_button__button"] {
+    block-size: ds.dense("button");
+    padding: 0 18px;
+    border: 0;
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-semibold");
+  }
+
+  [class~="main_ui_studio_ds_button__variant-primary"] {
+    background: ds.token("bg-inverse");
+    color: ds.token("text-on-accent");
+
+    &:hover {
+      background: ds.token("text-body");
+      color: ds.token("text-on-accent");
+    }
+  }
+
+  [class~="main_ui_studio_ds_button__variant-secondary"] {
+    background: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+
+    &:hover {
+      background: ds.token("border-default");
+      color: ds.token("text-primary");
+    }
+  }
+}
+
+.card-foot {
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+  margin-inline: calc(-1 * #{ds.token("space-24")});
+  padding: ds.token("space-12") ds.token("space-24");
+  border-block-start: 1px solid ds.token("border-default");
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ds.token("space-12");
+  min-inline-size: 0;
+}
+
+.details-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px ds.token("space-8");
+  min-inline-size: 0;
+  margin: 0;
+  font-size: ds.dense("meta-size");
+  line-height: 1.5;
+  color: ds.token("text-secondary");
+}
+
+.details-label {
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-body");
+}
+
+.details-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.details-path {
+  max-inline-size: 260px;
+  overflow: hidden;
+  font-family: ds.token("font-mono");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.details-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: ds.token("space-8");
+
+  // The report download of a 500 (upstream's link).
+  [class~="main_ui_static__download-link"] {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("meta-size");
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("accent-default");
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.copy {
+  @include ds.control-reset;
+  @include ds.focusable(2px);
+
+  block-size: 24px;
+  padding: 0 10px;
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-subtle");
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-primary");
+  cursor: pointer;
+
+  &:hover {
+    background: ds.token("border-default");
+  }
+}
+
+.contact {
+  margin: 0;
+  font-size: ds.dense("meta-size");
+  line-height: 1.5;
+  color: ds.token("text-secondary");
+
+  a {
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("accent-default");
+    text-decoration: none;
+  }
+}
+
+.credit {
+  display: flex;
+  gap: ds.token("space-8");
+  padding-block: ds.token("space-16") ds.token("space-24");
+  font-size: ds.dense("meta-size");
+  color: ds.token("text-secondary");
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: ds.token("text-primary");
+  }
+}
+
+@media (width <= 640px) {
+  .frame {
+    padding-inline: ds.token("space-16");
+  }
+
+  .main {
+    padding-block-start: ds.token("space-16");
+  }
+
+  .details {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

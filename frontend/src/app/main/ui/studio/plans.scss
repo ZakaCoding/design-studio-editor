@@ -1,0 +1,167 @@
+// Design Studio (WP4; P3-A look; P3D density): Settings > Plans and
+// credits. "Your plan" (the member's facts) over a compact comparison of
+// the three plans. The page header and the cards are the Settings ones
+// (`settings_shell`).
+
+@use "studio/ds" as ds;
+
+.plans {
+  @include ds.root;
+
+  display: flex;
+  flex-direction: column;
+  color: ds.token("text-primary");
+}
+
+// --- Your plan: four facts in a row.
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+  padding: 14px ds.dense("card-pad-x");
+
+  & + & {
+    border-inline-start: 1px solid ds.token("border-default");
+  }
+
+  > [role="img"] {
+    flex: none;
+    margin-block-start: 8px;
+  }
+}
+
+.stat-label {
+  @include ds.dense-label;
+}
+
+.stat-value {
+  font-family: ds.token("font-text");
+  font-size: 0.9375rem;
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.35;
+  color: ds.token("text-primary");
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.stat-sub {
+  font-size: ds.dense("meta-size");
+  line-height: 1.4;
+  color: ds.token("text-secondary");
+}
+
+// "See plans": the dashboard's black pill, small.
+.see {
+  @include ds.control-reset;
+  @include ds.type("control");
+  @include ds.focusable;
+  @include ds.motion(background-color);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  block-size: ds.dense("button-sm");
+  padding: 0 14px;
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-inverse");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-on-accent");
+  white-space: nowrap;
+
+  &:hover {
+    background: ds.token("text-body");
+  }
+}
+
+// --- Compare: a compact table.
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  line-height: 1.4;
+
+  th,
+  td {
+    block-size: 40px;
+    padding: 8px ds.dense("card-pad-x");
+    border-block-end: 1px solid ds.token("border-default");
+    text-align: start;
+    vertical-align: middle;
+  }
+
+  tr:last-child > :not(.th-col) {
+    border-block-end: 0;
+  }
+
+  .th-col {
+    block-size: 36px;
+    font-size: ds.dense("body-size");
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("text-primary");
+  }
+
+  .th-row {
+    inline-size: 168px;
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-secondary");
+  }
+
+  td {
+    color: ds.token("text-body");
+  }
+}
+
+// The member's own plan: a quiet accent column.
+.col-current {
+  background: color-mix(in srgb, #{ds.token("accent-subtle")} 55%, transparent);
+}
+
+.yes {
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("status-success-text");
+}
+
+.no {
+  color: ds.token("text-disabled");
+}
+
+.badge,
+.soon {
+  display: inline-flex;
+  align-items: center;
+  block-size: 20px;
+  padding: 0 ds.token("space-8");
+  border-radius: ds.token("radius-button");
+  font-size: ds.dense("meta-size");
+  font-weight: ds.token("weight-semibold");
+  white-space: nowrap;
+}
+
+.badge {
+  background: ds.token("accent-subtle");
+  color: ds.token("accent-text-strong");
+}
+
+.soon {
+  background: ds.token("bg-subtle");
+  color: ds.token("text-secondary");
+}
+
+.visually-hidden {
+  @include ds.visually-hidden;
+}

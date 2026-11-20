@@ -1,0 +1,10 @@
+// Emits the Design Studio custom properties and font faces into main.css.
+// This is the only place that does; see resources/styles/studio/_ds-tokens.scss.
+
+@use "studio/ds-tokens" as tokens;
+@use "studio/ds-fonts" as fonts;
+@include fonts.faces;
+
+:root {
+  @include tokens.properties;
+}

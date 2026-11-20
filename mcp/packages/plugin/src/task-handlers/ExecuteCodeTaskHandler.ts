@@ -1,5 +1,5 @@
-import { Task, TaskHandler } from "../TaskHandler";
-import { ExecuteCodeTaskParams, ExecuteCodeTaskResultData } from "../../../common/src";
+import { Task, TaskHandler } from "../TaskHandler.ts";
+import type { ExecuteCodeTaskParams, ExecuteCodeTaskResultData } from "../../../common/src/index.ts";
 import { PenpotUtils } from "../PenpotUtils.ts";
 
 /**
@@ -195,6 +195,14 @@ export class ExecuteCodeTaskHandler extends TaskHandler<ExecuteCodeTaskParams> {
         const context = this.context;
         const code = task.params.code;
 
+        // With the integrated remote MCP, the Penpot app confirms that the writes of this task
+        // were saved before the task reports success (see `settlePersistence` below).
+        const isIntegratedRemoteMcp = !!mcp;
+        if (isIntegratedRemoteMcp && (!mcp?.persistenceCheckpoint || !mcp?.settlePersistence)) {
+            throw new Error("DS_SAVE_UNAVAILABLE: Reconnect only after your existing changes are saved or recovered.");
+        }
+        const persistenceCheckpoint = isIntegratedRemoteMcp ? mcp!.persistenceCheckpoint!() : null;
+
         // set the flags naturalChildOrdering and throwValidationErrors to true during code execution.
         let originalNaturalChildOrdering: any, originalThrowValidationErrors: any;
         if (penpot.flags) {
@@ -213,16 +221,31 @@ export class ExecuteCodeTaskHandler extends TaskHandler<ExecuteCodeTaskParams> {
         }
 
         let result: any;
+        let executionError: unknown;
+        let executionFailed = false;
         try {
             // execute the code in an async function with the context variables as parameters
             result = await (async (ctx) => {
                 const fn = new Function(...Object.keys(ctx), `return (async () => { ${code} })();`);
                 return fn(...Object.values(ctx));
             })(context);
+        } catch (error) {
+            executionFailed = true;
+            executionError = error;
         } finally {
             // restore the original value of the flags
             penpot.flags.naturalChildOrdering = originalNaturalChildOrdering;
             penpot.flags.throwValidationErrors = originalThrowValidationErrors;
+        }
+
+        // Wait for the save of whatever the code wrote, also when it threw after writing.
+        // A save that cannot be confirmed rejects here and replaces the result: the task must
+        // not report success (or only the script error) for edits that may not be stored.
+        if (isIntegratedRemoteMcp) {
+            await mcp!.settlePersistence!(persistenceCheckpoint!);
+        }
+        if (executionFailed) {
+            throw executionError;
         }
 
         console.log("Code execution result:", result);

@@ -1,0 +1,175 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// "Template Design Studio" (F1 · 03c, 1112 × 200): six tiles 168 × 120.
+
+@use "studio/ds" as ds;
+
+// P2: the row is a section of the home like "Recent files" (heading, then
+// one row of cards), and a template card is a file card: the preview in a
+// fixed-ratio frame, the name and one line under it.
+
+.templates {
+  @include ds.root;
+
+  display: grid;
+  gap: ds.token("space-16");
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ds.token("space-16");
+}
+
+.title {
+  margin: 0;
+  color: ds.token("text-primary");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-18");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.all {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  border-radius: ds.token("radius-xs");
+  color: ds.token("accent-default");
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-13");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.2;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+// One row of four, like the recent files; the rest are on the page.
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: ds.token("space-16");
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+// The Templates page: the grid of the project pages.
+.grid {
+  @include ds.root;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: ds.token("space-16");
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// --- Card (the file card of `chrome.scss`, section 5)
+
+.card {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((border-color, box-shadow));
+
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  padding: 7px;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-card");
+  background: ds.token("bg-panel");
+  text-align: start;
+
+  &:hover {
+    border-color: ds.token("border-strong");
+    box-shadow: ds.token("elevation-control");
+  }
+}
+
+.preview {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 252 / 150;
+  overflow: hidden;
+  border-radius: ds.token("radius-md");
+
+  // The tone shows while the picture loads (and if it never does).
+  background: #ffd6e8;
+
+  &[data-tone="sky"] {
+    background: #d6e4ff;
+  }
+
+  &[data-tone="mint"] {
+    background: #d3f1e4;
+  }
+
+  &[data-tone="yellow"] {
+    background: #ffeab8;
+  }
+
+  &[data-tone="lilac"] {
+    background: #e6e1ff;
+  }
+
+  &[data-tone="peach"] {
+    background: #ffe0d3;
+  }
+}
+
+.image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-inline-size: 0;
+  padding: 12px 8px 5px;
+}
+
+.name {
+  @include ds.type("control-lg");
+  @include ds.truncate;
+
+  color: ds.token("text-primary");
+}
+
+.meta {
+  @include ds.truncate;
+
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+}
+
+@media (width <= 960px) {
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    > li:nth-child(n + 3) {
+      display: none;
+    }
+  }
+}

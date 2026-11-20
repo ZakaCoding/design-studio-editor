@@ -16,6 +16,7 @@
    [app.main.store :as st]
    [app.main.ui.ds.product.loader :refer [loader*]]
    [app.main.ui.static :as static]
+   [app.main.ui.studio.auth :as sa]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.timers :as ts]
@@ -132,8 +133,16 @@
                     (ts/schedule 100 #(st/emit! (ntf/error msg)))
                     (st/emit! (rt/nav :auth-login)))))))))
 
-    (if @bad-token-reason
+    ;; Design Studio (WP5): with open sign-up each sign-up link works once
+    ;; (ADR 0017). A used one says what happened instead of "invite invalid".
+    (cond
+      (sa/show-used-link? @bad-token-reason)
+      [:> sa/used-link-page* {}]
+
+      (some? @bad-token-reason)
       [:> static/invalid-token {:reason @bad-token-reason}]
+
+      :else
       [:> loader*  {:title (tr "labels.loading")
                     :overlay true}])))
 

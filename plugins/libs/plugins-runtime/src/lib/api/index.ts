@@ -47,10 +47,24 @@ export const validEvents = [
 export function createApi(
   plugin: Awaited<ReturnType<typeof createPluginManager>>,
 ) {
+  // Optional host hook (Penpot: `app.plugins.persistence-guard`). The host
+  // may refuse a write here, e.g. while saving has failed, by throwing.
+  // 'runtime-ready' tells the host that this runtime reports its checks.
+  const checkPersistence = (
+    plugin.context as { $checkPersistence?: (permission: string) => void }
+  )?.$checkPersistence;
+  const notifyHost = (permission: string) => {
+    if (typeof checkPersistence === 'function') {
+      checkPersistence(permission);
+    }
+  };
+  notifyHost('runtime-ready');
+
   const checkPermission = (permission: Permissions) => {
     if (!plugin.manifest.permissions.includes(permission)) {
       throw new Error(`Permission ${permission} is not granted`);
     }
+    notifyHost(permission);
   };
 
   const penpot: Penpot = {

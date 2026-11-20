@@ -1,0 +1,127 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.field {
+  @include ds.root;
+
+  display: flex;
+  flex-direction: column;
+  gap: ds.token("space-8");
+  min-width: 0;
+}
+
+.label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ds.token("space-12");
+}
+
+.label {
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  color: ds.token("text-primary");
+}
+
+.label-end {
+  font-size: ds.token("size-12");
+  color: ds.token("text-secondary");
+}
+
+.control {
+  @include ds.motion((border-color, box-shadow));
+
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  height: ds.token("control-height-md");
+  padding: 0 ds.token("space-12");
+  background: ds.token("bg-panel");
+  border: 1px solid ds.token("border-strong");
+  border-radius: ds.token("radius-control");
+  color: ds.token("text-primary");
+
+  &:hover {
+    border-color: ds.token("text-disabled");
+  }
+
+  // The ring sits on the box, so the leading/trailing slots are inside it.
+  &:focus-within {
+    border-color: ds.token("accent-default");
+    box-shadow: 0 0 0 1px ds.token("accent-default");
+  }
+}
+
+.size-lg {
+  height: ds.token("control-height-lg");
+  padding: 0 ds.token("space-16");
+  border-radius: ds.token("radius-md");
+
+  .input {
+    font-size: ds.token("size-14");
+  }
+}
+
+.has-error,
+.has-error:hover {
+  border-color: ds.token("status-danger-text");
+}
+
+.has-error:focus-within {
+  border-color: ds.token("status-danger-text");
+  box-shadow: 0 0 0 1px ds.token("status-danger-text");
+}
+
+.is-disabled,
+.is-disabled:hover {
+  background: ds.token("bg-subtle");
+  border-color: ds.token("border-default");
+  color: ds.token("text-disabled");
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-13");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.4;
+
+  &::placeholder {
+    color: ds.token("text-placeholder");
+    opacity: 1;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.slot {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  color: ds.token("text-secondary");
+}
+
+.hint {
+  margin: 0;
+  font-size: ds.token("size-12");
+  line-height: 1.4;
+  color: ds.token("text-secondary");
+}
+
+.error {
+  margin: 0;
+  font-size: ds.token("size-12");
+  line-height: 1.4;
+  color: ds.token("status-danger-text");
+}

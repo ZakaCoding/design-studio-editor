@@ -50,6 +50,12 @@ Who: GitHub Actions only, on GitHub-hosted `ubuntu-24.04` runners (4 vCPU,
   (file list, `index.html`, nginx files) and uploads the image tarball.
 - `DS: seams guard` (`.github/workflows/ds-seams-guard.yml`): on pull requests
   into `ds/**`, and called by the image workflow.
+- `DS: frontend tests` (`.github/workflows/ds-frontend-tests.yml`): on push to
+  `ds/**` that touches `frontend/`, `common/` or `render-wasm/`, or by hand.
+  It runs upstream's frontend checks inside the same pinned devenv image:
+  cljfmt, clj-kondo, the SCSS checks and the ClojureScript unit tests
+  (`frontend/scripts/test`). Our tests are in
+  `frontend/test/frontend_tests/studio/`.
 
 Needs no secrets. Upstream's `docker/images/Dockerfile.frontend` starts `FROM dhi.io/...` (Docker Hardened
 Images), which refuses anonymous pulls; the official image of the base tag is that Dockerfile's output, so we

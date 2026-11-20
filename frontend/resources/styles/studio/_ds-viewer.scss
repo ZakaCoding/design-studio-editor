@@ -1,0 +1,53 @@
+// Design Studio (F4-B, F1 · 11): the share-link viewer and its Inspect tab.
+//
+// The viewer is built from upstream components that read Penpot's theme
+// variables. Instead of editing each one, the viewer root includes this mixin:
+// it points the variables those components read at the `ds/light` tokens, in
+// that subtree only. The workspace and every other page keep the Penpot theme
+// (F3 owns that recolor).
+
+@use "./ds-tokens" as tokens;
+
+@mixin viewer-scope {
+  // Base palette read by upstream components.
+  --color-background-primary: #{tokens.token("bg-panel")};
+  --color-background-secondary: #{tokens.token("bg-subtle")};
+  --color-background-tertiary: #{tokens.token("bg-subtle")};
+  --color-background-quaternary: #{tokens.token("border-default")};
+  --color-foreground-primary: #{tokens.token("text-primary")};
+  --color-foreground-secondary: #{tokens.token("text-secondary")};
+  --color-accent-primary: #{tokens.token("accent-default")};
+  --color-accent-tertiary: #{tokens.token("accent-text-strong")};
+
+  // Read by the upstream Inspect style boxes ("All properties").
+  --low-emphasis-background: #{tokens.token("bg-panel")};
+
+  // Derived variables are resolved once on the theme root, so the ones the
+  // viewer chrome and the Inspect panel use are set again here.
+  --panel-background-color: #{tokens.token("bg-panel")};
+  --panel-border-color: #{tokens.token("border-default")};
+  --viewer-background-color: #{tokens.token("bg-canvas")};
+  --title-foreground-color: #{tokens.token("text-secondary")};
+  --title-foreground-color-hover: #{tokens.token("text-primary")};
+  --modal-title-foreground-color: #{tokens.token("text-primary")};
+  --icon-foreground: #{tokens.token("text-secondary")};
+  --icon-foreground-hover: #{tokens.token("text-primary")};
+  --icon-foreground-active: #{tokens.token("accent-default")};
+  --icon-foreground-selected: #{tokens.token("accent-default")};
+  --search-bar-input-border-color: #{tokens.token("border-default")};
+  --search-bar-input-border-color-focus: #{tokens.token("accent-default")};
+  --button-tertiary-foreground-color-rest: #{tokens.token("text-secondary")};
+  --button-tertiary-foreground-color-hover: #{tokens.token("text-primary")};
+  --button-tertiary-foreground-color-active: #{tokens.token("accent-default")};
+  --button-tertiary-foreground-color-focus: #{tokens.token("text-primary")};
+  --button-tertiary-background-color-hover: #{tokens.token("bg-subtle")};
+  --button-tertiary-background-color-active: #{tokens.token("bg-selected")};
+  --button-tertiary-background-color-focus: #{tokens.token("bg-subtle")};
+  --button-primary-background-color-rest: #{tokens.token("accent-default")};
+  --button-primary-foreground-color-rest: #{tokens.token("text-on-accent")};
+  --button-primary-background-color-hover: #{tokens.token("accent-hover")};
+  --button-primary-foreground-color-hover: #{tokens.token("text-on-accent")};
+
+  font-family: #{tokens.token("font-text")};
+  -webkit-font-smoothing: antialiased;
+}

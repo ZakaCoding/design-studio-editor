@@ -260,7 +260,8 @@
     text]])
 
 (defn use-search
-  [page objects]
+  ;; Design Studio (P1): the bar says "Layers", not the page name.
+  [_page objects]
   (let [state*                (mf/use-state
                                #(do {:show-search false
                                      :find-replace-mode? false
@@ -751,7 +752,7 @@
          [:div {:class (stl/css :tool-window-bar)}
           [:> title-bar* {:collapsable  false
                           :class        (stl/css :tool-window-bar-title)
-                          :title        (:name page)
+                          :title        (tr "workspace.sidebar.layers")
                           :on-btn-click toggle-search
                           :btn-icon     "search"
                           :btn-title    (tr "labels.search")}]]))]))

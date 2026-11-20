@@ -1,0 +1,62 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+// Floating island (F1 · 01): sits on the canvas with a 12 px edge gap, which
+// the layout that places the panel provides (ds.token("space-panel-edge")).
+.panel {
+  @include ds.root;
+  @include ds.surface-panel;
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-height: 44px;
+  padding: 0 ds.token("space-12") 0 ds.token("space-panel-padding");
+  border-bottom: 1px solid ds.token("border-default");
+}
+
+.title {
+  @include ds.type("panel-title");
+  @include ds.truncate;
+
+  flex: 1;
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-4");
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: ds.token("space-panel-padding");
+  overflow: auto;
+}
+
+.body-flush {
+  padding: 0;
+}
+
+.footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  padding: ds.token("space-12") ds.token("space-panel-padding");
+  border-top: 1px solid ds.token("border-default");
+}

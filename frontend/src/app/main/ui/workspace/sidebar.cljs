@@ -28,9 +28,11 @@
    [app.main.ui.ds.layout.tab-switcher :refer [tab-switcher*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.hooks.resize :refer [use-resize-hook]]
+   [app.main.ui.studio.workspace.header :refer [left-header* right-header*]]
+   [app.main.ui.studio.workspace.rail :refer [layers-rail*]]
    [app.main.ui.workspace.comments :refer [comments-sidebar*]]
-   [app.main.ui.workspace.left-header :refer [left-header*]]
-   [app.main.ui.workspace.right-header :refer [right-header*]]
+   [app.main.ui.workspace.left-header]
+   [app.main.ui.workspace.right-header]
    [app.main.ui.workspace.sidebar.assets :refer [assets-toolbox*]]
    [app.main.ui.workspace.sidebar.debug :refer [debug-panel*]]
    [app.main.ui.workspace.sidebar.history :refer [history-toolbox*]]
@@ -155,8 +157,9 @@
                 :id "layers"}
                {:label (tr "workspace.toolbar.assets")
                 :id "assets"}
-               ;; This string is intentionally not translated.
-               {:label "Tokens"
+               ;; Design Studio seam (STUDIO-SEAMS.md): upstream does not
+               ;; translate this label; board F1 · 01 says "Token"
+               {:label (tr "ds.workspace.tab.tokens")
                 :id "tokens"}]
               [{:label (tr "workspace.sidebar.layers")
                 :id "layers"}
@@ -182,6 +185,8 @@
               :on-context-menu dom/prevent-default-context-menu
               :style {:--left-sidebar-width (dm/str width "px")}}
 
+      ;; Design Studio seam (STUDIO-SEAMS.md): `left-header*` is the Design
+      ;; Studio header (F1 · 01); upstream's stays in its file, unused
       [:> left-header* {:file file
                         :layout layout
                         :project project
@@ -335,6 +340,9 @@
                 :on-lost-pointer-capture on-lost-pointer-capture
                 :on-pointer-move on-pointer-move}])
 
+       ;; Design Studio seam (STUDIO-SEAMS.md): `right-header*` is the
+       ;; Design Studio header (F1 · 01); upstream's stays in its file,
+       ;; unused except for its zoom widget, which the toolbar mounts
        [:> right-header* {:file-id file-id
                           :layout layout
                           :page-id page-id}]
@@ -391,7 +399,10 @@
 
     [:*
      (if (:collapse-left-sidebar layout)
-       [:> collapsed-button*]
+       ;; Design Studio seam (STUDIO-SEAMS.md): the collapsed left sidebar
+       ;; is the Layers rail; upstream's `collapsed-button*` stays unused
+       [:> layers-rail* {:layout layout
+                         :file file}]
        [:> left-sidebar* {:layout layout
                           :file file
                           :page-id page-id

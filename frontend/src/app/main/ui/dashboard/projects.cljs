@@ -124,8 +124,11 @@
                                   :menu-pos nil
                                   :edition (= (:id project) edit-id)})
 
+        ;; Design Studio seam (STUDIO-SEAMS.md): as many cards per project
+        ;; as the DS grid fits (220 px cards, 16 px gaps): four from 1280
+        ;; to 1440 px instead of three.
         [rowref limit]
-        (hooks/use-dynamic-grid-item-width)
+        (hooks/use-dynamic-grid-item-width 236)
 
         on-nav
         (mf/use-fn

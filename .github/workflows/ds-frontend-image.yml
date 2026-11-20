@@ -189,6 +189,11 @@ jobs:
           restore-keys: |
             ds-frontend-deps-v1-${{ runner.os }}-
 
+      - name: Check the translation catalogues (.po structure)
+        # A msgid without msgstr makes the bundle build stop with no message
+        # (15 Nov integration); fail early here and name the line instead.
+        run: python3 -I .github/ds/po-check.py frontend/translations/en.po frontend/translations/id.po
+
       - name: Build frontend bundle (manage.sh, as upstream)
         env:
           BUILD_WASM: 'yes'
@@ -201,6 +206,9 @@ jobs:
           echo "Bundle built in $(( ($(date +%s) - start) / 60 )) min"
           test "$(cat bundles/frontend/version.txt)" = "$EXPECTED_VERSION"
           du -sh bundles/frontend
+
+      - name: Check the string overrides (strings.json) are in the bundle
+        run: python3 .github/ds/check-strings.py --bundle bundles/frontend/js
 
       - name: Hand cache files back to the runner user
         if: always() && steps.cache.outputs.cache-hit != 'true'

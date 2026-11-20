@@ -5,7 +5,6 @@
 ;; Copyright (c) KALEIDOS INC Sucursal en España SL
 
 (ns app.main.ui.auth
-  (:require-macros [app.main.style :as stl])
   (:require
    [app.common.data.macros :as dm]
    [app.main.data.auth :as da]
@@ -14,8 +13,7 @@
    [app.main.ui.auth.recovery :refer [recovery-page*]]
    [app.main.ui.auth.recovery-request :refer [recovery-request-page*]]
    [app.main.ui.auth.register :refer [register-page* register-success-page* register-validate-page* terms-service-privacy-policy*]]
-   [app.main.ui.ds.foundations.assets.raw-svg :refer [raw-svg*] :as raw-svg]
-   [app.main.ui.ds.foundations.typography.heading :refer [heading*]]
+   [app.main.ui.studio.auth :as sa]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [rumext.v2 :as mf]))
@@ -43,17 +41,12 @@
       (when error
         (st/emit! (da/show-redirect-error error))))
 
-    [:main {:class (stl/css-case
-                    :auth-section true
-                    :register is-register)}
-     [:> heading* {:level 1 :typography "title-large" :class (stl/css :logo-container)}
-      [:a {:href "#/" :title "Penpot" :class (stl/css :logo-btn)}
-       [:> raw-svg* {:id raw-svg/penpot-logo
-                     :class (stl/css :logo)}]]]
-     [:div {:class (stl/css :login-illustration)}
-      [:img {:src "images/registration-illustration.png"}]]
-
-     [:section {:class (stl/css :auth-content)}
+    ;; Design Studio (WP5): the F1 · 08 shell replaces Penpot's logo and
+    ;; illustration. With open sign-up the register routes leave for
+    ;; /start/signup (ADR 0017); the shell does that.
+    [:> sa/shell* {:section (name section)
+                   :leave-to-signup is-register}
+     [:*
       (case section
         :auth-register
         [:> register-page* {:params params}]

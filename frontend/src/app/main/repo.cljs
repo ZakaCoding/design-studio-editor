@@ -14,6 +14,7 @@
    [app.common.uri :as u]
    [app.config :as cf]
    [app.main.data.event :as-alias ev]
+   [app.main.ui.studio.refusal :as ds-refusal]
    [app.util.http :as http]
    [app.util.sse :as sse]
    [beicon.v2.core :as rx]
@@ -105,6 +106,16 @@
 (defn handle-response
   [{:keys [status body headers uri] :as response}]
   (cond
+    ;; Design Studio: the guard in front of the API refused the command
+    ;; and answered in the backend's place (STUDIO-SEAMS.md).
+    (some? (ds-refusal/response->code response))
+    (let [code (ds-refusal/response->code response)]
+      (ds-refusal/announce! code)
+      (rx/throw (ex-info "http error" {:type :restriction
+                                       :code code
+                                       :uri uri
+                                       :status status})))
+
     (= 204 status)
     ;; We need to send "something" so the streams listening downstream can act
     (rx/of nil)

@@ -35,11 +35,14 @@
    [app.main.ui.components.dropdown-menu :refer [dropdown-menu*
                                                  dropdown-menu-item*]]
    [app.main.ui.context :as ctx]
-   [app.main.ui.dashboard.subscription :refer [get-subscription-type
-                                               main-menu-power-up*]]
+   [app.main.ui.dashboard.subscription :refer [get-subscription-type]]
    [app.main.ui.ds.buttons.icon-button :refer [icon-button*]]
    [app.main.ui.ds.foundations.assets.icon :as i :refer [icon*]]
    [app.main.ui.hooks.resize :as r]
+   [app.main.ui.studio.about :as ds-about]
+   [app.main.ui.studio.brand :as brand]
+   [app.main.ui.studio.guard :refer [guard*]]
+   [app.main.ui.studio.plans :refer [plans-menu-item*]]
    [app.plugins.register :as preg]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
@@ -70,7 +73,7 @@
          (fn []
            (st/emit! (ev/event {::ev/name "explore-help-center-click"
                                 ::ev/origin "workspace:menu"}))
-           (dom/open-new-window "https://help.penpot.app")))
+           (dom/open-new-window brand/engine-guide-uri)))
 
         nav-to-community
         (mf/use-fn
@@ -105,7 +108,7 @@
          (fn []
            (st/emit! (ev/event {::ev/name "explore-terms-service-click"
                                 ::ev/origin "workspace:menu"}))
-           (dom/open-new-window "https://penpot.app/terms")))
+           (dom/open-new-window (brand/terms-of-service-uri))))
 
         nav-to-feedback
         (mf/use-fn #(st/emit! (dcm/go-to-feedback)))
@@ -155,23 +158,27 @@
       [:span {:class (stl/css :item-name)}
        (tr "labels.help-center")]]
 
-     [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
-                              :on-click    nav-to-community
-                              :on-key-down (fn [event]
-                                             (when (kbd/enter? event)
-                                               (nav-to-community event)))
-                              :id          "file-menu-community"}
-      [:span {:class (stl/css :item-name)}
-       (tr "labels.community")]]
+     ;; Design Studio (P4-A): Penpot community link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
+                                :on-click    nav-to-community
+                                :on-key-down (fn [event]
+                                               (when (kbd/enter? event)
+                                                 (nav-to-community event)))
+                                :id          "file-menu-community"}
+        [:span {:class (stl/css :item-name)}
+         (tr "labels.community")]])
 
-     [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
-                              :on-click    nav-to-youtube
-                              :on-key-down (fn [event]
-                                             (when (kbd/enter? event)
-                                               (nav-to-youtube event)))
-                              :id          "file-menu-youtube"}
-      [:span {:class (stl/css :item-name)}
-       (tr "labels.tutorials")]]
+     ;; Design Studio (P4-A): Penpot community link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
+                                :on-click    nav-to-youtube
+                                :on-key-down (fn [event]
+                                               (when (kbd/enter? event)
+                                                 (nav-to-youtube event)))
+                                :id          "file-menu-youtube"}
+        [:span {:class (stl/css :item-name)}
+         (tr "labels.tutorials")]])
 
      [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
                               :on-click    show-release-notes
@@ -182,23 +189,37 @@
       [:span {:class (stl/css :item-name)}
        (tr "labels.release-notes")]]
 
+     ;; Design Studio (P4-A): About Design Studio (STUDIO-SEAMS.md)
      [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
-                              :on-click    nav-to-templates
+                              :on-click    ds-about/show!
                               :on-key-down (fn [event]
                                              (when (kbd/enter? event)
-                                               (nav-to-templates event)))
-                              :id          "file-menu-templates"}
+                                               (ds-about/show!)))
+                              :id          "file-menu-about"}
       [:span {:class (stl/css :item-name)}
-       (tr "labels.libraries-and-templates")]]
+       (tr "ds.about.title")]]
 
-     [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
-                              :on-click    nav-to-github
-                              :on-key-down (fn [event]
-                                             (when (kbd/enter? event)
-                                               (nav-to-github event)))
-                              :id          "file-menu-github"}
-      [:span {:class (stl/css :item-name)}
-       (tr "labels.github-repo")]]
+     ;; Design Studio (P4-A): Penpot community link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
+                                :on-click    nav-to-templates
+                                :on-key-down (fn [event]
+                                               (when (kbd/enter? event)
+                                                 (nav-to-templates event)))
+                                :id          "file-menu-templates"}
+        [:span {:class (stl/css :item-name)}
+         (tr "labels.libraries-and-templates")]])
+
+     ;; Design Studio (P4-A): Penpot community link, hidden (STUDIO-SEAMS.md)
+     (when brand/penpot-community?
+       [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
+                                :on-click    nav-to-github
+                                :on-key-down (fn [event]
+                                               (when (kbd/enter? event)
+                                                 (nav-to-github event)))
+                                :id          "file-menu-github"}
+        [:span {:class (stl/css :item-name)}
+         (tr "labels.github-repo")]])
 
      [:> dropdown-menu-item* {:class (stl/css :base-menu-item :submenu-item)
                               :on-click    nav-to-terms
@@ -1126,7 +1147,12 @@
       (when (or (and (contains? cf/flags :subscriptions)
                      (not= "enterprise" subscription-type))
                 (contains? cf/flags :admin-console))
-        [:> main-menu-power-up* {:close-sub-menu close-sub-menu}])]
+        [:> guard* {}
+         [:*
+          [:div {:class (stl/css :separator)}]
+          [:> plans-menu-item* {:class (stl/css :base-menu-item :menu-item)
+                                :name-class (stl/css :item-name)
+                                :on-pointer-enter close-sub-menu}]]])]
 
      (case selected-sub-menu
        :file

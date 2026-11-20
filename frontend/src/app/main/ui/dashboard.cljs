@@ -29,13 +29,19 @@
    [app.main.ui.dashboard.import]
    [app.main.ui.dashboard.layout-toggle :as lt]
    [app.main.ui.dashboard.libraries :refer [libraries-page*]]
-   [app.main.ui.dashboard.projects :refer [projects-section*]]
    [app.main.ui.dashboard.search :refer [search-page*]]
-   [app.main.ui.dashboard.sidebar :refer [sidebar*]]
    [app.main.ui.dashboard.team :refer [team-settings-page* team-members-page* team-invitations-page* webhooks-page*]]
    [app.main.ui.dashboard.templates :refer [templates-section*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.modal :refer [modal-container*]]
+   ;; Design Studio seam (STUDIO-SEAMS.md): the dashboard shell (F1 · 03,
+   ;; 12, 14). `sidebar*` takes the place of
+   ;; `app.main.ui.dashboard.sidebar/sidebar*`, and `recent*` the place of
+   ;; `app.main.ui.dashboard.projects/projects-section*`: it renders the
+   ;; home (`studio.dashboard.home/home*`), that section ("Proyek") or the
+   ;; templates page, by the `view` parameter. `top*` is the top bar.
+   [app.main.ui.studio.dashboard-shell.sidebar :refer [sidebar*]]
+   [app.main.ui.studio.dashboard-shell.views :refer [recent* top*] :rename {recent* projects-section*}]
    [app.main.ui.workspace.plugins]
    [app.plugins.register :as preg]
    [app.util.dom :as dom]
@@ -96,6 +102,12 @@
            :ref container}
 
      [:> progress-notification-widget*]
+
+     ;; Design Studio seam (STUDIO-SEAMS.md): search, "+ File baru", tabs
+     [:> top* {:section section
+               :team team
+               :default-project default-project
+               :search-term search-term}]
 
      (case section
        :dashboard-recent

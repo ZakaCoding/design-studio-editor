@@ -1,0 +1,15 @@
+// Design Studio SCSS index. In a component stylesheet:
+//
+//   @use "studio/ds" as ds;
+//
+//   .thing {
+//     @include ds.root;
+//     background: ds.token("bg-panel");
+//   }
+//
+// See STUDIO-DS.md at the repository root.
+
+@forward "./ds-tokens" show token, $core, $light, $code-only;
+@forward "./ds-helpers";
+@forward "./ds-viewer";
+@forward "./ds-density";

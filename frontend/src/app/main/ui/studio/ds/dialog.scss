@@ -1,0 +1,95 @@
+// Design Studio (ZakaCoding Studio). New file, not part of upstream Penpot.
+
+@use "studio/ds" as ds;
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: ds.token("z-dialog");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ds.token("space-16");
+  background: ds.token("overlay-scrim");
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ds-dialog-fade ds.token("motion-base") ds.token("ease-out");
+  }
+}
+
+.dialog {
+  @include ds.root;
+  @include ds.surface-panel;
+
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100%);
+  max-height: min(720px, 100%);
+  box-shadow: ds.token("elevation-popover");
+  outline: none;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ds-dialog-in ds.token("motion-slow") ds.token("ease-out");
+  }
+}
+
+.size-lg {
+  width: min(640px, 100%);
+}
+
+@keyframes ds-dialog-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ds-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.header {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  gap: ds.token("space-12");
+  padding: ds.token("space-20") ds.token("space-16") 0 ds.token("space-24");
+}
+
+.heading {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.title {
+  @include ds.type("title");
+
+  margin: 0;
+  color: ds.token("text-primary");
+}
+
+.description {
+  margin: ds.token("space-8") 0 0;
+  font-size: ds.token("size-13");
+  line-height: 1.5;
+  color: ds.token("text-secondary");
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: ds.token("space-16") ds.token("space-24") ds.token("space-24");
+  overflow: auto;
+  font-size: ds.token("size-13");
+}
+
+.footer {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: ds.token("space-8");
+  padding: 0 ds.token("space-24") ds.token("space-24");
+}

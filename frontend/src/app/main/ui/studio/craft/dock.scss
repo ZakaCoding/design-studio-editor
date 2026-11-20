@@ -1,0 +1,223 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Native Craft dock (F1 · 05): a floating island beside the design panel.
+// The Craft panel inside it is Studio's frame; this file only places and
+// sizes the container and its two controls.
+
+@use "studio/ds" as ds;
+
+.dock {
+  @include ds.root;
+  @include ds.surface-panel;
+
+  inline-size: var(--ds-craft-dock-w, 440px);
+  max-inline-size: calc(100vw - 2 * #{ds.token("space-panel-edge")});
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: contain;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+// On its own (no workspace shell): fixed beside the design panel.
+.dock-floating {
+  position: fixed;
+  z-index: ds.token("z-panel");
+  inset-block: ds.token("space-panel-edge");
+  inset-inline-end: var(--ds-craft-dock-right, #{ds.token("space-panel-edge")});
+}
+
+// In the workspace shell's `craft-dock` mount point: the shell gives the
+// place and the height, the dock its width.
+.dock-column {
+  position: relative;
+  flex: none;
+  block-size: 100%;
+}
+
+// Under 1280 px the dock lies over the design panel; the shadow says so.
+.dock-overlay {
+  box-shadow: ds.token("elevation-popover");
+}
+
+// Phone: a bottom sheet over the canvas, full width.
+.dock-sheet {
+  position: fixed;
+  z-index: ds.token("z-panel");
+  inset-block: auto 0;
+  inset-inline: 0;
+  inline-size: 100%;
+  max-inline-size: none;
+  block-size: min(640px, 86dvh);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+
+  .resize {
+    display: none;
+  }
+}
+
+.mount {
+  position: relative;
+  flex: 1;
+  min-block-size: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.waiting {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: ds.token("space-panel-padding");
+  color: ds.token("text-secondary");
+  text-align: center;
+}
+
+// The inner edge is a window splitter: 12 px wide over the panel's own
+// padding, with a line that shows on hover, focus and drag.
+.resize {
+  @include ds.focusable(-2px);
+
+  position: absolute;
+  z-index: 2;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 12px;
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+
+  &::before {
+    @include ds.motion((opacity));
+
+    content: "";
+    position: absolute;
+    inset-block: ds.token("space-16");
+    inset-inline-start: 0;
+    inline-size: 2px;
+    border-radius: ds.token("radius-xs");
+    background: ds.token("craft-default");
+    opacity: 0;
+  }
+
+  &:hover::before {
+    opacity: 0.45;
+  }
+
+  &:focus-visible::before {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    inline-size: 20px;
+  }
+}
+
+.dock-sizing {
+  // The frame must not swallow the pointer while the edge is dragged.
+  .mount {
+    pointer-events: none;
+  }
+
+  .resize::before {
+    opacity: 1;
+  }
+}
+
+.size {
+  @include ds.type("value");
+
+  position: absolute;
+  z-index: 3;
+  inset-block-start: 50%;
+  inset-inline-start: ds.token("space-16");
+  padding: ds.token("space-4") ds.token("space-8");
+  border-radius: ds.token("radius-pill");
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+// The dock's own control while it is collapsed: bottom right of the
+// canvas, beside the design panel, on the line of the toolbar.
+.floating {
+  position: fixed;
+  z-index: ds.token("z-panel");
+  inset-block-end: 20px;
+  inset-inline-end: var(--ds-craft-dock-right, #{ds.token("space-16")});
+
+  @media (width < 720px) {
+    inset-inline-end: ds.token("space-16");
+  }
+}
+
+// The Craft pill of board F1 · 02.
+.pill {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color));
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  block-size: 48px;
+  padding-inline: 18px;
+  border-radius: 24px; // half of the pill's height, as drawn
+  background-color: ds.token("craft-default");
+
+  // The board's shadow for this pill: the float shadow at twice its opacity.
+  box-shadow: 0 8px 24px color-mix(in srgb, #{ds.token("text-primary")} 16%, transparent);
+  color: ds.token("text-on-accent");
+  cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    background-color: ds.token("accent-hover");
+  }
+}
+
+.pill-mark {
+  stroke-width: 1.7;
+}
+
+.pill-label {
+  font-family: ds.token("font-display");
+  font-size: 0.9375rem; // 15 px on the board; the size scale has 14 and 16
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.pill-credits {
+  margin-inline-start: 5px;
+  color: ds.token("craft-subtle");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+}
+
+.pill-busy .pill-mark {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: craft-pulse 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes craft-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}

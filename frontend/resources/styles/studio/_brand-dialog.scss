@@ -1,0 +1,83 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// P4-A: the DS dialog (`studio.ds.dialog/dialog*`) at the P3D dialog values
+// for the About and Release notes dialogs: padding 20, title 1rem, 32 px
+// pills (soft and black). Include `dense-dialog` on the `class` passed to
+// `dialog*`; its header, body and footer are its direct children.
+//
+//   @use "studio/brand-dialog" as bd;
+//   .dialog { @include bd.dense-dialog; }
+
+@use "./ds" as ds;
+
+@mixin dense-dialog {
+  > header {
+    gap: ds.token("space-8");
+    padding: ds.dense("dialog-pad") ds.token("space-12") 0 ds.dense("dialog-pad");
+  }
+
+  [class~="main_ui_studio_ds_dialog__title"] {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("dialog-title-size");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  [class~="main_ui_studio_ds_dialog__description"] {
+    margin-block-start: ds.token("space-4");
+    font-size: ds.dense("body-size");
+  }
+
+  > div {
+    padding: ds.token("space-16") ds.dense("dialog-pad");
+  }
+
+  > footer {
+    padding: 0 ds.dense("dialog-pad") ds.dense("dialog-pad");
+  }
+}
+
+@mixin -pill {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, color));
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: ds.dense("button-sm");
+  padding: 0 14px;
+  border-radius: ds.token("radius-pill");
+  font-family: ds.token("font-text");
+  font-size: ds.dense("body-size");
+  font-weight: ds.token("weight-semibold");
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+@mixin pill-black {
+  @include -pill;
+
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+
+  &:hover {
+    background: ds.token("text-body");
+  }
+}
+
+@mixin pill-soft {
+  @include -pill;
+
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+
+  &:hover {
+    background: ds.token("border-default");
+  }
+}

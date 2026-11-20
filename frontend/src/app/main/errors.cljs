@@ -19,6 +19,7 @@
    [app.main.repo :as rp]
    [app.main.router :as rt]
    [app.main.store :as st]
+   [app.main.ui.studio.refusal :as ds-refusal]
    [app.main.worker]
    [app.util.dom :as dom]
    [app.util.globals :as g]
@@ -576,19 +577,6 @@
     :unhandled
     :handled))
 
-(defn- reload-page-link
-  "Recovery action for a save failure: reload the window.
-
-  Persistence stops for the session once a save fails terminally, and
-  reloading is the only way to get a fresh one without the user having to
-  know they can also leave the file and come back. `location.reload` is the
-  pattern used elsewhere in the app for a full restart."
-  []
-  {:label (tr "labels.reload-page")
-   :callback (fn [event]
-               (dom/prevent-default event)
-               (js/location.reload))})
-
 (def persistence-failed-tag
   "Tag of the save failure notification, hidden once a save lands."
   :persistence-failed)
@@ -620,7 +608,8 @@
              :timeout nil
              :tag persistence-failed-tag
              :report-link? true
-             :links [(reload-page-link)]
+             ;; No reload link: reloading can drop edits that exist only in
+             ;; this tab, and the message tells the user to keep it open.
              :hint (tr "errors.save-failed")))))
 
 (defmethod ptk/handle-error :persistence
@@ -930,6 +919,12 @@
                                           :text (tr "errors.deprecated.contact.text")
                                           :after (tr "errors.deprecated.contact.after")
                                           :on-click #(st/emit! (rt/nav :settings-feedback))}}))
+
+    ;; Design Studio: a guard refusal (storage, uploads, invitations, reset
+    ;; mail). The card says what it means; it is not an application defect.
+    (ds-refusal/code? code)
+    (ds-refusal/announce! code)
+
     :else
     (when-let [cause (::instance error)]
       (ex/print-throwable cause :prefix "Restriction Error")

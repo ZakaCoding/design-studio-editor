@@ -1,0 +1,425 @@
+// Design Studio (F1 · 11): the Inspect panel of the viewer. New file.
+
+@use "studio/ds" as ds;
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 0;
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  font-family: var(--ds-font-text);
+  user-select: text;
+}
+
+// P3D (density): 12 × 16 px sections, sentence-case labels, 28 px rows,
+// so a layer's whole spec fits the panel at 900 px tall.
+.head {
+  flex: none;
+  padding: ds.token("space-12") ds.token("space-16");
+  border-block-end: 1px solid ds.token("border-default");
+}
+
+.name {
+  @include ds.type("panel-title");
+
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: ds.token("text-primary");
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: ds.token("text-secondary");
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scroll {
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+.section {
+  padding: ds.token("space-12") ds.token("space-16");
+  border-block-end: 1px solid ds.token("border-default");
+
+  &:last-child {
+    border-block-end: 0;
+  }
+}
+
+// Penpot's base `h3` adds 8 px above and below: not here.
+.label {
+  margin: 0 0 ds.token("space-4");
+  padding: 0;
+  font-family: var(--ds-font-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: ds.token("text-secondary");
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+// Label, then the control on the same line (Export).
+.section-row {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-12");
+
+  > .label {
+    flex: none;
+    margin: 0;
+  }
+}
+
+// Size and position: W H X Y on one line, rotation and radius under it.
+.geometry {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: ds.token("space-8");
+  margin: 0;
+}
+
+.geometry-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 28px;
+  min-inline-size: 0;
+}
+
+.geometry-wide {
+  grid-column: span 2;
+}
+
+.geometry-key {
+  flex: none;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: ds.token("text-secondary");
+}
+
+.geometry-value {
+  margin: 0;
+  overflow: hidden;
+  font: 500 0.75rem/1 var(--ds-font-mono);
+  color: ds.token("text-primary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Style: a 28 px row per fill, stroke, shadow and type value.
+.style {
+  display: grid;
+  margin: 0;
+}
+
+.style-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: center;
+  min-block-size: 28px;
+}
+
+.style-key {
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: ds.token("text-secondary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.style-value {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-inline-size: 0;
+  margin: 0;
+}
+
+.swatch {
+  flex: none;
+  inline-size: 14px;
+  block-size: 14px;
+  border-radius: 4px;
+
+  // A white or pale fill still reads as a swatch on the white panel.
+  box-shadow: inset 0 0 0 1px rgb(21 21 26 / 0.14);
+}
+
+.swatch-image {
+  background:
+    linear-gradient(135deg, transparent 50%, #{ds.token("border-strong")} 50%),
+    #{ds.token("bg-subtle")};
+}
+
+.value-main {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
+  font: 500 0.75rem/1.2 var(--ds-font-mono);
+  color: ds.token("text-primary");
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// A font name reads better in the text face.
+.value-text {
+  font-family: var(--ds-font-text);
+  font-size: 0.8125rem;
+}
+
+.value-meta {
+  flex: none;
+  font: 400 0.75rem/1.2 var(--ds-font-mono);
+  color: ds.token("text-secondary");
+  white-space: nowrap;
+}
+
+.value-pair {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-inline-start: auto;
+  white-space: nowrap;
+}
+
+.value-key {
+  font-size: 0.75rem;
+  color: ds.token("text-secondary");
+}
+
+.value-num {
+  font: 500 0.75rem/1.2 var(--ds-font-mono);
+  color: ds.token("text-primary");
+}
+
+.muted {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: ds.token("text-secondary");
+}
+
+// Code
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: ds.token("space-8");
+
+  .label {
+    margin: 0;
+  }
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  background: ds.token("bg-subtle");
+  border-radius: ds.token("radius-sm");
+}
+
+.segment {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.type("label");
+
+  padding: 2px 10px;
+  border-radius: 6px;
+  color: ds.token("text-secondary");
+  font-size: 0.75rem;
+  text-transform: none;
+}
+
+.segment-on {
+  background: ds.token("bg-panel");
+  color: ds.token("text-primary");
+  box-shadow: ds.token("elevation-control");
+}
+
+.code-box {
+  position: relative;
+  background: ds.token("bg-inverse");
+  border-radius: ds.token("radius-md");
+}
+
+.code-pre {
+  margin: 0;
+  max-block-size: 360px;
+  padding: 10px ds.token("space-12");
+  overflow: auto;
+  color: #e9e9ef;
+  font: 400 0.6875rem/17px var(--ds-font-mono);
+  white-space: pre;
+}
+
+// Eight lines, then "Show all". The bottom space is a transparent border,
+// not padding: overflow clips at the padding edge, so a ninth line no
+// longer peeks out under the eighth.
+.code-pre-short {
+  box-sizing: border-box;
+  max-block-size: calc(8 * 17px + 20px);
+  padding-block-end: 0;
+  overflow-y: hidden;
+  border-block-end: 10px solid transparent;
+}
+
+.code-more {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  display: block;
+  min-block-size: 28px;
+  margin-inline-start: auto;
+  color: ds.token("accent-default");
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &:hover {
+    color: ds.token("accent-text-strong");
+  }
+}
+
+.code-copy {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  display: grid;
+  place-items: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: 6px;
+  color: #bdbdc8;
+  background: #15151a;
+  z-index: 1;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+// Export
+.export {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-inline-size: 0;
+  gap: ds.token("space-8");
+
+  // Penpot's base stylesheet puts a margin under form controls.
+  > select,
+  > button {
+    margin: 0;
+  }
+}
+
+.export-select {
+  @include ds.type("control");
+  @include ds.focusable;
+
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 32px;
+  padding-inline: ds.token("space-12");
+  border: 0;
+  border-radius: ds.token("radius-sm");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-size: 0.75rem;
+}
+
+.export-button {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.type("control");
+
+  flex: none;
+  block-size: 32px;
+  padding-inline: ds.token("space-20");
+  border-radius: ds.token("radius-sm");
+  font-size: 0.75rem;
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  font-weight: 600;
+}
+
+// Handoff: one line and the button.
+.handoff {
+  display: grid;
+  gap: ds.token("space-8");
+  padding: 10px ds.token("space-12") ds.token("space-12");
+  background: ds.token("accent-subtle");
+  border-radius: ds.token("radius-card");
+}
+
+.handoff-title {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  min-inline-size: 0;
+  margin: 0;
+  color: ds.token("accent-text-strong");
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.handoff-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.handoff-button {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  block-size: 32px;
+  border-radius: ds.token("radius-pill");
+  background: ds.token("accent-default");
+  color: ds.token("text-on-accent");
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+
+  &:hover {
+    background: ds.token("accent-text-strong");
+  }
+}
+
+// All properties (the upstream panels)
+.more {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  min-block-size: 28px;
+  color: ds.token("text-secondary");
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: none;
+
+  &:hover {
+    color: ds.token("text-primary");
+  }
+}
+
+.more-body {
+  margin-block-start: ds.token("space-8");
+  margin-inline: calc(-1 * #{ds.token("space-16")});
+}

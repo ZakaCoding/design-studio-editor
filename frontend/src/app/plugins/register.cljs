@@ -14,6 +14,7 @@
    [app.common.uuid :as uuid]
    [app.main.repo :as rp]
    [app.main.store :as st]
+   [app.plugins.persistence-guard :as pguard]
    [app.util.object :as obj]
    [beicon.v2.core :as rx]
    [promesa.core :as p]))
@@ -150,6 +151,8 @@
 
 (defn check-permission
   [plugin-id permission]
+  ;; Throws when the MCP plugin asks to write while saving cannot be trusted.
+  (pguard/note-write! plugin-id permission)
   (or (= plugin-id "00000000-0000-0000-0000-000000000000")
       (= plugin-id mcp-plugin-id)
       (let [{:keys [permissions]} (dm/get-in @registry [:data plugin-id])]

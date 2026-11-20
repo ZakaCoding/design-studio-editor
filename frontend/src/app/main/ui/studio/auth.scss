@@ -1,0 +1,989 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio auth screens: F1 · 08 Masuk and the F1 · 09 states.
+// Colours, radii and type come from the F1 · 07 token sets (`ds/core`,
+// `ds/light`). They are CSS variables on our own roots only, so Penpot's
+// editor theme is untouched.
+
+@font-face {
+  font-family: "DS Funnel Display";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("../fonts/studio/funnel-display-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "DS Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/studio/geist-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "DS Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/studio/geist-mono-latin-wght-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "DS Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/studio/inter-latin-wght-normal.woff2") format("woff2");
+}
+
+@mixin tokens {
+  // ds/light
+  --ds-bg-panel: #fff;
+  --ds-bg-subtle: #f5f5f8;
+  --ds-border-default: #ebebef;
+  --ds-border-strong: #d9d9e0;
+  --ds-text-primary: #15151a;
+  --ds-text-body: #3a3a44;
+  --ds-text-secondary: #6a6a75;
+  --ds-text-placeholder: #737380;
+  --ds-text-disabled: #9c9ca8;
+  --ds-text-on-accent: #fff;
+  --ds-accent-default: #5b5bd6;
+  --ds-accent-subtle: #eeeefc;
+  --ds-accent-text-strong: #2e2e8a;
+  --ds-status-warning-text: #7a5300;
+  --ds-status-warning-bg: #fff6e0;
+  --ds-status-danger-text: #b42318;
+  --ds-status-danger-bg: #fdecec;
+  --ds-status-success-text: #1b7a52;
+  --ds-status-success-bg: #f3fbf7;
+  --ds-guide-measure: #ff3d8b;
+  --ds-brand-wordmark-ink: #182421;
+  --ds-brand-wordmark-muted: #627169;
+  --ds-radius-button: 999px;
+  --ds-radius-card: 14px;
+
+  // ds/core
+  --ds-radius-xs: 4px;
+  --ds-radius-md: 10px;
+  --ds-radius-xl: 16px;
+  --ds-fun-orange: #ff6b3d;
+  --ds-fun-mint: #7ed9b0;
+  --ds-fun-sky: #6ea8ff;
+  --ds-fun-yellow: #ffc93d;
+  --ds-fun-pink: #ff8fc7;
+  --ds-shadow-pop: 0 6px 16px rgb(21 21 26 / 0.08);
+  --ds-shadow-float: 0 8px 24px rgb(21 21 26 / 0.16);
+  --ds-font-display: "DS Funnel Display", "DS Geist", system-ui, sans-serif;
+  --ds-font-text: "DS Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ds-font-mono: "DS Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+  --ds-font-wordmark: "DS Inter", system-ui, sans-serif;
+
+  color: var(--ds-text-primary);
+  color-scheme: light;
+  font-family: var(--ds-font-text);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+// --- Shell
+
+.shell {
+  @include tokens;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: auto;
+  background: var(--ds-bg-panel);
+
+  @media (width <= 992px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// P3D (density): the form and the legal lines are one block, optically
+// centred (1fr above, 2fr below), so the free space does not pile up under
+// the form while the visual panel fills the height.
+.pane {
+  display: grid;
+  grid-template-rows: auto minmax(24px, 1fr) auto auto minmax(24px, 2fr);
+  min-block-size: 100%;
+  padding: 40px 48px 32px;
+
+  @media (width <= 600px) {
+    padding: 24px 20px;
+  }
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lockup-link {
+  display: inline-flex;
+  text-decoration: none;
+  border-radius: var(--ds-radius-xs);
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+    outline-offset: 4px;
+  }
+}
+
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lockup-mark {
+  inline-size: 32px;
+  block-size: 32px;
+  flex: none;
+}
+
+.lockup-word {
+  font-family: var(--ds-font-wordmark);
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.4px;
+  white-space: nowrap;
+}
+
+.lockup-design {
+  font-weight: 600;
+  color: var(--ds-brand-wordmark-ink);
+}
+
+.lockup-studio {
+  font-weight: 400;
+  color: var(--ds-brand-wordmark-muted);
+}
+
+.lang {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.lang-option {
+  padding: 4px 6px;
+  border: 0;
+  border-radius: var(--ds-radius-xs);
+  background: none;
+  color: var(--ds-text-secondary);
+  font-family: var(--ds-font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ds-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+    outline-offset: 1px;
+  }
+}
+
+.lang-current {
+  color: var(--ds-text-primary);
+  font-weight: 600;
+}
+
+.content {
+  justify-self: center;
+  inline-size: 100%;
+  grid-row: 3;
+  max-inline-size: 400px;
+}
+
+.legal {
+  grid-row: 4;
+  justify-self: center;
+  inline-size: 100%;
+  max-inline-size: 400px;
+  display: grid;
+  gap: 4px;
+  margin-block-start: 24px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--ds-border-default);
+}
+
+.legal-text {
+  margin: 0;
+  color: var(--ds-text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.legal-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--ds-text-primary);
+  }
+}
+
+// --- Screen
+
+.scope {
+  @include tokens;
+
+  padding: 20px;
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-bg-panel);
+}
+
+.shell .scope,
+.modal .scope {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.page {
+  display: grid;
+  gap: 20px;
+}
+
+.title {
+  margin: 0;
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+
+  @media (width <= 600px) {
+    font-size: 1.5rem;
+  }
+}
+
+.title,
+.body {
+  text-wrap: pretty;
+}
+
+// Two even lines instead of one long line and a lone last word.
+.subtitle {
+  text-wrap: balance;
+}
+
+// 6 px under the title (the page gap is 20).
+.subtitle {
+  margin: -14px 0 0;
+  color: var(--ds-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.body {
+  margin: -8px 0 0;
+  color: var(--ds-text-body);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.field-label {
+  color: var(--ds-text-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  block-size: 40px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-bg-panel);
+  transition:
+    border-color 120ms ease-out,
+    box-shadow 120ms ease-out;
+
+  &:hover {
+    border-color: var(--ds-text-disabled);
+  }
+
+  &:focus-within {
+    border-color: var(--ds-accent-default);
+    box-shadow:
+      0 0 0 1px var(--ds-accent-default),
+      0 0 0 4px var(--ds-accent-subtle);
+  }
+}
+
+.control-invalid,
+.control-invalid:hover {
+  border-color: var(--ds-status-danger-text);
+
+  &:focus-within {
+    border-color: var(--ds-status-danger-text);
+    box-shadow:
+      0 0 0 1px var(--ds-status-danger-text),
+      0 0 0 4px var(--ds-status-danger-bg);
+  }
+}
+
+.input {
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+  margin: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  outline: 0;
+  background: none;
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-text);
+  font-size: 0.875rem;
+
+  &::placeholder {
+    color: var(--ds-text-placeholder);
+    opacity: 1;
+  }
+
+  &:-webkit-autofill {
+    box-shadow: 0 0 0 100px var(--ds-bg-panel) inset;
+    -webkit-text-fill-color: var(--ds-text-primary);
+  }
+}
+
+.reveal {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 32px;
+  block-size: 32px;
+  margin-inline-end: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ds-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+  }
+}
+
+.reveal-icon {
+  inline-size: 20px;
+  block-size: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.field-error {
+  color: var(--ds-status-danger-text);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.field-error-options {
+  margin: 4px 0 0;
+  padding-inline-start: 18px;
+}
+
+.link {
+  color: var(--ds-accent-default);
+  font-size: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ds-accent-text-strong);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  min-block-size: 40px;
+  margin: 0;
+  padding: 8px 20px;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-button);
+  font-family: var(--ds-font-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+    outline-offset: 2px;
+  }
+}
+
+.button-primary {
+  margin-block-start: 4px;
+  background: var(--ds-accent-default);
+  color: var(--ds-text-on-accent);
+
+  &:hover {
+    background: var(--ds-accent-text-strong);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--ds-accent-text-strong);
+    transform: translateY(1px);
+  }
+
+  // The DS disabled look (`studio/ds/button`): a quiet grey pill, not a
+  // washed accent (P3-B).
+  &:disabled {
+    border-color: var(--ds-border-default);
+    background: var(--ds-border-default);
+    color: var(--ds-text-disabled);
+    cursor: not-allowed;
+  }
+}
+
+// Between the click and the answer: a spinner beside the label.
+.button-busy {
+  gap: 10px;
+
+  &::before {
+    content: "";
+    flex: none;
+    inline-size: 14px;
+    block-size: 14px;
+    border: 2px solid rgb(255 255 255 / 0.45);
+    border-block-start-color: #fff;
+    border-radius: 50%;
+    animation: ds-auth-spin 0.7s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 2.4s;
+    }
+  }
+}
+
+@keyframes ds-auth-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.button-secondary {
+  border-color: var(--ds-border-strong);
+  background: var(--ds-bg-panel);
+  color: var(--ds-text-primary);
+
+  &:hover {
+    border-color: var(--ds-text-disabled);
+    background: var(--ds-bg-subtle);
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-block: 12px;
+  color: var(--ds-text-secondary);
+  font-size: 0.75rem;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    block-size: 1px;
+    background: var(--ds-border-default);
+  }
+}
+
+// Open sign-up: one row under the form, the question on the left and the
+// way in on the right, so it reads as the second action of the screen.
+.signup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 6px 6px 6px 14px;
+  border-radius: var(--ds-radius-card);
+  background: var(--ds-bg-subtle);
+  color: var(--ds-text-body);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+.signup-text {
+  color: var(--ds-text-body);
+}
+
+.signup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 32px;
+  padding: 0 12px 0 14px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-button);
+  background: var(--ds-bg-panel);
+  color: var(--ds-accent-default);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  svg {
+    inline-size: 14px;
+    block-size: 14px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    border-color: var(--ds-accent-default);
+    color: var(--ds-accent-text-strong);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+    outline-offset: 2px;
+  }
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  font-size: 0.875rem;
+}
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-status-danger-bg);
+  color: var(--ds-status-danger-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-block-end: 12px;
+
+  // "!" in a ring, so the message is not carried by colour alone.
+  &::before {
+    content: "!";
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: 16px;
+    block-size: 16px;
+    margin-block-start: 1px;
+    border: 1.5px solid currentcolor;
+    border-radius: 50%;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+}
+
+.note {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--ds-radius-card);
+  background: var(--ds-bg-subtle);
+  color: var(--ds-text-body);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.note-warning {
+  background: var(--ds-status-warning-bg);
+  color: var(--ds-status-warning-text);
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+}
+
+.state-icon {
+  display: grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border-radius: 50%;
+  margin-block-end: -4px;
+
+  svg {
+    inline-size: 20px;
+    block-size: 20px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+  }
+}
+
+.state-icon-danger {
+  background: var(--ds-status-danger-bg);
+  color: var(--ds-status-danger-text);
+}
+
+.state-icon-accent {
+  background: var(--ds-accent-subtle);
+  color: var(--ds-accent-default);
+
+  svg {
+    stroke-linejoin: round;
+  }
+}
+
+// --- Modal
+
+.modal {
+  @include tokens;
+
+  position: relative;
+  inline-size: min(480px, calc(100% - 32px));
+  max-block-size: calc(100% - 32px);
+  overflow: auto;
+  padding: 28px 32px 24px;
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-bg-panel);
+  box-shadow: var(--ds-shadow-float);
+
+  @media (width <= 600px) {
+    padding: 28px 20px 24px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+  }
+}
+
+.modal-logo {
+  margin-block-end: 20px;
+}
+
+.modal-close {
+  position: absolute;
+  inset-block-start: 14px;
+  inset-inline-end: 14px;
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ds-bg-subtle);
+    color: var(--ds-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ds-accent-default);
+  }
+
+  svg {
+    inline-size: 16px;
+    block-size: 16px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+}
+
+// --- Sticker panel (decorative)
+
+.panel {
+  position: relative;
+  margin: 16px 16px 16px 0;
+  min-block-size: 560px;
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--ds-bg-subtle);
+
+  @media (width <= 992px) {
+    display: none;
+  }
+}
+
+.sticker {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  block-size: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  box-shadow: var(--ds-shadow-pop);
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  rotate: var(--ds-rotate, 0deg);
+  animation: ds-sticker-float 7s ease-in-out infinite;
+  animation-delay: var(--ds-delay, 0s);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes ds-sticker-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+.sticker-landing {
+  --ds-rotate: -10deg;
+
+  inset-inline-start: 13%;
+  inset-block-start: 17%;
+  background: var(--ds-accent-default);
+  color: var(--ds-text-on-accent);
+}
+
+.sticker-brand {
+  --ds-rotate: 8deg;
+  --ds-delay: -2s;
+
+  inset-inline-start: 59%;
+  inset-block-start: 14.3%;
+  background: var(--ds-fun-sky);
+}
+
+.sticker-poster {
+  --ds-rotate: -5deg;
+  --ds-delay: -4s;
+
+  inset-inline-start: 9.6%;
+  inset-block-start: 38.7%;
+  background: var(--ds-fun-yellow);
+}
+
+.sticker-app {
+  --ds-rotate: 6deg;
+  --ds-delay: -1s;
+
+  inset-inline-start: 21%;
+  inset-block-start: 58%;
+  background: var(--ds-fun-pink);
+}
+
+.sticker-feed {
+  --ds-rotate: -7deg;
+  --ds-delay: -3s;
+
+  inset-inline-start: 59%;
+  inset-block-start: 60.1%;
+  background: var(--ds-fun-orange);
+}
+
+.selection {
+  position: absolute;
+  inset-inline-start: 64%;
+  inset-block-start: 32%;
+  display: grid;
+  place-items: center;
+  inline-size: 176px;
+  block-size: 86px;
+  border: 1.5px solid var(--ds-accent-default);
+}
+
+.sticker-card {
+  --ds-rotate: 9deg;
+
+  position: static;
+  background: var(--ds-fun-mint);
+  animation: none;
+}
+
+.handle {
+  position: absolute;
+  inline-size: 8px;
+  block-size: 8px;
+  border: 1.5px solid var(--ds-accent-default);
+  background: var(--ds-bg-panel);
+}
+
+.handle-nw {
+  inset-inline-start: -5px;
+  inset-block-start: -5px;
+}
+
+.handle-ne {
+  inset-inline-end: -5px;
+  inset-block-start: -5px;
+}
+
+.handle-sw {
+  inset-inline-start: -5px;
+  inset-block-end: -5px;
+}
+
+.handle-se {
+  inset-inline-end: -5px;
+  inset-block-end: -5px;
+}
+
+.measure {
+  position: absolute;
+  inset-inline-end: -13px;
+  inset-block: -1px;
+  inline-size: 1px;
+  background: var(--ds-guide-measure);
+}
+
+.measure-tag {
+  position: absolute;
+  inset-inline-start: calc(100% + 20px);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  padding: 3px 10px;
+  border-radius: var(--ds-radius-xs);
+  background: var(--ds-guide-measure);
+  color: #fff;
+  font-family: var(--ds-font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cursor {
+  position: absolute;
+  display: inline-flex;
+  align-items: flex-start;
+
+  svg {
+    inline-size: 22px;
+    block-size: 22px;
+    fill: var(--ds-cursor);
+    stroke: #fff;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+}
+
+.cursor-label {
+  margin: 16px 0 0 -4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--ds-cursor);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cursor-you {
+  --ds-cursor: var(--ds-fun-orange);
+
+  inset-inline-start: 35.5%;
+  inset-block-start: 31%;
+}
+
+.cursor-craft {
+  --ds-cursor: var(--ds-accent-default);
+
+  inset-inline-start: 85%;
+  inset-block-start: 43.8%;
+}
+
+.panel-copy {
+  position: absolute;
+  inset-inline: 56px;
+  inset-block-end: 86px;
+  display: grid;
+  gap: 8px;
+}
+
+.panel-title {
+  margin: 0;
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-display);
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+}
+
+.panel-text {
+  margin: 0;
+  color: var(--ds-text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}

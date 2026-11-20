@@ -1,0 +1,932 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Design Studio dashboard polish (P2, 16 Nov). Same rules as `chrome.scss`:
+// upstream stylesheets and markup stay untouched; every rule lives under
+// `body.ds-dash.ds-board` (the dashboard pages and the dialogs opened from
+// them, not Settings) and matches upstream elements by their CSS-module
+// class token.
+//
+// 1. Type: no upstream font (Work Sans) left on the dashboard.
+// 2. Page headers: title row, then a toolbar or the tabs under it (Projects,
+//    Trash, team pages), actions on the right edge of the content.
+// 3. File cards: one card everywhere (frame, preview contained, empty sheet,
+//    menu on hover), one grid (four in a row from 1280 to 1440).
+// 4. Projects page: the list fills the page (it was cut at 644 px), one
+//    style for the project headings and their actions.
+// 5. Home: one vertical rhythm (40 px between blocks, 16 under a heading).
+// 6. Team pages: tables, role, invitations.
+// 7. Fonts, search and Trash content.
+// 8. Menus and dialogs opened from the dashboard.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+$scope: ":global(body.ds-dash.ds-board)";
+$content: ws.on("main_ui_dashboard__dashboard-content");
+
+// Elements without a class take the font of their own rule in Penpot's
+// base stylesheet (`button`, `input`, …), not their parent's.
+$text-tags: "h1, h2, h3, h4, p, span, a, li, label, button, input, select, textarea";
+
+// A class that upstream defines in every module that has it
+// (`main_ui_dashboard_team__modal-container`, `…_import__…`).
+@function -any($name) {
+  @return '[class*="__#{$name}"]';
+}
+
+@mixin -soft-pill {
+  @include ds.type("control");
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ds.token("space-8");
+  block-size: 36px;
+  min-block-size: 36px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: ds.token("radius-button");
+  background: ds.token("bg-subtle");
+  color: ds.token("text-primary");
+  font-weight: ds.token("weight-semibold");
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: ds.token("border-default");
+    color: ds.token("text-primary");
+  }
+}
+
+@mixin -black-pill {
+  @include -soft-pill;
+
+  background: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: ds.token("text-body");
+    color: ds.token("text-on-accent");
+  }
+
+  &:disabled {
+    background: ds.token("border-strong");
+    color: ds.token("text-on-accent");
+    opacity: 1;
+    cursor: default;
+  }
+}
+
+@mixin -danger-pill {
+  @include -soft-pill;
+
+  background: ds.token("status-danger-text");
+  color: ds.token("text-on-accent");
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, #{ds.token("status-danger-text")} 86%, #000);
+    color: ds.token("text-on-accent");
+  }
+}
+
+// P3D: the small pill (32 px) of dialogs (P4-B: dialogs of every area).
+@mixin -small {
+  block-size: ds.dense("button-sm");
+  min-block-size: ds.dense("button-sm");
+  padding: 0 14px;
+  font-size: ds.dense("body-size");
+}
+
+// --- 1. Type
+
+#{$scope} {
+  #{$content},
+  [data-ds-dash="sidebar"],
+  #{ws.on("main_ui_components_context_menu_a11y__context-menu-items")},
+  [id="portal-container-modal"],
+  [id="modal"] {
+    :is(
+      [class*="main_ui_dashboard_"],
+      [class*="main_ui_ds_"],
+      [class*="main_ui_components_"],
+      [class*="main_ui_notifications_"],
+      [class*="main_ui_confirm"],
+      [class*="main_ui_delete_shared"]
+    ),
+    :is(#{$text-tags}):not([class*="main_ui_studio_"], [class*="main_ui_studio_"] *) {
+      font-family: ds.token("font-text");
+      letter-spacing: 0;
+    }
+  }
+}
+
+// The team menu's "TEAMS" label is upstream's: the mono caps of the
+// other labels of the menu and the sidebar.
+#{$scope} [data-testid="ds-team-menu"] #{ws.on("main_ui_dashboard_sidebar__organization-section-label")} {
+  font-family: ds.token("font-mono");
+  letter-spacing: 0.06em;
+}
+
+// --- 2. Page headers
+
+#{$scope} #{$content} {
+  // Projects and Trash: the view switch and "New project" move under the
+  // title, on the right, so the title row keeps only the search and
+  // "+ New file" (it held four controls).
+  > #{-any("dashboard-header")}:not(#{ws.on("main_ui_dashboard_team__team")}):has(
+      #{-any("dashboard-header-actions")}
+    ) {
+    display: contents;
+
+    > #{-any("dashboard-title")} {
+      grid-area: head;
+      align-self: start;
+      padding-block: 40px 22px;
+    }
+
+    > #{-any("dashboard-header-actions")} {
+      grid-area: tabs;
+      justify-self: end;
+      align-items: center;
+      gap: ds.token("space-8");
+      margin-block: -6px ds.token("space-16");
+    }
+  }
+
+  // Team pages: title, the tabs under it (the tab row of a project page),
+  // the invite button on the right of the title row.
+  > #{ws.on("main_ui_dashboard_team__team")} {
+    display: contents;
+
+    > #{-any("dashboard-title")} {
+      grid-area: head;
+      align-self: start;
+      margin: 0;
+      padding-block: 40px 22px;
+
+      h1 {
+        @include ds.type("display");
+
+        font-size: 1.875rem;
+        font-weight: ds.token("weight-semibold");
+        line-height: 1.2;
+        letter-spacing: 0;
+        color: ds.token("text-primary");
+      }
+    }
+
+    > nav {
+      grid-area: tabs;
+      display: flex;
+      justify-content: flex-start;
+      inline-size: 100%;
+      border-block-end: 1px solid ds.token("border-default");
+      margin-block-end: ds.token("space-24");
+    }
+
+    #{-any("dashboard-header-options")} {
+      display: flex;
+      justify-content: flex-start;
+      gap: 40px;
+      inline-size: auto;
+      margin: 0;
+      padding: 0;
+
+      li {
+        margin: 0;
+        padding: 0;
+      }
+
+      a {
+        @include ds.type("body-lg");
+
+        display: block;
+        block-size: auto;
+        padding: 0 0 8px;
+        margin-block-end: -1px;
+        border: 0;
+        border-block-end: 2px solid transparent;
+        line-height: 1.2;
+        color: ds.token("text-secondary");
+        cursor: pointer;
+
+        &:hover {
+          color: ds.token("text-primary");
+        }
+      }
+
+      li#{ws.on("main_ui_dashboard_team__active")} a {
+        font-weight: ds.token("weight-semibold");
+        color: ds.token("text-primary");
+        border-block-end-color: ds.token("text-primary");
+      }
+    }
+
+    > #{-any("dashboard-buttons")} {
+      grid-area: actions;
+      align-self: start;
+      padding-block-start: 40px;
+    }
+  }
+
+  // Upstream DS buttons in page headers and toolbars: "Invite people" is
+  // the soft pill of "Invite" on a project page; "Restore all" and "Clear
+  // trash" sit on the Trash info bar.
+  :is(#{-any("dashboard-buttons")}, #{-any("deleted-options")})
+    #{ws.on("main_ui_ds_buttons_button__button")} {
+    @include -soft-pill;
+  }
+
+  #{-any("deleted-options")} #{ws.on("main_ui_ds_buttons_button__button-ghost")} {
+    background: ds.token("bg-panel");
+  }
+
+  #{-any("deleted-options")} #{ws.on("main_ui_ds_buttons_button__button-destructive")} {
+    @include -danger-pill;
+
+    svg {
+      color: inherit;
+      stroke: currentcolor;
+    }
+  }
+
+  // The view switch: one quiet segmented control.
+  [class*="main_ui_ds_controls_radio_buttons__wrapper"] {
+    gap: 2px;
+    padding: 2px;
+    border-radius: ds.token("radius-control");
+    background: ds.token("bg-subtle");
+  }
+}
+
+// The project page: the hidden import form was the last item of the
+// actions and pushed "+ File" 12 px off the right edge.
+#{$scope} [data-ds-dash="header"] form[class*="import-file"] {
+  position: absolute;
+}
+
+// --- 3. File cards
+
+#{$scope} #{$content} {
+  #{ws.on("main_ui_dashboard_grid__grid-item")}#{ws.on("main_ui_dashboard_grid__project-thumbnail")} {
+    @include ds.motion((border-color, box-shadow));
+
+    &:hover,
+    &:focus-within {
+      box-shadow: ds.token("elevation-control");
+    }
+
+    // The frame: neutral, whatever the file's own background colour (an
+    // inline style upstream; a white file had no frame at all).
+    #{ws.on("main_ui_dashboard_grid__grid-item-thumbnail")} {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background-color: ds.token("bg-subtle");
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: ds.token("bg-subtle");
+      }
+
+      // No preview (a viewer, before the first render): an empty sheet.
+      &:not(:has(img, [class*="loader"]))::after,
+      &[data-ds-empty]::after {
+        content: "";
+        inline-size: 28px;
+        block-size: 28px;
+        background: ds.token("text-disabled");
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13.5 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8.5z'/%3E%3Cpath d='M13.5 3.5v5h5'/%3E%3C/svg%3E")
+          center / contain no-repeat;
+      }
+
+      &[data-ds-empty] img {
+        display: none;
+      }
+    }
+
+    // The preview is a sheet on the frame: whole, centred, never cropped.
+    #{ws.on("main_ui_dashboard_grid__grid-item-thumbnail-image")} {
+      inline-size: calc(100% - 24px);
+      block-size: calc(100% - 24px);
+      object-fit: contain;
+      filter: drop-shadow(0 1px 2px #15151a1f);
+    }
+
+    // The file menu (⋯): shown on hover, focus or while it is open.
+    #{ws.on("main_ui_dashboard_grid__project-thumbnail-actions")} {
+      opacity: 0;
+      transition: opacity 120ms;
+    }
+
+    &:hover,
+    &:focus-within {
+      #{ws.on("main_ui_dashboard_grid__project-thumbnail-actions")} {
+        opacity: 1;
+      }
+    }
+
+    #{ws.on("main_ui_dashboard_grid__project-thumbnail-actions")}#{ws.on("main_ui_dashboard_grid__is-force-display")} {
+      opacity: 1;
+    }
+
+    #{ws.on("main_ui_dashboard_grid__project-thumbnail-icon")} {
+      display: grid;
+      place-items: center;
+      inline-size: 28px;
+      block-size: 28px;
+      border-radius: ds.token("radius-control");
+      color: ds.token("text-secondary");
+
+      &:hover {
+        background: ds.token("bg-subtle");
+        color: ds.token("text-primary");
+      }
+
+      svg {
+        color: inherit;
+        stroke: currentcolor;
+      }
+    }
+
+    #{ws.on("main_ui_dashboard_grid__grid-item-title")} {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // One grid for the files of a page (project, drafts, search, the
+  // projects list): the card is as wide as on the home.
+  [data-ds-dash="files"] #{ws.on("main_ui_dashboard_grid__dashboard-grid")},
+  #{ws.on("main_ui_dashboard_projects__grid-container")} #{ws.on("main_ui_dashboard_grid__dashboard-grid")},
+  [data-testid="deleted-page-section"] #{ws.on("main_ui_dashboard_grid__dashboard-grid")},
+  #{-any("search")} #{ws.on("main_ui_dashboard_grid__dashboard-grid")} {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: ds.token("space-16");
+    padding-block-end: 0;
+
+    > #{ws.on("main_ui_dashboard_grid__grid-row")}:not(#{ws.on("main_ui_dashboard_grid__list-view")}) {
+      display: contents;
+    }
+
+    > #{ws.on("main_ui_dashboard_grid__list-view")},
+    > div:not([data-ds-dash]) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  // "+ New file" after the last card: the card's height.
+  [data-ds-dash="files"] [class*="dashboard_shell_project__new-file-tile"] {
+    min-block-size: 0;
+    block-size: 100%;
+  }
+}
+
+// Trash: the date of a card is when it goes for good, not an edit.
+#{$scope} [data-testid="deleted-page-section"] #{ws.on("main_ui_dashboard_grid__grid-item-date")}::before {
+  content: var(--ds-dash-removed, "");
+}
+
+// The home's "Recent files": always one row of four.
+#{$scope} [data-testid="ds-shell-recent"] #{ws.on("main_ui_dashboard_grid__dashboard-grid")} {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-block-end: 0;
+}
+
+// --- 4. Projects page
+
+#{$scope} #{$content} {
+  // The scroll area kept room for the "Team up" banner (hidden here): the
+  // list stopped 360 px above the bottom of the window.
+  #{ws.on("main_ui_dashboard_projects__projects-container")} {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  #{ws.on("main_ui_dashboard_projects__dashboard-projects")},
+  #{ws.on("main_ui_dashboard_projects__with-team-hero")} {
+    block-size: 100%;
+    margin: 0;
+    padding-block-end: ds.token("space-32");
+  }
+
+  :is(
+    #{ws.on("main_ui_dashboard_projects__dashboard-project-row", "main_ui_dashboard_deleted__dashboard-project-row")}
+  ) {
+    margin: 0 0 40px;
+    padding: 0;
+  }
+
+  // A project's heading: name, files and time, actions on the right.
+  :is(#{ws.on("main_ui_dashboard_projects__project", "main_ui_dashboard_deleted__project")}) {
+    inline-size: 100%;
+    min-block-size: 32px;
+    margin: 0 0 ds.token("space-16");
+    padding: 0;
+  }
+
+  :is(
+    #{ws.on("main_ui_dashboard_projects__project-name-wrapper", "main_ui_dashboard_deleted__project-name-wrapper")}
+  ) {
+    gap: ds.token("space-12");
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  :is(#{ws.on("main_ui_dashboard_projects__project-name", "main_ui_dashboard_deleted__project-name")}) {
+    flex: none;
+    max-inline-size: 50% !important;
+    block-size: auto;
+    font-family: ds.token("font-text");
+    font-size: ds.token("size-18");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
+    letter-spacing: 0;
+    color: ds.token("text-primary");
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  :is(#{ws.on("main_ui_dashboard_projects__info-wrapper", "main_ui_dashboard_deleted__info-wrapper")}) {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    justify-content: space-between;
+    gap: ds.token("space-12");
+  }
+
+  #{ws.on("main_ui_dashboard_projects__info")},
+  #{ws.on("main_ui_dashboard_projects__recent-files-row-title-info")} {
+    font-family: ds.token("font-text");
+    font-size: ds.token("size-13");
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-secondary");
+  }
+
+  // Pin, "+" and "⋯" stay visible (they were hidden until hover).
+  :is(#{ws.on("main_ui_dashboard_projects__project-actions", "main_ui_dashboard_deleted__project-actions")}) {
+    --actions-opacity: 1;
+
+    gap: ds.token("space-4");
+    margin-inline-start: auto;
+
+    button {
+      display: grid;
+      place-items: center;
+      inline-size: 32px;
+      block-size: 32px;
+      border-radius: ds.token("radius-control");
+      color: ds.token("text-secondary");
+
+      &:hover {
+        background: ds.token("bg-subtle");
+        color: ds.token("text-primary");
+      }
+
+      svg {
+        color: inherit;
+        stroke: currentcolor;
+      }
+    }
+  }
+
+  // "Show all files": under the cards (upstream put it at the top right,
+  // where the project's actions are now always shown).
+  #{ws.on("main_ui_dashboard_projects__show-more")} {
+    @include ds.type("control");
+
+    position: static;
+    display: inline-flex;
+    gap: ds.token("space-4");
+    margin: ds.token("space-12") 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: ds.token("accent-default");
+    font-weight: ds.token("weight-regular");
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    svg {
+      color: inherit;
+      stroke: currentcolor;
+    }
+  }
+}
+
+// --- 5. Home
+
+#{$scope} [data-testid="ds-home"] {
+  // Hero, "Recent files", the AI bar and the templates: 40 px apart.
+  [data-testid="ds-shell-recent"] {
+    margin-block: 40px 0;
+  }
+
+  [class*="dashboard_home__connect"] {
+    margin-block-start: 40px;
+  }
+
+  [class*="dashboard_home__after-connect"] {
+    margin-block-start: 40px;
+  }
+
+  [class*="dashboard_shell_page__section-head"] {
+    margin-block-end: ds.token("space-16");
+  }
+}
+
+// --- 6. Team pages
+
+#{$scope} #{$content} {
+  #{ws.on("main_ui_dashboard_team__dashboard-team-members")},
+  #{ws.on("main_ui_dashboard_team__dashboard-team-invitations")} {
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  #{ws.on("main_ui_dashboard_team__dashboard-table")},
+  #{ws.on("main_ui_dashboard_team__team-members")},
+  #{ws.on("main_ui_dashboard_team__invitations")},
+  #{ws.on("main_ui_dashboard_team__empty-invitations")},
+  #{ws.on("main_ui_dashboard_team__table-header")},
+  #{ws.on("main_ui_dashboard_team__table-rows")} {
+    inline-size: 100%;
+    max-inline-size: none;
+    font-family: ds.token("font-text");
+  }
+
+  #{ws.on("main_ui_dashboard_team__table-header")} {
+    @include ds.type("label");
+
+    block-size: 32px;
+    padding-inline: ds.token("space-16");
+    color: ds.token("text-secondary");
+    border-block-end: 1px solid ds.token("border-default");
+  }
+
+  #{ws.on("main_ui_dashboard_team__table-rows")} {
+    margin-block-start: 0;
+    gap: 0;
+  }
+
+  #{ws.on("main_ui_dashboard_team__table-row")} {
+    min-block-size: 64px;
+    padding-inline: ds.token("space-16");
+    border-radius: 0;
+    border-block-end: 1px solid ds.token("border-default");
+    background: transparent;
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  #{ws.on("main_ui_dashboard_team__member-name")} {
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("text-primary");
+  }
+
+  #{ws.on("main_ui_dashboard_team__member-email")} {
+    font-size: ds.token("size-12");
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_dashboard_team__you")} {
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-secondary");
+  }
+
+  // Role: a select with its chevron when it can change, plain text when
+  // it cannot (the owner).
+  #{ws.on("main_ui_dashboard_team__rol-selector")} {
+    gap: ds.token("space-8");
+    block-size: 32px;
+    padding: 0 10px 0 12px;
+    border-radius: ds.token("radius-control");
+    background: transparent;
+    font-size: ds.token("size-13");
+    color: ds.token("text-primary");
+
+    &#{ws.on("main_ui_dashboard_team__has-priv")} {
+      border: 1px solid ds.token("border-default");
+      background: ds.token("bg-panel");
+      cursor: pointer;
+
+      &:hover {
+        border-color: ds.token("border-strong");
+      }
+    }
+
+    &:not(#{ws.on("main_ui_dashboard_team__has-priv")}) {
+      padding-inline-start: 0;
+      color: ds.token("text-secondary");
+    }
+
+    svg {
+      stroke: ds.token("text-secondary");
+    }
+  }
+
+  #{ws.on("main_ui_dashboard_team__roles-dropdown")},
+  #{ws.on("main_ui_dashboard_team__actions-dropdown")} {
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-md");
+    box-shadow: ds.token("elevation-popover");
+    padding: ds.token("space-4");
+  }
+
+  #{ws.on("main_ui_dashboard_team__menu-btn")} {
+    display: grid;
+    place-items: center;
+    inline-size: 32px;
+    block-size: 32px;
+    border-radius: ds.token("radius-control");
+
+    &:hover {
+      background: ds.token("border-default");
+    }
+  }
+
+  // No invitations yet: the DS empty state.
+  #{ws.on("main_ui_dashboard_team__empty-invitations")} {
+    gap: ds.token("space-8");
+    min-block-size: 200px;
+    border: 1px dashed ds.token("border-strong");
+    border-radius: ds.token("radius-lg");
+    background: ds.token("bg-panel");
+    font-size: ds.token("size-13");
+    color: ds.token("text-secondary");
+
+    > div:first-child {
+      font-size: ds.token("size-16");
+      font-weight: ds.token("weight-semibold");
+      color: ds.token("text-primary");
+    }
+
+    #{ws.on("main_ui_ds_buttons_button__button")} {
+      @include -black-pill;
+
+      margin-block-start: ds.token("space-8");
+    }
+  }
+
+  // Team settings: the team card.
+  #{ws.on("main_ui_dashboard_team__dashboard-team-settings")} {
+    font-family: ds.token("font-text");
+    color: ds.token("text-primary");
+  }
+}
+
+// --- 7. Fonts, search and Trash
+
+#{$scope} #{$content} {
+  #{ws.on("main_ui_dashboard_fonts__dashboard-fonts-hero")} {
+    max-inline-size: 640px;
+    margin: 0 0 ds.token("space-24");
+    padding: 0;
+
+    h2 {
+      margin: 0;
+      font-size: ds.token("size-16");
+      font-weight: ds.token("weight-semibold");
+      line-height: 1.3;
+      color: ds.token("text-primary");
+    }
+
+    p,
+    span {
+      margin: 0;
+      font-size: ds.token("size-13");
+      line-height: 1.5;
+      color: ds.token("text-secondary");
+    }
+
+    #{ws.on("main_ui_dashboard_fonts__btn-primary")} {
+      @include -black-pill;
+
+      inline-size: auto;
+      align-self: flex-start;
+      margin-block-start: ds.token("space-8");
+
+      span {
+        color: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+      }
+    }
+  }
+
+  #{ws.on("main_ui_dashboard_fonts__desc")} {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ds.token("space-8");
+    inline-size: 100%;
+  }
+
+  #{ws.on("main_ui_dashboard_fonts__dashboard-installed-fonts")} {
+    max-inline-size: none;
+  }
+
+  // No result / nothing typed: the empty state of the other pages.
+  #{ws.on("main_ui_dashboard_search__grid-empty-placeholder")} {
+    gap: ds.token("space-12");
+    min-block-size: 240px;
+    border: 1px dashed ds.token("border-strong");
+    border-radius: ds.token("radius-lg");
+
+    #{ws.on("main_ui_dashboard_search__icon")} {
+      display: grid;
+      place-items: center;
+      inline-size: 48px;
+      block-size: 48px;
+      border-radius: ds.token("radius-lg");
+      background: ds.token("bg-subtle");
+
+      svg {
+        inline-size: 20px;
+        block-size: 20px;
+        fill: none;
+        stroke: ds.token("text-secondary");
+      }
+    }
+
+    #{ws.on("main_ui_dashboard_search__text")} {
+      font-size: ds.token("size-14");
+      font-weight: ds.token("weight-semibold");
+      color: ds.token("text-primary");
+    }
+  }
+
+  #{ws.on("main_ui_dashboard_deleted__deleted-info-content")} {
+    align-items: center;
+    gap: ds.token("space-16");
+    margin-block-end: ds.token("space-24");
+    padding: 14px ds.token("space-16");
+    border-radius: ds.token("radius-md");
+    background: ds.token("bg-subtle");
+  }
+
+  #{ws.on("main_ui_dashboard_deleted__deleted-info")} {
+    font-size: ds.token("size-13");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+  }
+
+  #{ws.on("main_ui_dashboard_deleted__info-text-highlight")} {
+    font-weight: ds.token("weight-semibold");
+    color: ds.token("text-primary");
+  }
+}
+
+// --- 8. Menus and dialogs
+
+// File, project and team menus (upstream context menus).
+#{$scope} {
+  #{ws.on("main_ui_components_context_menu_a11y__context-menu-items")},
+  #{ws.on("main_ui_dashboard_sidebar__profile-dropdown")} {
+    padding: ds.token("space-4");
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-lg");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+  }
+
+  #{ws.on("main_ui_components_context_menu_a11y__context-menu-action")} {
+    @include ds.type("control");
+
+    display: flex;
+    align-items: center;
+    min-block-size: 32px;
+    padding: 0 10px;
+    border-radius: ds.token("radius-control");
+    font-weight: ds.token("weight-regular");
+    color: ds.token("text-primary");
+
+    &:hover,
+    &:focus-visible {
+      background: ds.token("bg-subtle");
+      color: ds.token("text-primary");
+    }
+  }
+
+  #{ws.on("main_ui_components_context_menu_a11y__separator")} {
+    block-size: 1px;
+    margin: ds.token("space-4") 6px;
+    border: 0;
+    background: ds.token("border-default");
+  }
+}
+
+// Dialogs: one card (radius 16, DS shadow), sentence-case title, DS
+// buttons. Every upstream dialog uses the same module class names.
+#{$scope} {
+  #{-any("modal-overlay")} {
+    background: ds.token("overlay-scrim");
+  }
+
+  #{-any("modal-container")},
+  #{ws.on("main_ui_dashboard_team__modal-team-container")} {
+    @include ds.root;
+
+    border: 1px solid ds.token("border-default");
+    border-radius: ds.token("radius-xl");
+    background: ds.token("bg-panel");
+    box-shadow: ds.token("elevation-popover");
+
+    // P4-B: the P3D dialog (padding 20), as in Settings and the editor.
+    padding: ds.dense("dialog-pad");
+  }
+
+  #{-any("modal-title")},
+  #{ws.on("main_ui_dashboard_team__modal-team-container")} h2 {
+    font-family: ds.token("font-text");
+    font-size: ds.dense("dialog-title-size");
+    font-weight: ds.token("weight-semibold");
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-transform: none;
+    color: ds.token("text-primary");
+  }
+
+  #{-any("modal-content")} {
+    font-size: ds.token("size-13");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+
+    // P4-B: field labels in sentence case, as in the Settings dialogs (they
+    // were the mono caps of the panels).
+    label,
+    #{-any("modal-label")} {
+      font-size: ds.token("size-13");
+      font-weight: ds.token("weight-medium");
+      line-height: 1.4;
+      text-transform: none;
+      color: ds.token("text-primary");
+    }
+  }
+
+  #{-any("modal-container")} input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"]),
+  #{ws.on("main_ui_dashboard_team__modal-team-container")}
+    input:not([type="checkbox"], [type="radio"], [type="button"], [type="submit"]) {
+    border-radius: ds.token("radius-control");
+    font-size: ds.token("size-13");
+  }
+
+  // P4-B: the question of a confirm dialog, as in Settings.
+  #{-any("modal-container")} #{-any("modal-msg")} {
+    margin: 0;
+    font-size: ds.token("size-14");
+    font-weight: ds.token("weight-regular");
+    line-height: 1.5;
+    color: ds.token("text-secondary");
+  }
+
+  #{-any("modal-close-btn")},
+  #{-any("modal-close-button")} {
+    border-radius: ds.token("radius-control");
+
+    &:hover {
+      background: ds.token("bg-subtle");
+    }
+  }
+
+  #{-any("action-buttons")} {
+    gap: ds.token("space-8");
+  }
+
+  // Cancel: quiet pill; accept: black pill; a destructive accept: red.
+  #{-any("modal-container")} :is(#{-any("cancel-button")}, #{-any("cancel-btn")}),
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-secondary")} {
+    @include -soft-pill;
+    @include -small;
+  }
+
+  #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")}, #{-any("primary-button")}),
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-primary")},
+  #{ws.on("main_ui_dashboard_team__modal-team-container")} :is(button[type="submit"], input[type="submit"]) {
+    @include -black-pill;
+    @include -small;
+  }
+
+  #{-any("modal-container")} :is(#{-any("accept-btn")}, #{-any("accept-button")})#{-any("danger")},
+  #{-any("modal-container")} #{ws.on("main_ui_ds_buttons_button__button-destructive")} {
+    @include -danger-pill;
+    @include -small;
+  }
+}

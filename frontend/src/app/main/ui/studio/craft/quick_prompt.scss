@@ -1,0 +1,192 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Copyright (c) ZakaCoding
+
+// Quick prompt at the selection (F1 · 06): the chip over the selection
+// (step 1) and the one-line prompt under it (step 2). The prompt's box
+// (336 px wide, 66 px with its key footer) is the one `craft.rules/prompt-size`
+// places; the chip's is `craft.rules/chip-size`.
+
+@use "studio/ds" as ds;
+
+// --- Step 1: the chip
+
+.chip {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  position: fixed;
+  z-index: ds.token("z-panel");
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  block-size: 32px;
+  padding-inline: 9px 13px;
+  border: 1px solid ds.token("border-default");
+  border-radius: ds.token("radius-md");
+  background-color: ds.token("bg-panel");
+
+  // The board's shadow for this chip, between `raised` and `pop`.
+  box-shadow: 0 4px 12px color-mix(in srgb, #{ds.token("text-primary")} 12%, transparent);
+  color: ds.token("accent-default");
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+  }
+}
+
+// In the workspace shell's `viewport-overlay` mount point, which ignores
+// the pointer itself.
+.chip-overlay {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.chip-mark {
+  stroke-width: 1.8;
+}
+
+.chip-label {
+  font-family: ds.token("font-text");
+  font-size: ds.token("size-12");
+  font-weight: ds.token("weight-semibold");
+  line-height: 1.2;
+}
+
+.chip-divider {
+  flex: none;
+  inline-size: 1px;
+  block-size: 16px;
+  margin-inline: 3px;
+  background-color: ds.token("border-default");
+}
+
+.chip-keys {
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-11");
+  font-weight: ds.token("weight-medium");
+  line-height: 1.2;
+}
+
+// --- Step 2: the prompt
+//
+// One card: the prompt row and, in a quiet footer of the same card, the
+// keys. Nothing of it lies on the design itself.
+
+.prompt {
+  @include ds.root;
+
+  position: fixed;
+  z-index: ds.token("z-popover");
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  inline-size: 336px;
+  max-inline-size: calc(100vw - 2 * #{ds.token("space-12")});
+  margin: 0;
+  overflow: hidden;
+
+  // 1.5 px, as the selection outline it belongs to.
+  border: 1.5px solid ds.token("craft-default");
+  border-radius: ds.token("radius-md");
+  background-color: ds.token("bg-panel");
+  box-shadow: ds.token("elevation-popover");
+}
+
+.prompt-overlay {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: ds.token("space-8");
+  block-size: 40px;
+  padding-inline: 11px 7px;
+}
+
+.field-mark {
+  color: ds.token("craft-default");
+  stroke-width: 1.8;
+}
+
+.input {
+  @include ds.type("body");
+
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: ds.token("text-primary");
+  resize: none;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &::placeholder {
+    color: ds.token("text-placeholder");
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.send {
+  @include ds.control-reset;
+  @include ds.focusable;
+  @include ds.motion((background-color, opacity));
+
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: ds.token("radius-pill");
+  background-color: ds.token("bg-inverse");
+  color: ds.token("text-on-accent");
+  cursor: pointer;
+
+  &:disabled {
+    background-color: ds.token("text-disabled");
+    cursor: default;
+  }
+}
+
+.send-icon {
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+// The keys, muted, in the card's footer.
+.hint {
+  display: flex;
+  align-items: center;
+  block-size: 22px;
+  margin: 0;
+  padding-inline: 12px;
+  border-block-start: 1px solid ds.token("border-default");
+  border-radius: 0;
+  background-color: ds.token("bg-subtle");
+  color: ds.token("text-secondary");
+  font-family: ds.token("font-mono");
+  font-size: ds.token("size-10");
+  font-weight: ds.token("weight-regular");
+  line-height: 1.2;
+  white-space: nowrap;
+}

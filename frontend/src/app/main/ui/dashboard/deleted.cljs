@@ -23,6 +23,7 @@
    [app.main.ui.ds.product.empty-placeholder :refer [empty-placeholder*]]
    [app.main.ui.hooks :as hooks]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.studio.dashboard-shell.empty :as ds-empty]
    [app.util.dom :as dom]
    [app.util.i18n :as i18n :refer [tr]]
    [app.util.keyboard :as kbd]
@@ -62,7 +63,9 @@
   [:header {:class (stl/css :dashboard-header)
             :data-testid "dashboard-header"}
    [:div#dashboard-deleted-title {:class (stl/css :dashboard-title)}
-    [:h1 (tr "dashboard.projects-title")]]
+    ;; Design Studio seam (STUDIO-SEAMS.md): the page is "Sampah" of the
+    ;; sidebar (F1 · 03), not a tab of Projects
+    [:h1 (tr "ds.shell.nav.deleted")]]
    [:div {:class (stl/css :dashboard-header-actions)}
     [:> layout-toggle* {:layout layout :on-change on-change}]]])
 
@@ -332,6 +335,5 @@
                                           :key id}]))]
 
           ;; when no deleted projects
-          [:div {:class (stl/css :deleted-info-content)}
-           [:p {:class (stl/css :deleted-info)}
-            (tr "dashboard.deleted.empty-state-description")]])]]]]))
+          ;; Design Studio seam (STUDIO-SEAMS.md): the DS empty state.
+          [:> ds-empty/trash-empty* {:days deletion-days}])]]]]))

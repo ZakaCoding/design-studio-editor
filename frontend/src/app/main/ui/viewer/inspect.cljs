@@ -17,6 +17,7 @@
    [app.main.ui.inspect.render :refer [render-frame-svg]]
    [app.main.ui.inspect.right-sidebar :refer [right-sidebar*]]
    [app.util.dom :as dom]
+   [app.util.i18n :refer [tr]]
    [app.util.keyboard :as kbd]
    [goog.events :as events]
    [rumext.v2 :as mf])
@@ -45,6 +46,9 @@
   (let [inspect-svg-container-ref (mf/use-ref nil)
         current-section* (mf/use-state :info)
         current-section  (deref current-section*)
+        layers*          (mf/use-state false)
+        layers?          (deref layers*)
+        toggle-layers    (mf/use-fn #(swap! layers* not))
 
         can-be-expanded? (= current-section :code)
 
@@ -92,13 +96,21 @@
        (st/emit! (dv/select-shape (:id frame)))))
 
     [:*
-     [:& left-sidebar {:frame frame
-                       :local local
-                       :page page}]
+     [:button {:class (stl/css-case :layers-toggle true :layers-toggle-on layers?)
+               :type "button"
+               :aria-expanded (if layers? "true" "false")
+               :data-testid "ds-inspect-layers-toggle"
+               :on-click toggle-layers}
+      (tr "ds.viewer.inspect.layers")]
+     (when layers?
+       [:div {:class (stl/css :layers-panel)}
+        [:& left-sidebar {:frame frame
+                          :local local
+                          :page page}]])
      [:div#inspect-svg-wrapper {:class (stl/css :inspect-svg-wrapper)
                                 :data-value (pr-str (:id frame))
                                 :on-click handle-select-frame}
-      [:& viewer-pagination {:index index :num-frames (count (:frames page)) :left-bar true :right-bar true}]
+      [:& viewer-pagination {:index index :num-frames (count (:frames page)) :left-bar layers? :right-bar true}]
       [:div#inspect-svg-container {:class (stl/css :inspect-svg-container)
                                    :ref inspect-svg-container-ref}
        [:& render-frame-svg {:frame frame :page page :local local :size size}]]]

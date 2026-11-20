@@ -1,0 +1,105 @@
+// The Layers rail. See rail.cljs.
+
+@use "studio/ds" as ds;
+@use "studio/workspace" as ws;
+
+.rail {
+  @include ds.root;
+  @include ws.island;
+
+  // Upstream's main menu places its dropdown at
+  // `--left-sidebar-width - 44px` and its submenus at
+  // `--left-sidebar-width + 150px`: this puts them right of the rail.
+  --left-sidebar-width: #{ws.$rail-size + 52px};
+
+  grid-area: left-sidebar;
+  position: relative;
+  z-index: ds.token("z-panel");
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ds.token("space-8");
+  inline-size: ws.$rail-size;
+  margin: ws.$edge;
+  padding-block: 12px;
+  block-size: calc(100vh - 2 * #{ws.$edge});
+}
+
+.rail-logo {
+  @include ds.control-reset;
+  @include ds.focusable;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 36px;
+  block-size: 36px;
+  border-radius: ds.token("radius-md");
+}
+
+.rail-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 36px;
+  block-size: 36px;
+}
+
+// Upstream's main menu button, drawn as a rail button like the tabs under
+// it: the three lines of a menu, a hover and a pressed state.
+$menu-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M4 6h12M4 10h12M4 14h12'/%3E%3C/svg%3E");
+
+.rail .rail-menu button[aria-pressed] {
+  @include ds.motion((background-color, color));
+
+  position: relative;
+  inline-size: 36px;
+  min-inline-size: 0;
+  block-size: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: ds.token("radius-md");
+  background-color: transparent;
+  color: ds.token("text-secondary");
+
+  > svg {
+    display: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    background-color: currentcolor;
+    mask: $menu-glyph center / 20px 20px no-repeat;
+  }
+
+  &:hover {
+    background-color: ds.token("bg-subtle");
+    color: ds.token("text-primary");
+  }
+
+  &[aria-pressed="true"] {
+    background-color: ds.token("bg-selected");
+    color: ds.token("accent-default");
+  }
+}
+
+// 36 px squares with a 20 px icon, as on board F1 · 05.
+.rail .rail-tab {
+  inline-size: 36px;
+  block-size: 36px;
+  border-radius: ds.token("radius-md");
+}
+
+.rail-separator {
+  flex: none;
+  inline-size: 28px;
+  block-size: 1px;
+  margin-block: ds.token("space-4");
+  background-color: ds.token("border-default");
+}
+
+.rail-spacer {
+  flex: 1;
+}

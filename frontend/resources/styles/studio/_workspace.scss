@@ -1,0 +1,46 @@
+// Shared SCSS for the Design Studio workspace chrome (F3).
+//
+//   @use "studio/ds" as ds;
+//   @use "studio/workspace" as ws;
+//
+// `ws.on("<module>__<class>")` matches an upstream element by its exact
+// CSS-module class token, so upstream stylesheets stay untouched.
+// `ws.island` is the floating panel surface of F1 · 01 / 02. Every panel that
+// floats in the workspace (sidebars, toolbar, Craft dock, quick prompt) uses
+// it, so they look like one family.
+
+@use "sass:list";
+@use "sass:string";
+@use "./ds-tokens" as tokens;
+
+// The scope every chrome rule lives under. `app.main.ui.studio.workspace.shell`
+// sets the class on <body> while the workspace is mounted.
+$scope: "body.ds-chrome";
+
+// Gap between a floating panel and the window edge or the canvas area.
+$edge: tokens.token("space-panel-edge");
+
+// Width of the Layers rail (craft placement research, 9 Nov).
+$rail-size: 48px;
+
+// Width of the Craft dock column (Research 06: 440 px).
+$craft-size: 440px;
+
+// Attribute selector for one or more CSS-module class tokens.
+@function on($names...) {
+  $out: ();
+
+  @each $name in $names {
+    $out: list.append($out, string.unquote('[class~="#{$name}"]'), comma);
+  }
+
+  @return $out;
+}
+
+// Floating panel surface.
+@mixin island($radius: tokens.token("radius-panel")) {
+  background-color: tokens.token("bg-panel");
+  border: 1px solid tokens.token("border-default");
+  border-radius: $radius;
+  box-shadow: tokens.token("elevation-panel");
+}

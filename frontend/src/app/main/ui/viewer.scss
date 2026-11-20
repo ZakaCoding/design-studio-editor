@@ -5,11 +5,15 @@
 // Copyright (c) KALEIDOS INC Sucursal en España SL
 
 @use "refactor/common-refactor.scss" as deprecated;
+@use "studio/ds" as ds;
 
 .viewer-layout {
+  @include ds.viewer-scope;
+
   height: 100vh;
   display: grid;
-  grid-template-rows: deprecated.$s-48 auto;
+  background: ds.token("bg-canvas");
+  grid-template-rows: deprecated.$s-52 auto;
   grid-template-columns: 1fr;
   user-select: none;
 }
@@ -38,8 +42,11 @@
 }
 
 .inspect-layout {
+  @include ds.viewer-scope;
+
   display: grid;
-  grid-template-rows: deprecated.$s-48 auto;
+  background: ds.token("bg-canvas");
+  grid-template-rows: deprecated.$s-52 auto;
   grid-template-columns: 1fr;
   height: 100vh;
   margin-top: 0;
@@ -67,7 +74,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  height: calc(100vh - deprecated.$s-48);
+  height: calc(100vh - deprecated.$s-52);
   overflow: auto;
 }
 

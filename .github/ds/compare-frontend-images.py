@@ -157,16 +157,18 @@ def main():
     oidx = normalize_index(o["index"], o["version"])
     if not b["index"]:
         errors.append("built image has no index.html")
-    elif bidx != oidx and allowed("index.html"):
-        info.append("index.html differs (allowed)")
     elif bidx != oidx:
         diff = list(
             difflib.unified_diff(
                 re.split(r"(?<=>)", oidx), re.split(r"(?<=>)", bidx), "official/index.html", "built/index.html", n=1, lineterm=""
             )
         )
-        errors.append("index.html differs after folding version and build time:\n```diff\n"
-                      + "\n".join(l[:300] for l in diff[:80]) + "\n```")
+        # Intended DS changes (brand head tags, the Craft loader) are allowed by
+        # expected-image-diff.txt; the diff stays in the report either way.
+        (info if allowed("index.html") else errors).append(
+            "index.html differs after folding version and build time"
+            + (" (allowed)" if allowed("index.html") else "")
+            + ":\n```diff\n" + "\n".join(l[:300] for l in diff[:80]) + "\n```")
 
     # 3. Files the Dockerfile adds outside the web root: byte identical.
     for path in sorted(set(b["runtime"]) | set(o["runtime"])):

@@ -61,6 +61,7 @@
    [frontend-tests.plugins.page-active-validation-test]
    [frontend-tests.plugins.page-test]
    [frontend-tests.plugins.parser-test]
+   [frontend-tests.plugins.persistence-guard-test]
    [frontend-tests.plugins.shape-bugfixes-test]
    [frontend-tests.plugins.text-test]
    [frontend-tests.plugins.tokens-test]
@@ -70,6 +71,18 @@
    [frontend-tests.render-dimensions-test]
    [frontend-tests.render-wasm.process-objects-test]
    [frontend-tests.render-wasm.text-editor-caret-color-test]
+   [frontend-tests.studio.ai-access-test]
+   [frontend-tests.studio.craft-rules-test]
+   [frontend-tests.studio.dashboard-rules-test]
+   [frontend-tests.studio.dashboard-shell-rules-test]
+   [frontend-tests.studio.mcp-cadence-test]
+   [frontend-tests.studio.refusal-test]
+   [frontend-tests.studio.settings-account-test]
+   [frontend-tests.studio.shell-state-test]
+   [frontend-tests.studio.token-suggestions-test]
+   [frontend-tests.studio.viewer-inspect-test]
+   [frontend-tests.studio.widgets-test]
+   [frontend-tests.studio.workspace-state-test]
    [frontend-tests.svg-fills-test]
    [frontend-tests.text-editor-paste-guard-test]
    [frontend-tests.tokens.copy-paste-props-test]
@@ -170,6 +183,7 @@
    'frontend-tests.plugins.page-active-validation-test
    'frontend-tests.plugins.page-test
    'frontend-tests.plugins.parser-test
+   'frontend-tests.plugins.persistence-guard-test
    'frontend-tests.plugins.shape-bugfixes-test
    'frontend-tests.plugins.text-test
    'frontend-tests.plugins.tokens-test
@@ -178,6 +192,18 @@
    'frontend-tests.plugins.value-objects-test
    'frontend-tests.render-wasm.process-objects-test
    'frontend-tests.render-wasm.text-editor-caret-color-test
+   'frontend-tests.studio.ai-access-test
+   'frontend-tests.studio.craft-rules-test
+   'frontend-tests.studio.dashboard-rules-test
+   'frontend-tests.studio.dashboard-shell-rules-test
+   'frontend-tests.studio.mcp-cadence-test
+   'frontend-tests.studio.refusal-test
+   'frontend-tests.studio.settings-account-test
+   'frontend-tests.studio.shell-state-test
+   'frontend-tests.studio.token-suggestions-test
+   'frontend-tests.studio.viewer-inspect-test
+   'frontend-tests.studio.widgets-test
+   'frontend-tests.studio.workspace-state-test
    'frontend-tests.svg-fills-test
    'frontend-tests.tokens.copy-paste-props-test
    'frontend-tests.tokens.import-export-test
