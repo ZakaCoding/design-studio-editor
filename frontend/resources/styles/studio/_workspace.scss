@@ -26,12 +26,18 @@ $rail-size: 48px;
 // Width of the Craft dock column (Research 06: 440 px).
 $craft-size: 440px;
 
-// Attribute selector for one or more CSS-module class tokens.
+// Selector for one or more CSS-module class tokens. A class selector, not
+// `[class~="…"]`: both match the same token with the same specificity
+// (0,1,0), but the browser files class selectors under the class, while an
+// attribute selector as the rightmost part is tested on every element at
+// each style recalculation. On a 1,500-shape page that made zooming (SVG
+// renderer) spend 3-4 s in style recalculation instead of about 0.5 s
+// (zakacoding-cloud perf, 20 Nov 2026).
 @function on($names...) {
   $out: ();
 
   @each $name in $names {
-    $out: list.append($out, string.unquote('[class~="#{$name}"]'), comma);
+    $out: list.append($out, string.unquote(".#{$name}"), comma);
   }
 
   @return $out;
