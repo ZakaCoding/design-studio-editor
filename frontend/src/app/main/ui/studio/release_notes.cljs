@@ -25,8 +25,8 @@
 (def notes
   "Newest first. `:date` is the day it went live (WIB); the entry without
   a date is what comes next. Each `:items` holds 2–4 short lines."
-  [{:id "2026-11-21"
-    :date "2026-11-21"
+  [{:id "2026-11-20"
+    :date "2026-11-20"
     :title {:en "The new editor"
             :id "Editor baru"}
     :items {:en ["The editor is rebuilt around Design Studio: calmer panels, the tools at the bottom and Craft next to your canvas."
