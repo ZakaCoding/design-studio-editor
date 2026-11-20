@@ -37,7 +37,8 @@ $craft-size: 440px;
   $out: ();
 
   @each $name in $names {
-    $out: list.append($out, string.unquote(".#{$name}"), comma);
+    // `:global` keeps the CSS-module build from renaming the upstream token.
+    $out: list.append($out, string.unquote(":global(.#{$name})"), comma);
   }
 
   @return $out;
