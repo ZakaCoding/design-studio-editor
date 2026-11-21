@@ -25,7 +25,16 @@
 (def notes
   "Newest first. `:date` is the day it went live (WIB); the entry without
   a date is what comes next. Each `:items` holds 2–4 short lines."
-  [{:id "2026-11-20"
+  [{:id "2026-11-21"
+    :date "2026-11-21"
+    :title {:en "Smoother zoom"
+            :id "Zoom lebih mulus"}
+    :items {:en ["Zooming a page with many layers is smooth again."
+                 "Files open a little faster."]
+            :id ["Zoom di halaman dengan banyak layer kembali mulus."
+                 "File terbuka sedikit lebih cepat."]}}
+
+   {:id "2026-11-20"
     :date "2026-11-20"
     :title {:en "The new editor"
             :id "Editor baru"}
