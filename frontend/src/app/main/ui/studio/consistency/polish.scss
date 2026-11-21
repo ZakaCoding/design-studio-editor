@@ -45,6 +45,13 @@ $submit: ':is(button[type="submit"], input[type="submit"])';
   @return '[class*="__#{$name}"]';
 }
 
+// Every upstream dialog is rendered inside the modal wrapper. A dialog rule
+// names it first: matching runs from the right, and a class ancestor lets the
+// browser drop the canvas's thousands of SVG nodes at once instead of walking
+// up from each one looking for `[class*="__modal-container"]` (zoom spent
+// seconds in style recalculation on a 1,500-shape page, 20 Nov 2026).
+$in-modal: ":global(.main_ui_modal__modal-wrapper)";
+
 // A dialog root of upstream (not a Studio one).
 $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("modal-dialog")}:not([class*="main_ui_studio_"]), #{ws.on("main_ui_dashboard_team__modal-team-container")}';
 
@@ -259,7 +266,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     background: ds.token("overlay-scrim");
   }
 
-  :is(#{$dialog}) {
+  #{$in-modal} :is(#{$dialog}) {
     @include ds.root;
 
     padding: ds.dense("dialog-pad");
@@ -278,28 +285,32 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     }
   }
 
-  :is(#{$dialog}) :is(#{-any("modal-title")}, #{-any("modal-header")} > h2, #{-any("modal-header")} > h1) {
+  #{$in-modal}
+    :is(#{$dialog})
+    :is(#{-any("modal-title")}, #{-any("modal-header")} > h2, #{-any("modal-header")} > h1) {
     @include -dialog-title;
   }
 
   // The container's 12 px gap is the only space under the title.
-  :is(#{$dialog}) #{-any("modal-header")} {
+  #{$in-modal} :is(#{$dialog}) #{-any("modal-header")} {
     margin-block-end: 0;
   }
 
-  :is(#{$dialog}) :is(#{-any("modal-msg")}, #{-any("modal-scd-msg")}, #{-any("modal-subtitle")}) {
+  #{$in-modal}
+    :is(#{$dialog})
+    :is(#{-any("modal-msg")}, #{-any("modal-scd-msg")}, #{-any("modal-subtitle")}) {
     @include -dialog-text;
 
     margin: 0;
   }
 
   // The question of a confirm dialog (as in the Settings dialogs).
-  :is(#{$dialog}) #{-any("modal-msg")} {
+  #{$in-modal} :is(#{$dialog}) #{-any("modal-msg")} {
     font-size: ds.token("size-14");
     color: ds.token("text-body");
   }
 
-  :is(#{$dialog}) #{ws.on("main_ui_delete_shared__element-list")} {
+  #{$in-modal} :is(#{$dialog}) #{ws.on("main_ui_delete_shared__element-list")} {
     margin: 0;
     padding-inline-start: 0;
     font-family: ds.token("font-text");
@@ -308,13 +319,13 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     color: ds.token("text-body");
   }
 
-  :is(#{$dialog}) #{-any("modal-content")} {
+  #{$in-modal} :is(#{$dialog}) #{-any("modal-content")} {
     @include -dialog-text;
 
     gap: ds.token("space-8");
   }
 
-  :is(#{$dialog}) :is(#{-any("modal-close-btn")}, #{-any("close-btn")}) {
+  #{$in-modal} :is(#{$dialog}) :is(#{-any("modal-close-btn")}, #{-any("close-btn")}) {
     border-radius: ds.token("radius-control");
     color: ds.token("text-secondary");
 
@@ -325,7 +336,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
   }
 
   // Footer on the right, 8 px between the pills.
-  :is(#{$dialog}) :is(#{-any("modal-footer")}, #{-any("action-buttons")}) {
+  #{$in-modal} :is(#{$dialog}) :is(#{-any("modal-footer")}, #{-any("action-buttons")}) {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -334,20 +345,23 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
     padding: 0;
   }
 
-  :is(#{$dialog}) #{-any("modal-footer")} #{-any("action-buttons")} {
+  #{$in-modal} :is(#{$dialog}) #{-any("modal-footer")} #{-any("action-buttons")} {
     margin: 0;
   }
 
   // Upstream's own button classes of the older dialogs.
-  :is(#{$dialog}) :is(#{-any("cancel-button")}, #{-any("cancel-btn")}) {
+  #{$in-modal} :is(#{$dialog}) :is(#{-any("cancel-button")}, #{-any("cancel-btn")}) {
     @include -soft-pill;
   }
 
-  :is(#{$dialog}) :is(#{-any("accept-btn")}, #{-any("accept-button")}, #{-any("primary-button")}) {
+  #{$in-modal}
+    :is(#{$dialog})
+    :is(#{-any("accept-btn")}, #{-any("accept-button")}, #{-any("primary-button")}) {
     @include -black-pill;
   }
 
-  :is(#{$dialog})
+  #{$in-modal}
+    :is(#{$dialog})
     :is(#{-any("accept-btn")}, #{-any("accept-button")}):is([class~="danger"], #{-any("danger")}) {
     @include -danger-pill;
   }
@@ -358,14 +372,17 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
   }
 
   // A notice inside a dialog ("Assets that have already been used…").
-  :is(#{$dialog}) #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")} {
+  #{$in-modal}
+    :is(#{$dialog})
+    #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")} {
     margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
   }
 
-  :is(#{$dialog})
+  #{$in-modal}
+    :is(#{$dialog})
     :is(
       #{ws.on("main_ui_notifications_context_notification__context-notification")},
       #{ws.on("main_ui_ds_notifications_context_notification__contextual-notification")}
@@ -387,9 +404,11 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 // Export (one or many layers): the board's rows stay; title 1rem, 32 px
 // pills, cancel soft.
 #{$editor} {
-  :is(#{$dialog})#{ws.on("main_ui_exports_assets__modal-container")}
+  #{$in-modal}
+    :is(#{$dialog})#{ws.on("main_ui_exports_assets__modal-container")}
     #{ws.on("main_ui_exports_assets__modal-title")},
-  :is(#{$dialog})#{ws.on("main_ui_exports_files__modal-container")}
+  #{$in-modal}
+    :is(#{$dialog})#{ws.on("main_ui_exports_files__modal-container")}
     #{ws.on("main_ui_exports_files__modal-title")} {
     @include -dialog-title;
   }
@@ -457,7 +476,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // Libraries: DS dialog, title case tabs, the section titles as panel labels.
-#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_libraries__modal-dialog")} {
+#{$editor} #{$in-modal} :is(#{$dialog})#{ws.on("main_ui_workspace_libraries__modal-dialog")} {
   inline-size: min(712px, calc(100vw - 48px));
 
   #{ws.on("main_ui_workspace_libraries__modal-title")} {
@@ -529,7 +548,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // Plugins manager.
-#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_plugins__modal-dialog")} {
+#{$editor} #{$in-modal} :is(#{$dialog})#{ws.on("main_ui_workspace_plugins__modal-dialog")} {
   #{ws.on("main_ui_workspace_plugins__modal-title")} {
     @include -dialog-title;
 
@@ -581,6 +600,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 
 // The other plugin windows (permissions, try out): the same footer pills.
 #{$editor}
+  #{$in-modal}
   :is(#{$dialog}):is(
     #{ws.on("main_ui_workspace_plugins__plugin-permissions")},
     #{ws.on("main_ui_workspace_plugins__plugin-try-out")}
@@ -602,7 +622,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // WebGL unavailable: the DS dialog, the guide link in the accent colour.
-#{$editor} :is(#{$dialog})#{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-dialog")} {
+#{$editor} #{$in-modal} :is(#{$dialog})#{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-dialog")} {
   inline-size: min(560px, calc(100vw - 48px));
 
   #{ws.on("main_ui_workspace_webgl_unavailable_modal__modal-header")} {
@@ -641,7 +661,7 @@ $dialog: '#{-any("modal-container")}:not([class*="main_ui_studio_"]), #{-any("mo
 }
 
 // Share in the editor: upstream's invite dialog, as on the dashboard (P2).
-#{$editor} :is(#{$dialog})#{ws.on("main_ui_dashboard_team__modal-team-container")} {
+#{$editor} #{$in-modal} :is(#{$dialog})#{ws.on("main_ui_dashboard_team__modal-team-container")} {
   inline-size: 400px;
 
   h2,
